@@ -1,0 +1,243 @@
+/* ============================================================
+   ADVANTAGE ANALYTICS — Design Tokens
+   "The Pro Training Room" — quiet, data-first, cool-neutral.
+   Single accent (Signal Blue). Two outcome colors. Closed palette.
+   Source of truth: advantage-dashboard/DESIGN.md + globals.css
+   ============================================================ */
+
+/* ----- Typeface -----
+   The product UI is set in Inter at five weights (300/400/500/600/700).
+   The ADVANTAGE wordmark uses "Quadratic Reross" but ships as outlined
+   SVG (assets/logos/*.svg) — no font file required for the logo.        */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  /* ====================================================
+     COLOR — Primary (the single chromatic voice)
+     Signal Blue carries action + emphasis only. Max 10% of any screen.
+     ==================================================== */
+  --signal-blue:          #3B82F6;   /* CTAs, active nav, focus, links     */
+  --signal-blue-deep:     #2563EB;   /* hover on blue surfaces / links     */
+  --signal-blue-soft:     #EBF2FD;   /* active nav bg, welcome tint (only
+                                        large-area blue use in the system) */
+  --signal-blue-pressed:  #EFF4FF;
+  --blue-ring:            rgba(59, 130, 246, 0.40);  /* focus ring        */
+  --blue-glow:            rgba(59, 130, 246, 0.25);  /* CTA glow          */
+
+  /* ====================================================
+     COLOR — Outcome (semantic only: win / loss)
+     Green = winning. Red = losing. Never mood/status/affirmation.
+     ==================================================== */
+  --win-green:   #5DB955;
+  --loss-red:    #E51837;
+  --win-tint:    rgba(115, 230, 104, 0.15);
+  --loss-tint:   rgba(229, 24, 55, 0.15);
+
+  /* ====================================================
+     COLOR — Ink (neutral text/border ramp). Never #000.
+     ==================================================== */
+  --ink:            #0D0D0D;   /* headings, emphasis, primary content     */
+  --ink-dialog:     #1D1D1F;   /* dialog titles / menu items              */
+  --ink-secondary:  #525252;   /* body copy, descriptions, ghost text     */
+  --ink-tertiary:   #71717A;   /* scores, metadata                        */
+  --ink-muted:      #888888;   /* placeholders, readable-disabled         */
+  --ink-label:      #AAAAAA;   /* 10px uppercase eyebrows everywhere      */
+  --ink-disabled:   #CCCCCC;   /* dividers in disabled context            */
+
+  /* ====================================================
+     COLOR — Surfaces & hairlines
+     Hierarchy comes from hairline rules + whitespace, not borders/shadow.
+     ==================================================== */
+  --surface:         #FFFFFF;   /* cards, panels, modals                  */
+  --surface-page:    #FAFAFA;   /* page bg, row hover wash                */
+  --surface-subtle:  #F5F5F5;   /* hover bg, icon containers              */
+  --surface-field:   #F7F7F7;   /* disabled fields                        */
+  --surface-dark:    #0D0D0D;   /* dark floating UI (processing toast)    */
+  --hairline:        #F3F3F3;   /* THE structural rule — defines rhythm   */
+  --hairline-medium: #E5E5EA;   /* dropdown / modal borders               */
+  --border-field:    #EAECF0;   /* button outlines, boxed inputs (rare)   */
+
+  /* ====================================================
+     COLOR — Data-viz only (charts / SVG fills — never chrome)
+     Anchored to the brand palette. See src/lib/design/data-viz.ts
+     ==================================================== */
+  --player-violet:    #A855F7;   /* opponent / player-2 in multi-series   */
+  --viz-amber:        #E0902E;   /* the one warm hue: ace / key event     */
+  --viz-green-deep:   #3E9A45;
+  --viz-green:        #5DB955;   /* = Win Green                           */
+  --viz-green-mid:    #84C97E;
+  --viz-green-light:  #ABDCA6;
+  --viz-slate-deep:   #475569;
+  --viz-slate:        #64748B;
+  --viz-slate-light:  #94A3B8;
+  /* Surfaces (categorical): Hard=blue, Grass=green, Clay/Carpet=slate,
+     Indoor=violet #8B5CF6 */
+
+  /* ====================================================
+     RADII — exactly seven steps
+     ==================================================== */
+  --r-cell:     4px;
+  --r-button:   6px;
+  --r-element:  8px;
+  --r-dropdown: 12px;
+  --r-card:     14px;
+  --r-modal:    16px;
+  --r-pill:     9999px;
+
+  /* ====================================================
+     SPACING scale
+     ==================================================== */
+  --sp-xxs:  4px;
+  --sp-xs:   8px;
+  --sp-sm:   12px;
+  --sp-md:   16px;
+  --sp-lg:   20px;
+  --sp-xl:   24px;
+  --sp-xxl:  32px;
+
+  /* ====================================================
+     ELEVATION — flat by default; lift only when earned
+     ==================================================== */
+  --shadow-card:          0px 2px 8px 0px rgba(0,0,0,0.06);
+  --shadow-card-emphasis: 0px 4px 16px 0px rgba(0,0,0,0.10);
+  --shadow-card-raised:   0px 6px 20px 0px rgba(0,0,0,0.12);
+  --shadow-dropdown:      0 8px 30px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-tooltip:       0px 4px 12px 0px rgba(0,0,0,0.12);
+  --shadow-floating:      0px 8px 32px rgba(0,0,0,0.25), 0px 0px 0px 1px rgba(255,255,255,0.06) inset;
+
+  /* ====================================================
+     MOTION — two ease-out curves only. No bounce, no elastic.
+     ==================================================== */
+  --ease-primary: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-spring:  cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* ====================================================
+     TYPE — base
+     ==================================================== */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Semantic type tokens (size / weight / line / tracking) ---- */
+  /* Display — page headings (home greeting, page titles) */
+  --type-display-size: 30px;  --type-display-weight: 300;
+  --type-display-line: 36px;  --type-display-track: -0.6px;
+  /* Headline — KPI hero values, empty/error titles */
+  --type-headline-size: 28px; --type-headline-weight: 300;
+  --type-headline-line: 1.1;  --type-headline-track: -0.5px;
+  /* Title Large — modal hero titles, large settings figures */
+  --type-titlelg-size: 24px;  --type-titlelg-weight: 300;  --type-titlelg-track: -0.4px;
+  /* Title — event/tournament names, dialog titles */
+  --type-title-size: 16px;    --type-title-weight: 400;
+  --type-title-line: 1.5;     --type-title-track: -0.4px;
+  /* Data — canonical underline-input text, compact values */
+  --type-data-size: 14px;     --type-data-weight: 400;
+  /* Body — standard interface body, nav items */
+  --type-body-size: 13px;     --type-body-weight: 400;  --type-body-line: 1.5;
+  /* Body Small — descriptions, helper, activity */
+  --type-bodysm-size: 12px;   --type-bodysm-weight: 400; --type-bodysm-line: 1.5;
+  /* Micro — dense metadata, filter chips */
+  --type-micro-size: 11px;    --type-micro-weight: 400;
+  /* Label — section eyebrows (the typographic spine) */
+  --type-label-size: 10px;    --type-label-weight: 500;  --type-label-track: 2.5px;
+  /* Micro Label — inline pills, micro badges */
+  --type-microlabel-size: 9px; --type-microlabel-weight: 600;
+  /* Score — match scores (match detail only). 600: anchored but light. */
+  --type-score-size: 40px;    --type-score-weight: 600;  --type-score-track: -1px;
+}
+
+/* ============================================================
+   SEMANTIC TYPE CLASSES — apply directly in markup
+   ============================================================ */
+.t-display {
+  font: var(--fw-light) var(--type-display-size)/var(--type-display-line) var(--font-sans);
+  letter-spacing: var(--type-display-track);
+  color: var(--ink);
+}
+.t-headline {
+  font: var(--fw-light) var(--type-headline-size)/var(--type-headline-line) var(--font-sans);
+  letter-spacing: var(--type-headline-track);
+  color: var(--ink);
+}
+.t-title-lg {
+  font: var(--fw-light) var(--type-titlelg-size)/1.2 var(--font-sans);
+  letter-spacing: var(--type-titlelg-track);
+  color: var(--ink);
+}
+.t-title {
+  font: var(--fw-regular) var(--type-title-size)/var(--type-title-line) var(--font-sans);
+  letter-spacing: var(--type-title-track);
+  color: var(--ink);
+}
+.t-body {
+  font: var(--fw-regular) var(--type-body-size)/var(--type-body-line) var(--font-sans);
+  color: var(--ink-secondary);
+}
+.t-body-sm {
+  font: var(--fw-regular) var(--type-bodysm-size)/var(--type-bodysm-line) var(--font-sans);
+  color: var(--ink-muted);
+}
+.t-data    { font: var(--fw-regular) var(--type-data-size)/1.4 var(--font-sans); color: var(--ink); }
+.t-micro   { font: var(--fw-regular) var(--type-micro-size)/1.4 var(--font-sans); color: var(--ink-muted); }
+/* The Eyebrow — non-negotiable spine of the product */
+.t-label {
+  font: var(--fw-medium) var(--type-label-size)/1.5 var(--font-sans);
+  letter-spacing: var(--type-label-track);
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+.t-score {
+  font: var(--fw-semibold) var(--type-score-size)/1 var(--font-sans);
+  letter-spacing: var(--type-score-track);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The Tabular Rule — every number compared to another number */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   SIGNATURE PATTERNS
+   ============================================================ */
+/* Eyebrow + hairline rule — opens every section */
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-eyebrow > .t-label { flex: 0 0 auto; }
+.section-eyebrow::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--hairline);
+}
+
+/* Flat card — hairline border, shadow only when earned */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Primary CTA */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 36px; padding: 0 16px;
+  background: var(--signal-blue); color: #fff;
+  font: var(--fw-medium) 13px var(--font-sans);
+  border: none; border-radius: var(--r-button);
+  box-shadow: 0 1px 3px var(--blue-glow);
+  cursor: pointer;
+  transition: background 200ms var(--ease-primary), transform 120ms var(--ease-primary);
+}
+.btn-primary:hover  { background: var(--signal-blue-deep); }
+.btn-primary:active { transform: scale(0.97); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition-property: opacity !important; }
+}

@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Advantage landing — design tokens vendored from advantage-dashboard so the
+   marketing site and the product share one visual identity. Tailwind v4.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono);
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+  --font-size-7xl: 4.5rem;
+  --font-size-8xl: 6rem;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-card: 0px 2px 8px 0px rgba(0, 0, 0, 0.06);
+  --shadow-card-elevated: 0px 6px 20px 0px rgba(0, 0, 0, 0.12);
+}
+
+/* Brand + ink tokens consumed via arbitrary values like text-[var(--color-blue)] */
+@theme {
+  --color-border-card: #f3f3f3;
+  --color-surface-card: #ffffff;
+  --color-surface-muted: #fafafa;
+  --color-text-body: #525252;
+  --color-success: #5db955;
+  --color-success-tint-12: rgba(115, 230, 104, 0.16);
+  --color-error-strong: #e51837;
+
+  /* Ink scale — neutral text/border ramp */
+  --color-ink-900: #0d0d0d;
+  --color-ink-700: #525252;
+  --color-ink-500: #888888;
+  --color-ink-400: #aaaaaa;
+  --color-ink-300: #cccccc;
+  --color-ink-200: #e5e5ea;
+  --color-ink-100: #f3f3f3;
+  --color-ink-border: #eaecf0;
+
+  /* Accent blue + tints — the single committed accent */
+  --color-blue: #3b82f6;
+  --color-blue-hover: #2563eb;
+  --color-blue-tint-04: rgba(59, 130, 246, 0.04);
+  --color-blue-tint-08: rgba(59, 130, 246, 0.08);
+  --color-blue-tint-12: rgba(59, 130, 246, 0.12);
+  --color-blue-ring-30: rgba(59, 130, 246, 0.3);
+  --color-blue-ring-40: rgba(59, 130, 246, 0.4);
+  --color-blue-ink-deep: oklch(0.36 0.13 263);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --primary: oklch(0 0 15);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  html,
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background-color: var(--color-blue-tint-12);
+  }
+}
+
+@layer components {
+  .surface-card {
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-border-card);
+    border-radius: 14px;
+    box-shadow: var(--shadow-card);
+  }
+  .surface-card-elevated {
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-border-card);
+    border-radius: 14px;
+    box-shadow: var(--shadow-card-elevated);
+  }
+  .surface-card-ghost {
+    background-color: var(--color-surface-muted);
+    border: 1px solid var(--color-border-card);
+    border-radius: 14px;
+  }
+}
+
+/* Brand mesh gradient — used sparingly for the hero glow + dark CTA band */
+.brand-mesh-gradient {
+  background:
+    radial-gradient(ellipse 80% 70% at 10% 15%, #60a5fa 0%, transparent 50%),
+    radial-gradient(ellipse 65% 80% at 85% 10%, #38bdf8 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 40% 50%, #7ba4f7 0%, transparent 50%),
+    radial-gradient(ellipse 60% 70% at 80% 70%, #818cf8 0%, transparent 45%),
+    radial-gradient(ellipse 55% 55% at 50% 35%, #93c5fd 0%, transparent 45%),
+    linear-gradient(135deg, #5b8def, #7ba4f7, #818cf8);
+}
+
+/* Marquee for the integrations ribbon */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+
+/* Slow drift for the ambient hero glow */
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.04);
+  }
+}
+.animate-drift {
+  animation: drift 14s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .animate-drift {
+    animation: none;
+  }
+}
