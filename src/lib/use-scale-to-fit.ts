@@ -1,0 +1,48 @@
+import { useEffect, useRef } from "react";
+
+type Options = {
+  /** Native (unscaled) content width in px. */
+  width?: number;
+  /** Fixed native height in px. Omit to measure the inner element's offsetHeight on each fit. */
+  height?: number;
+  /** Re-fit once after this delay (ms) to catch late layout (fonts, images, mounted children). */
+  settleMs?: number;
+};
+
+/**
+ * Scales an inner element to fit its outer container's width
+ * (`scale(outer.clientWidth / width)`) and sets the outer height to the scaled
+ * content height, re-fitting on container resize. Used to render the fixed
+ * 1440-wide design artboards (hero canvas, dashboard mock) responsively.
+ *
+ * Returns refs to attach: `outerRef` to the container, `innerRef` to the
+ * native-width content.
+ */
+export function useScaleToFit<
+  O extends HTMLElement = HTMLDivElement,
+  I extends HTMLElement = HTMLDivElement,
+>({ width = 1440, height, settleMs }: Options = {}) {
+  const outerRef = useRef<O>(null);
+  const innerRef = useRef<I>(null);
+  useEffect(() => {
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+    if (!outer || !inner) return;
+    const fit = () => {
+      const s = outer.clientWidth / width;
+      inner.style.transform = `scale(${s})`;
+      outer.style.height = (height ?? inner.offsetHeight) * s + "px";
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(outer);
+    const t = settleMs ? setTimeout(fit, settleMs) : undefined;
+    window.addEventListener("resize", fit);
+    return () => {
+      ro.disconnect();
+      if (t) clearTimeout(t);
+      window.removeEventListener("resize", fit);
+    };
+  }, [width, height, settleMs]);
+  return { outerRef, innerRef };
+}

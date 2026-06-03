@@ -156,9 +156,9 @@ const D_EVENT = {
   court: "Hard",
   type: "Tournament",
   matches: [
-    { id: "1", opponentName: "M. Nakamura", score: "6-4, 7-5", won: true, meta: ["WTA", "NCAA D1"], fs: "68%", we: "24/15", bp: "4/6" },
-    { id: "2", opponentName: "K. Sato", score: "4-6, 6-3, 6-4", won: true, meta: ["ITF", "5.5 UTR"], fs: "71%", we: "31/22", bp: "5/9" },
-    { id: "3", opponentName: "J. Whitmore", score: "3-6, 4-6", won: false, meta: ["NCAA D1"], fs: "59%", we: "18/26", bp: "1/7" },
+    { id: "1", opponentName: "M. Nakamura", score: "6-4, 7-5", won: true, meta: ["RIGHT HANDED", "2-HANDED BACKHAND"], fs: "68%", we: "24/15", bp: "4/6" },
+    { id: "2", opponentName: "K. Sato", score: "4-6, 6-3, 6-4", won: true, meta: ["LEFT HANDED", "1-HANDED BACKHAND"], fs: "71%", we: "31/22", bp: "5/9" },
+    { id: "3", opponentName: "J. Whitmore", score: "3-6, 4-6", won: false, meta: ["RIGHT HANDED", "2-HANDED BACKHAND"], fs: "59%", we: "18/26", bp: "1/7" },
   ] as Match[],
 };
 

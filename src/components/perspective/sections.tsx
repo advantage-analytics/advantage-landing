@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "./icons";
 import { AdvantageDashboard, CourtViz, KpiTile, D_KPIS, InsightChip } from "./dashboard";
+import { TrafficLights } from "./traffic-lights";
 import { links } from "@/lib/links";
+import { useScaleToFit } from "@/lib/use-scale-to-fit";
 
 /* Reveal-on-scroll — fades sections in as they enter the viewport.
    Honors prefers-reduced-motion via the CSS (.reveal stays visible). */
@@ -25,32 +27,12 @@ export function useReveal() {
   }, []);
 }
 
-// Scales the real 1440-wide AdvantageDashboard to fit its container.
+// Scales the real 1440-wide AdvantageDashboard to fit its container. The 300ms
+// settle re-fit catches the dashboard's height after its children mount.
 function ScaledDashboard() {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const wrap = wrapRef.current;
-    const inner = innerRef.current;
-    if (!wrap || !inner) return;
-    const fit = () => {
-      const s = wrap.clientWidth / 1440;
-      inner.style.transform = `scale(${s})`;
-      wrap.style.height = inner.offsetHeight * s + "px";
-    };
-    fit();
-    const ro = new ResizeObserver(fit);
-    ro.observe(wrap);
-    const t = setTimeout(fit, 300);
-    window.addEventListener("resize", fit);
-    return () => {
-      ro.disconnect();
-      clearTimeout(t);
-      window.removeEventListener("resize", fit);
-    };
-  }, []);
+  const { outerRef, innerRef } = useScaleToFit({ settleMs: 300 });
   return (
-    <div ref={wrapRef} style={{ position: "relative", width: "100%", overflow: "hidden" }}>
+    <div ref={outerRef} style={{ position: "relative", width: "100%", overflow: "hidden" }}>
       <div ref={innerRef} style={{ width: 1440, transformOrigin: "top left" }}>
         <AdvantageDashboard />
       </div>
@@ -76,11 +58,7 @@ export function DashboardShowcase() {
         </div>
         <div className="browser reveal">
           <div className="browser-bar">
-            <div className="browser-dots">
-              <i style={{ background: "#FF5F57" }} />
-              <i style={{ background: "#FEBC2E" }} />
-              <i style={{ background: "#28C840" }} />
-            </div>
+            <TrafficLights className="browser-dots" />
             <div className="browser-url">
               <Icon n="lock" size={9} /> app.advantage-analytics.com
             </div>
@@ -205,14 +183,12 @@ export function Credibility() {
         <p className="line">Access to Advantage is currently limited to invited players and coaches.</p>
         <div className="cred-stats">
           <div className="cred-stat">
-            <div className="n">
-              <b>100%</b>
-            </div>
+            <div className="n">100%</div>
             <div className="l">From line-call data</div>
           </div>
           <div className="cred-stat">
             <div className="n">
-              &lt;60<b>s</b>
+              <b>&lt;60s</b>
             </div>
             <div className="l">Match to insight</div>
           </div>
@@ -298,7 +274,7 @@ export function Footer() {
             <img src="/assets/logos/logo.svg" alt="Advantage" />
             <p>Performance intelligence for competitive tennis. Built by former collegiate players.</p>
           </div>
-          <div className="foot-cols">
+          <nav className="foot-cols">
             <div className="foot-col">
               <h5>Product</h5>
               <a href="#dashboard">Dashboard</a>
@@ -312,13 +288,10 @@ export function Footer() {
               <a href="#access">Request access</a>
               <a href={links.signIn}>Sign in</a>
             </div>
-          </div>
+          </nav>
         </div>
         <div className="foot-bottom">
           <span className="cp">© 2026 Advantage Analytics. All rights reserved.</span>
-          <span className="sv">
-            <img src="/assets/providers/swingvision-trim.png" alt="SwingVision" /> Integrates with SwingVision ELC
-          </span>
         </div>
       </div>
     </footer>
