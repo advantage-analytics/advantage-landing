@@ -1,6 +1,7 @@
 "use client";
 
 import { PerspectiveHero } from "@/components/perspective/hero";
+import { SiteNav } from "@/components/perspective/site-nav";
 import {
   DashboardShowcase,
   HowItWorks,
@@ -15,6 +16,7 @@ export default function Home() {
   useReveal();
   return (
     <div className="perspective-page">
+      <SiteNav />
       <PerspectiveHero />
       <main>
         <DashboardShowcase />

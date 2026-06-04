@@ -3,7 +3,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { AdvantageDashboard } from "./dashboard";
 import { TrafficLights } from "./traffic-lights";
-import { links } from "@/lib/links";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
 
 /* ===========================================================
@@ -24,33 +23,6 @@ function PHBtns() {
         See the dashboard
       </a>
     </div>
-  );
-}
-
-// Native-resolution overlay nav. Rendered OUTSIDE the scaled artboard so the
-// logo and text stay crisp and the logo size is independent of the artboard
-// scale (matches the dashboard login nav: logo-white.svg at 28px).
-function PHNav() {
-  return (
-    <nav className="phero-nav">
-      <a href="#top" aria-label="Advantage — Home">
-        <img className="phero-logo" src="/assets/logos/logo-white.svg" alt="Advantage" />
-      </a>
-      <div className="phero-nav-center h-nav">
-        <a href="#dashboard">Dashboard</a>
-        <a href="#how">How it works</a>
-        <a href="#features">Features</a>
-        <a href="#access">Pricing</a>
-      </div>
-      <div className="phero-nav-actions">
-        <a className="phero-signin" href={links.signIn}>
-          Sign in
-        </a>
-        <a className="hbtn hbtn-glass phero-nav-cta" href="#access">
-          Get started
-        </a>
-      </div>
-    </nav>
   );
 }
 
@@ -101,7 +73,6 @@ function HeroCCanvas() {
         }}
       >
         <span className="h-eyebrow">
-          <span className="dot" />
           Performance Intelligence
         </span>
         <h1 className="h-title" style={{ fontSize: 62, maxWidth: 820 }}>
@@ -129,7 +100,6 @@ export function PerspectiveHero() {
       <div ref={innerRef} style={{ position: "absolute", top: 0, left: 0, transformOrigin: "top left" }}>
         <HeroCCanvas />
       </div>
-      <PHNav />
     </header>
   );
 }

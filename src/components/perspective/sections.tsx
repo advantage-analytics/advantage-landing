@@ -47,7 +47,6 @@ export function DashboardShowcase() {
         <div className="show-head reveal">
           <div className="sec-head">
             <span className="eyebrow">
-              <span className="dot" />
               The Dashboard
             </span>
             <h2>Walk on court knowing exactly what to drill.</h2>
@@ -78,7 +77,6 @@ export function HowItWorks() {
       <div className="wrap">
         <div className="sec-head reveal">
           <span className="eyebrow">
-            <span className="dot" />
             How it works
           </span>
           <h2>From the last point to the next adjustment.</h2>
@@ -115,7 +113,6 @@ export function Features() {
       <div className="wrap">
         <div className="sec-head reveal">
           <span className="eyebrow">
-            <span className="dot" />
             What you get
           </span>
           <h2>The numbers that breathe. The patterns that win.</h2>
@@ -175,8 +172,7 @@ export function Credibility() {
   return (
     <section className="band">
       <div className="wrap cred reveal">
-        <span className="eyebrow" style={{ justifyContent: "center" }}>
-          <span className="dot" />
+        <span className="eyebrow">
           Built for the modern athlete
         </span>
         <h3>Built by former collegiate players. Designed for competitive advantage.</h3>
@@ -213,7 +209,6 @@ export function RequestAccess() {
           <div className="access-inner">
             <div>
               <span className="eyebrow">
-                <span className="dot" />
                 Request access
               </span>
               <h3>Get the advantage. By invitation.</h3>
