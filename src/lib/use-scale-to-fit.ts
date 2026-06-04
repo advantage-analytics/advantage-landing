@@ -34,8 +34,14 @@ export function useScaleToFit<
       outer.style.height = (height ?? inner.offsetHeight) * s + "px";
     };
     fit();
+    // Observe BOTH boxes: `outer` for container-width changes (the scale), and
+    // `inner` so late layout — fonts, images, mounted children growing the
+    // artboard's height — re-fits silently. A scale transform doesn't change
+    // either element's observed box, so this can't feedback-loop. This replaces
+    // the old fixed settle timeout, which produced a visible post-paint jump.
     const ro = new ResizeObserver(fit);
     ro.observe(outer);
+    ro.observe(inner);
     const t = settleMs ? setTimeout(fit, settleMs) : undefined;
     window.addEventListener("resize", fit);
     return () => {

@@ -5,17 +5,17 @@ import { ArrowUpRight } from "lucide-react";
 import { links } from "@/lib/links";
 
 /* ===========================================================
-   Site nav — a single fixed header that lives for the whole page.
+   Site nav — a sticky header for the whole page.
 
-   Two states, cross-faded:
-   • At the top it's transparent with the white logo, floating over
-     the dark mesh hero (the original overlay look).
-   • Once the hero has scrolled past, it goes "solid": a frosted-glass
-     bar with a hairline, a soft shadow, and the dark logo + ink text
-     so it stays legible over the light content below.
+   It floats transparent over the dark mesh hero at the very top
+   (white logo + links), then solidifies into a frosted bar the
+   moment you scroll. That solid background is the point: the hero
+   headline scrolls UP behind it and is covered cleanly, instead of
+   colliding with the nav text the way a transparent bar would.
 
-   The flip is driven by the hero's own height, so the bar is only ever
-   transparent while it sits over the dark mesh — never white-on-white.
+   Driven by scrollY alone (transparent only within the first few
+   pixels), so there's no dependency on the hero's height settling —
+   the race that used to flash the bar solid on first paint.
    =========================================================== */
 
 const NAV_LINKS = [
@@ -29,28 +29,10 @@ export function SiteNav() {
   const [solid, setSolid] = useState(false);
 
   useEffect(() => {
-    const hero = document.querySelector<HTMLElement>(".heroC-stage");
-    let raf = 0;
-
-    const update = () => {
-      raf = 0;
-      // Solidify just before the hero fully clears the bar (its solid
-      // height ≈ 64px), so the swap lands exactly as light content meets it.
-      const trigger = hero ? hero.offsetHeight - 64 : 64;
-      setSolid(window.scrollY > trigger);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-
+    const update = () => setSolid(window.scrollY > 8);
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
   }, []);
 
   return (

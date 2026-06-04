@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { Icon } from "./icons";
 import { AdvantageDashboard, CourtViz, KpiTile, D_KPIS, InsightChip } from "./dashboard";
 import { TrafficLights } from "./traffic-lights";
@@ -27,14 +27,44 @@ export function useReveal() {
   }, []);
 }
 
-// Scales the real 1440-wide AdvantageDashboard to fit its container. The 300ms
-// settle re-fit catches the dashboard's height after its children mount.
+// Scales the real 1440-wide AdvantageDashboard to fit its container. The hook's
+// ResizeObserver watches the inner artboard, so a late height change (mounted
+// children) re-fits silently — no settle-timeout jump.
 function ScaledDashboard() {
-  const { outerRef, innerRef } = useScaleToFit({ settleMs: 300 });
+  const { outerRef, innerRef } = useScaleToFit();
   return (
     <div ref={outerRef} style={{ position: "relative", width: "100%", overflow: "hidden" }}>
       <div ref={innerRef} style={{ width: 1440, transformOrigin: "top left" }}>
         <AdvantageDashboard />
+      </div>
+    </div>
+  );
+}
+
+/* The dashboard sits flat and pin-sharp. It fades and rises into place once on
+   entry through the shared `.reveal` observer — the same single motion the
+   section heading uses — then stays put. No scroll-scrubbed 3D tilt: the
+   product itself is the proof, not the motion. Reduced-motion users get it
+   static (handled in the `.reveal` CSS). */
+function LandingDashboard() {
+  return (
+    <div
+      className="browser reveal"
+      role="img"
+      aria-label="The Advantage dashboard: KPI trends, recent matches, a serve-placement court, and an AI insight."
+    >
+      <div className="browser-bar">
+        <TrafficLights className="browser-dots" />
+        <div className="browser-url">
+          <Icon n="lock" size={9} /> app.advantage-analytics.com
+        </div>
+      </div>
+      {/* Decorative screenshot: `inert` keeps its buttons out of the tab order
+          and the a11y tree (the role="img" label above is the honest
+          representation), and CSS kills pointer-events so its hover states
+          never fire. */}
+      <div className="browser-screen" inert>
+        <ScaledDashboard />
       </div>
     </div>
   );
@@ -52,18 +82,30 @@ export function DashboardShowcase() {
             <h2>Walk on court knowing exactly what to drill.</h2>
           </div>
           <p style={{ maxWidth: 340, color: "var(--ink-secondary)", font: "var(--fw-regular) 15px/1.6 var(--font-sans)" }}>
-            Every serve, return, and rally — distilled into the numbers that decide matches. No noise, no decoration.
+            Every serve, return, and rally, distilled into the numbers that decide matches. No noise, no decoration.
           </p>
         </div>
-        <div className="browser reveal">
-          <div className="browser-bar">
-            <TrafficLights className="browser-dots" />
-            <div className="browser-url">
-              <Icon n="lock" size={9} /> app.advantage-analytics.com
+        {/* Desktop: the dashboard "lands" full-width, scaled to fit. */}
+        <div className="show-dash-desktop">
+          <LandingDashboard />
+        </div>
+        {/* Mobile: a fixed-scale, legible slice — cropped and faded at the
+            bottom — instead of shrinking the whole 1440 artboard to a ~2px
+            thumbnail. Purely decorative, so aria-hidden; the headline above
+            carries the meaning. */}
+        <div className="show-dash-mobile reveal" aria-hidden="true">
+          <div className="browser">
+            <div className="browser-bar">
+              <TrafficLights className="browser-dots" />
+              <div className="browser-url">
+                <Icon n="lock" size={9} /> app.advantage-analytics.com
+              </div>
             </div>
-          </div>
-          <div className="browser-screen">
-            <ScaledDashboard />
+            <div className="browser-screen show-crop" inert>
+              <div className="show-crop-inner">
+                <AdvantageDashboard />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -82,8 +124,10 @@ export function HowItWorks() {
           <h2>From the last point to the next adjustment.</h2>
           <p>Advantage plugs straight into the line-calling data you already capture. Three steps, no manual tagging.</p>
         </div>
-        <div className="steps reveal">
-          <div className="step">
+        {/* Each step reveals on its own with a stagger index, so 01 → 02 → 03
+            cascade in sequence rather than appearing as one block. */}
+        <div className="steps">
+          <div className="step reveal" style={{ "--ri": 0 } as CSSProperties}>
             <div className="step-num">01</div>
             <h4>Capture the match with SwingVision.</h4>
             <p>Record on court with SwingVision&apos;s electronic line-calling. Every shot, serve, and call is logged automatically.</p>
@@ -91,12 +135,12 @@ export function HowItWorks() {
               <img src="/assets/providers/swingvision-trim.png" alt="SwingVision" /> Only ELC source supported today
             </span>
           </div>
-          <div className="step">
+          <div className="step reveal" style={{ "--ri": 1 } as CSSProperties}>
             <div className="step-num">02</div>
             <h4>Export the match and upload.</h4>
             <p>Export the match file from SwingVision and drop it into Advantage. We parse every point — no spreadsheets to wrangle.</p>
           </div>
-          <div className="step">
+          <div className="step reveal" style={{ "--ri": 2 } as CSSProperties}>
             <div className="step-num">03</div>
             <h4>Read the dashboard, find the pattern.</h4>
             <p>Statistics, court visualizations, and AI insight are ready in seconds — on the surfaces your whole team can read.</p>
@@ -115,43 +159,53 @@ export function Features() {
           <span className="eyebrow">
             What you get
           </span>
-          <h2>The numbers that breathe. The patterns that win.</h2>
+          <h2>Every match, read three ways.</h2>
+          <p>The analysis that used to live with ATP and WTA teams — your serve placement, your numbers, your next adjustment.</p>
         </div>
+        {/* Cards cascade court → stats → ai instead of popping together. */}
         <div className="bento">
-          <div className="feat b-stats reveal">
-            <div className="ic">
-              <Icon n="bar" />
-            </div>
-            <h4>Match statistics</h4>
-            <p>Serve percentages, win rates, break points, and rally length — tabular and exact, trended over your last 30 days.</p>
-            <div className="viz">
-              <div className="feat-kpistrip">
-                <KpiTile {...D_KPIS[0]} />
-                <KpiTile {...D_KPIS[1]} />
-                <KpiTile {...D_KPIS[3]} />
+          <div className="feat b-court reveal" style={{ "--ri": 0 } as CSSProperties}>
+            <div className="feat-top">
+              <div className="ic">
+                <Icon n="target" />
+              </div>
+              <div>
+                <h4>Court visualization</h4>
+                <p>Every serve and shot plotted on a real court from line-call coordinates. See exactly where the points go.</p>
               </div>
             </div>
-          </div>
-          <div className="feat b-court reveal">
-            <div className="ic">
-              <Icon n="target" />
-            </div>
-            <h4>Court visualization</h4>
-            <p>Serve placement and shot maps plotted on a real court, drawn from line-call coordinates — see exactly where the points are going.</p>
             <div className="viz">
               <div className="feat-courtband">
                 <div className="adb-court-wrap">
                   <CourtViz />
                 </div>
               </div>
+              <div className="court-legend">
+                <span className="court-leg"><span className="sw first" /> First serve</span>
+                <span className="court-leg"><span className="sw second" /> Second serve</span>
+              </div>
             </div>
           </div>
-          <div className="feat b-ai reveal">
+          <div className="feat b-stats reveal" style={{ "--ri": 1 } as CSSProperties}>
+            <div className="ic">
+              <Icon n="bar" />
+            </div>
+            <h4>Match statistics</h4>
+            <p>Serve %, win rate, break points, rally length — exact and trended across your last 30 days.</p>
+            <div className="viz">
+              <div className="feat-kpistrip">
+                <KpiTile {...D_KPIS[0]} countUp />
+                <KpiTile {...D_KPIS[1]} countUp />
+                <KpiTile {...D_KPIS[3]} countUp />
+              </div>
+            </div>
+          </div>
+          <div className="feat b-ai reveal" style={{ "--ri": 2 } as CSSProperties}>
             <div className="ic">
               <Icon n="msg" />
             </div>
             <h4>AI match insight</h4>
-            <p>Plain-language reads on what changed and what to drill next — grounded in your data, written for players who know the game.</p>
+            <p>Plain-language reads on what changed and what to drill next — grounded in your numbers, written for players who know the game.</p>
             <div className="viz">
               <p className="insight-mini">
                 <b>Second-serve points won dropped to 48%.</b> Against deep returners, a heavier kick serve is the pattern to drill this week.
@@ -170,7 +224,7 @@ export function Features() {
 
 export function Credibility() {
   return (
-    <section className="band">
+    <section className="band cred-band">
       <div className="wrap cred reveal">
         <span className="eyebrow">
           Built for the modern athlete

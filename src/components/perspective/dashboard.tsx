@@ -1,5 +1,52 @@
-import { useId } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { DIcon } from "./icons";
+
+/* Counts a numeric stat ("68%", "<60s") up from zero the first time it scrolls
+   into view. Opt-in via KpiTile's `countUp` so only the landing's feature
+   vizzes animate — the showcase dashboard renders its real values at rest.
+   SSR-safe (initial render is the true value) and reduced-motion aware. */
+function useCountUp(value: string, enabled: boolean) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [display, setDisplay] = useState(value);
+  useEffect(() => {
+    const el = ref.current;
+    const m = /^(\D*)([\d.]+)(.*)$/.exec(value);
+    if (!enabled || !el || !m) {
+      setDisplay(value);
+      return;
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const [, prefix, num, suffix] = m;
+    const target = parseFloat(num);
+    const decimals = num.includes(".") ? 1 : 0;
+    let raf = 0;
+    let started = false;
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting || started) return;
+          started = true;
+          io.unobserve(e.target);
+          const t0 = performance.now();
+          const tick = (now: number) => {
+            const t = Math.min(1, (now - t0) / 1000);
+            const eased = 1 - Math.pow(1 - t, 4); // ease-out-quart
+            setDisplay(`${prefix}${(target * eased).toFixed(decimals)}${suffix}`);
+            if (t < 1) raf = requestAnimationFrame(tick);
+            else setDisplay(value);
+          };
+          raf = requestAnimationFrame(tick);
+        }),
+      { threshold: 0.6 }
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [enabled, value]);
+  return { ref, display };
+}
 
 /* ===========================================================
    AdvantageDashboard — faithful static render of the product's
@@ -63,17 +110,19 @@ type Kpi = {
 
 // KPI tile — mirrors KpiTile: label 9px, value 28px light, value row
 // [value][flex spacer max 48px][sparkline], trend arrow+change+label.
-export function KpiTile({ label, value, spark, change, changeLabel, lowerIsBetter }: Kpi) {
+// `countUp` opts the value into a scroll-triggered count animation.
+export function KpiTile({ label, value, spark, change, changeLabel, lowerIsBetter, countUp = false }: Kpi & { countUp?: boolean }) {
   const neutral = change === 0;
   const good = lowerIsBetter ? change <= 0 : change >= 0;
   const col = neutral ? "#888888" : good ? "#5DB955" : "#E51837";
   const arrow = neutral ? "→" : change > 0 ? "↑" : "↓";
   const sign = neutral ? "" : change > 0 ? "+" : "";
+  const { ref, display } = useCountUp(value, countUp);
   return (
     <div className="adb-kpi">
       <p className="adb-kpi-label">{label}</p>
       <div className="adb-kpi-valrow">
-        <span className="adb-kpi-value">{value}</span>
+        <span className="adb-kpi-value" ref={ref}>{display}</span>
         <span className="adb-kpi-spacer" aria-hidden="true" />
         {spark && <DSpark data={spark} positive={good} />}
       </div>
@@ -350,6 +399,9 @@ const SP_ZONES = [
   { label: "Body", x1: ZONE_LINES_X[2], x2: ZONE_LINES_X[3], pct: 14, count: 3 },
   { label: "Wide", x1: ZONE_LINES_X[3], x2: COURT.SR, pct: 18, count: 4 },
 ];
+// Serve dots use two hues as a DATA-CATEGORICAL encoding (1st vs 2nd serve),
+// not as brand color. The blue is the accent; the purple exists only to
+// distinguish second serves and must never leak into page/UI chrome.
 const FIRST_SERVE_COLOR = "rgba(59,130,246,0.65)";
 const SECOND_SERVE_COLOR = "rgba(139,92,246,0.8)";
 
@@ -362,7 +414,7 @@ const SERVE_DOTS = [
   { x: 150, y: 240, t: "second" }, { x: 166, y: 216, t: "second" }, { x: 134, y: 256, t: "second" },
 ];
 
-function ServeDot({ d }: { d: { x: number; y: number; t: string } }) {
+function ServeDot({ d, i }: { d: { x: number; y: number; t: string }; i: number }) {
   return (
     <circle
       cx={d.x}
@@ -371,6 +423,7 @@ function ServeDot({ d }: { d: { x: number; y: number; t: string } }) {
       fill={d.t === "second" ? SECOND_SERVE_COLOR : FIRST_SERVE_COLOR}
       stroke="rgba(255,255,255,0.4)"
       strokeWidth={1}
+      style={{ "--di": i } as CSSProperties}
     />
   );
 }
@@ -426,7 +479,7 @@ export function CourtViz() {
         </text>
       </g>
       {SERVE_DOTS.map((d, i) => (
-        <ServeDot key={i} d={d} />
+        <ServeDot key={i} d={d} i={i} />
       ))}
     </svg>
   );
@@ -509,7 +562,10 @@ export function AdvantageDashboard() {
           <div className="adb-welcome">
             <div>
               <div className="adb-date">Monday, June 2</div>
-              <h1 className="adb-greet">Good morning, Maria</h1>
+              {/* Not a real <h1>: this dashboard renders only as a decorative
+                  screenshot on the landing page, so it must not inject a second
+                  top-level heading into the document outline. */}
+              <div className="adb-greet">Good morning, Maria</div>
             </div>
             <button className="adb-upload">
               <DIcon n="plus" s={15} /> Upload Match<kbd className="adb-upload-kbd">⌘U</kbd>
