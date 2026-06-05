@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useId, useState, type CSSProperties } from "react";
 import { Icon } from "./icons";
-import { AdvantageDashboard, CourtViz, KpiTile, D_KPIS, InsightChip } from "./dashboard";
+import { AdvantageDashboard, CourtViz, KpiTile, D_KPIS } from "./dashboard";
 import { TrafficLights } from "./traffic-lights";
 import { links } from "@/lib/links";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
@@ -128,7 +128,7 @@ export function HowItWorks() {
             cascade in sequence rather than appearing as one block. */}
         <div className="steps">
           <div className="step reveal" style={{ "--ri": 0 } as CSSProperties}>
-            <div className="step-num">01</div>
+            <div className="step-num"><span className="z">0</span>1</div>
             <h4>Capture the match with SwingVision.</h4>
             <p>Record on court with SwingVision&apos;s electronic line-calling. Every shot, serve, and call is logged automatically.</p>
             <span className="pill">
@@ -136,12 +136,12 @@ export function HowItWorks() {
             </span>
           </div>
           <div className="step reveal" style={{ "--ri": 1 } as CSSProperties}>
-            <div className="step-num">02</div>
+            <div className="step-num"><span className="z">0</span>2</div>
             <h4>Export the match and upload.</h4>
             <p>Export the match file from SwingVision and drop it into Advantage. We parse every point — no spreadsheets to wrangle.</p>
           </div>
           <div className="step reveal" style={{ "--ri": 2 } as CSSProperties}>
-            <div className="step-num">03</div>
+            <div className="step-num"><span className="z">0</span>3</div>
             <h4>Read the dashboard, find the pattern.</h4>
             <p>Statistics, court visualizations, and AI insight are ready in seconds — on the surfaces your whole team can read.</p>
           </div>
@@ -151,6 +151,121 @@ export function HowItWorks() {
   );
 }
 
+// Multi-match trend — first-serve-won rising across the last eight matches.
+// Real metric shape (matches the dashboard's DSpark language), not decoration.
+function FeatTrend() {
+  const data = [42, 49, 45, 54, 51, 60, 64, 71];
+  const W = 320, H = 138, padX = 16, padTop = 16, padBot = 20;
+  const min = 38, max = 74;
+  const pts = data.map((v, i) => ({
+    x: padX + (i / (data.length - 1)) * (W - padX * 2),
+    y: padTop + (1 - (v - min) / (max - min)) * (H - padTop - padBot),
+  }));
+  const line = pts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+  const area =
+    `M ${pts[0].x.toFixed(1)},${H - padBot} ` +
+    pts.map((p) => `L ${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ") +
+    ` L ${pts[pts.length - 1].x.toFixed(1)},${H - padBot} Z`;
+  const last = pts[pts.length - 1];
+  const delta = data[data.length - 1] - data[0];
+  const gid = useId();
+  return (
+    <div className="feat-trend">
+      <div className="feat-trend-head">
+        <span className="feat-trend-label">1st serve won · 8 matches</span>
+        <span className="feat-trend-delta">↑ {delta} pts</span>
+      </div>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        role="img"
+        aria-label={`First-serve points won rose from ${data[0]}% to ${data[data.length - 1]}%, up ${delta} points across the last eight matches`}
+      >
+        <defs>
+          {/* Same gradient mechanics as the dashboard sparkline (DSpark): the
+              stroke fades in left-to-right, the fill falls off top-to-bottom.
+              One blue, no gridlines or axis chrome, the product's own voice. */}
+          <linearGradient id={`${gid}-line`} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#3B82F6" stopOpacity="1" />
+          </linearGradient>
+          <linearGradient id={`${gid}-area`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={area} fill={`url(#${gid}-area)`} />
+        <polyline points={line} fill="none" stroke={`url(#${gid}-line)`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        {/* one filled endpoint marks the latest match, the single accent */}
+        <circle cx={last.x} cy={last.y} r="3.5" fill="#3B82F6" stroke="#fff" strokeWidth="2" />
+      </svg>
+    </div>
+  );
+}
+
+// Match-activity calendar — a month of play intensity on the dashboard's blue
+// ramp (counts sum to 12, mirroring the real heatmap), footed with the win-loss
+// record and recent W/L form. These are real product surfaces, not invented.
+function FeatActivity() {
+  const cells = [
+    0, 1, 0, 1, 0, 2, 0,
+    0, 1, 0, 2, 0, 0, 0,
+    1, 0, 0, 3, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0,
+  ];
+  const form = ["W", "W", "W", "L", "W"];
+  return (
+    <div className="feat-form">
+      <div className="feat-form-grid">
+        {cells.map((c, i) => (
+          <span key={i} className="feat-form-cell" data-l={c} />
+        ))}
+      </div>
+      <div className="feat-form-foot">
+        <span className="feat-form-rec">12 matches <b>8W–4L</b></span>
+        <span className="feat-form-streak" aria-hidden="true">
+          {form.map((r, i) => (
+            <i key={i} className={r === "W" ? "w" : "l"} />
+          ))}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// Four reads on every match, as open image/copy rows (no card module) — the
+// site's native language, per DESIGN.md. The serve court leads as the marquee;
+// rows alternate sides and are divided by hairlines like the How-it-works steps.
+const FEAT_ROWS = [
+  {
+    viz: <div className="feat-court-wrap"><CourtViz labels={false} /></div>,
+    mod: "court",
+    kicker: "Serve placement",
+    title: "Where every serve landed.",
+    copy: "Each serve plotted on a real court from line-call coordinates. Your wide, body, and T patterns, exposed.",
+  },
+  {
+    viz: <div className="feat-kpis"><KpiTile {...D_KPIS[1]} /><KpiTile {...D_KPIS[2]} /></div>,
+    mod: "kpi",
+    kicker: "Key metrics",
+    title: "Your numbers, quantified.",
+    copy: "First-serve points won, break points saved, return games. Every metric that decides matches, tracked match over match.",
+  },
+  {
+    viz: <FeatTrend />,
+    mod: "trend",
+    kicker: "Multi-match trends",
+    title: "Trends across every match.",
+    copy: "Multi-match aggregates show how your form actually moves over weeks, not the noise of any single result.",
+  },
+  {
+    viz: <FeatActivity />,
+    mod: "form",
+    kicker: "Match activity",
+    title: "Your form, match over match.",
+    copy: "A calendar of match activity with win-loss form and current streak, so workload and momentum read at a glance.",
+  },
+];
+
 export function Features() {
   return (
     <section className="band alt" id="features">
@@ -159,63 +274,24 @@ export function Features() {
           <span className="eyebrow">
             What you get
           </span>
-          <h2>Every match, read three ways.</h2>
+          <h2>Every match, read four ways.</h2>
           <p>The analysis that used to live with ATP and WTA teams — your serve placement, your numbers, your next adjustment.</p>
         </div>
-        {/* Cards cascade court → stats → ai instead of popping together. */}
-        <div className="bento">
-          <div className="feat b-court reveal" style={{ "--ri": 0 } as CSSProperties}>
-            <div className="feat-top">
-              <div className="ic">
-                <Icon n="target" />
-              </div>
-              <div>
-                <h4>Court visualization</h4>
-                <p>Every serve and shot plotted on a real court from line-call coordinates. See exactly where the points go.</p>
-              </div>
-            </div>
-            <div className="viz">
-              <div className="feat-courtband">
-                <div className="adb-court-wrap">
-                  <CourtViz />
-                </div>
-              </div>
-              <div className="court-legend">
-                <span className="court-leg"><span className="sw first" /> First serve</span>
-                <span className="court-leg"><span className="sw second" /> Second serve</span>
+        <div className="feat-rows">
+          {FEAT_ROWS.map((c, i) => (
+            <div
+              className={`feat-row feat-row--${c.mod}${i % 2 === 1 ? " feat-row--flip" : ""} reveal`}
+              key={c.mod}
+              style={{ "--ri": i } as CSSProperties}
+            >
+              <div className={`feat-viz feat-viz--${c.mod}`}>{c.viz}</div>
+              <div className="feat-row-body">
+                <span className="feat-kicker">{c.kicker}</span>
+                <h3>{c.title}</h3>
+                <p>{c.copy}</p>
               </div>
             </div>
-          </div>
-          <div className="feat b-stats reveal" style={{ "--ri": 1 } as CSSProperties}>
-            <div className="ic">
-              <Icon n="bar" />
-            </div>
-            <h4>Match statistics</h4>
-            <p>Serve %, win rate, break points, rally length — exact and trended across your last 30 days.</p>
-            <div className="viz">
-              <div className="feat-kpistrip">
-                <KpiTile {...D_KPIS[0]} countUp />
-                <KpiTile {...D_KPIS[1]} countUp />
-                <KpiTile {...D_KPIS[3]} countUp />
-              </div>
-            </div>
-          </div>
-          <div className="feat b-ai reveal" style={{ "--ri": 2 } as CSSProperties}>
-            <div className="ic">
-              <Icon n="msg" />
-            </div>
-            <h4>AI match insight</h4>
-            <p>Plain-language reads on what changed and what to drill next — grounded in your numbers, written for players who know the game.</p>
-            <div className="viz">
-              <p className="insight-mini">
-                <b>Second-serve points won dropped to 48%.</b> Against deep returners, a heavier kick serve is the pattern to drill this week.
-              </p>
-              <div className="adb-chips">
-                <InsightChip label="1st Serve Won" value="74%" change={3} />
-                <InsightChip label="2nd Serve Won" value="48%" change={-5} />
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
@@ -225,26 +301,28 @@ export function Features() {
 export function Credibility() {
   return (
     <section className="band cred-band">
-      <div className="wrap cred reveal">
-        <span className="eyebrow">
-          Built for the modern athlete
-        </span>
-        <h3>Built by former collegiate players. Designed for competitive advantage.</h3>
-        <p className="line">Access to Advantage is currently limited to invited players and coaches.</p>
+      <div className="wrap cred">
+        <div className="cred-head reveal">
+          <span className="eyebrow">
+            In serious hands
+          </span>
+          <h3>Built by former collegiate players. Designed for competitive advantage.</h3>
+          <p className="line">Access to Advantage is currently limited to invited players and coaches.</p>
+        </div>
         <div className="cred-stats">
-          <div className="cred-stat">
+          <div className="cred-stat reveal" style={{ "--ri": 0 } as CSSProperties}>
             <div className="n">100%</div>
             <div className="l">From line-call data</div>
           </div>
-          <div className="cred-stat">
+          <div className="cred-stat reveal" style={{ "--ri": 1 } as CSSProperties}>
             <div className="n">
               <b>&lt;60s</b>
             </div>
             <div className="l">Match to insight</div>
           </div>
-          <div className="cred-stat">
+          <div className="cred-stat reveal" style={{ "--ri": 2 } as CSSProperties}>
             <div className="n">1</div>
-            <div className="l">ELC source · SwingVision</div>
+            <div className="l">ELC provider</div>
           </div>
         </div>
       </div>

@@ -57,7 +57,7 @@ function useCountUp(value: string, enabled: boolean) {
    =========================================================== */
 
 // Sparkline — verbatim geometry from kpi-tile (80×28, gradient line + area)
-function DSpark({ data, positive }: { data: number[]; positive: boolean }) {
+function DSpark({ data, positive, mono = false }: { data: number[]; positive: boolean; mono?: boolean }) {
   const id = useId();
   const w = 80,
     h = 28,
@@ -73,7 +73,7 @@ function DSpark({ data, positive }: { data: number[]; positive: boolean }) {
   const area = `M ${pts[0].x},${h} ${pts.map((p) => `L ${p.x},${p.y}`).join(" ")} L ${
     pts[pts.length - 1].x
   },${h} Z`;
-  const c = positive ? "#5DB955" : "#E51837";
+  const c = mono ? "#3B82F6" : positive ? "#5DB955" : "#E51837";
   return (
     <svg className="adb-kpi-spark" width={w} height={h} viewBox={`0 0 ${w} ${h}`} aria-hidden="true">
       <defs>
@@ -111,10 +111,12 @@ type Kpi = {
 // KPI tile — mirrors KpiTile: label 9px, value 28px light, value row
 // [value][flex spacer max 48px][sparkline], trend arrow+change+label.
 // `countUp` opts the value into a scroll-triggered count animation.
-export function KpiTile({ label, value, spark, change, changeLabel, lowerIsBetter, countUp = false }: Kpi & { countUp?: boolean }) {
+export function KpiTile({ label, value, spark, change, changeLabel, lowerIsBetter, countUp = false, mono = false }: Kpi & { countUp?: boolean; mono?: boolean }) {
   const neutral = change === 0;
   const good = lowerIsBetter ? change <= 0 : change >= 0;
-  const col = neutral ? "#888888" : good ? "#5DB955" : "#E51837";
+  // mono: direction is carried by the arrow glyph, not by hue — the marketing
+  // surface stays one-blue. Deep blue keeps the small trend text at AA contrast.
+  const col = neutral ? "#888888" : mono ? "#2563EB" : good ? "#5DB955" : "#E51837";
   const arrow = neutral ? "→" : change > 0 ? "↑" : "↓";
   const sign = neutral ? "" : change > 0 ? "+" : "";
   const { ref, display } = useCountUp(value, countUp);
@@ -124,7 +126,7 @@ export function KpiTile({ label, value, spark, change, changeLabel, lowerIsBette
       <div className="adb-kpi-valrow">
         <span className="adb-kpi-value" ref={ref}>{display}</span>
         <span className="adb-kpi-spacer" aria-hidden="true" />
-        {spark && <DSpark data={spark} positive={good} />}
+        {spark && <DSpark data={spark} positive={good} mono={mono} />}
       </div>
       <div className="adb-kpi-trend">
         <span className="ar" style={{ color: col }}>
@@ -414,13 +416,13 @@ const SERVE_DOTS = [
   { x: 150, y: 240, t: "second" }, { x: 166, y: 216, t: "second" }, { x: 134, y: 256, t: "second" },
 ];
 
-function ServeDot({ d, i }: { d: { x: number; y: number; t: string }; i: number }) {
+function ServeDot({ d, i, first, second }: { d: { x: number; y: number; t: string }; i: number; first: string; second: string }) {
   return (
     <circle
       cx={d.x}
       cy={d.y}
       r={2.5}
-      fill={d.t === "second" ? SECOND_SERVE_COLOR : FIRST_SERVE_COLOR}
+      fill={d.t === "second" ? second : first}
       stroke="rgba(255,255,255,0.4)"
       strokeWidth={1}
       style={{ "--di": i } as CSSProperties}
@@ -428,7 +430,12 @@ function ServeDot({ d, i }: { d: { x: number; y: number; t: string }; i: number 
   );
 }
 
-export function CourtViz() {
+// `mono` keeps both serve types on the one accent blue (1st solid, 2nd faint)
+// for the marketing surface; the live product keeps the blue/purple categorical
+// encoding. The 1st-serve blue is already the brand accent either way.
+export function CourtViz({ mono = false, labels = true }: { mono?: boolean; labels?: boolean } = {}) {
+  const firstColor = FIRST_SERVE_COLOR;
+  const secondColor = mono ? "rgba(59,130,246,0.30)" : SECOND_SERVE_COLOR;
   const lp = { stroke: COURT.LINE, strokeWidth: COURT.LW, strokeLinecap: "round" as const };
   const F = "Inter, sans-serif";
   return (
@@ -451,7 +458,7 @@ export function CourtViz() {
       {ZONE_LINES_X.map((x, i) => (
         <line key={"zl" + i} x1={x} y1={COURT.SERVICE_Y} x2={x} y2={COURT.BASELINE_Y} stroke={COURT.LINE} strokeWidth={1} strokeDasharray="5,5" />
       ))}
-      {SP_ZONES.map((z, i) => {
+      {labels && SP_ZONES.map((z, i) => {
         const cx = (z.x1 + z.x2) / 2;
         return (
           <g key={"z" + i} style={{ pointerEvents: "none" }}>
@@ -467,19 +474,21 @@ export function CourtViz() {
           </g>
         );
       })}
-      <g style={{ pointerEvents: "none" }}>
-        <text x={ALLEY_LABEL_X} y={COURT.SERVICE_Y - 10} textAnchor="middle" fill="#AAAAAA" fontSize={7} fontWeight={500} fontFamily={F} letterSpacing={1}>
-          ZONE
-        </text>
-        <text x={ALLEY_LABEL_X} y={COURT.BASELINE_Y - 25} textAnchor="middle" fill="#AAAAAA" fontSize={7} fontWeight={500} fontFamily={F} letterSpacing={1}>
-          IN
-        </text>
-        <text x={ALLEY_LABEL_X} y={COURT.BASELINE_Y - 9} textAnchor="middle" fill="#AAAAAA" fontSize={7} fontWeight={500} fontFamily={F} letterSpacing={1}>
-          COUNT
-        </text>
-      </g>
+      {labels && (
+        <g style={{ pointerEvents: "none" }}>
+          <text x={ALLEY_LABEL_X} y={COURT.SERVICE_Y - 10} textAnchor="middle" fill="#AAAAAA" fontSize={7} fontWeight={500} fontFamily={F} letterSpacing={1}>
+            ZONE
+          </text>
+          <text x={ALLEY_LABEL_X} y={COURT.BASELINE_Y - 25} textAnchor="middle" fill="#AAAAAA" fontSize={7} fontWeight={500} fontFamily={F} letterSpacing={1}>
+            IN
+          </text>
+          <text x={ALLEY_LABEL_X} y={COURT.BASELINE_Y - 9} textAnchor="middle" fill="#AAAAAA" fontSize={7} fontWeight={500} fontFamily={F} letterSpacing={1}>
+            COUNT
+          </text>
+        </g>
+      )}
       {SERVE_DOTS.map((d, i) => (
-        <ServeDot key={i} d={d} i={i} />
+        <ServeDot key={i} d={d} i={i} first={firstColor} second={secondColor} />
       ))}
     </svg>
   );

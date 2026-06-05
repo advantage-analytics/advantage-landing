@@ -52,10 +52,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body className="min-h-dvh bg-background text-foreground antialiased">
         {children}
-      {/* impeccable-live-start */}
-<script src="http://localhost:8400/live.js"></script>
-{/* impeccable-live-end */}
-</body>
+      </body>
     </html>
   );
 }
