@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useState, type CSSProperties } from "react";
 import { Icon } from "./icons";
-import { AdvantageDashboard, CourtViz, KpiTile, D_KPIS } from "./dashboard";
+import { AdvantageDashboard, CourtViz } from "./dashboard";
 import { TrafficLights } from "./traffic-lights";
 import { links } from "@/lib/links";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
@@ -85,65 +85,62 @@ export function DashboardShowcase() {
             Every serve, return, and rally, distilled into the numbers that decide matches. No noise, no decoration.
           </p>
         </div>
-        {/* Desktop: the dashboard "lands" full-width, scaled to fit. */}
-        <div className="show-dash-desktop">
-          <LandingDashboard />
-        </div>
-        {/* Mobile: a fixed-scale, legible slice — cropped and faded at the
-            bottom — instead of shrinking the whole 1440 artboard to a ~2px
-            thumbnail. Purely decorative, so aria-hidden; the headline above
-            carries the meaning. */}
-        <div className="show-dash-mobile reveal" aria-hidden="true">
-          <div className="browser">
-            <div className="browser-bar">
-              <TrafficLights className="browser-dots" />
-              <div className="browser-url">
-                <Icon n="lock" size={9} /> app.advantage-analytics.com
-              </div>
-            </div>
-            <div className="browser-screen show-crop" inert>
-              <div className="show-crop-inner">
-                <AdvantageDashboard />
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* The dashboard "lands" full-width, scaled to fit at every size — the
+            whole product surface is visible at once. On a phone it reads as a
+            complete product shot; the Features section below carries the legible
+            close-ups of each read. */}
+        <LandingDashboard />
       </div>
     </section>
   );
 }
 
+const HOW_STEPS = [
+  {
+    t: "Capture the match with SwingVision.",
+    p: "Record on court with SwingVision’s electronic line-calling. Every shot, serve, and call is logged automatically.",
+  },
+  {
+    t: "Export the match and upload.",
+    p: "Export the match file from SwingVision and drop it into Advantage. We parse every point — no spreadsheets to wrangle.",
+  },
+  {
+    t: "Read the dashboard, find the pattern.",
+    p: "Statistics, court visualizations, and AI insight are ready in seconds — on the surfaces your whole team can read.",
+  },
+];
+
+// Editorial split: a left intro column states the premise and the one supported
+// source, a right column runs the three steps as a tight numbered ledger. The
+// asymmetry (narrow intro, wider list) and the hairline-divided rows are the
+// page's native voice — mono indices in the data-blue, generous whitespace.
 export function HowItWorks() {
   return (
     <section className="band" id="how">
       <div className="wrap">
-        <div className="sec-head reveal">
-          <span className="eyebrow">
-            How it works
-          </span>
-          <h2>From the last point to the next adjustment.</h2>
-          <p>Advantage plugs straight into the line-calling data you already capture. Three steps, no manual tagging.</p>
-        </div>
-        {/* Each step reveals on its own with a stagger index, so 01 → 02 → 03
-            cascade in sequence rather than appearing as one block. */}
-        <div className="steps">
-          <div className="step reveal" style={{ "--ri": 0 } as CSSProperties}>
-            <div className="step-num"><span className="z">0</span>1</div>
-            <h4>Capture the match with SwingVision.</h4>
-            <p>Record on court with SwingVision&apos;s electronic line-calling. Every shot, serve, and call is logged automatically.</p>
-            <span className="pill">
-              <img src="/assets/providers/swingvision-trim.png" alt="SwingVision" /> Only ELC source supported today
+        <div className="hiw-split reveal">
+          <div className="hiw-intro">
+            <span className="eyebrow">How it works</span>
+            <h2>From the last point to the next adjustment.</h2>
+            <p>Advantage plugs straight into the line-calling data you already capture. Three steps, no manual tagging.</p>
+            <span className="hiw-works">
+              Works with
+              <i className="hiw-works-div" aria-hidden="true" />
+              <img src="/assets/providers/swingvision-trim.png" alt="SwingVision" />
             </span>
           </div>
-          <div className="step reveal" style={{ "--ri": 1 } as CSSProperties}>
-            <div className="step-num"><span className="z">0</span>2</div>
-            <h4>Export the match and upload.</h4>
-            <p>Export the match file from SwingVision and drop it into Advantage. We parse every point — no spreadsheets to wrangle.</p>
-          </div>
-          <div className="step reveal" style={{ "--ri": 2 } as CSSProperties}>
-            <div className="step-num"><span className="z">0</span>3</div>
-            <h4>Read the dashboard, find the pattern.</h4>
-            <p>Statistics, court visualizations, and AI insight are ready in seconds — on the surfaces your whole team can read.</p>
+          {/* Each row reveals on its own with a stagger index, so 01 → 02 → 03
+              cascade in sequence rather than appearing as one block. */}
+          <div className="hiw-list">
+            {HOW_STEPS.map((s, i) => (
+              <div className="hiw-item reveal" key={s.t} style={{ "--ri": i } as CSSProperties}>
+                <span className="hiw-num">0{i + 1}</span>
+                <div className="hiw-item-body">
+                  <h4>{s.t}</h4>
+                  <p>{s.p}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -232,41 +229,45 @@ function FeatActivity() {
   );
 }
 
-// Four reads on every match, as open image/copy rows (no card module) — the
-// site's native language, per DESIGN.md. The serve court leads as the marquee;
-// rows alternate sides and are divided by hairlines like the How-it-works steps.
-const FEAT_ROWS = [
+// Four reads on every match. Each is a genuine product surface — the serve
+// court, the KPI tiles, a multi-match trend, the activity calendar — lifted
+// straight from the dashboard, never an abstract graphic.
+const FEAT_READS = [
   {
-    viz: <div className="feat-court-wrap"><CourtViz labels={false} /></div>,
-    mod: "court",
-    kicker: "Serve placement",
-    title: "Where every serve landed.",
-    copy: "Each serve plotted on a real court from line-call coordinates. Your wide, body, and T patterns, exposed.",
+    id: "court",
+    title: "Serve placement",
+    copy: "Every serve plotted on a real court from line-call coordinates — your wide, body, and T patterns, exposed.",
+    viz: (
+      <div className="feat-court">
+        <div className="feat-court-head">
+          <span className="feat-court-label">Last 4 matches · 22 serves</span>
+          <span className="feat-court-stat">2 aces</span>
+        </div>
+        <div className="feat-court-wrap"><CourtViz labels={false} bare /></div>
+      </div>
+    ),
   },
   {
-    viz: <div className="feat-kpis"><KpiTile {...D_KPIS[1]} /><KpiTile {...D_KPIS[2]} /></div>,
-    mod: "kpi",
-    kicker: "Key metrics",
-    title: "Your numbers, quantified.",
-    copy: "First-serve points won, break points saved, return games. Every metric that decides matches, tracked match over match.",
-  },
-  {
-    viz: <FeatTrend />,
-    mod: "trend",
-    kicker: "Multi-match trends",
-    title: "Trends across every match.",
+    id: "trend",
+    title: "Multi-match trends",
     copy: "Multi-match aggregates show how your form actually moves over weeks, not the noise of any single result.",
+    viz: <FeatTrend />,
   },
   {
-    viz: <FeatActivity />,
-    mod: "form",
-    kicker: "Match activity",
-    title: "Your form, match over match.",
+    id: "form",
+    title: "Match activity",
     copy: "A calendar of match activity with win-loss form and current streak, so workload and momentum read at a glance.",
+    viz: <FeatActivity />,
   },
 ];
 
+// Showcase + index. One large stage holds the live product surface; the index
+// beside it lists the four reads and selects which one the stage shows. The
+// active read carries the blue and a "Shown" marker, exactly as the dashboard
+// flags its active view. Selection is keyboard-driven and honors focus.
 export function Features() {
+  const [active, setActive] = useState(0);
+  const read = FEAT_READS[active];
   return (
     <section className="band alt" id="features">
       <div className="wrap">
@@ -274,55 +275,86 @@ export function Features() {
           <span className="eyebrow">
             What you get
           </span>
-          <h2>Every match, read four ways.</h2>
+          <h2>The numbers that breathe. The patterns that win.</h2>
           <p>The analysis that used to live with ATP and WTA teams — your serve placement, your numbers, your next adjustment.</p>
         </div>
-        <div className="feat-rows">
-          {FEAT_ROWS.map((c, i) => (
-            <div
-              className={`feat-row feat-row--${c.mod}${i % 2 === 1 ? " feat-row--flip" : ""} reveal`}
-              key={c.mod}
-              style={{ "--ri": i } as CSSProperties}
-            >
-              <div className={`feat-viz feat-viz--${c.mod}`}>{c.viz}</div>
-              <div className="feat-row-body">
-                <span className="feat-kicker">{c.kicker}</span>
-                <h3>{c.title}</h3>
-                <p>{c.copy}</p>
+        <div className="show2 reveal">
+          <div className={`show2-stage show2-stage--${read.id}`} role="img" aria-label={`${read.title}: ${read.copy}`}>
+            {FEAT_READS.map((r) => (
+              <div key={r.id} className="show2-viz" hidden={r.id !== read.id} aria-hidden={r.id !== read.id}>
+                {r.viz}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="show2-index" role="tablist" aria-label="Choose a read">
+            {FEAT_READS.map((r, i) => {
+              const on = i === active;
+              return (
+                <button
+                  key={r.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={on}
+                  className={`show2-item${on ? " active" : ""}`}
+                  onClick={() => setActive(i)}
+                  onMouseEnter={() => setActive(i)}
+                  onFocus={() => setActive(i)}
+                >
+                  <span className="show2-item-top">
+                    <span className="n">0{i + 1}</span>
+                    <span className="show2-item-title">{r.title}</span>
+                    {on && <span className="show2-badge">Shown</span>}
+                  </span>
+                  <span className="show2-item-copy">{r.copy}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-export function Credibility() {
+const ATH_STATS = [
+  { n: "100%", l: "From line-call data" },
+  { n: <>&lt;60s</>, l: "Match to insight" },
+  { n: "1", l: "ELC source · SwingVision" },
+];
+
+// Documentary panel (design C3): a photograph of electronic line-calling on a
+// show court sits beside the statement and proof stats. The image is the
+// credibility — the physical origin of the data the product reads.
+export function BuiltForAthletes() {
   return (
-    <section className="band cred-band">
-      <div className="wrap cred">
-        <div className="cred-head reveal">
-          <span className="eyebrow">
-            In serious hands
-          </span>
-          <h3>Built by former collegiate players. Designed for competitive advantage.</h3>
-          <p className="line">Access to Advantage is currently limited to invited players and coaches.</p>
-        </div>
-        <div className="cred-stats">
-          <div className="cred-stat reveal" style={{ "--ri": 0 } as CSSProperties}>
-            <div className="n">100%</div>
-            <div className="l">From line-call data</div>
+    <section className="band athletes" id="athletes">
+      <div className="wrap">
+        <div className="ath-c3 reveal">
+          <div className="ath-c3-photo">
+            <img
+              src="/assets/marketing/elc-court.jpg"
+              alt="An electronic line-calling camera overlooking a show court during live play"
+            />
+            <div className="ath-c3-veil" aria-hidden="true" />
+            <span className="ath-c3-cap">
+              <i className="dot" aria-hidden="true" />
+              Electronic line calling · live capture
+            </span>
           </div>
-          <div className="cred-stat reveal" style={{ "--ri": 1 } as CSSProperties}>
-            <div className="n">
-              <b>&lt;60s</b>
-            </div>
-            <div className="l">Match to insight</div>
-          </div>
-          <div className="cred-stat reveal" style={{ "--ri": 2 } as CSSProperties}>
-            <div className="n">1</div>
-            <div className="l">ELC provider</div>
+          <div className="ath-c3-body">
+            <span className="eyebrow">Built for the modern athlete</span>
+            <h3>Built by former collegiate players. Designed for competitive advantage.</h3>
+            <p className="ath-c3-line">Access to Advantage is currently limited to invited players and coaches.</p>
+            {/* Proof stats as the scoreboard baseline — hairline grid, tabular
+                figures, mono captions, the page's one data vocabulary. */}
+            <ul className="ath-c3-ledger">
+              {ATH_STATS.map((s) => (
+                <li className="ath-stat" key={s.l}>
+                  <span className="ath-stat-n">{s.n}</span>
+                  <span className="ath-stat-l">{s.l}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

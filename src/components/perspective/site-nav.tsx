@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { links } from "@/lib/links";
 
 /* ===========================================================
@@ -16,6 +16,11 @@ import { links } from "@/lib/links";
    Driven by scrollY alone (transparent only within the first few
    pixels), so there's no dependency on the hero's height settling —
    the race that used to flash the bar solid on first paint.
+
+   Below 820px the center links and inline actions give way to a
+   single menu button that drops a frosted sheet with the full nav —
+   section links plus Sign in / Get started — so a phone or small
+   tablet keeps every destination the desktop bar offers.
    =========================================================== */
 
 const NAV_LINKS = [
@@ -27,16 +32,48 @@ const NAV_LINKS = [
 
 export function SiteNav() {
   const [solid, setSolid] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const update = () => setSolid(window.scrollY > 8);
+    const update = () => {
+      setSolid(window.scrollY > 8);
+      // Any scroll dismisses the sheet — including the smooth-scroll a link tap
+      // triggers — so it never lingers over the content as you move down.
+      setOpen(false);
+    };
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
   }, []);
 
+  // While open: Esc closes; crossing back above the breakpoint discards the
+  // open state so the sheet can't stay "open" once the inline nav returns.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth > 820) setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
+
+  // The bar wears its solid (frosted) skin whenever it's scrolled OR the sheet
+  // is open, so the dropped sheet reads against an opaque header, never the
+  // transparent-over-hero state.
+  const showSolid = solid || open;
+
   return (
-    <nav className={`site-nav${solid ? " is-solid" : ""}`} aria-label="Primary">
+    <nav
+      className={`site-nav${showSolid ? " is-solid" : ""}${open ? " is-open" : ""}`}
+      aria-label="Primary"
+    >
       <a className="site-nav-brand" href="#top" aria-label="Advantage — Home">
         <img className="site-logo site-logo-white" src="/assets/logos/logo-white.svg" alt="Advantage" />
         <img className="site-logo site-logo-dark" src="/assets/logos/logo.svg" alt="" aria-hidden="true" />
@@ -56,6 +93,41 @@ export function SiteNav() {
           Get started
           <ArrowUpRight size={15} />
         </a>
+      </div>
+
+      {/* Compact-only menu trigger (shown ≤820px via CSS). */}
+      <button
+        type="button"
+        className="site-nav-toggle"
+        aria-expanded={open}
+        aria-controls="site-nav-sheet"
+        aria-label={open ? "Close menu" : "Open menu"}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? <X size={20} /> : <Menu size={20} />}
+      </button>
+
+      {/* Drop-down sheet. Kept mounted for the grid-rows reveal; `inert` pulls
+          it out of the tab order and a11y tree while collapsed so the clipped
+          links aren't reachable. */}
+      <div className="site-nav-sheet" id="site-nav-sheet" inert={!open}>
+        <div className="site-nav-sheet-inner">
+          {NAV_LINKS.map((l) => (
+            <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
+              {l.label}
+            </a>
+          ))}
+          <div className="site-nav-sheet-div" aria-hidden="true" />
+          <div className="site-nav-sheet-actions">
+            <a className="site-signin" href={links.signIn}>
+              Sign in
+            </a>
+            <a className="site-cta" href="#access" onClick={() => setOpen(false)}>
+              Get started
+              <ArrowUpRight size={15} />
+            </a>
+          </div>
+        </div>
       </div>
     </nav>
   );

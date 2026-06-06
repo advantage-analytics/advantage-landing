@@ -6,7 +6,7 @@ import {
   DashboardShowcase,
   HowItWorks,
   Features,
-  Credibility,
+  BuiltForAthletes,
   RequestAccess,
   Footer,
   useReveal,
@@ -22,7 +22,7 @@ export default function Home() {
         <DashboardShowcase />
         <HowItWorks />
         <Features />
-        <Credibility />
+        <BuiltForAthletes />
         <RequestAccess />
       </main>
       <Footer />

@@ -7,6 +7,14 @@ type Options = {
   height?: number;
   /** Re-fit once after this delay (ms) to catch late layout (fonts, images, mounted children). */
   settleMs?: number;
+  /**
+   * Upper bound on the scale factor. Without it the artboard upscales without
+   * limit on wide monitors. With it, the scale caps here and the inner element
+   * is centered in the container (its leftover width split into side gutters),
+   * keeping a fixed artboard proportional to the rest of the page on large
+   * screens. Requires the inner element to be absolutely positioned.
+   */
+  maxScale?: number;
 };
 
 /**
@@ -21,7 +29,7 @@ type Options = {
 export function useScaleToFit<
   O extends HTMLElement = HTMLDivElement,
   I extends HTMLElement = HTMLDivElement,
->({ width = 1440, height, settleMs }: Options = {}) {
+>({ width = 1440, height, settleMs, maxScale }: Options = {}) {
   const outerRef = useRef<O>(null);
   const innerRef = useRef<I>(null);
   useEffect(() => {
@@ -29,9 +37,13 @@ export function useScaleToFit<
     const inner = innerRef.current;
     if (!outer || !inner) return;
     const fit = () => {
-      const s = outer.clientWidth / width;
+      let s = outer.clientWidth / width;
+      if (maxScale) s = Math.min(s, maxScale);
       inner.style.transform = `scale(${s})`;
       outer.style.height = (height ?? inner.offsetHeight) * s + "px";
+      // Center the artboard once the scale is capped: below the cap the gutter
+      // is 0 (it fills the width), above it the surplus splits left/right.
+      if (maxScale) inner.style.left = (outer.clientWidth - width * s) / 2 + "px";
     };
     fit();
     // Observe BOTH boxes: `outer` for container-width changes (the scale), and
@@ -49,6 +61,6 @@ export function useScaleToFit<
       if (t) clearTimeout(t);
       window.removeEventListener("resize", fit);
     };
-  }, [width, height, settleMs]);
+  }, [width, height, settleMs, maxScale]);
   return { outerRef, innerRef };
 }

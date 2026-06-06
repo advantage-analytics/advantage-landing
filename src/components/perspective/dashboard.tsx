@@ -416,12 +416,12 @@ const SERVE_DOTS = [
   { x: 150, y: 240, t: "second" }, { x: 166, y: 216, t: "second" }, { x: 134, y: 256, t: "second" },
 ];
 
-function ServeDot({ d, i, first, second }: { d: { x: number; y: number; t: string }; i: number; first: string; second: string }) {
+function ServeDot({ d, i, first, second, r = 2.5 }: { d: { x: number; y: number; t: string }; i: number; first: string; second: string; r?: number }) {
   return (
     <circle
       cx={d.x}
       cy={d.y}
-      r={2.5}
+      r={r}
       fill={d.t === "second" ? second : first}
       stroke="rgba(255,255,255,0.4)"
       strokeWidth={1}
@@ -433,10 +433,21 @@ function ServeDot({ d, i, first, second }: { d: { x: number; y: number; t: strin
 // `mono` keeps both serve types on the one accent blue (1st solid, 2nd faint)
 // for the marketing surface; the live product keeps the blue/purple categorical
 // encoding. The 1st-serve blue is already the brand accent either way.
-export function CourtViz({ mono = false, labels = true }: { mono?: boolean; labels?: boolean } = {}) {
+export function CourtViz({ mono = false, labels = true, bare = false }: { mono?: boolean; labels?: boolean; bare?: boolean } = {}) {
   const firstColor = FIRST_SERVE_COLOR;
   const secondColor = mono ? "rgba(59,130,246,0.30)" : SECOND_SERVE_COLOR;
-  const lp = { stroke: COURT.LINE, strokeWidth: COURT.LW, strokeLinecap: "round" as const };
+  // `bare` drops the filled court tile so the diagram sits airy on a neutral
+  // surface (matching the other "What you get" visuals). Without the blue fill
+  // behind them the lines need more presence, so they step up in both shade and
+  // weight, and the serve dots grow — giving the court the same visual heft as
+  // the trend chart's line and the activity grid's cells. The line color is a
+  // tint of the signal blue (#3B82F6), so it sits in the same family as the
+  // trend stroke and the activity ramp beside it rather than reading gray.
+  const lineColor = bare ? "#9DC1FB" : COURT.LINE;
+  const lineW = bare ? 2 : COURT.LW;
+  const dashW = bare ? 1.4 : 1;
+  const dotR = bare ? 3.4 : 2.5;
+  const lp = { stroke: lineColor, strokeWidth: lineW, strokeLinecap: "round" as const };
   const F = "Inter, sans-serif";
   return (
     <svg
@@ -446,7 +457,7 @@ export function CourtViz({ mono = false, labels = true }: { mono?: boolean; labe
       role="img"
       aria-label="Serve placement court diagram showing where serves landed"
     >
-      <rect x="0" y="0" width={COURT.W} height={COURT.H} fill={COURT.FILL} />
+      <rect x="0" y="0" width={COURT.W} height={COURT.H} rx={bare ? 10 : 0} fill={bare ? "#FAFAFA" : COURT.FILL} />
       <line x1={COURT.DL} y1={COURT.TOP} x2={COURT.DR} y2={COURT.TOP} {...lp} />
       <line x1={COURT.DL} y1={COURT.TOP} x2={COURT.DL} y2={COURT.BASELINE_Y} {...lp} />
       <line x1={COURT.DR} y1={COURT.TOP} x2={COURT.DR} y2={COURT.BASELINE_Y} {...lp} />
@@ -456,7 +467,7 @@ export function CourtViz({ mono = false, labels = true }: { mono?: boolean; labe
       <line x1={0} y1={COURT.BASELINE_Y} x2={COURT.W} y2={COURT.BASELINE_Y} {...lp} />
       <line x1={COURT.CX} y1={COURT.SERVICE_Y} x2={COURT.CX} y2={COURT.BASELINE_Y} {...lp} />
       {ZONE_LINES_X.map((x, i) => (
-        <line key={"zl" + i} x1={x} y1={COURT.SERVICE_Y} x2={x} y2={COURT.BASELINE_Y} stroke={COURT.LINE} strokeWidth={1} strokeDasharray="5,5" />
+        <line key={"zl" + i} x1={x} y1={COURT.SERVICE_Y} x2={x} y2={COURT.BASELINE_Y} stroke={lineColor} strokeWidth={dashW} strokeDasharray="5,5" />
       ))}
       {labels && SP_ZONES.map((z, i) => {
         const cx = (z.x1 + z.x2) / 2;
@@ -488,7 +499,7 @@ export function CourtViz({ mono = false, labels = true }: { mono?: boolean; labe
         </g>
       )}
       {SERVE_DOTS.map((d, i) => (
-        <ServeDot key={i} d={d} i={i} first={firstColor} second={secondColor} />
+        <ServeDot key={i} d={d} i={i} first={firstColor} second={secondColor} r={dotR} />
       ))}
     </svg>
   );

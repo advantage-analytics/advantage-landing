@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { AdvantageDashboard } from "./dashboard";
 import { TrafficLights } from "./traffic-lights";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
@@ -134,10 +134,31 @@ function MobileHero() {
   );
 }
 
+/* Reads prefers-reduced-motion directly. We avoid framer-motion's
+   useReducedMotion() because it logs a dev-only console warning every time it
+   detects the setting. useSyncExternalStore subscribes to the media query,
+   stays SSR-safe (server snapshot is false), and updates live if the OS
+   preference changes. */
+const RM_QUERY = "(prefers-reduced-motion: reduce)";
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(RM_QUERY);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(RM_QUERY).matches,
+    () => false
+  );
+}
+
 export function PerspectiveHero() {
-  const { outerRef, innerRef } = useScaleToFit<HTMLDivElement, HTMLDivElement>({ height: 860 });
+  // maxScale caps the upscaling on wide monitors (the hook then centers the
+  // 1440 artboard, letting the blue backstop show as side gutters) so the hero
+  // stays proportional to the 1240px content sections instead of ballooning.
+  const { outerRef, innerRef } = useScaleToFit<HTMLDivElement, HTMLDivElement>({ height: 860, maxScale: 1.15 });
   const heroRef = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
   // As the hero scrolls away, its tilted dashboard "stands up" (32°→14°),
   // handing the perspective off to the showcase below, which then lands flat.
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -146,7 +167,7 @@ export function PerspectiveHero() {
   return (
     <header className="heroC-stage" id="top" ref={heroRef}>
       <div className="heroC-desktop" ref={outerRef}>
-        <div ref={innerRef} style={{ position: "absolute", top: 0, left: 0, transformOrigin: "top left" }}>
+        <div ref={innerRef} style={{ position: "absolute", top: 0, transformOrigin: "top left" }}>
           <HeroCCanvas dashRotateX={reduce ? 32 : dashRotateX} />
         </div>
       </div>
