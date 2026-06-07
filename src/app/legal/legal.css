@@ -1,0 +1,83 @@
+/* legal.css — shared editorial styling for the Privacy Policy and Terms pages.
+   Hairline-divided sections, light typography, a constrained reading column —
+   matching the restrained "ledger" voice of the rest of the site. */
+
+.legal-doc {
+  max-width: 760px;
+}
+
+/* Each numbered section is divided from the next by a hairline rule. */
+.legal-sec {
+  padding: 0;
+}
+
+.legal-sec + .legal-sec {
+  margin-top: 44px;
+  padding-top: 44px;
+  border-top: 1px solid var(--hairline);
+}
+
+.legal-sec h2 {
+  font: var(--fw-regular) clamp(20px, 2vw, 26px) / 1.2 var(--font-sans);
+  letter-spacing: -0.4px;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+
+.legal-sec p {
+  font: var(--fw-regular) 15px / 1.7 var(--font-sans);
+  color: var(--ink-secondary);
+  margin: 0 0 16px;
+  max-width: 70ch;
+}
+
+.legal-sec p:last-child {
+  margin-bottom: 0;
+}
+
+.legal-list {
+  margin: 0 0 16px;
+  padding-left: 22px;
+}
+
+.legal-list li {
+  font: var(--fw-regular) 15px / 1.7 var(--font-sans);
+  color: var(--ink-secondary);
+  margin-bottom: 8px;
+  max-width: 70ch;
+}
+
+.legal-list li:last-child {
+  margin-bottom: 0;
+}
+
+.legal-list li::marker {
+  color: var(--signal-blue);
+}
+
+.legal-sec strong {
+  color: var(--ink);
+  font-weight: var(--fw-semibold);
+}
+
+.legal-link {
+  color: var(--signal-blue);
+  text-decoration: none;
+  transition: color 0.2s var(--ease-primary);
+}
+
+.legal-link:hover {
+  color: var(--signal-blue-deep);
+}
+
+/* Tighten the section rhythm on narrow viewports. */
+@media (max-width: 720px) {
+  .legal-sec + .legal-sec {
+    margin-top: 32px;
+    padding-top: 32px;
+  }
+
+  .legal-sec h2 {
+    margin-bottom: 14px;
+  }
+}

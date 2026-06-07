@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState, type CSSProperties } from "react";
+import Link from "next/link";
 import { Icon } from "./icons";
 import { AdvantageDashboard, CourtViz } from "./dashboard";
 import { TrafficLights } from "./traffic-lights";
@@ -370,6 +371,7 @@ export function RequestAccess() {
       <div className="wrap">
         <div className="access-card reveal">
           <div className="ac-glow" />
+          <div className="ac-grain" aria-hidden="true" />
           <div className="access-inner">
             <div>
               <span className="eyebrow">
@@ -436,21 +438,25 @@ export function Footer() {
           <nav className="foot-cols">
             <div className="foot-col">
               <h5>Product</h5>
-              <a href="#dashboard">Dashboard</a>
-              <a href="#features">Statistics</a>
-              <a href="#features">Court visualization</a>
-              <a href="#features">AI insight</a>
+              <Link href="/#dashboard">Dashboard</Link>
+              <Link href="/#how">How it works</Link>
+              <Link href="/#features">Features</Link>
+              <Link href="/#access">Pricing</Link>
             </div>
             <div className="foot-col">
               <h5>Company</h5>
-              <a href="#how">How it works</a>
-              <a href="#access">Request access</a>
+              <Link href="/about">About</Link>
+              <Link href="/contact">Contact</Link>
               <a href={links.signIn}>Sign in</a>
             </div>
           </nav>
         </div>
         <div className="foot-bottom">
           <span className="cp">© 2026 Advantage Analytics. All rights reserved.</span>
+          <span className="foot-legal">
+            <Link href="/legal/privacy-policy">Privacy Policy</Link>
+            <Link href="/legal/terms-and-conditions">Terms &amp; Conditions</Link>
+          </span>
         </div>
       </div>
     </footer>

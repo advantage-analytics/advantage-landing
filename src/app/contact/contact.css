@@ -1,0 +1,355 @@
+/* Contact — the navy card from the Claude Design handoff (Contact.html),
+   recreated faithfully on the live design tokens. A deep-gradient card with a
+   blue glow and fine grain: narrative + direct channels on the left, a glass
+   underline form on the right. Populated with the real Advantage details. */
+
+.band.contact-band {
+  padding: 64px 0 96px;
+}
+
+/* ---- The card ---- */
+.contact-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #14224c 0%, #0e1a3e 60%, #0b1228 100%);
+  box-shadow: 0 40px 90px -30px rgba(13, 27, 62, 0.45),
+    0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.contact-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      90% 140% at 88% 8%,
+      rgba(59, 130, 246, 0.55) 0%,
+      rgba(59, 130, 246, 0) 50%
+    ),
+    radial-gradient(
+      70% 120% at 100% 100%,
+      rgba(129, 140, 248, 0.35) 0%,
+      rgba(129, 140, 248, 0) 55%
+    );
+}
+
+.contact-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.5) 0.5px,
+    transparent 0.6px
+  );
+  background-size: 4px 4px;
+}
+
+.contact-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 0.92fr;
+  gap: 64px;
+  padding: 64px;
+  align-items: start;
+}
+
+/* ---- Left: narrative + channels ---- */
+.contact-copy {
+  color: #fff;
+}
+
+.contact-logo {
+  height: 22px;
+  width: auto;
+  margin-bottom: 44px;
+}
+
+.contact-copy .eyebrow {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.contact-copy h1 {
+  margin: 22px 0 0;
+  color: #fff;
+  font-weight: var(--fw-light);
+  letter-spacing: -1.6px;
+  line-height: 1;
+  font-size: clamp(40px, 4.6vw, 58px);
+  text-wrap: balance;
+}
+
+.contact-copy .lede {
+  margin: 20px 0 0;
+  max-width: 36ch;
+  color: rgba(255, 255, 255, 0.8);
+  font: var(--fw-regular) 16px/1.6 var(--font-sans);
+  text-wrap: pretty;
+}
+
+/* ---- Primary direct line: the email, as the page's chief affordance ---- */
+.contact-email {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 40px;
+  text-decoration: none;
+  border-radius: 6px;
+}
+.contact-email .ce-label {
+  font: var(--fw-medium) 10px var(--font-mono);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+.contact-email .ce-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: var(--fw-regular) clamp(18px, 1.9vw, 22px) var(--font-sans);
+  letter-spacing: -0.4px;
+  color: #fff;
+  transition: color 0.18s var(--ease-primary);
+}
+.contact-email .ce-value svg {
+  flex: 0 0 auto;
+  color: var(--signal-blue);
+  transition: transform 0.25s var(--ease-primary), color 0.18s var(--ease-primary);
+}
+@media (hover: hover) {
+  .contact-email:hover .ce-value {
+    color: #93c5fd;
+  }
+  .contact-email:hover .ce-value svg {
+    transform: translate(2px, -2px);
+    color: #93c5fd;
+  }
+}
+/* Keyboard focus ring is supplied by the global `.contact-card :where(a,button)`
+   rule (white outline, 4px offset) — no local override needed. */
+
+/* ---- Spec ledger: concrete facts as hairline-divided mono rows ---- */
+.contact-ledger {
+  margin: 36px 0 0;
+  max-width: 420px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.cl-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.cl-row dt {
+  flex: 0 0 104px;
+  font: var(--fw-medium) 10px var(--font-mono);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+.cl-row dd {
+  margin: 0;
+  font: var(--fw-regular) 15px var(--font-sans);
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.contact-signoff {
+  margin-top: 28px;
+  max-width: 420px;
+  font: var(--fw-regular) 12px/1.6 var(--font-sans);
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ---- Right: glass form panel ---- */
+.form-panel {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  padding: 32px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.form-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.form-head .eyebrow {
+  color: rgba(255, 255, 255, 0.72);
+  white-space: nowrap;
+}
+.form-head::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.field {
+  margin-bottom: 22px;
+}
+.field > label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font: var(--fw-medium) 10px var(--font-sans);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 9px;
+  transition: color 200ms var(--ease-primary);
+}
+.field > label .opt {
+  font: var(--fw-regular) 9px var(--font-mono);
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.34);
+}
+
+.control {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  padding: 8px 0 7px;
+  color: #fff;
+  font: var(--fw-regular) 16px var(--font-sans);
+  letter-spacing: -0.1px;
+  outline: none;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 300ms var(--ease-primary),
+    border-bottom-width 300ms var(--ease-primary),
+    padding-bottom 300ms var(--ease-primary);
+}
+.control::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+/* Focus: the rule grows 1px -> 2px and turns signal-blue, animating over 300ms
+   exactly like the dashboard auth fields. Padding compensates so the text never
+   shifts as the underline thickens. */
+.control:focus {
+  border-bottom-width: 2px;
+  border-bottom-color: var(--signal-blue);
+  padding-bottom: 6px;
+}
+/* Errored field stays a static 1px error rule even while focused (no blue grow),
+   matching the dashboard's error underline. */
+.control.is-error,
+.control.is-error:focus {
+  border-bottom-width: 1px;
+  border-bottom-color: #ff5a6a;
+  padding-bottom: 7px;
+}
+
+/* Inline error message — a specific sentence, not a bare red rule. */
+.field-error {
+  margin: 9px 0 0;
+  font: var(--fw-regular) 11.5px/1.45 var(--font-sans);
+  letter-spacing: 0;
+  text-transform: none;
+  color: #ffa7af;
+}
+
+textarea.control {
+  resize: none;
+  line-height: 1.55;
+}
+
+select.control {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 22px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 2px center;
+}
+select.control option {
+  color: var(--ink);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.form-panel .btn-primary {
+  width: 100%;
+  height: 46px;
+  font-size: 14px;
+  margin-top: 6px;
+}
+.form-panel .btn-primary svg {
+  width: 15px;
+  height: 15px;
+}
+
+.form-foot {
+  margin-top: 16px;
+  text-align: center;
+  font: var(--fw-regular) 11px/1.5 var(--font-sans);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---- Success state ---- */
+.form-sent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 12px;
+}
+.form-sent .chk {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(93, 185, 85, 0.18);
+  color: var(--win-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.form-sent h3 {
+  margin: 0;
+  color: #fff;
+  font: var(--fw-light) 24px var(--font-sans);
+  letter-spacing: -0.5px;
+}
+.form-sent p {
+  margin: 12px 0 0;
+  max-width: 32ch;
+  color: rgba(255, 255, 255, 0.7);
+  font: var(--fw-regular) 14px/1.6 var(--font-sans);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .band.contact-band {
+    padding: 40px 0 72px;
+  }
+  .contact-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 44px 36px;
+  }
+  .contact-copy h1 {
+    font-size: 46px;
+  }
+}
+
+@media (max-width: 560px) {
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .contact-inner {
+    padding: 36px 24px;
+  }
+}

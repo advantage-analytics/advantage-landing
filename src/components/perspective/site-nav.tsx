@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { links } from "@/lib/links";
 
@@ -19,24 +20,51 @@ import { links } from "@/lib/links";
 
    Below 820px the center links and inline actions give way to a
    single menu button that drops a frosted sheet with the full nav —
-   section links plus Sign in / Get started — so a phone or small
-   tablet keeps every destination the desktop bar offers.
+   section links and the company pages, plus Sign in / Get started —
+   so a phone or small tablet keeps every destination the desktop bar
+   offers.
    =========================================================== */
 
+// `page: true` is a real route (About, Contact) that gets a current-page
+// marker; the rest are homepage section anchors, prefixed with the route base
+// so they scroll on home and navigate-then-scroll from a subpage.
 const NAV_LINKS = [
   { href: "#dashboard", label: "Dashboard" },
-  { href: "#how", label: "How it works" },
   { href: "#features", label: "Features" },
   { href: "#access", label: "Pricing" },
+  { href: "/about", label: "About", page: true },
+  { href: "/contact", label: "Contact", page: true },
 ];
 
-export function SiteNav() {
-  const [solid, setSolid] = useState(false);
+/* `subpage` renders the bar for a standalone page (About, Contact, legal) that
+   has no dark hero behind it: it's forced into its solid (frosted, dark-logo)
+   skin from the first paint, and every section anchor is prefixed with "/" so a
+   tap navigates home and then scrolls, instead of hunting for a #section that
+   doesn't exist on the current route. On the home page (`subpage` omitted) the
+   bar keeps its transparent-over-hero → solid-on-scroll behaviour and bare
+   in-page anchors. */
+export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
+  const [solid, setSolid] = useState(subpage);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  // The home anchor and the section base differ by route: on a subpage they
+  // reach back to "/", on the home page they stay in-page.
+  const homeHref = subpage ? "/" : "#top";
+  const base = subpage ? "/" : "";
+
+  // A page link resolves to its own route; a section anchor is rebased per
+  // route. `aria-current` marks the link for the page you're on.
+  const resolve = (l: (typeof NAV_LINKS)[number]) => ({
+    href: l.page ? l.href : `${base}${l.href}`,
+    current: l.page && pathname === l.href ? ("page" as const) : undefined,
+  });
 
   useEffect(() => {
     const update = () => {
-      setSolid(window.scrollY > 8);
+      // A subpage stays solid regardless of scroll position; the home bar only
+      // turns solid once it has left the very top of the hero.
+      setSolid(subpage || window.scrollY > 8);
       // Any scroll dismisses the sheet — including the smooth-scroll a link tap
       // triggers — so it never lingers over the content as you move down.
       setOpen(false);
@@ -44,7 +72,7 @@ export function SiteNav() {
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, []);
+  }, [subpage]);
 
   // While open: Esc closes; crossing back above the breakpoint discards the
   // open state so the sheet can't stay "open" once the inline nav returns.
@@ -71,25 +99,28 @@ export function SiteNav() {
 
   return (
     <nav
-      className={`site-nav${showSolid ? " is-solid" : ""}${open ? " is-open" : ""}`}
+      className={`site-nav${showSolid ? " is-solid" : ""}${open ? " is-open" : ""}${subpage ? " is-subpage" : ""}`}
       aria-label="Primary"
     >
-      <a className="site-nav-brand" href="#top" aria-label="Advantage — Home">
+      <a className="site-nav-brand" href={homeHref} aria-label="Advantage — Home">
         <img className="site-logo site-logo-white" src="/assets/logos/logo-white.svg" alt="Advantage" />
         <img className="site-logo site-logo-dark" src="/assets/logos/logo.svg" alt="" aria-hidden="true" />
       </a>
       <div className="site-nav-center">
-        {NAV_LINKS.map((l) => (
-          <a key={l.href} href={l.href}>
-            {l.label}
-          </a>
-        ))}
+        {NAV_LINKS.map((l) => {
+          const { href, current } = resolve(l);
+          return (
+            <a key={l.href} href={href} aria-current={current}>
+              {l.label}
+            </a>
+          );
+        })}
       </div>
       <div className="site-nav-actions">
         <a className="site-signin" href={links.signIn}>
           Sign in
         </a>
-        <a className="site-cta" href="#access">
+        <a className="site-cta" href={`${base}#access`}>
           Get started
           <ArrowUpRight size={15} />
         </a>
@@ -112,17 +143,25 @@ export function SiteNav() {
           links aren't reachable. */}
       <div className="site-nav-sheet" id="site-nav-sheet" inert={!open}>
         <div className="site-nav-sheet-inner">
-          {NAV_LINKS.map((l) => (
-            <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
-              {l.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((l) => {
+            const { href, current } = resolve(l);
+            return (
+              <a
+                key={l.href}
+                href={href}
+                aria-current={current}
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </a>
+            );
+          })}
           <div className="site-nav-sheet-div" aria-hidden="true" />
           <div className="site-nav-sheet-actions">
             <a className="site-signin" href={links.signIn}>
               Sign in
             </a>
-            <a className="site-cta" href="#access" onClick={() => setOpen(false)}>
+            <a className="site-cta" href={`${base}#access`} onClick={() => setOpen(false)}>
               Get started
               <ArrowUpRight size={15} />
             </a>
