@@ -28,14 +28,13 @@ export const metadata: Metadata = {
   ),
   title,
   description,
-  icons: { icon: "/favicon.ico" },
+  // Favicon and social images come from the app-dir file conventions:
+  //   src/app/icon.png            -> <link rel="icon">
+  //   src/app/opengraph-image.jpg -> og:image (and the twitter card image)
   openGraph: {
     title,
     description,
     siteName: "Advantage",
-    images: [
-      { url: "/opengraph-image.jpg", width: 1200, height: 630, alt: "Advantage" },
-    ],
     locale: "en_US",
     type: "website",
   },
@@ -43,7 +42,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/opengraph-image.jpg"],
   },
 };
 
