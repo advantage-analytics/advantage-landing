@@ -447,7 +447,9 @@ export function Footer() {
               <h5>Company</h5>
               <Link href="/about">About</Link>
               <Link href="/contact">Contact</Link>
-              <a href={links.signIn}>Sign in</a>
+              <a href={links.signIn} target="_blank" rel="noopener noreferrer">
+                Sign in
+              </a>
             </div>
           </nav>
         </div>

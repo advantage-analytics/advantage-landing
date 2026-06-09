@@ -117,7 +117,12 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
         })}
       </div>
       <div className="site-nav-actions">
-        <a className="site-signin" href={links.signIn}>
+        <a
+          className="site-signin"
+          href={links.signIn}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Sign in
         </a>
         <a className="site-cta" href={`${base}#access`}>
@@ -158,7 +163,12 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
           })}
           <div className="site-nav-sheet-div" aria-hidden="true" />
           <div className="site-nav-sheet-actions">
-            <a className="site-signin" href={links.signIn}>
+            <a
+              className="site-signin"
+              href={links.signIn}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Sign in
             </a>
             <a className="site-cta" href={`${base}#access`} onClick={() => setOpen(false)}>
