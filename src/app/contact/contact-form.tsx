@@ -40,6 +40,10 @@ export function ContactForm() {
   const [values, setValues] = useState<Values>(EMPTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  // Honeypot: real users never fill this; bots that auto-fill every field do.
+  const company = useRef("");
   const sentRef = useRef<HTMLHeadingElement>(null);
 
   const uid = useId();
@@ -88,14 +92,28 @@ export function ContactForm() {
     );
   }
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const next = validate(values);
     if (Object.keys(next).length) {
       setErrors(next);
       return;
     }
-    setSent(true);
+    setSubmitError("");
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...values, company: company.current }),
+      });
+      if (!res.ok) throw new Error();
+      setSent(true);
+    } catch {
+      setSubmitError("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -105,6 +123,24 @@ export function ContactForm() {
       </div>
 
       <form onSubmit={onSubmit} noValidate>
+        {/* Honeypot — hidden from users, ignored by them, filled by bots. */}
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          onChange={(e) => {
+            company.current = e.target.value;
+          }}
+          style={{
+            position: "absolute",
+            left: "-9999px",
+            width: 1,
+            height: 1,
+            opacity: 0,
+          }}
+        />
         <div className="field">
           <label htmlFor={id("name")}>Full name</label>
           <input
@@ -227,10 +263,15 @@ export function ContactForm() {
           )}
         </div>
 
-        <button className="btn btn-primary" type="submit">
-          Send message
+        <button className="btn btn-primary" type="submit" disabled={submitting}>
+          {submitting ? "Sending…" : "Send message"}
           <ArrowRight size={15} strokeWidth={1.6} aria-hidden="true" />
         </button>
+        {submitError && (
+          <p className="field-error" role="alert">
+            {submitError}
+          </p>
+        )}
         <p className="form-foot">
           Access to Advantage is currently limited to invited players and coaches.
         </p>

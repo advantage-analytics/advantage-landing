@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState, type CSSProperties } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { Icon } from "./icons";
 import { AdvantageDashboard, CourtViz } from "./dashboard";
@@ -365,7 +365,33 @@ export function BuiltForAthletes() {
 
 export function RequestAccess() {
   const [sent, setSent] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  // Honeypot: hidden from users, filled by bots.
+  const company = useRef("");
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitError("");
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, role, company: company.current }),
+      });
+      if (!res.ok) throw new Error();
+      setSent(true);
+    } catch {
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <section className="band access" id="access">
       <div className="wrap">
@@ -394,15 +420,22 @@ export function RequestAccess() {
                   We&apos;ll be in touch at {email || "your inbox"}.
                 </div>
               ) : (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setSent(true);
-                  }}
-                >
+                <form onSubmit={onSubmit}>
+                  {/* Honeypot — hidden from users, filled by bots. */}
+                  <input
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    onChange={(e) => {
+                      company.current = e.target.value;
+                    }}
+                    style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                  />
                   <div className="uline">
                     <label>Name</label>
-                    <input type="text" placeholder="Your name" required />
+                    <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required />
                   </div>
                   <div className="uline">
                     <label>Email</label>
@@ -410,11 +443,14 @@ export function RequestAccess() {
                   </div>
                   <div className="uline">
                     <label>Role</label>
-                    <input type="text" placeholder="Player, coach, or program" />
+                    <input type="text" placeholder="Player, coach, or program" value={role} onChange={(e) => setRole(e.target.value)} />
                   </div>
-                  <button className="btn btn-primary" type="submit">
-                    Request access <Icon n="arrow" size={16} />
+                  <button className="btn btn-primary" type="submit" disabled={submitting}>
+                    {submitting ? "Sending…" : "Request access"} <Icon n="arrow" size={16} />
                   </button>
+                  {submitError && (
+                    <div className="access-note" role="alert">{submitError}</div>
+                  )}
                   <div className="access-note">Invite-only · no spam · unsubscribe anytime</div>
                 </form>
               )}
