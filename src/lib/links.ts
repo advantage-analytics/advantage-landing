@@ -6,4 +6,5 @@ const APP_URL = (
 
 export const links = {
   signIn: `${APP_URL}/login`,
+  signUp: `${APP_URL}/sign-up`,
 } as const;

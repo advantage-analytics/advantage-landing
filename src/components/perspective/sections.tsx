@@ -345,7 +345,7 @@ export function BuiltForAthletes() {
           <div className="ath-c3-body">
             <span className="eyebrow">Built for the modern athlete</span>
             <h3>Built by former collegiate players. Designed for competitive advantage.</h3>
-            <p className="ath-c3-line">Access to Advantage is currently limited to invited players and coaches.</p>
+            <p className="ath-c3-line">Built with collegiate programs. Individual players can create a free account today.</p>
             {/* Proof stats as the scoreboard baseline — hairline grid, tabular
                 figures, mono captions, the page's one data vocabulary. */}
             <ul className="ath-c3-ledger">
@@ -367,7 +367,9 @@ export function RequestAccess() {
   const [sent, setSent] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [university, setUniversity] = useState("");
   const [role, setRole] = useState("");
+  const [division, setDivision] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   // Honeypot: hidden from users, filled by bots.
@@ -381,7 +383,7 @@ export function RequestAccess() {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, role, company: company.current }),
+        body: JSON.stringify({ name, email, university, role, division, company: company.current }),
       });
       if (!res.ok) throw new Error();
       setSent(true);
@@ -403,10 +405,10 @@ export function RequestAccess() {
               <span className="eyebrow">
                 Request access
               </span>
-              <h3>Get the advantage. By invitation.</h3>
+              <h3>Bring Advantage to your program.</h3>
               <p>
-                Tell us where to reach you. We&apos;re onboarding players and coaches in waves — you&apos;ll get an invite when a spot
-                opens for your level.
+                Tell us about your team and we will set you up personally. We work with collegiate programs first, from
+                onboarding to match review.
               </p>
             </div>
             <div className="access-form">
@@ -415,9 +417,16 @@ export function RequestAccess() {
                   <div className="chk">
                     <Icon n="check" size={20} />
                   </div>
-                  You&apos;re on the list.
+                  Request received.
                   <br />
-                  We&apos;ll be in touch at {email || "your inbox"}.
+                  We will reach out at {email || "your inbox"} to get your program set up.
+                  <div className="access-note">
+                    Individual player?{" "}
+                    <a href={links.signUp} target="_blank" rel="noopener noreferrer">
+                      Create a free account
+                    </a>
+                    .
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={onSubmit}>
@@ -434,16 +443,71 @@ export function RequestAccess() {
                     style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
                   />
                   <div className="uline">
-                    <label>Name</label>
-                    <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required />
+                    <label htmlFor="access-name">Name</label>
+                    <input
+                      id="access-name"
+                      type="text"
+                      placeholder="Your name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
                   </div>
                   <div className="uline">
-                    <label>Email</label>
-                    <input type="email" placeholder="you@club.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <label htmlFor="access-email">Email</label>
+                    <input
+                      id="access-email"
+                      type="email"
+                      placeholder="you@university.edu"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
                   </div>
                   <div className="uline">
-                    <label>Role</label>
-                    <input type="text" placeholder="Player, coach, or program" value={role} onChange={(e) => setRole(e.target.value)} />
+                    <label htmlFor="access-university">University / College</label>
+                    <input
+                      id="access-university"
+                      type="text"
+                      placeholder="Where your team competes"
+                      value={university}
+                      onChange={(e) => setUniversity(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="uline-row">
+                    <div className="uline">
+                      <label htmlFor="access-role">Role</label>
+                      <select
+                        id="access-role"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        required
+                      >
+                        <option value="" disabled>
+                          Select role
+                        </option>
+                        <option value="Coach">Coach</option>
+                        <option value="Player">Player</option>
+                        <option value="Analyst">Analyst</option>
+                      </select>
+                    </div>
+                    <div className="uline">
+                      <label htmlFor="access-division">Division</label>
+                      <select
+                        id="access-division"
+                        value={division}
+                        onChange={(e) => setDivision(e.target.value)}
+                      >
+                        <option value="">Optional</option>
+                        <option value="NCAA D I">NCAA D I</option>
+                        <option value="NCAA D II">NCAA D II</option>
+                        <option value="NCAA D III">NCAA D III</option>
+                        <option value="NAIA">NAIA</option>
+                        <option value="JUCO">JUCO</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
                   </div>
                   <button className="btn btn-primary" type="submit" disabled={submitting}>
                     {submitting ? "Sending…" : "Request access"} <Icon n="arrow" size={16} />
@@ -451,7 +515,13 @@ export function RequestAccess() {
                   {submitError && (
                     <div className="access-note" role="alert">{submitError}</div>
                   )}
-                  <div className="access-note">Invite-only · no spam · unsubscribe anytime</div>
+                  <div className="access-note">
+                    Individual player?{" "}
+                    <a href={links.signUp} target="_blank" rel="noopener noreferrer">
+                      Create a free account
+                    </a>
+                    .
+                  </div>
                 </form>
               )}
             </div>
@@ -478,6 +548,9 @@ export function Footer() {
               <Link href="/#how">How it works</Link>
               <Link href="/#features">Features</Link>
               <Link href="/#access">Request access</Link>
+              <a href={links.signUp} target="_blank" rel="noopener noreferrer">
+                Create a free account
+              </a>
             </div>
             <div className="foot-col">
               <h5>Company</h5>

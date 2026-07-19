@@ -14,7 +14,9 @@ export async function POST(request: Request) {
 
   const name = String(body.name ?? "").trim();
   const email = String(body.email ?? "").trim();
+  const university = String(body.university ?? "").trim();
   const role = String(body.role ?? "").trim();
+  const division = String(body.division ?? "").trim();
   const company = String(body.company ?? "").trim(); // honeypot
 
   // Spam gate: bots fill the hidden field. Pretend success, do nothing.
@@ -28,7 +30,9 @@ export async function POST(request: Request) {
     await createAirtableRecord(process.env.AIRTABLE_LEADS_TABLE || "Leads", {
       Name: name,
       Email: email,
+      University: university,
       Role: role,
+      Division: division,
       Source: "Landing CTA",
       "Submitted At": new Date().toISOString(),
     });
@@ -38,12 +42,14 @@ export async function POST(request: Request) {
   }
 
   await sendSubmissionEmail({
-    subject: `New access request — ${name}`,
+    subject: `New access request: ${name}${university ? ` (${university})` : ""}`,
     replyTo: email,
     html: `<h2>New access request</h2>
 <p><strong>Name:</strong> ${escapeHtml(name)}</p>
 <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-<p><strong>Role:</strong> ${escapeHtml(role) || "—"}</p>`,
+<p><strong>University:</strong> ${escapeHtml(university) || "-"}</p>
+<p><strong>Role:</strong> ${escapeHtml(role) || "-"}</p>
+<p><strong>Division:</strong> ${escapeHtml(division) || "-"}</p>`,
   });
 
   return NextResponse.json({ ok: true });

@@ -38,7 +38,7 @@ function HeroActions() {
   return (
     <div className="h-actions">
       <a className="hbtn hbtn-white" href="#access">
-        Get started
+        Request access
         <ArrowUpRight size={16} />
       </a>
       <a className="hbtn hbtn-glass" href="#dashboard">

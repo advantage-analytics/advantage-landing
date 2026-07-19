@@ -273,7 +273,7 @@ export function ContactForm() {
           </p>
         )}
         <p className="form-foot">
-          Access to Advantage is currently limited to invited players and coaches.
+          We work with collegiate programs first. Individual players can create a free account anytime.
         </p>
       </form>
     </div>

@@ -20,7 +20,7 @@ import { links } from "@/lib/links";
 
    Below 820px the center links and inline actions give way to a
    single menu button that drops a frosted sheet with the full nav —
-   section links and the company pages, plus Sign in / Get started —
+   section links and the company pages, plus Sign in / Request access —
    so a phone or small tablet keeps every destination the desktop bar
    offers.
    =========================================================== */
@@ -125,7 +125,7 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
           Sign in
         </a>
         <a className="site-cta" href={`${base}#access`}>
-          Get started
+          Request access
           <ArrowUpRight size={15} />
         </a>
       </div>
@@ -171,7 +171,7 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
               Sign in
             </a>
             <a className="site-cta" href={`${base}#access`} onClick={() => setOpen(false)}>
-              Get started
+              Request access
               <ArrowUpRight size={15} />
             </a>
           </div>

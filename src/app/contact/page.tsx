@@ -15,7 +15,7 @@ const EMAIL = "team@advantage-analytics.com";
 const LEDGER = [
   { label: "Based in", value: "Los Angeles, CA" },
   { label: "Response", value: "Within 2 business days" },
-  { label: "Access", value: "By invitation" },
+  { label: "Access", value: "Free for players" },
 ];
 
 export default function Page() {
