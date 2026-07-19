@@ -477,7 +477,7 @@ export function Footer() {
               <Link href="/#dashboard">Dashboard</Link>
               <Link href="/#how">How it works</Link>
               <Link href="/#features">Features</Link>
-              <Link href="/#access">Pricing</Link>
+              <Link href="/#access">Request access</Link>
             </div>
             <div className="foot-col">
               <h5>Company</h5>

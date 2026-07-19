@@ -31,7 +31,6 @@ import { links } from "@/lib/links";
 const NAV_LINKS = [
   { href: "#dashboard", label: "Dashboard" },
   { href: "#features", label: "Features" },
-  { href: "#access", label: "Pricing" },
   { href: "/about", label: "About", page: true },
   { href: "/contact", label: "Contact", page: true },
 ];
