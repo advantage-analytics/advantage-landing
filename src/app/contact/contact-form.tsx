@@ -83,7 +83,7 @@ export function ContactForm() {
           <h3 ref={sentRef} tabIndex={-1}>
             Message sent.
           </h3>
-          <p>Thanks. We read every message and reply within 2 business days.</p>
+          <p>Thanks. We read every message and reply within two business days.</p>
           <p className="form-foot">
             Bringing your team? <a href="/#access">Request access</a>. Individual player?{" "}
             <a href={links.signUp} target="_blank" rel="noopener noreferrer">
@@ -127,10 +127,6 @@ export function ContactForm() {
 
   return (
     <div className="form-panel">
-      <div className="form-head">
-        <span className="eyebrow">Send a message</span>
-      </div>
-
       <form onSubmit={onSubmit} noValidate>
         {/* Honeypot — hidden from users, ignored by them, filled by bots. */}
         <input

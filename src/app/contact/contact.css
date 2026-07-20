@@ -1,7 +1,6 @@
-/* Contact — the navy card from the Claude Design handoff (Contact.html),
-   recreated faithfully on the live design tokens. A deep-gradient card with a
-   blue glow and fine grain: narrative + direct channels on the left, a glass
-   underline form on the right. Populated with the real Advantage details. */
+/* Contact — a single navy card, distilled to the essentials: headline and
+   email on the left, the glass underline form on the right. Deep gradient
+   with a soft blue glow and fine grain. */
 
 .band.contact-band {
   padding: 64px 0 96px;
@@ -57,23 +56,17 @@
   align-items: start;
 }
 
-/* ---- Left: narrative + channels ---- */
+/* ---- Left: headline + direct line ---- */
+/* Centered against the taller form panel so the freed space reads as air
+   around the copy, not a dead quadrant below it. No-op once the grid
+   collapses to a single column. */
 .contact-copy {
   color: #fff;
-}
-
-.contact-logo {
-  height: 22px;
-  width: auto;
-  margin-bottom: 44px;
-}
-
-.contact-copy .eyebrow {
-  color: rgba(255, 255, 255, 0.72);
+  align-self: center;
 }
 
 .contact-copy h1 {
-  margin: 22px 0 0;
+  margin: 0;
   color: #fff;
   font-weight: var(--fw-light);
   letter-spacing: -1.6px;
@@ -83,7 +76,7 @@
 }
 
 .contact-copy .lede {
-  margin: 20px 0 0;
+  margin: 24px 0 0;
   max-width: 36ch;
   color: rgba(255, 255, 255, 0.8);
   font: var(--fw-regular) 16px/1.6 var(--font-sans);
@@ -131,35 +124,8 @@
 /* Keyboard focus ring is supplied by the global `.contact-card :where(a,button)`
    rule (white outline, 4px offset) — no local override needed. */
 
-/* ---- Spec ledger: concrete facts as hairline-divided mono rows ---- */
-.contact-ledger {
-  margin: 36px 0 0;
-  max-width: 420px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-.cl-row {
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-  padding: 13px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-.cl-row dt {
-  flex: 0 0 104px;
-  font: var(--fw-medium) 10px var(--font-mono);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-}
-.cl-row dd {
-  margin: 0;
-  font: var(--fw-regular) 15px var(--font-sans);
-  color: #fff;
-  font-variant-numeric: tabular-nums;
-}
-
 .contact-signoff {
-  margin-top: 28px;
+  margin-top: 36px;
   max-width: 420px;
   font: var(--fw-regular) 12px/1.6 var(--font-sans);
   color: rgba(255, 255, 255, 0.55);
@@ -173,23 +139,6 @@
   padding: 32px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-}
-
-.form-head {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 28px;
-}
-.form-head .eyebrow {
-  color: rgba(255, 255, 255, 0.72);
-  white-space: nowrap;
-}
-.form-head::after {
-  content: "";
-  flex: 1 1 auto;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.14);
 }
 
 .field {
