@@ -13,22 +13,24 @@
   overflow: hidden;
   border-radius: 20px;
   background: linear-gradient(135deg, #14224c 0%, #0e1a3e 60%, #0b1228 100%);
-  box-shadow: 0 40px 90px -30px rgba(13, 27, 62, 0.45),
-    0 8px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 30px 70px -32px rgba(13, 27, 62, 0.32),
+    0 6px 24px rgba(0, 0, 0, 0.05);
 }
 
+/* Quieter than the home access band on purpose: this is a full page of navy,
+   not one punctuating band, so the glow whispers instead of flaring. */
 .contact-glow {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: radial-gradient(
       90% 140% at 88% 8%,
-      rgba(59, 130, 246, 0.55) 0%,
+      rgba(59, 130, 246, 0.36) 0%,
       rgba(59, 130, 246, 0) 50%
     ),
     radial-gradient(
       70% 120% at 100% 100%,
-      rgba(129, 140, 248, 0.35) 0%,
+      rgba(129, 140, 248, 0.22) 0%,
       rgba(129, 140, 248, 0) 55%
     );
 }
@@ -37,7 +39,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.035;
   background-image: radial-gradient(
     rgba(255, 255, 255, 0.5) 0.5px,
     transparent 0.6px
@@ -345,6 +347,18 @@ select.control option {
 .form-sent .form-foot {
   margin-top: 24px;
   max-width: none;
+}
+
+/* The global reveal rises 24px; on a page that is one card, half the travel
+   is enough. Guarded for reduced motion since this out-specifies the global
+   .reveal reset. */
+.contact-card.reveal {
+  transform: translateY(12px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-card.reveal {
+    transform: none;
+  }
 }
 
 /* ---- Responsive ---- */

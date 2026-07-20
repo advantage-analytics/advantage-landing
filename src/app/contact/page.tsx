@@ -40,7 +40,7 @@ export default function Page() {
                 <h1>Let&rsquo;s talk.</h1>
                 <p className="lede">
                   Performance intelligence for competitive tennis. Reach the team
-                  directly. A person reads every message, and replies.
+                  directly. A person reads every message and replies.
                 </p>
 
                 <a className="contact-email" href={`mailto:${EMAIL}`}>
