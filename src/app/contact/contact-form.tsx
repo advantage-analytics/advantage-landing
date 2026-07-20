@@ -83,7 +83,14 @@ export function ContactForm() {
           <h3 ref={sentRef} tabIndex={-1}>
             Message sent.
           </h3>
-          <p>Thanks. We read every message and reply in person.</p>
+          <p>Thanks. We read every message and reply within 2 business days.</p>
+          <p className="form-foot">
+            Bringing your team? <a href="/#access">Request access</a>. Individual player?{" "}
+            <a href={links.signUp} target="_blank" rel="noopener noreferrer">
+              Create a free account
+            </a>
+            .
+          </p>
         </div>
       </div>
     );
@@ -94,6 +101,11 @@ export function ContactForm() {
     const next = validate(values);
     if (Object.keys(next).length) {
       setErrors(next);
+      // Take keyboard and screen-reader users straight to the first problem
+      // instead of leaving focus on the submit button.
+      const order: (keyof Values)[] = ["name", "role", "email", "message"];
+      const first = order.find((f) => next[f]);
+      if (first) document.getElementById(id(first))?.focus();
       return;
     }
     setSubmitError("");
@@ -214,7 +226,7 @@ export function ContactForm() {
           <textarea
             className={cls("message")}
             id={id("message")}
-            rows={4}
+            rows={5}
             placeholder="Tell us about your season and goals."
             value={values.message}
             onChange={set("message")}

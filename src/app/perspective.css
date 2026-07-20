@@ -392,6 +392,15 @@ main > section.band:first-child { border-top: none; }
   padding: 7px 0; color:#fff; font: var(--fw-regular) 15px var(--font-sans); outline:none;
   transition: border-color 300ms var(--ease-primary), border-bottom-width 300ms var(--ease-primary), padding-bottom 300ms var(--ease-primary); }
 .uline input::placeholder { color: rgba(255,255,255,0.4); }
+/* Chrome autofill would paint an opaque light background over the dark band;
+   keep the fill text white and postpone the background swap indefinitely. */
+.uline input:-webkit-autofill,
+.uline input:-webkit-autofill:hover,
+.uline input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  transition: background-color 9999s ease-out 9999s;
+}
 /* Selects mirror the underlined inputs: chromeless, with a small white chevron
    standing in for the native arrow, and the placeholder option dimmed like an
    input placeholder while the select is still on its empty first option. */

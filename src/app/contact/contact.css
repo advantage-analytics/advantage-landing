@@ -205,12 +205,6 @@
   margin-bottom: 9px;
   transition: color 200ms var(--ease-primary);
 }
-.field > label .opt {
-  font: var(--fw-regular) 9px var(--font-mono);
-  letter-spacing: 1.5px;
-  color: rgba(255, 255, 255, 0.34);
-}
-
 .control {
   width: 100%;
   background: transparent;
@@ -228,6 +222,16 @@
 }
 .control::placeholder {
   color: rgba(255, 255, 255, 0.4);
+}
+/* Chrome autofill paints inputs with an opaque light background that wrecks
+   the dark glass panel. Keep the fill text white and postpone the background
+   swap indefinitely (the standard transition-delay counter). */
+.control:-webkit-autofill,
+.control:-webkit-autofill:hover,
+.control:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  transition: background-color 9999s ease-out 9999s;
 }
 /* Focus: the rule grows 1px -> 2px and turns signal-blue, animating over 300ms
    exactly like the dashboard auth fields. Padding compensates so the text never
@@ -335,6 +339,12 @@ select.control option {
   max-width: 32ch;
   color: rgba(255, 255, 255, 0.7);
   font: var(--fw-regular) 14px/1.6 var(--font-sans);
+}
+/* The two-lane pointer survives submission; give it clear air below the
+   confirmation copy. */
+.form-sent .form-foot {
+  margin-top: 24px;
+  max-width: none;
 }
 
 /* ---- Responsive ---- */
