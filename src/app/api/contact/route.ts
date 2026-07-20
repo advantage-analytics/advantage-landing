@@ -52,8 +52,8 @@ export async function POST(request: Request) {
 <p><strong>Name:</strong> ${escapeHtml(name)}</p>
 <p><strong>Email:</strong> ${escapeHtml(email)}</p>
 <p><strong>Role:</strong> ${escapeHtml(role)}</p>
-<p><strong>University:</strong> ${escapeHtml(university) || "—"}</p>
-<p><strong>Phone:</strong> ${escapeHtml(phone) || "—"}</p>
+<p><strong>University:</strong> ${escapeHtml(university) || "-"}</p>
+<p><strong>Phone:</strong> ${escapeHtml(phone) || "-"}</p>
 <p><strong>Message:</strong></p>
 <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`,
   });

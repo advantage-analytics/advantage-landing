@@ -2,29 +2,26 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
+import { links } from "@/lib/links";
 
 const ROLES = ["Player", "Coach", "Parent", "Other"];
 
 type Values = {
   name: string;
   role: string;
-  university: string;
   email: string;
-  phone: string;
   message: string;
 };
 
 const EMPTY: Values = {
   name: "",
   role: "",
-  university: "",
   email: "",
-  phone: "",
   message: "",
 };
 
-// Plain, specific validation. Optional fields (university, phone) are never
-// checked; the rest carry a message rather than a bare red rule.
+// Plain, specific validation: every field carries a message rather than a
+// bare red rule.
 function validate(v: Values): Record<string, string> {
   const e: Record<string, string> = {};
   if (!v.name.trim()) e.name = "Tell us your name.";
@@ -190,23 +187,6 @@ export function ContactForm() {
             )}
           </div>
           <div className="field">
-            <label htmlFor={id("university")}>
-              University <span className="opt">Optional</span>
-            </label>
-            <input
-              className="control"
-              id={id("university")}
-              type="text"
-              autoComplete="organization"
-              placeholder="Where you compete"
-              value={values.university}
-              onChange={set("university")}
-            />
-          </div>
-        </div>
-
-        <div className="field-row">
-          <div className="field">
             <label htmlFor={id("email")}>Email</label>
             <input
               className={cls("email")}
@@ -226,20 +206,6 @@ export function ContactForm() {
                 {errors.email}
               </p>
             )}
-          </div>
-          <div className="field">
-            <label htmlFor={id("phone")}>
-              Phone <span className="opt">Optional</span>
-            </label>
-            <input
-              className="control"
-              id={id("phone")}
-              type="tel"
-              autoComplete="tel"
-              placeholder="+1 (000) 000-0000"
-              value={values.phone}
-              onChange={set("phone")}
-            />
           </div>
         </div>
 
@@ -273,7 +239,11 @@ export function ContactForm() {
           </p>
         )}
         <p className="form-foot">
-          We work with collegiate programs first. Individual players can create a free account anytime.
+          Bringing your team? <a href="/#access">Request access</a>. Individual player?{" "}
+          <a href={links.signUp} target="_blank" rel="noopener noreferrer">
+            Create a free account
+          </a>
+          .
         </p>
       </form>
     </div>

@@ -296,6 +296,14 @@ select.control option {
   font: var(--fw-regular) 11px/1.5 var(--font-sans);
   color: rgba(255, 255, 255, 0.5);
 }
+.form-foot a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.form-foot a:hover {
+  color: #fff;
+}
 
 /* ---- Success state ---- */
 .form-sent {
