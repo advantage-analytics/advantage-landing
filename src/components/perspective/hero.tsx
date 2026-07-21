@@ -152,11 +152,23 @@ function usePrefersReducedMotion() {
   );
 }
 
+// Native artboard geometry — the single source for the fit hook AND the
+// pre-hydration height reservation inlined on .heroC-desktop below. Keeping
+// them tied is load-bearing: if the reserved height drifts from the fitted
+// height, anchor jumps to sections below the hero land off-target again.
+const ART_W = 1440;
+const ART_H = 860;
+const ART_MAX_SCALE = 1.15;
+
 export function PerspectiveHero() {
   // maxScale caps the upscaling on wide monitors (the hook then centers the
   // 1440 artboard, letting the blue backstop show as side gutters) so the hero
   // stays proportional to the 1240px content sections instead of ballooning.
-  const { outerRef, innerRef } = useScaleToFit<HTMLDivElement, HTMLDivElement>({ height: 860, maxScale: 1.15 });
+  const { outerRef, innerRef } = useScaleToFit<HTMLDivElement, HTMLDivElement>({
+    width: ART_W,
+    height: ART_H,
+    maxScale: ART_MAX_SCALE,
+  });
   const heroRef = useRef<HTMLElement>(null);
   const reduce = usePrefersReducedMotion();
   // As the hero scrolls away, its tilted dashboard "stands up" (32°→14°),
@@ -166,7 +178,11 @@ export function PerspectiveHero() {
 
   return (
     <header className="heroC-stage" id="top" ref={heroRef}>
-      <div className="heroC-desktop" ref={outerRef}>
+      <div
+        className="heroC-desktop"
+        ref={outerRef}
+        style={{ aspectRatio: `${ART_W} / ${ART_H}`, maxHeight: ART_H * ART_MAX_SCALE }}
+      >
         <div ref={innerRef} style={{ position: "absolute", top: 0, transformOrigin: "top left" }}>
           <HeroCCanvas dashRotateX={reduce ? 32 : dashRotateX} />
         </div>

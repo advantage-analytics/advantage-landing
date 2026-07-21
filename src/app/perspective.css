@@ -439,13 +439,21 @@ main > section.band:first-child { border-top: none; }
 .foot-bottom .sv { display:flex; align-items:center; gap:8px; font: var(--fw-regular) 12px var(--font-sans); color: var(--ink-muted); }
 .foot-bottom .sv img { height: 14px; opacity: .75; }
 
-/* reveal on scroll */
-.reveal { opacity:0; transform: translateY(24px); transition: opacity 700ms var(--ease-spring), transform 700ms var(--ease-spring); }
-.reveal.in { opacity:1; transform:none; }
-/* Opt-in stagger: members of a group that should read as a sequence set --ri
-   (0,1,2…) and cascade in. Default 0 leaves every other reveal untouched, and
-   the reduce-motion rule below zeroes the transform regardless of delay. */
-.reveal { transition-delay: calc(var(--ri, 0) * 90ms); }
+/* reveal on scroll. The hidden state is gated on the page wrapper's
+   [data-reveal-armed], which useReveal() sets at hydration: server-rendered
+   HTML keeps every section visible, so a hash landing parked mid-page (or JS
+   still loading) never stares at a blank band. The whole gate lives inside
+   prefers-reduced-motion: no-preference, so reduced-motion users simply never
+   get a hidden state. Opt-in stagger: members of a group that should read as
+   a sequence set --ri (0,1,2…) and cascade in; default 0 leaves every other
+   reveal untouched. */
+.reveal {
+  transition: opacity 700ms var(--ease-spring), transform 700ms var(--ease-spring);
+  transition-delay: calc(var(--ri, 0) * 90ms);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .perspective-page[data-reveal-armed] .reveal:not(.in) { opacity:0; transform: translateY(24px); }
+}
 
 @media (max-width: 960px) {
   .dm-lower { grid-template-columns: 1fr; }
@@ -455,7 +463,6 @@ main > section.band:first-child { border-top: none; }
 @media (max-width: 480px) {
   .uline-row { grid-template-columns: 1fr; gap: 0; }
 }
-@media (prefers-reduced-motion: reduce) { .reveal { opacity:1; transform:none; } }
 
 /* ============================================================
    PERSPECTIVE HERO (iteration C) — faithful 1440×860 reproduction
@@ -466,6 +473,11 @@ main > section.band:first-child { border-top: none; }
 /* The backstop behind the scaled mesh canvas. It fades to white at the bottom
    so the sub-pixel sliver the transform leaves under the canvas reads as white
    (matching the section below), never a blue hairline. */
+/* The pre-hydration height reservation (aspect-ratio + max-height) lives as
+   inline style in hero.tsx, single-sourced with the useScaleToFit constants:
+   the canvas child is absolutely positioned, so without it the hero is 0px
+   tall until the fit runs — and an anchor jump to a section below (e.g.
+   /#access) lands ~900px too high once the hero inflates. */
 .heroC-desktop { position: relative; width: 100%; overflow: hidden;
   background: linear-gradient(to bottom, #6E8CEF 0%, #6E8CEF 55%, #ffffff 86%); }
 .heroC-canvas { position: relative; width: 1440px; height: 860px; transform-origin: top left; color: #fff; overflow: hidden; }

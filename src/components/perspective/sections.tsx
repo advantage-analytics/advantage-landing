@@ -9,10 +9,21 @@ import { links } from "@/lib/links";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
 
 /* Reveal-on-scroll — fades sections in as they enter the viewport.
-   Honors prefers-reduced-motion via the CSS (.reveal stays visible). */
+   Honors prefers-reduced-motion via the CSS (.reveal stays visible).
+
+   The CSS hides .reveal only under .perspective-page[data-reveal-armed], set
+   here at hydration — server-rendered content stays visible while JS loads,
+   so a hash landing (/#access) never sits on a blank section. Arming the
+   page wrapper (not <html>) keeps the gate per-mount and fail-open: each
+   navigation starts unarmed, and a page that renders .reveal without calling
+   this hook shows its content rather than hiding it forever. Elements
+   already painted in the viewport when we arm go straight to `.in` in the
+   same frame (both changes paint together) — never hide what the user has
+   already been shown. */
 export function useReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll(".reveal");
+    const root = document.querySelector(".perspective-page");
+    if (!root) return;
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
@@ -23,7 +34,13 @@ export function useReveal() {
         }),
       { threshold: 0.12 }
     );
-    els.forEach((el) => io.observe(el));
+    const vh = window.innerHeight;
+    root.querySelectorAll(".reveal").forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) el.classList.add("in");
+      else io.observe(el);
+    });
+    root.setAttribute("data-reveal-armed", "");
     return () => io.disconnect();
   }, []);
 }
@@ -31,10 +48,20 @@ export function useReveal() {
 // Scales the real 1440-wide AdvantageDashboard to fit its container. The hook's
 // ResizeObserver watches the inner artboard, so a late height change (mounted
 // children) re-fits silently — no settle-timeout jump.
+
+// Measured unscaled height of AdvantageDashboard at its native 1440px width.
+// Reserves the fitted height (via aspect-ratio) before the fit effect runs, so
+// pre-hydration layout — and every anchor position below this section — is
+// already close; the hook's exact measured fit then takes over.
+const DASH_NATIVE_H = 1232;
+
 function ScaledDashboard() {
   const { outerRef, innerRef } = useScaleToFit();
   return (
-    <div ref={outerRef} style={{ position: "relative", width: "100%", overflow: "hidden" }}>
+    <div
+      ref={outerRef}
+      style={{ position: "relative", width: "100%", overflow: "hidden", aspectRatio: `1440 / ${DASH_NATIVE_H}` }}
+    >
       <div ref={innerRef} style={{ width: 1440, transformOrigin: "top left" }}>
         <AdvantageDashboard />
       </div>
