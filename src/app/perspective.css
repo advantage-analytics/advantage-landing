@@ -383,18 +383,41 @@ main > section.band:first-child { border-top: none; }
 .access-inner .eyebrow { color: rgba(255,255,255,0.7); }
 .access-inner h3 { margin: 18px 0 0; color:#fff; font-weight: var(--fw-light); font-size: clamp(28px,3.2vw,40px); letter-spacing:-0.9px; line-height:1.08; }
 .access-inner p { margin: 18px 0 0; color: rgba(255,255,255,0.78); font: var(--fw-regular) 15px/1.6 var(--font-sans); max-width: 42ch; }
-.access-form { background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 28px; backdrop-filter: blur(8px); }
+.access-form { background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 28px; backdrop-filter: blur(8px);
+  /* Native select popups render dark instead of flashing white against the band. */
+  color-scheme: dark; }
 .uline { margin-bottom: 22px; }
 .uline label { display:block; font: var(--fw-medium) 10px var(--font-sans); letter-spacing:2px; text-transform:uppercase; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
-.uline input { width:100%; background:transparent; border:none; border-bottom: 1px solid rgba(255,255,255,0.22);
+.uline input, .uline select { width:100%; background:transparent; border:none; border-bottom: 1px solid rgba(255,255,255,0.22);
   padding: 7px 0; color:#fff; font: var(--fw-regular) 15px var(--font-sans); outline:none;
   transition: border-color 300ms var(--ease-primary), border-bottom-width 300ms var(--ease-primary), padding-bottom 300ms var(--ease-primary); }
 .uline input::placeholder { color: rgba(255,255,255,0.4); }
+/* Chrome autofill would paint an opaque light background over the dark band;
+   keep the fill text white and postpone the background swap indefinitely. */
+.uline input:-webkit-autofill,
+.uline input:-webkit-autofill:hover,
+.uline input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  transition: background-color 9999s ease-out 9999s;
+}
+/* Selects mirror the underlined inputs: chromeless, with a small white chevron
+   standing in for the native arrow, and the placeholder option dimmed like an
+   input placeholder while the select is still on its empty first option. */
+.uline select { appearance:none; -webkit-appearance:none; cursor:pointer; border-radius:0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='rgba(255,255,255,0.55)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position: right 2px center; padding-right: 20px; }
+.uline select:invalid, .uline select:has(option[value=""]:checked) { color: rgba(255,255,255,0.4); }
+.uline select option { color: var(--ink, #0D0D0D); }
 /* Focus: rule grows 1px -> 2px and turns signal-blue over 300ms, padding
    compensating so the text holds still — same as the dashboard auth fields. */
-.uline input:focus { border-bottom-color: var(--signal-blue); border-bottom-width: 2px; padding-bottom: 6px; }
+.uline input:focus, .uline select:focus { border-bottom-color: var(--signal-blue); border-bottom-width: 2px; padding-bottom: 6px; }
+/* Paired half-width fields (Role + Division) share one row. */
+.uline-row { display:grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .access-form .btn { width:100%; height: 46px; margin-top: 4px; }
 .access-note { margin-top: 16px; font: var(--fw-regular) 11px/1.5 var(--font-sans); color: rgba(255,255,255,0.5); text-align:center; }
+.access-note a { color: rgba(255,255,255,0.85); text-decoration: underline; text-underline-offset: 3px; }
+.access-note a:hover { color: #fff; }
 .access-sent { color:#fff; font: var(--fw-regular) 14px/1.6 var(--font-sans); text-align:center; padding: 20px 0; }
 .access-sent .chk { width:42px; height:42px; border-radius:50%; background: var(--win-tint); color: var(--win-green); display:flex; align-items:center; justify-content:center; margin: 0 auto 16px; }
 .access-sent .chk svg { width:20px; height:20px; stroke: currentColor; }
@@ -416,20 +439,30 @@ main > section.band:first-child { border-top: none; }
 .foot-bottom .sv { display:flex; align-items:center; gap:8px; font: var(--fw-regular) 12px var(--font-sans); color: var(--ink-muted); }
 .foot-bottom .sv img { height: 14px; opacity: .75; }
 
-/* reveal on scroll */
-.reveal { opacity:0; transform: translateY(24px); transition: opacity 700ms var(--ease-spring), transform 700ms var(--ease-spring); }
-.reveal.in { opacity:1; transform:none; }
-/* Opt-in stagger: members of a group that should read as a sequence set --ri
-   (0,1,2…) and cascade in. Default 0 leaves every other reveal untouched, and
-   the reduce-motion rule below zeroes the transform regardless of delay. */
-.reveal { transition-delay: calc(var(--ri, 0) * 90ms); }
+/* reveal on scroll. The hidden state is gated on the page wrapper's
+   [data-reveal-armed], which useReveal() sets at hydration: server-rendered
+   HTML keeps every section visible, so a hash landing parked mid-page (or JS
+   still loading) never stares at a blank band. The whole gate lives inside
+   prefers-reduced-motion: no-preference, so reduced-motion users simply never
+   get a hidden state. Opt-in stagger: members of a group that should read as
+   a sequence set --ri (0,1,2…) and cascade in; default 0 leaves every other
+   reveal untouched. */
+.reveal {
+  transition: opacity 700ms var(--ease-spring), transform 700ms var(--ease-spring);
+  transition-delay: calc(var(--ri, 0) * 90ms);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .perspective-page[data-reveal-armed] .reveal:not(.in) { opacity:0; transform: translateY(24px); }
+}
 
 @media (max-width: 960px) {
   .dm-lower { grid-template-columns: 1fr; }
   .dm-kpis { grid-template-columns: repeat(3,1fr); }
   .access-inner { grid-template-columns: 1fr; gap: 32px; }
 }
-@media (prefers-reduced-motion: reduce) { .reveal { opacity:1; transform:none; } }
+@media (max-width: 480px) {
+  .uline-row { grid-template-columns: 1fr; gap: 0; }
+}
 
 /* ============================================================
    PERSPECTIVE HERO (iteration C) — faithful 1440×860 reproduction
@@ -440,6 +473,11 @@ main > section.band:first-child { border-top: none; }
 /* The backstop behind the scaled mesh canvas. It fades to white at the bottom
    so the sub-pixel sliver the transform leaves under the canvas reads as white
    (matching the section below), never a blue hairline. */
+/* The pre-hydration height reservation (aspect-ratio + max-height) lives as
+   inline style in hero.tsx, single-sourced with the useScaleToFit constants:
+   the canvas child is absolutely positioned, so without it the hero is 0px
+   tall until the fit runs — and an anchor jump to a section below (e.g.
+   /#access) lands ~900px too high once the hero inflates. */
 .heroC-desktop { position: relative; width: 100%; overflow: hidden;
   background: linear-gradient(to bottom, #6E8CEF 0%, #6E8CEF 55%, #ffffff 86%); }
 .heroC-canvas { position: relative; width: 1440px; height: 860px; transform-origin: top left; color: #fff; overflow: hidden; }

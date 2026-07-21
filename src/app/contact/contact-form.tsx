@@ -2,29 +2,26 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
+import { links } from "@/lib/links";
 
 const ROLES = ["Player", "Coach", "Parent", "Other"];
 
 type Values = {
   name: string;
   role: string;
-  university: string;
   email: string;
-  phone: string;
   message: string;
 };
 
 const EMPTY: Values = {
   name: "",
   role: "",
-  university: "",
   email: "",
-  phone: "",
   message: "",
 };
 
-// Plain, specific validation. Optional fields (university, phone) are never
-// checked; the rest carry a message rather than a bare red rule.
+// Plain, specific validation: every field carries a message rather than a
+// bare red rule.
 function validate(v: Values): Record<string, string> {
   const e: Record<string, string> = {};
   if (!v.name.trim()) e.name = "Tell us your name.";
@@ -86,7 +83,14 @@ export function ContactForm() {
           <h3 ref={sentRef} tabIndex={-1}>
             Message sent.
           </h3>
-          <p>Thanks. We read every message and reply in person.</p>
+          <p>Thanks. We read every message and reply within two business days.</p>
+          <p className="form-foot">
+            Bringing your team? <a href="/#access">Request access</a>. Individual player?{" "}
+            <a href={links.signUp} target="_blank" rel="noopener noreferrer">
+              Create a free account
+            </a>
+            .
+          </p>
         </div>
       </div>
     );
@@ -97,6 +101,11 @@ export function ContactForm() {
     const next = validate(values);
     if (Object.keys(next).length) {
       setErrors(next);
+      // Take keyboard and screen-reader users straight to the first problem
+      // instead of leaving focus on the submit button.
+      const order: (keyof Values)[] = ["name", "role", "email", "message"];
+      const first = order.find((f) => next[f]);
+      if (first) document.getElementById(id(first))?.focus();
       return;
     }
     setSubmitError("");
@@ -118,10 +127,6 @@ export function ContactForm() {
 
   return (
     <div className="form-panel">
-      <div className="form-head">
-        <span className="eyebrow">Send a message</span>
-      </div>
-
       <form onSubmit={onSubmit} noValidate>
         {/* Honeypot — hidden from users, ignored by them, filled by bots. */}
         <input
@@ -190,23 +195,6 @@ export function ContactForm() {
             )}
           </div>
           <div className="field">
-            <label htmlFor={id("university")}>
-              University <span className="opt">Optional</span>
-            </label>
-            <input
-              className="control"
-              id={id("university")}
-              type="text"
-              autoComplete="organization"
-              placeholder="Where you compete"
-              value={values.university}
-              onChange={set("university")}
-            />
-          </div>
-        </div>
-
-        <div className="field-row">
-          <div className="field">
             <label htmlFor={id("email")}>Email</label>
             <input
               className={cls("email")}
@@ -227,20 +215,6 @@ export function ContactForm() {
               </p>
             )}
           </div>
-          <div className="field">
-            <label htmlFor={id("phone")}>
-              Phone <span className="opt">Optional</span>
-            </label>
-            <input
-              className="control"
-              id={id("phone")}
-              type="tel"
-              autoComplete="tel"
-              placeholder="+1 (000) 000-0000"
-              value={values.phone}
-              onChange={set("phone")}
-            />
-          </div>
         </div>
 
         <div className="field">
@@ -248,7 +222,7 @@ export function ContactForm() {
           <textarea
             className={cls("message")}
             id={id("message")}
-            rows={4}
+            rows={5}
             placeholder="Tell us about your season and goals."
             value={values.message}
             onChange={set("message")}
@@ -273,7 +247,11 @@ export function ContactForm() {
           </p>
         )}
         <p className="form-foot">
-          Access to Advantage is currently limited to invited players and coaches.
+          Bringing your team? <a href="/#access">Request access</a>. Individual player?{" "}
+          <a href={links.signUp} target="_blank" rel="noopener noreferrer">
+            Create a free account
+          </a>
+          .
         </p>
       </form>
     </div>

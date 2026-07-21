@@ -1,7 +1,6 @@
-/* Contact — the navy card from the Claude Design handoff (Contact.html),
-   recreated faithfully on the live design tokens. A deep-gradient card with a
-   blue glow and fine grain: narrative + direct channels on the left, a glass
-   underline form on the right. Populated with the real Advantage details. */
+/* Contact — a single navy card, distilled to the essentials: headline and
+   email on the left, the glass underline form on the right. Deep gradient
+   with a soft blue glow and fine grain. */
 
 .band.contact-band {
   padding: 64px 0 96px;
@@ -13,22 +12,24 @@
   overflow: hidden;
   border-radius: 20px;
   background: linear-gradient(135deg, #14224c 0%, #0e1a3e 60%, #0b1228 100%);
-  box-shadow: 0 40px 90px -30px rgba(13, 27, 62, 0.45),
-    0 8px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 30px 70px -32px rgba(13, 27, 62, 0.32),
+    0 6px 24px rgba(0, 0, 0, 0.05);
 }
 
+/* Quieter than the home access band on purpose: this is a full page of navy,
+   not one punctuating band, so the glow whispers instead of flaring. */
 .contact-glow {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: radial-gradient(
       90% 140% at 88% 8%,
-      rgba(59, 130, 246, 0.55) 0%,
+      rgba(59, 130, 246, 0.36) 0%,
       rgba(59, 130, 246, 0) 50%
     ),
     radial-gradient(
       70% 120% at 100% 100%,
-      rgba(129, 140, 248, 0.35) 0%,
+      rgba(129, 140, 248, 0.22) 0%,
       rgba(129, 140, 248, 0) 55%
     );
 }
@@ -37,7 +38,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.035;
   background-image: radial-gradient(
     rgba(255, 255, 255, 0.5) 0.5px,
     transparent 0.6px
@@ -55,23 +56,17 @@
   align-items: start;
 }
 
-/* ---- Left: narrative + channels ---- */
+/* ---- Left: headline + direct line ---- */
+/* Centered against the taller form panel so the freed space reads as air
+   around the copy, not a dead quadrant below it. No-op once the grid
+   collapses to a single column. */
 .contact-copy {
   color: #fff;
-}
-
-.contact-logo {
-  height: 22px;
-  width: auto;
-  margin-bottom: 44px;
-}
-
-.contact-copy .eyebrow {
-  color: rgba(255, 255, 255, 0.72);
+  align-self: center;
 }
 
 .contact-copy h1 {
-  margin: 22px 0 0;
+  margin: 0;
   color: #fff;
   font-weight: var(--fw-light);
   letter-spacing: -1.6px;
@@ -81,7 +76,7 @@
 }
 
 .contact-copy .lede {
-  margin: 20px 0 0;
+  margin: 24px 0 0;
   max-width: 36ch;
   color: rgba(255, 255, 255, 0.8);
   font: var(--fw-regular) 16px/1.6 var(--font-sans);
@@ -129,35 +124,8 @@
 /* Keyboard focus ring is supplied by the global `.contact-card :where(a,button)`
    rule (white outline, 4px offset) — no local override needed. */
 
-/* ---- Spec ledger: concrete facts as hairline-divided mono rows ---- */
-.contact-ledger {
-  margin: 36px 0 0;
-  max-width: 420px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-.cl-row {
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-  padding: 13px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-.cl-row dt {
-  flex: 0 0 104px;
-  font: var(--fw-medium) 10px var(--font-mono);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-}
-.cl-row dd {
-  margin: 0;
-  font: var(--fw-regular) 15px var(--font-sans);
-  color: #fff;
-  font-variant-numeric: tabular-nums;
-}
-
 .contact-signoff {
-  margin-top: 28px;
+  margin-top: 36px;
   max-width: 420px;
   font: var(--fw-regular) 12px/1.6 var(--font-sans);
   color: rgba(255, 255, 255, 0.55);
@@ -171,23 +139,6 @@
   padding: 32px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-}
-
-.form-head {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 28px;
-}
-.form-head .eyebrow {
-  color: rgba(255, 255, 255, 0.72);
-  white-space: nowrap;
-}
-.form-head::after {
-  content: "";
-  flex: 1 1 auto;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.14);
 }
 
 .field {
@@ -205,12 +156,6 @@
   margin-bottom: 9px;
   transition: color 200ms var(--ease-primary);
 }
-.field > label .opt {
-  font: var(--fw-regular) 9px var(--font-mono);
-  letter-spacing: 1.5px;
-  color: rgba(255, 255, 255, 0.34);
-}
-
 .control {
   width: 100%;
   background: transparent;
@@ -228,6 +173,16 @@
 }
 .control::placeholder {
   color: rgba(255, 255, 255, 0.4);
+}
+/* Chrome autofill paints inputs with an opaque light background that wrecks
+   the dark glass panel. Keep the fill text white and postpone the background
+   swap indefinitely (the standard transition-delay counter). */
+.control:-webkit-autofill,
+.control:-webkit-autofill:hover,
+.control:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  transition: background-color 9999s ease-out 9999s;
 }
 /* Focus: the rule grows 1px -> 2px and turns signal-blue, animating over 300ms
    exactly like the dashboard auth fields. Padding compensates so the text never
@@ -296,6 +251,14 @@ select.control option {
   font: var(--fw-regular) 11px/1.5 var(--font-sans);
   color: rgba(255, 255, 255, 0.5);
 }
+.form-foot a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.form-foot a:hover {
+  color: #fff;
+}
 
 /* ---- Success state ---- */
 .form-sent {
@@ -327,6 +290,24 @@ select.control option {
   max-width: 32ch;
   color: rgba(255, 255, 255, 0.7);
   font: var(--fw-regular) 14px/1.6 var(--font-sans);
+}
+/* The two-lane pointer survives submission; give it clear air below the
+   confirmation copy. */
+.form-sent .form-foot {
+  margin-top: 24px;
+  max-width: none;
+}
+
+/* The global reveal rises 24px; on a page that is one card, half the travel
+   is enough. Guarded for reduced motion since this out-specifies the global
+   .reveal reset. */
+.contact-card.reveal {
+  transform: translateY(12px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-card.reveal {
+    transform: none;
+  }
 }
 
 /* ---- Responsive ---- */
