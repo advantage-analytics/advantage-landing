@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAirtableRecord } from "@/lib/airtable";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
-import { TURNAROUND } from "@/lib/match-intake";
+import { TURNAROUND, UPLOAD_URL } from "@/lib/match-intake";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
   const program = field("program");
   const email = field("email");
   const videoUrl = field("videoUrl", 2000);
-  const uploaded = body.uploaded === true;
+  const willUpload = body.willUpload === true;
   const player = field("player");
   const startEnd = field("startEnd");
   const opponent = field("opponent");
@@ -54,9 +54,10 @@ export async function POST(request: Request) {
   if (company) return NextResponse.json({ ok: true });
 
   // Derived server-side rather than trusted from the client, so the record
-  // always matches what actually arrived.
+  // always matches what actually arrived. "Upload" means a Dropbox upload is on
+  // its way, not that it has landed — Status carries that.
   const sendMethod =
-    videoUrl && uploaded ? "Link + upload" : uploaded ? "Upload" : "Link";
+    videoUrl && willUpload ? "Link + upload" : willUpload ? "Upload" : "Link";
 
   // Mirrors validate() in match-form.tsx.
   if (!name)
@@ -65,7 +66,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Program is required." }, { status: 400 });
   if (!EMAIL_RE.test(email))
     return NextResponse.json({ error: "A valid email is required." }, { status: 400 });
-  if (!videoUrl && !uploaded)
+  if (!videoUrl && !willUpload)
     return NextResponse.json(
       { error: "A link or an upload is required." },
       { status: 400 },
@@ -131,8 +132,10 @@ ${row("Coach", name)}
 ${row("Program", program)}
 ${row("Email", email)}
 ${row("Sent via", sendMethod)}
-<p><strong>Video:</strong> ${linkify(videoUrl)}${
-      uploaded ? " <em>(also uploaded to Dropbox)</em>" : ""
+<p><strong>Video:</strong> ${
+      videoUrl
+        ? `${linkify(videoUrl)}${willUpload ? " <em>(plus a Dropbox upload to follow)</em>" : ""}`
+        : "<em>Dropbox upload to follow &mdash; check /Pilot Video Submissions</em>"
     }</p>
 ${row("Player", player)}
 ${row("Started on", startEnd)}
@@ -155,8 +158,14 @@ ${row("Program", program)}
 ${opponent ? row("Opponent", opponent) : ""}
 ${matchDate ? row("Match date", matchDate) : ""}
 ${score ? row("Score", score) : ""}
-<p>Your breakdown will be with you within ${TURNAROUND}. If anything about the
-file needs sorting out, I'll email you directly.</p>
+${
+  willUpload
+    ? `<p><strong>Still to come:</strong> the film itself. Upload it here whenever suits — ${UPLOAD_URL} — and we'll match it to this submission.</p>`
+    : ""
+}
+<p>Your breakdown will be with you within ${TURNAROUND}${
+    willUpload ? " of the film arriving" : ""
+  }. If anything about the file needs sorting out, I'll email you directly.</p>
 <p>— Cj<br>Advantage Analytics</p>`,
   });
 

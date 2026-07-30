@@ -24,7 +24,7 @@ type Values = {
   program: string;
   email: string;
   videoUrl: string;
-  uploaded: boolean;
+  willUpload: boolean;
   player: string;
   startEnd: string;
   opponent: string;
@@ -39,7 +39,7 @@ const EMPTY: Values = {
   program: "",
   email: "",
   videoUrl: "",
-  uploaded: false,
+  willUpload: false,
   player: "",
   startEnd: "",
   opponent: "",
@@ -51,11 +51,12 @@ const EMPTY: Values = {
 
 // Both routes are open at once, so the record has to say which one they took —
 // it's the difference between Cj opening a share link and going to look in
-// Dropbox for a file.
+// Dropbox for a file. "Upload" now means one is on its way rather than already
+// landed; Status tracks whether it actually arrived.
 function sendMethodOf(v: Values): string {
   const hasLink = Boolean(v.videoUrl.trim());
-  if (hasLink && v.uploaded) return "Link + upload";
-  return v.uploaded ? "Upload" : "Link";
+  if (hasLink && v.willUpload) return "Link + upload";
+  return v.willUpload ? "Upload" : "Link";
 }
 
 /* Shape check only. We deliberately never fetch the URL to confirm the sharing
@@ -84,12 +85,12 @@ function validate(v: Values): Partial<Record<keyof Values, string>> {
   if (!v.email.trim()) e.email = "Add an email so we can send the breakdown.";
   else if (!EMAIL_RE.test(v.email.trim()))
     e.email = "That email doesn't look right.";
-  // Either route satisfies this: a link, or a file already in the upload
-  // window. We just need one of them.
+  // Either route satisfies this: a link now, or a file to follow. We just need
+  // to know which.
   if (!v.videoUrl.trim()) {
-    if (!(HAS_UPLOAD && v.uploaded))
+    if (!(HAS_UPLOAD && v.willUpload))
       e.videoUrl = HAS_UPLOAD
-        ? "Paste a link, or upload the file and tick the box below."
+        ? "Paste a link, or tick the box below to send the file instead."
         : "Paste the link to the video.";
   } else if (!looksLikeUrl(v.videoUrl)) {
     e.videoUrl = "That doesn't look like a link — it should start with https://";
@@ -99,6 +100,16 @@ function validate(v: Values): Partial<Record<keyof Values, string>> {
   if (!v.cameraPosition) e.cameraPosition = "Tell us where the camera was.";
   return e;
 }
+
+/* The visual required marker. Screen readers get the same information from the
+   inputs' `required` / `aria-required`, so the glyph itself is hidden from them:
+   announcing "star" after every label is noise, not information. The legend at
+   the top of the form is what gives the asterisk its meaning for sighted users. */
+const REQ = (
+  <span className="sm-req" aria-hidden="true">
+    *
+  </span>
+);
 
 // Focus order for jumping to the first problem on a failed submit.
 const ORDER: (keyof Values)[] = [
@@ -167,14 +178,41 @@ export function MatchForm() {
     ) : null;
 
   if (sent) {
+    // The details are banked at this point, so the file is the only thing that
+    // can still go missing — and that's recoverable, because the row carries an
+    // email to chase. Hence the upload prompt sits above the confirmation prose:
+    // it's the one thing left to do.
+    const awaitingFile = HAS_UPLOAD && values.willUpload;
     return (
       <div className="sm-sent" role="status" aria-live="polite">
         <h2 ref={sentRef} tabIndex={-1}>
           Got it.
         </h2>
+        {awaitingFile && (
+          <div className="sm-handoff">
+            <p className="sm-handoff-head">
+              One thing left &mdash; the film itself.
+            </p>
+            <a
+              className="sm-btn-secondary"
+              href={UPLOAD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open upload window
+              <ArrowUpRight size={15} strokeWidth={1.6} aria-hidden="true" />
+            </a>
+            <p>
+              Your details are already saved, so we&rsquo;ll match the file to
+              this submission when it lands. The window stays open if you&rsquo;d
+              rather upload from a laptop later.
+            </p>
+          </div>
+        )}
         <p>
           A confirmation is on its way to <strong>{values.email}</strong>. Your
-          breakdown will be with you within {TURNAROUND}. If anything about the
+          breakdown will be with you within {TURNAROUND}
+          {awaitingFile ? " of the film arriving" : ""}. If anything about the
           file needs sorting out, I&rsquo;ll email you directly.
         </p>
         <p className="sm-sign">&mdash; Cj</p>
@@ -239,9 +277,13 @@ export function MatchForm() {
         }}
       />
 
+      <p className="sm-required-note">
+        Fields marked {REQ} are required.
+      </p>
+
       {/* 1 — Your name */}
       <div className="sm-field">
-        <label htmlFor={id("name")}>Your name</label>
+        <label htmlFor={id("name")}>Your name {REQ}</label>
         <input
           className={cls("name")}
           id={id("name")}
@@ -258,7 +300,7 @@ export function MatchForm() {
 
       {/* 2 — Program */}
       <div className="sm-field">
-        <label htmlFor={id("program")}>Program, school, or academy</label>
+        <label htmlFor={id("program")}>Program, school, or academy {REQ}</label>
         <input
           className={cls("program")}
           id={id("program")}
@@ -275,7 +317,7 @@ export function MatchForm() {
 
       {/* 3 — Email */}
       <div className="sm-field">
-        <label htmlFor={id("email")}>Email</label>
+        <label htmlFor={id("email")}>Email {REQ}</label>
         <p className="sm-hint" id={id("email-hint")}>
           Where we&rsquo;ll send the breakdown.
         </p>
@@ -300,7 +342,7 @@ export function MatchForm() {
           coach never has to answer a question about how they'd like to answer
           the question — they just use whichever they have. */}
       <div className="sm-field">
-        <label htmlFor={id("videoUrl")}>Link to the video</label>
+        <label htmlFor={id("videoUrl")}>Link to the video {REQ}</label>
         <p className="sm-hint" id={id("videoUrl-hint")}>
           Google Drive, Dropbox, PlaySight, Hudl, WeTransfer &mdash; anything
           works. Make sure sharing is set to &ldquo;anyone with the link can
@@ -316,49 +358,48 @@ export function MatchForm() {
           placeholder="https://"
           value={values.videoUrl}
           onChange={set("videoUrl")}
+          aria-required="true"
           aria-invalid={!!errors.videoUrl}
           aria-describedby={describe("videoUrl", true)}
         />
         {fieldError("videoUrl")}
       </div>
 
-      {/* 5 — The fallback, sitting quietly underneath rather than competing:
-          for film that only exists on a laptop. No account needed either side. */}
+      {/* 5 — The fallback, for film that only exists on a laptop. The upload
+          window deliberately does NOT open from here: sending a coach to
+          Dropbox mid-form means they can upload 15GB and never come back, and
+          then there's a video in the bucket with no idea whose match it is.
+          Ticking this box submits the details first and hands over the upload
+          link on the way out, so the worst case is a known coach with a missing
+          file rather than an unattributable file. Dropbox file requests can't
+          carry custom fields, so this is the only place the metadata can come
+          from. */}
       {HAS_UPLOAD && (
         <div className="sm-panel">
           <p className="sm-panel-head">No link? Send us the file instead.</p>
-          <a
-            className="sm-btn-secondary"
-            href={UPLOAD_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Open upload window
-            <ArrowUpRight size={15} strokeWidth={1.6} aria-hidden="true" />
-          </a>
-          <p>
-            Upload there, then come back and submit this form so we know whose
-            match it is.
-          </p>
           <label className="sm-checkline">
             <input
               className="sm-checkbox"
               type="checkbox"
-              checked={values.uploaded}
+              checked={values.willUpload}
               onChange={(e) => {
                 const { checked } = e.target;
-                setValues((v) => ({ ...v, uploaded: checked }));
+                setValues((v) => ({ ...v, willUpload: checked }));
                 clearError("videoUrl");
               }}
             />
-            <span>I&rsquo;ve uploaded the file.</span>
+            <span>I&rsquo;ll upload the file instead.</span>
           </label>
+          <p>
+            Tick that and an upload window opens as soon as you send this form.
+            No Dropbox account needed.
+          </p>
         </div>
       )}
 
       {/* 6 — Player */}
       <div className="sm-field">
-        <label htmlFor={id("player")}>Which player should we analyze?</label>
+        <label htmlFor={id("player")}>Which player should we analyze? {REQ}</label>
         <p className="sm-hint" id={id("player-hint")}>
           Full name, so we can label the report.
         </p>
@@ -380,10 +421,11 @@ export function MatchForm() {
       <fieldset
         className="sm-fieldset"
         role="radiogroup"
+        aria-required="true"
         aria-invalid={!!errors.startEnd}
         aria-describedby={describe("startEnd")}
       >
-        <legend className="sm-legend">Which end did they start on?</legend>
+        <legend className="sm-legend">Which end did they start on? {REQ}</legend>
         <div className="sm-options is-tight">
           {START_ENDS.map((option, i) => (
             <label className="sm-option" key={option}>
@@ -443,10 +485,11 @@ export function MatchForm() {
       <fieldset
         className="sm-fieldset"
         role="radiogroup"
+        aria-required="true"
         aria-invalid={!!errors.cameraPosition}
         aria-describedby={describe("cameraPosition")}
       >
-        <legend className="sm-legend">Where was the camera?</legend>
+        <legend className="sm-legend">Where was the camera? {REQ}</legend>
         <div className="sm-options is-tight">
           {CAMERA_POSITIONS.map((option, i) => (
             <label className="sm-option" key={option}>

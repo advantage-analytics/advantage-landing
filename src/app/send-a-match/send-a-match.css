@@ -286,6 +286,20 @@ body:has(.sm-page) {
   font: var(--fw-medium) 13px/1.4 var(--font-sans);
   color: var(--ink);
 }
+/* Required marker. Sits on the error red so it reads as a constraint rather than
+   decoration, and stays unbolded so it never competes with the label itself. */
+.sm-req {
+  color: var(--loss-red);
+  font-weight: var(--fw-regular);
+}
+/* The legend that gives the asterisk its meaning. Without this the glyph is
+   folklore; with it the form states its own contract. */
+.sm-required-note {
+  margin: 0 0 24px;
+  font: var(--fw-regular) 12px/1.5 var(--font-sans);
+  color: var(--sm-quiet-text);
+}
+
 /* Guidance sits between the label and the field: a coach needs to know what
    "anyone with the link" means before they paste, not after. */
 .sm-hint {
@@ -606,6 +620,27 @@ input[type="date"].sm-input {
 .sm-sent .sm-sign {
   margin-top: 24px;
   color: var(--ink-tertiary);
+}
+
+/* The upload handoff. It only appears when a file is still owed, and it sits
+   directly under "Got it." because at that point it is the only outstanding
+   action — the details are already banked. Same tonal panel as the form's
+   fallback block so it reads as the continuation of that choice. */
+.sm-handoff {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--surface-subtle);
+  border-radius: var(--r-element);
+}
+.sm-sent .sm-handoff-head {
+  margin: 0 0 14px;
+  font: var(--fw-medium) 13px/1.4 var(--font-sans);
+  color: var(--ink);
+}
+.sm-sent .sm-handoff p:last-child {
+  margin: 14px 0 0;
+  font: var(--fw-regular) 12px/1.55 var(--font-sans);
+  color: var(--ink-secondary);
 }
 
 /* ---- Footer ----
