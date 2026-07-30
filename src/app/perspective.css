@@ -14,19 +14,24 @@
   --signal-blue-soft:  #EBF2FD;
   --blue-glow:         rgba(59, 130, 246, 0.25);
 
-  /* ---- Outcome (semantic: win) ---- */
+  /* ---- Outcome (semantic) ---- */
   --win-green:  #5DB955;
   --win-tint:   rgba(115, 230, 104, 0.15);
+  --loss-red:   #E51837;
+  /* The one warm hue in the system. Caution only — never decoration. */
+  --viz-amber:  #E0902E;
 
   /* ---- Ink (neutral text/border ramp) ---- */
   --ink:            #0D0D0D;
   --ink-secondary:  #525252;
+  --ink-tertiary:   #71717A;
   --ink-muted:      #888888;
   --ink-label:      #AAAAAA;
 
   /* ---- Surfaces & hairlines ---- */
   --surface:         #FFFFFF;
   --surface-page:    #FAFAFA;
+  --surface-subtle:  #F5F5F5;
   --hairline:        #F3F3F3;
   --hairline-medium: #E5E5EA;
   --border-field:    #EAECF0;

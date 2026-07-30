@@ -10,15 +10,20 @@ type SubmissionEmail = {
   html: string;
   // The person who submitted, so replies go straight to them.
   replyTo?: string;
+  // Defaults to CONTACT_NOTIFY_TO — the inbox that receives every submission.
+  // Pass an address to send outward instead, e.g. the automatic confirmation
+  // the /send-a-match intake sends back to the coach.
+  to?: string;
 };
 
 export async function sendSubmissionEmail({
   subject,
   html,
   replyTo,
+  to: recipient,
 }: SubmissionEmail): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_NOTIFY_TO;
+  const to = recipient || process.env.CONTACT_NOTIFY_TO;
   const from = process.env.CONTACT_NOTIFY_FROM;
 
   if (!apiKey || !to || !from) {
