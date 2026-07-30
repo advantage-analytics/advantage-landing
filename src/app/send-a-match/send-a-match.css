@@ -14,47 +14,29 @@
    1024px tablet is touch and a 900px window is not.
    ============================================================ */
 
-/* Doubled class beats .perspective-page's --surface-page regardless of the
-   order the two stylesheets land in. This page is white paper, not the site's
-   off-white surface — it reads as a document to fill in. */
-.perspective-page.sm-page {
-  background: var(--surface);
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
+/* Form and diagram tokens. The shell (white background, flex column, header,
+   footer, wrap) lives in components/campaign/campaign.css; what stays here is
+   only what /send-a-match itself consumes.
 
-  /* These point at the shared design-system values on purpose: the page matches
-     the rest of the site rather than diverging from it. Indirection is kept so
-     any single one can be repointed without hunting through the file.
+   These point at the shared design-system values on purpose: the page matches
+   the rest of the site rather than diverging from it. Indirection is kept so
+   any single one can be repointed without hunting through the file.
 
-     Known and accepted: several of these do not clear WCAG AA on white, which
-     is a system-wide property of the tokens, not something this page introduced.
-     Measured contrast against #FFFFFF:
-       --border-field    #EAECF0  1.18:1   (SC 1.4.11 wants 3:1 for controls)
-       --hairline-medium #E5E5EA  1.26:1   (same)
-       --ink-muted       #888888  3.54:1   (SC 1.4.3 wants 4.5:1 for text)
-       --ink-label       #AAAAAA  2.32:1   (same, and it renders at 10px)
-       white on --signal-blue     3.68:1   (same, and it's the primary CTA)
-     Fixing them here alone would make this page look unlike every other page,
-     so it's a sitewide call to make in the design system, not a local patch. */
+   Known and accepted: several of these do not clear WCAG AA on white, which is
+   a system-wide property of the tokens, not something this page introduced.
+   Measured contrast against #FFFFFF:
+     --border-field    #EAECF0  1.18:1   (SC 1.4.11 wants 3:1 for controls)
+     --hairline-medium #E5E5EA  1.26:1   (same)
+     --ink-muted       #888888  3.54:1   (SC 1.4.3 wants 4.5:1 for text)
+     --ink-label       #AAAAAA  2.32:1   (same, and it renders at 10px)
+     white on --signal-blue     3.68:1   (same, and it's the primary CTA)
+   Fixing them here alone would make this page look unlike every other page, so
+   it's a sitewide call to make in the design system, not a local patch. */
+.sm-page {
   --sm-field-line: var(--border-field);
   --sm-control-line: var(--hairline-medium);
   --sm-quiet-text: var(--ink-muted);
   --sm-court-line: var(--hairline-medium);
-  --sm-cta: var(--signal-blue);
-  --sm-cta-hover: var(--signal-blue-deep);
-}
-
-.sm-wrap {
-  width: 100%;
-  max-width: 608px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-@media (max-width: 420px) {
-  .sm-wrap {
-    padding: 0 20px;
-  }
 }
 
 /* ---- Desktop: two columns, not one lonely ribbon ----
@@ -76,8 +58,10 @@
 }
 
 @media (min-width: 1080px) {
-  .sm-page .sm-wrap {
-    max-width: 1180px;
+  /* Widen the shared shell wrap for the two-column split. campaign.css reads
+     this token and never declares it, so there is one declaration site. */
+  .sm-page {
+    --campaign-measure: 1180px;
   }
   .sm-layout {
     grid-template-columns: minmax(0, 1fr) minmax(0, 560px);
@@ -126,47 +110,6 @@ body:has(.sm-page) {
   }
 }
 
-/* ---- Header: wordmark, hairline, nothing else ---- */
-.sm-header {
-  border-bottom: 1px solid var(--hairline);
-}
-.sm-header .sm-wrap {
-  display: flex;
-  align-items: center;
-  height: 64px;
-}
-.sm-brand img {
-  height: 22px;
-  width: auto;
-}
-
-.sm-main {
-  flex: 1 1 auto;
-  padding: 56px 0 96px;
-}
-@media (max-width: 640px) {
-  .sm-main {
-    padding: 40px 0 72px;
-  }
-}
-
-/* ---- Hero ----
-   30px/36px weight 300 at -0.6px is the specified page-H1 step; it holds at
-   every width rather than scaling up on desktop. */
-.sm-hero h1 {
-  margin: 0;
-  font: var(--fw-light) 30px/36px var(--font-sans);
-  letter-spacing: -0.6px;
-  color: var(--ink);
-  text-wrap: balance;
-}
-.sm-lede {
-  margin: 20px 0 0;
-  max-width: 560px;
-  font: var(--fw-regular) 16px/1.6 var(--font-sans);
-  color: var(--ink-secondary);
-  text-wrap: pretty;
-}
 .sm-delivery {
   margin: 16px 0 0;
   font: var(--fw-regular) 13px/1.5 var(--font-sans);
@@ -201,28 +144,7 @@ body:has(.sm-page) {
   color: var(--ink-secondary);
 }
 .sm-checks {
-  list-style: none;
-  margin: 24px 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.sm-check {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  font: var(--fw-regular) 13px/1.5 var(--font-sans);
-  color: var(--ink-secondary);
-}
-.sm-check svg {
-  flex: 0 0 auto;
-  margin-top: 3px;
-  color: var(--ink-tertiary);
-}
-.sm-check strong {
-  font-weight: var(--fw-medium);
-  color: var(--ink);
+  margin-top: 24px;
 }
 
 .sm-diagram {
@@ -252,14 +174,6 @@ body:has(.sm-page) {
   max-width: 560px;
   font: var(--fw-regular) 12px/1.5 var(--font-sans);
   color: var(--sm-quiet-text);
-}
-.sm-compress a {
-  color: var(--signal-blue);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.sm-compress a:hover {
-  color: var(--signal-blue-deep);
 }
 
 /* ---- Form ---- */
@@ -502,79 +416,15 @@ input[type="date"].sm-input {
   outline-offset: 3px;
   border-radius: 4px;
 }
-.sm-btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 38px;
-  padding: 0 18px;
-  border-radius: var(--r-button);
-  background: var(--surface);
-  border: 1px solid var(--hairline-medium);
-  color: var(--ink);
-  font: var(--fw-medium) 13px var(--font-sans);
-  letter-spacing: -0.1px;
-  white-space: nowrap;
-  transition: border-color 180ms var(--ease-primary),
-    color 180ms var(--ease-primary), transform 120ms var(--ease-primary);
-}
-.sm-btn-secondary:hover {
-  border-color: var(--signal-blue);
-  color: var(--signal-blue);
-}
-.sm-btn-secondary:active {
-  transform: scale(0.97);
-}
-
-/* ---- The soft gate ----
-   A warning, not a wall: a blocked coach is a lost coach, a warned one is a
-   warm one. One amber rule carries it — no icon, no banner chrome. */
-/* A warning, not a wall: a blocked coach is a lost coach, a warned one is a
-   warm one. One amber rule carries it, no icon. */
-.sm-caution {
-  margin: 16px 0 0;
-  padding: 14px 16px;
-  background: var(--surface-subtle);
-  border-left: 2px solid var(--viz-amber);
-  border-radius: 0 var(--r-element) var(--r-element) 0;
-  font: var(--fw-regular) 12.5px/1.55 var(--font-sans);
-  color: var(--ink-secondary);
-}
 
 /* ---- Submit ---- */
 .sm-submit-row {
   margin-top: 40px;
 }
 .sm-submit {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  /* Geometry, colour and states come from .campaign-btn-primary; only the
+     full-bleed-on-mobile behaviour is specific to this form. */
   width: 100%;
-  height: 46px;
-  padding: 0 24px;
-  border: none;
-  border-radius: var(--r-button);
-  /* White on --signal-blue is 3.68:1 — under AA for 13px text, and this is the
-     one control the page exists for. The deep step is 5.17:1 and still
-     unmistakably the brand blue. */
-  background: var(--sm-cta);
-  color: #fff;
-  font: var(--fw-medium) 13px var(--font-sans);
-  letter-spacing: -0.1px;
-  cursor: pointer;
-  transition: background 200ms var(--ease-primary),
-    transform 200ms var(--ease-primary);
-}
-.sm-submit:hover {
-  background: var(--sm-cta-hover);
-}
-.sm-submit:active {
-  transform: scale(0.97);
-}
-.sm-submit:disabled {
-  opacity: 0.6;
-  cursor: default;
 }
 @media (min-width: 520px) {
   .sm-submit {
@@ -643,44 +493,6 @@ input[type="date"].sm-input {
   color: var(--ink-secondary);
 }
 
-/* ---- Footer ----
-   Out-specifies the site's `.perspective-page footer` band, which would
-   otherwise paint this one grey and pad it out to homepage proportions. The
-   hairline is the only separator here — a tonal fill on top of it would be two
-   mechanisms doing one job. */
-.sm-page .sm-footer {
-  background: var(--surface);
-  border-top: 1px solid var(--hairline);
-  padding: 28px 0 36px;
-}
-.sm-foot-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.sm-footer img {
-  height: 18px;
-  width: auto;
-  opacity: 0.65;
-}
-.sm-foot-meta {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  font: var(--fw-regular) 12px var(--font-sans);
-  color: var(--sm-quiet-text);
-}
-.sm-foot-meta a {
-  color: var(--sm-quiet-text);
-  transition: color 180ms var(--ease-primary);
-}
-.sm-foot-meta a:hover {
-  color: var(--ink);
-}
-
 /* ---- Coarse pointers ----
    Measured on the phone build: radio rows 37px, checkbox row 35px, fields 38px,
    secondary button 38px. All clear the 24px AA floor and none reach the 44px
@@ -719,28 +531,13 @@ input[type="date"].sm-input {
   .sm-input.is-error:focus {
     padding-bottom: 11px;
   }
-  .sm-btn-secondary {
-    height: 44px;
-  }
-  /* Standalone links get real vertical room; the inline one in a sentence is
-     exempt from target sizing and would break the line box if padded. */
-  .sm-foot-meta a {
-    display: inline-block;
-    padding: 6px 0;
-  }
 }
 
+/* Buttons and links are waived in campaign.css, which owns them now. */
 @media (prefers-reduced-motion: reduce) {
   .sm-input,
   .sm-radio,
-  .sm-checkbox,
-  .sm-submit,
-  .sm-btn-secondary,
-  .sm-foot-meta a {
+  .sm-checkbox {
     transition: none;
-  }
-  .sm-submit:active,
-  .sm-btn-secondary:active {
-    transform: none;
   }
 }

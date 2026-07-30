@@ -31,6 +31,12 @@ export const CAMERA_POSITIONS = [
 // The one answer that trips the soft gate. It warns; it never blocks.
 export const SIDE_ANGLE = CAMERA_POSITIONS[2];
 
-// Where the compression walkthrough lives. Not built yet — point this at the
-// real guide (or drop the sentence) before the campaign goes out.
 export const EXPORT_GUIDE_HREF = "/export-guide";
+
+// The upload ceiling exists to stop the Dropbox request being abused, not
+// because anything downstream needs a small file — so it sits high enough that
+// a real match effectively never trips it. At the ~60MB/min a phone shoots
+// 1080p30, three hours is about 10.5GB, so 12GB holds a full three-setter with
+// room over. Coaches with something larger paste a link, which has no limit.
+export const MAX_UPLOAD_LABEL = "12GB";
+export const MAX_UPLOAD_HOURS = "three hours";
