@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import { CONTACT_EMAIL } from "@/lib/links";
 import {
   CAMERA_POSITIONS,
   SIDE_ANGLE,
@@ -194,7 +195,7 @@ export function MatchForm() {
               One thing left &mdash; the film itself.
             </p>
             <a
-              className="sm-btn-secondary"
+              className="campaign-btn campaign-btn-secondary"
               href={UPLOAD_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -249,7 +250,7 @@ export function MatchForm() {
       setSent(true);
     } catch {
       setSubmitError(
-        "Something went wrong sending that. Try again, or email the details to team@advantage-analytics.com and I'll sort it out.",
+        `Something went wrong sending that. Try again, or email the details to ${CONTACT_EMAIL} and I'll sort it out.`,
       );
     } finally {
       setSubmitting(false);
@@ -511,7 +512,7 @@ export function MatchForm() {
             it appears, not just rendered. */}
         <div role="status" aria-live="polite">
           {values.cameraPosition === SIDE_ANGLE && (
-            <p className="sm-caution">
+            <p className="campaign-note is-caution">
               Side-angle footage doesn&rsquo;t work with our tracking yet. Send
               it anyway &mdash; I&rsquo;ll take a look and tell you straight
               away whether we can do anything with it.
@@ -540,7 +541,11 @@ export function MatchForm() {
       </div>
 
       <div className="sm-submit-row">
-        <button className="sm-submit" type="submit" disabled={submitting}>
+        <button
+          className="campaign-btn campaign-btn-primary sm-submit"
+          type="submit"
+          disabled={submitting}
+        >
           {submitting ? "Sending…" : "Send it over"}
         </button>
         {submitError && (

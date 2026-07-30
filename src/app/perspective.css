@@ -101,7 +101,11 @@
 .wrap { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 40px; }
 @media (max-width: 720px) { .wrap { padding: 0 22px; } }
 
+/* A utility applied to arbitrary elements (span, h2, ...), so it owns its own
+   margin: an <h2 class="eyebrow"> otherwise arrives with UA margins. Every
+   existing override is (0,2,0) and still wins. */
 .eyebrow {
+  margin: 0;
   display: inline-flex; align-items: center; gap: 12px;
   font: var(--fw-medium) 10px/1.5 var(--font-sans);
   letter-spacing: 2.5px; text-transform: uppercase;

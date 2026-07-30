@@ -1,0 +1,116 @@
+/* ============================================================
+   Export guide — the compression walkthrough linked from the
+   /send-a-match intake page. A reference page, not an editorial
+   one: whoever is here is mid-task with a file that's too big,
+   so it's built to be scanned and left. Hairline-divided
+   sections on a constrained reading column, in the same voice
+   as the legal pages — light type, mono micro-labels, one blue
+   accent.
+   ============================================================ */
+
+/* Matches /send-a-match's measure so the shell's wrap — which holds the header,
+   main AND footer — puts the wordmark and footer on the same left edge across
+   both pages of the funnel. Previously 808 here against 1180 there, so the logo
+   visibly jumped when a coach clicked through.
+
+   The reading column does NOT follow it: .eg-doc stays 760 and left-aligns
+   inside the wider wrap, exactly as .legal-doc sits inside .wrap. Widening the
+   prose would buy nothing anyway — .eg-sec > p is capped at 68ch, so a bigger
+   measure adds right-hand margin, not text. */
+.eg-page {
+  /* Read by the shared components in campaign.css. */
+  --campaign-item-size: 14.5px;
+  --campaign-item-leading: 1.6;
+}
+
+/* Gated at exactly the breakpoint /send-a-match uses. Declaring it
+   unconditionally here was a bug: below 1080px the intake page fell back to the
+   608px default while this one stayed at 1180, so the wordmark sat 146px apart
+   between the two pages at, say, 900px — the very jump the token was added to
+   remove. Both routes must switch together. */
+@media (min-width: 1080px) {
+  .eg-page {
+    --campaign-measure: 1180px;
+  }
+}
+
+/* Load-bearing, not defensive: the wrap is now 1180 and this is what holds the
+   article at a readable measure. The top margin separates it from the masthead
+   at the same 56px step /send-a-match uses. */
+.eg-doc {
+  max-width: 760px;
+  margin-top: 56px;
+}
+
+/* The prose defaults are wrapped in :where() so they carry ZERO specificity.
+   Without it `.eg-sec > p` (0,1,1) beat `.campaign-note` (0,1,0) and the shared
+   callout rendered --ink-secondary here but --ink-muted on /send-a-match, with a
+   different line-height and an inherited max-width. A component class must win
+   over a container default; the ladder of element-qualified overrides that used
+   to patch this was both fragile and incomplete. */
+
+/* ---- Section rhythm: hairline-divided, same cadence as .legal-sec ---- */
+.eg-sec + .eg-sec {
+  margin-top: 44px;
+  padding-top: 44px;
+  border-top: 1px solid var(--hairline);
+}
+
+.eg-sec h2 {
+  margin: 0 0 16px;
+  font: var(--fw-regular) clamp(20px, 2vw, 26px) / 1.2 var(--font-sans);
+  letter-spacing: -0.4px;
+  color: var(--ink);
+}
+
+:where(.eg-sec) > p {
+  margin: 0 0 16px;
+  max-width: 68ch;
+  font: var(--fw-regular) 15px / 1.7 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+
+:where(.eg-sec) > p:last-child {
+  margin-bottom: 0;
+}
+
+.eg-sec strong {
+  color: var(--ink);
+  font-weight: var(--fw-medium);
+}
+
+.eg-sec em {
+  font-style: normal;
+  color: var(--ink);
+}
+
+/* ---- Keep / skip columns ---- */
+.eg-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 26px;
+}
+
+.eg-col .eyebrow {
+  margin-bottom: 16px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 720px) {
+  .eg-sec + .eg-sec {
+    margin-top: 32px;
+    padding-top: 32px;
+  }
+
+  .eg-sec h2 {
+    margin-bottom: 14px;
+  }
+
+  /* Two short columns become one honest list. */
+  .eg-cols {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}

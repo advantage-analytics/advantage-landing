@@ -122,8 +122,11 @@ export async function POST(request: Request) {
   }
 
   // The row is the source of truth; both emails are best-effort and never fail
-  // the request once it's written.
-  await sendSubmissionEmail({
+  // the request once it's written. They're independent, so they go out together
+  // rather than in series — sequential awaits put a whole extra Resend
+  // round-trip between the coach and their confirmation screen.
+  await Promise.all([
+    sendSubmissionEmail({
     to: NOTIFY_TO,
     subject: `New match: ${player || name} — ${program || "unknown program"}`,
     replyTo: email,
@@ -145,9 +148,8 @@ ${row("Score", score)}
 ${row("Camera", cameraPosition)}
 <p><strong>Notes:</strong></p>
 <p>${escapeHtml(notes).replace(/\n/g, "<br>") || "-"}</p>`,
-  });
-
-  await sendSubmissionEmail({
+    }),
+    sendSubmissionEmail({
     to: email,
     subject: "We've got your match",
     replyTo: NOTIFY_TO,
@@ -167,7 +169,8 @@ ${
     willUpload ? " of the film arriving" : ""
   }. If anything about the file needs sorting out, I'll email you directly.</p>
 <p>— Cj<br>Advantage Analytics</p>`,
-  });
+    }),
+  ]);
 
   return NextResponse.json({ ok: true });
 }

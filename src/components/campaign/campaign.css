@@ -1,0 +1,337 @@
+/* ============================================================
+   Campaign shell — the frame shared by /send-a-match and
+   /export-guide.
+
+   These two are one funnel: a collegiate coach arrives from a cold
+   email or an in-person referral, and the only thing they came to
+   do is send a match. A visitor who arrives via site navigation
+   needs navigation to get back out; a visitor who arrives from an
+   email does not. So this shell carries a wordmark and a footer and
+   nothing else — no nav, no scroll reveals, no dark bands.
+
+   ---- Two conventions keep this file decoupled from its routes ----
+
+   1. Disjoint namespaces. This file only ever writes `.campaign-*`
+      (plus `.perspective-page.campaign-page`). Routes only ever
+      write `.sm-*` / `.eg-*`. No selector here can be defeated by a
+      route file, so CSS emission order never becomes load-bearing.
+
+   2. Variables flow one way. This file READS `var(--campaign-*)`
+      and never declares the per-route ones; routes declare them.
+      One declaration site means no cascade race.
+
+   Break either convention and stylesheet order silently starts to
+   matter. In particular: never reference a `--sm-*` or `--eg-*`
+   token from this file. `.campaign-footer` used to inherit
+   `--sm-quiet-text`, which resolved to nothing on the second route
+   and left the footer text unstyled.
+   ============================================================ */
+
+/* The doubled class is deliberate: `.perspective-page` sets the site's
+   off-white `--surface-page`, and a single `.campaign-page` would tie with it
+   at (0,1,0) and be decided by file order. Campaign pages are white paper.
+
+   `.perspective-page` itself must stay on this element — perspective.css scopes
+   both `box-sizing: border-box` and the entire keyboard focus-ring system to
+   it. Dropping it silently changes every width calculation on the page and
+   removes every focus ring. */
+.perspective-page.campaign-page {
+  background: var(--surface);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* One wrap for header, main and footer, so the wordmark always sits in register
+   with the content below it — and, because both funnel routes declare the same
+   measure at the same breakpoint, in register ACROSS the two pages too. Keep
+   them in step: if one route changes when it widens, the logo jumps on click-
+   through. The reading column is held separately by .eg-doc, not by this. */
+.campaign-wrap {
+  width: 100%;
+  max-width: var(--campaign-measure, 608px);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+@media (max-width: 420px) {
+  .campaign-wrap {
+    padding: 0 20px;
+  }
+}
+
+/* ---- Header: wordmark, hairline, nothing else ----
+   Not fixed, so no page needs top clearance for it. */
+.campaign-header {
+  border-bottom: 1px solid var(--hairline);
+}
+.campaign-header .campaign-wrap {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+/* Deliberately not a link. The intake form holds a dozen fields of unsaved
+   state with no beforeunload guard, and the wordmark is the most habitually
+   clicked element on any page — a same-tab hop to `/` is unrecoverable data
+   loss. The footer's domain link is the deliberate exit, in a new tab. */
+.campaign-brand {
+  height: 22px;
+  width: auto;
+}
+
+.campaign-main {
+  flex: 1 1 auto;
+  padding: 56px 0 96px;
+}
+@media (max-width: 640px) {
+  .campaign-main {
+    padding: 40px 0 72px;
+  }
+}
+
+/* ---- Masthead ----
+   30px/36px weight 300 at -0.6px is the specified page-H1 step; it holds at
+   every width rather than scaling up on desktop. Quieter than the site's
+   `.page-head` ramp on purpose: these are documents to act on, not editorial
+   pages. */
+.campaign-head h1 {
+  margin: 0;
+  font: var(--fw-light) 30px/36px var(--font-sans);
+  letter-spacing: -0.6px;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.campaign-head .eyebrow {
+  margin-bottom: 16px;
+}
+.campaign-lede {
+  margin: 20px 0 0;
+  max-width: 560px;
+  font: var(--fw-regular) 16px/1.6 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+
+/* ============================================================
+   Shared components
+   The two funnel pages expressed the same ideas differently
+   because they were authored apart: primary buttons at 38px with
+   a blue glow on one and 46px flat on the other, links underlined
+   on one and not the other, three separate callout treatments.
+   These are the single definitions both routes now use.
+
+   Deliberately NOT unified: the form's field density (13px labels,
+   12px hints) against the guide's 15px/1.7 prose. A twelve-field
+   form set at reading-prose spacing is materially taller and worse
+   to scan; a form and a document are allowed to differ.
+   ============================================================ */
+
+/* ---- Buttons ----
+   Geometry follows the site's global `.btn` (perspective.css) but at the
+   campaign register's 46px, because the primary control here is a form submit
+   that wants a thumb-sized target. The global's two-layer `--blue-glow` shadow
+   is dropped on purpose: this page's restraint doesn't want a lit CTA. */
+.campaign-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 24px;
+  border: 1px solid transparent;
+  border-radius: var(--r-button);
+  font: var(--fw-medium) 13px var(--font-sans);
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 200ms var(--ease-primary),
+    border-color 180ms var(--ease-primary), color 180ms var(--ease-primary),
+    transform 200ms var(--ease-primary);
+}
+.campaign-btn:active {
+  transform: scale(0.97);
+}
+.campaign-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.campaign-btn-primary {
+  background: var(--signal-blue);
+  color: #fff;
+}
+.campaign-btn-primary:hover {
+  background: var(--signal-blue-deep);
+}
+
+.campaign-btn-secondary {
+  background: var(--surface);
+  border-color: var(--hairline-medium);
+  color: var(--ink);
+}
+.campaign-btn-secondary:hover {
+  border-color: var(--signal-blue);
+  color: var(--signal-blue);
+}
+
+/* ---- Links ----
+   Underlined. Colour alone is not a sufficient distinguisher, and these sit
+   inside prose someone is reading to decide whether to act. */
+.campaign-link {
+  color: var(--signal-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 180ms var(--ease-primary);
+}
+.campaign-link:hover {
+  color: var(--signal-blue-deep);
+}
+
+/* ---- Notes ----
+   One callout, two weights. Neutral is a quiet left rule with no fill; the
+   caution modifier adds the amber and a tint because it carries a real
+   constraint. Both stay iconless — the words do the work. */
+.campaign-note {
+  margin: 20px 0 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--hairline-medium);
+  font: var(--fw-regular) 13px/1.6 var(--font-sans);
+  color: var(--ink-muted);
+}
+.campaign-note.is-caution {
+  padding: 14px 16px;
+  background: var(--surface-subtle);
+  border-left-color: var(--viz-amber);
+  border-radius: 0 var(--r-element) var(--r-element) 0;
+  color: var(--ink-secondary);
+}
+
+/* ---- Icon lists ----
+   Same lucide Check/X at 15px, same 3px optical nudge. Rows are gapped rather
+   than ruled: the guide's hairline-per-row treatment fought the section rules
+   that already divide the page. */
+.campaign-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+/* Type size is a per-route token, read here and declared by the route — the
+   same one-way convention as --campaign-measure. Structure, icon treatment and
+   the semantic colours are shared; a prose page and a form are allowed to set
+   their own scale. */
+.campaign-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font: var(--fw-regular) var(--campaign-item-size, 13px) /
+    var(--campaign-item-leading, 1.55) var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+.campaign-item svg {
+  flex: 0 0 auto;
+  margin-top: 3px;
+  color: var(--ink-tertiary);
+}
+.campaign-item strong {
+  font-weight: var(--fw-medium);
+  color: var(--ink);
+}
+/* Semantic variants: green affirms, grey withholds. Neutral checklists keep
+   --ink-tertiary so a list of requirements doesn't read as a scorecard. */
+.campaign-item.is-keep svg {
+  color: var(--win-green);
+}
+.campaign-item.is-skip svg {
+  color: var(--ink-label);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .campaign-btn,
+  .campaign-link {
+    transition: none;
+  }
+  .campaign-btn:active {
+    transform: none;
+  }
+}
+
+
+/* ---- Footer ----
+   Out-specifies the site's `.perspective-page footer` band, which would
+   otherwise paint this one grey and pad it out to homepage proportions. The
+   hairline is the only separator here — a tonal fill on top of it would be two
+   mechanisms doing one job. */
+.campaign-page .campaign-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--hairline);
+  padding: 28px 0 36px;
+}
+.campaign-foot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 28px;
+  flex-wrap: wrap;
+}
+.campaign-footer img {
+  height: 18px;
+  width: auto;
+  opacity: 0.65;
+}
+/* Contact and legal are separate groups so four items break onto their own
+   line cleanly on a phone rather than splitting mid-group. */
+.campaign-foot-meta,
+.campaign-foot-legal {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font: var(--fw-regular) 12px var(--font-sans);
+  color: var(--ink-muted);
+}
+.campaign-foot-meta a,
+.campaign-foot-legal a {
+  color: var(--ink-muted);
+  transition: color 180ms var(--ease-primary);
+}
+.campaign-foot-meta a:hover,
+.campaign-foot-legal a:hover {
+  color: var(--ink);
+}
+
+/* Narrow screens: stack the three groups deliberately instead of letting
+   space-between scatter them over four ragged lines. Left-aligned so the footer
+   reads as a block rather than as leftovers. */
+@media (max-width: 620px) {
+  .campaign-foot-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .campaign-foot-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/* Standalone links get real vertical room on touch; an inline link inside a
+   sentence is exempt from target sizing and would break the line box if
+   padded. */
+@media (pointer: coarse) {
+  .campaign-foot-meta a,
+  .campaign-foot-legal a {
+    display: inline-block;
+    padding: 6px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .campaign-foot-meta a,
+  .campaign-foot-legal a {
+    transition: none;
+  }
+}
