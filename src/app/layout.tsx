@@ -22,10 +22,28 @@ const title = "Advantage — Performance Intelligence for Competitive Tennis";
 const description =
   "Centralize your Swingvision and ELC match data into pro-grade scouting reports, multi-match trends, and opponent intelligence. Built for the competitive player.";
 
+const LOCAL_ORIGIN = "http://localhost:3000";
+
+// Resolving this at module scope means a bad value doesn't degrade the metadata,
+// it throws before the layout renders and 500s every route on the site. `??`
+// alone wasn't enough: it guards null/undefined, so an empty string or a
+// scheme-less host (`advantage-analytics.com`) still reached new URL() and blew
+// up. Prepend a scheme when one is missing, and fall back rather than throw.
+function resolveMetadataBase(): URL {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return new URL(LOCAL_ORIGIN);
+  try {
+    return new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
+  } catch {
+    console.warn(
+      `[layout] NEXT_PUBLIC_SITE_URL is not a usable URL; falling back to ${LOCAL_ORIGIN}.`,
+    );
+    return new URL(LOCAL_ORIGIN);
+  }
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-  ),
+  metadataBase: resolveMetadataBase(),
   title,
   description,
   // Favicon and social images come from the app-dir file conventions:
