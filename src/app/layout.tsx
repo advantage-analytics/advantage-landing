@@ -46,9 +46,27 @@ export const metadata: Metadata = {
   metadataBase: resolveMetadataBase(),
   title,
   description,
-  // Favicon and social images come from the app-dir file conventions:
+  // Favicon, home-screen icon and social images come from the app-dir file
+  // conventions:
   //   src/app/icon.png            -> <link rel="icon">
+  //   src/app/apple-icon.png      -> <link rel="apple-touch-icon">
   //   src/app/opengraph-image.jpg -> og:image (and the twitter card image)
+  // Without the apple-icon, "Add to Home Screen" on iOS falls back to a
+  // screenshot of the page instead of the logo: Safari ignores rel="icon"
+  // there. The file is a 180x180 opaque square (iOS masks it into its own
+  // squircle and renders transparency as black, so it can't be the rounded,
+  // alpha-cornered favicon).
+  //
+  // `appleWebApp.title` is the label under that home-screen icon; without it
+  // iOS uses the full <title>, which truncates to "Advantage — Perfo...".
+  // `capable` is opt-out because Next defaults it to true for any appleWebApp
+  // object, and Safari 17.4+ reads `mobile-web-app-capable` to launch the
+  // bookmark chrome-less. This is a marketing site that hands off to the
+  // dashboard app and mailto: links, so it should open as a normal Safari tab.
+  appleWebApp: {
+    capable: false,
+    title: "Advantage",
+  },
   openGraph: {
     title,
     description,
