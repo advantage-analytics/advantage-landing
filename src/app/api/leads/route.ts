@@ -5,7 +5,6 @@ import { LEAD_SOURCES, type LeadSource } from "@/lib/leads";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
   try {
