@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { AdvantageDashboard } from "./dashboard";
@@ -41,9 +42,9 @@ function HeroActions() {
         Join the pilot
         <ArrowUpRight size={16} />
       </a>
-      <a className="hbtn hbtn-glass" href="/pilot">
+      <Link className="hbtn hbtn-glass" href="/pilot">
         See pilot terms
-      </a>
+      </Link>
     </div>
   );
 }

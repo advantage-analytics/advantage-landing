@@ -187,9 +187,16 @@ main > section.band:first-child { border-top: none; }
    Wraps on narrow columns — no white-space:nowrap, unlike the old lockup. */
 .hiw-sv { display:inline-flex; align-items:center; flex-wrap: wrap; gap: 8px; margin-top: 14px;
   font: var(--fw-regular) 12.5px/1.5 var(--font-sans); color: var(--ink-muted); }
+/* Logo + its question mark travel as one flex item so the row gap can't
+   strand the "?" from the word it closes. */
+.hiw-sv-q { display:inline-flex; align-items:center; gap: 6px; }
 .hiw-sv img { height: 13px; display:block; }
 .hiw-sv-div { width:1px; height:13px; background: var(--hairline-medium); flex:0 0 auto; }
 
+/* The ledger — numbered rows, divided by hairlines between and below. It is a
+   real <ol> on /pilot and a <div> on the home page, so the list chrome is reset
+   here rather than by a route-local override. */
+.hiw-list { margin: 0; padding: 0; list-style: none; }
 /* The ledger — three numbered rows, divided by hairlines between and below. */
 .hiw-item { display:grid; grid-template-columns: 52px 1fr; gap: 24px;
   padding: 28px 0; border-bottom: 1px solid var(--hairline); }
@@ -397,12 +404,16 @@ main > section.band:first-child { border-top: none; }
 .pb-link:hover { color: var(--signal-blue-deep); }
 
 .pb-ledger { margin: 0; border-top: 1px solid var(--hairline); }
-.pb-row { display:grid; grid-template-columns: 56px 1fr auto; gap: 24px; align-items: baseline;
+.pb-row { display:grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;
   padding: 27px 0; border-bottom: 1px solid var(--hairline); }
+/* The index sits inside the <dt> (HTML validity), so the dt is itself the
+   index+label grid. Column width matches .hiw-item's, keeping the two ledgers
+   on the same rhythm. */
+.pb-row .l { display:grid; grid-template-columns: 56px 1fr; gap: 24px; align-items: baseline;
+  margin: 0; font: var(--fw-medium) 10px/1.4 var(--font-mono); letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--ink-label); }
 .pb-row .n { font: var(--fw-regular) 13px var(--font-mono); letter-spacing: 2px;
   color: var(--signal-blue); font-variant-numeric: tabular-nums; }
-.pb-row .l { margin: 0; font: var(--fw-medium) 10px/1.4 var(--font-mono); letter-spacing: 2.5px;
-  text-transform: uppercase; color: var(--ink-label); }
 .pb-row .v { margin: 0; font: var(--fw-light) 26px var(--font-sans); letter-spacing:-0.6px;
   color: var(--ink); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
 .pb-row .v small { font: var(--fw-regular) 12px var(--font-sans); letter-spacing: 0;
@@ -415,9 +426,9 @@ main > section.band:first-child { border-top: none; }
 /* Below this the three-column row can't hold a right-aligned value without the
    label and the figure colliding, so the value drops under its own label. */
 @media (max-width: 560px) {
-  .pb-row { grid-template-columns: 40px 1fr; gap: 6px 16px; padding: 22px 0; }
-  .pb-row .n { grid-row: 1; }
-  .pb-row .v { grid-column: 2; text-align: left; white-space: normal; font-size: 23px; }
+  .pb-row { grid-template-columns: 1fr; gap: 8px; padding: 22px 0; }
+  .pb-row .l { grid-template-columns: 40px 1fr; gap: 16px; }
+  .pb-row .v { text-align: left; white-space: normal; font-size: 23px; padding-left: 56px; }
   .pb-row .v small { display:block; margin: 4px 0 0; }
 }
 
@@ -476,9 +487,6 @@ main > section.band:first-child { border-top: none; }
 .access-ask { margin: 2px 0 14px; font: var(--fw-regular) 12px/1.5 var(--font-sans); color: rgba(255,255,255,0.6); }
 .access-ask a { color: rgba(255,255,255,0.9); text-decoration: underline; text-underline-offset: 3px; }
 .access-ask a:hover { color: #fff; }
-/* .pv-steps used to exist only to strip list chrome off an <ol> borrowing this
-   ledger. Owning it here means the next page can use a real list too. */
-.hiw-list { margin: 0; padding: 0; list-style: none; }
 
 /* The individual lane, as a rule across the foot of the card. Outside
    .access-inner so it survives the form's sent state — the path stays visible

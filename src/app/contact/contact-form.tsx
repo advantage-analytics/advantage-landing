@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
+import Link from "next/link";
 import { links } from "@/lib/links";
 
 const ROLES = ["Player", "Coach", "Parent", "Other"];
@@ -39,7 +40,7 @@ function validate(v: Values): Record<string, string> {
    closes over nothing, and this form re-renders on every keystroke. */
 const TEAM_LEAD = (
   <p className="form-lead">
-    Bringing your team? <a href="/pilot">Join the pilot</a> — free through the
+    Bringing your team? <Link href="/pilot">Join the pilot</Link> — free through the
     fall season.
   </p>
 );

@@ -134,8 +134,13 @@ export function HowItWorks() {
                   <p>{s.p}</p>
                   {s.sv ? (
                     <span className="hiw-sv">
-                      Already on
-                      <img src="/assets/providers/swingvision-trim.png" alt="SwingVision" />?
+                      {/* Logo and its question mark are one flex item, so the
+                          row gap can't strand the "?" away from the word it
+                          closes. */}
+                      <span className="hiw-sv-q">
+                        Already on{" "}
+                        <img src="/assets/providers/swingvision-trim.png" alt="SwingVision" />?
+                      </span>
                       <i className="hiw-sv-div" aria-hidden="true" />
                       Import those matches too.
                     </span>
@@ -349,7 +354,7 @@ export function BuiltForAthletes() {
             <p className="ath-c3-line">Built with collegiate programs.</p>
             {/* Proof stats as the scoreboard baseline — hairline grid, tabular
                 figures, mono captions, the page's one data vocabulary. */}
-            <ul className="ath-c3-ledger is-two">
+            <ul className="ath-c3-ledger">
               {ATH_STATS.map((s) => (
                 <li className="ath-stat" key={s.l}>
                   <span className="ath-stat-n">{s.n}</span>

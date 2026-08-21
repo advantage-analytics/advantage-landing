@@ -47,10 +47,15 @@ export function PilotTermsBand({
           <dl className="pb-ledger">
             {PILOT_TERMS.map((t, i) => (
               <div className="pb-row" key={t.l}>
-                <span className="n" aria-hidden="true">
-                  0{i + 1}
-                </span>
-                <dt className="l">{t.l}</dt>
+                {/* The index lives inside the <dt>: a <dl>'s <div> wrapper may
+                    contain only dt/dd, and a stray <span> there breaks the
+                    term/description pairing for assistive tech. */}
+                <dt className="l">
+                  <span className="n" aria-hidden="true">
+                    0{i + 1}
+                  </span>
+                  <span className="t">{t.l}</span>
+                </dt>
                 <dd className="v">
                   {t.v}
                   {t.s ? <small>{t.s}</small> : null}
