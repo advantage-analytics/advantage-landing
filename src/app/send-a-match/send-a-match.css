@@ -36,7 +36,6 @@
   --sm-field-line: var(--border-field);
   --sm-control-line: var(--hairline-medium);
   --sm-quiet-text: var(--ink-muted);
-  --sm-court-line: var(--hairline-medium);
 }
 
 /* ---- Desktop: two columns, not one lonely ribbon ----
@@ -152,21 +151,11 @@ body:has(.sm-page) {
 }
 /* Centred in the column as well as inside its own viewBox — left-aligned, the
    340px drawing sat 76px left of the rail's centre, which stacked on top of the
-   court's offset inside the box and read as shoved into the corner. */
-.sm-court {
-  display: block;
-  width: 100%;
+   court's offset inside the box and read as shoved into the corner. The drawing
+   itself is styled by court-diagram.css; this owns only its placement here. */
+.sm-diagram .court-diagram {
   max-width: 340px;
-  height: auto;
   margin-inline: auto;
-}
-.sm-court-label {
-  font: var(--fw-medium) 12px var(--font-sans);
-  letter-spacing: -0.1px;
-  fill: var(--ink-secondary);
-}
-.sm-court-label.is-muted {
-  fill: var(--sm-quiet-text);
 }
 
 .sm-compress {

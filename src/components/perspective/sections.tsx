@@ -1,49 +1,16 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
-import Link from "next/link";
+import { useId, useState, type CSSProperties } from "react";
 import { Icon } from "./icons";
 import { AdvantageDashboard, CourtViz } from "./dashboard";
 import { TrafficLights } from "./traffic-lights";
-import { links } from "@/lib/links";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
 
-/* Reveal-on-scroll — fades sections in as they enter the viewport.
-   Honors prefers-reduced-motion via the CSS (.reveal stays visible).
-
-   The CSS hides .reveal only under .perspective-page[data-reveal-armed], set
-   here at hydration — server-rendered content stays visible while JS loads,
-   so a hash landing (/#access) never sits on a blank section. Arming the
-   page wrapper (not <html>) keeps the gate per-mount and fail-open: each
-   navigation starts unarmed, and a page that renders .reveal without calling
-   this hook shows its content rather than hiding it forever. Elements
-   already painted in the viewport when we arm go straight to `.in` in the
-   same frame (both changes paint together) — never hide what the user has
-   already been shown. */
-export function useReveal() {
-  useEffect(() => {
-    const root = document.querySelector(".perspective-page");
-    if (!root) return;
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            io.unobserve(e.target);
-          }
-        }),
-      { threshold: 0.12 }
-    );
-    const vh = window.innerHeight;
-    root.querySelectorAll(".reveal").forEach((el) => {
-      const r = el.getBoundingClientRect();
-      if (r.top < vh && r.bottom > 0) el.classList.add("in");
-      else io.observe(el);
-    });
-    root.setAttribute("data-reveal-armed", "");
-    return () => io.disconnect();
-  }, []);
-}
+/* The home page's four content bands. This module statically imports the real
+   AdvantageDashboard, so anything that only needs the shell (useReveal, Footer,
+   RequestAccess) lives in its own module — importing it from here would drag
+   the whole 1440px dashboard tree onto /about, /contact, /pilot and the legal
+   routes, none of which render it. */
 
 // Scales the real 1440-wide AdvantageDashboard to fit its container. The hook's
 // ResizeObserver watches the inner artboard, so a late height change (mounted
@@ -123,18 +90,22 @@ export function DashboardShowcase() {
   );
 }
 
+// The premise is the video a program already shoots. SwingVision is no longer
+// step one — it survives as a second way in, noted on the upload step where a
+// coach who already has those matches will actually look for it.
 const HOW_STEPS = [
   {
-    t: "Capture the match with SwingVision.",
-    p: "Record on court with SwingVision’s electronic line-calling. Every shot, serve, and call is logged automatically.",
+    t: "Film it the way you already do.",
+    p: "Behind the baseline, roughly centered, elevated if you can. One angle to avoid: footage shot from the side of the court won’t produce a full breakdown.",
   },
   {
-    t: "Export the match and upload.",
-    p: "Export the match file from SwingVision and drop it into Advantage. We parse every point — no spreadsheets to wrangle.",
+    t: "Upload the video.",
+    p: "Drop the file into Advantage. No tagging, no spreadsheets, no export step.",
+    sv: true,
   },
   {
     t: "Read the dashboard, find the pattern.",
-    p: "Statistics, court visualizations, and AI insight are ready in seconds — on the surfaces your whole team can read.",
+    p: "Statistics, court maps, and AI insight — on surfaces your whole team can read.",
   },
 ];
 
@@ -150,12 +121,7 @@ export function HowItWorks() {
           <div className="hiw-intro">
             <span className="eyebrow">How it works</span>
             <h2>From the last point to the next adjustment.</h2>
-            <p>Advantage plugs straight into the line-calling data you already capture. Three steps, no manual tagging.</p>
-            <span className="hiw-works">
-              Works with
-              <i className="hiw-works-div" aria-hidden="true" />
-              <img src="/assets/providers/swingvision-trim.png" alt="SwingVision" />
-            </span>
+            <p>Advantage runs on the match video you already shoot. Three steps between the final point and the breakdown.</p>
           </div>
           {/* Each row reveals on its own with a stagger index, so 01 → 02 → 03
               cascade in sequence rather than appearing as one block. */}
@@ -166,6 +132,19 @@ export function HowItWorks() {
                 <div className="hiw-item-body">
                   <h4>{s.t}</h4>
                   <p>{s.p}</p>
+                  {s.sv ? (
+                    <span className="hiw-sv">
+                      {/* Logo and its question mark are one flex item, so the
+                          row gap can't strand the "?" away from the word it
+                          closes. */}
+                      <span className="hiw-sv-q">
+                        Already on{" "}
+                        <img src="/assets/providers/swingvision-trim.png" alt="SwingVision" />?
+                      </span>
+                      <i className="hiw-sv-div" aria-hidden="true" />
+                      Import those matches too.
+                    </span>
+                  ) : null}
                 </div>
               </div>
             ))}
@@ -264,7 +243,7 @@ const FEAT_READS = [
   {
     id: "court",
     title: "Serve placement",
-    copy: "Every serve plotted on a real court from line-call coordinates — your wide, body, and T patterns, exposed.",
+    copy: "Every serve plotted on a real court, drawn from your match footage — your wide, body, and T patterns, exposed.",
     viz: (
       <div className="feat-court">
         <div className="feat-court-head">
@@ -344,10 +323,13 @@ export function Features() {
   );
 }
 
+// Two figures, both defensible under the video premise: nothing is hand-tagged,
+// and there are exactly two ways to get a match in. The old ledger's "100% from
+// line-call data" and "1 ELC source" describe a pipeline the product no longer
+// leads with.
 const ATH_STATS = [
-  { n: "100%", l: "From line-call data" },
-  { n: <>&lt;60s</>, l: "Match to insight" },
-  { n: "1", l: "ELC source · SwingVision" },
+  { n: "0", l: "Manual tagging" },
+  { n: "2", l: "Ways in · video or SwingVision" },
 ];
 
 // Documentary panel (design C3): a photograph of electronic line-calling on a
@@ -361,18 +343,15 @@ export function BuiltForAthletes() {
           <div className="ath-c3-photo">
             <img
               src="/assets/marketing/elc-court.jpg"
-              alt="An electronic line-calling camera overlooking a show court during live play"
+              alt="An elevated camera overlooking a show court from behind the baseline"
             />
             <div className="ath-c3-veil" aria-hidden="true" />
-            <span className="ath-c3-cap">
-              <i className="dot" aria-hidden="true" />
-              Electronic line calling · live capture
-            </span>
+            <span className="ath-c3-cap">Elevated · behind the baseline</span>
           </div>
           <div className="ath-c3-body">
             <span className="eyebrow">Built for the modern athlete</span>
             <h3>Built by former collegiate players. Designed for competitive advantage.</h3>
-            <p className="ath-c3-line">Built with collegiate programs. Individual players can create a free account today.</p>
+            <p className="ath-c3-line">Built with collegiate programs.</p>
             {/* Proof stats as the scoreboard baseline — hairline grid, tabular
                 figures, mono captions, the page's one data vocabulary. */}
             <ul className="ath-c3-ledger">
@@ -390,213 +369,4 @@ export function BuiltForAthletes() {
   );
 }
 
-export function RequestAccess() {
-  const [sent, setSent] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [university, setUniversity] = useState("");
-  const [role, setRole] = useState("");
-  const [division, setDivision] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
-  // Honeypot: hidden from users, filled by bots.
-  const company = useRef("");
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitError("");
-    setSubmitting(true);
-    try {
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, university, role, division, company: company.current }),
-      });
-      if (!res.ok) throw new Error();
-      setSent(true);
-    } catch {
-      setSubmitError("Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <section className="band access" id="access">
-      <div className="wrap">
-        <div className="access-card reveal">
-          <div className="ac-glow" />
-          <div className="ac-grain" aria-hidden="true" />
-          <div className="access-inner">
-            <div>
-              <span className="eyebrow">
-                Request access
-              </span>
-              <h3>Bring Advantage to your program.</h3>
-              <p>
-                Tell us about your team and we will set you up personally. We work with collegiate programs first, from
-                onboarding to match review.
-              </p>
-            </div>
-            <div className="access-form">
-              {sent ? (
-                <div className="access-sent">
-                  <div className="chk">
-                    <Icon n="check" size={20} />
-                  </div>
-                  Request received.
-                  <br />
-                  We will reach out at {email || "your inbox"} to get your program set up.
-                  <div className="access-note">
-                    Individual player?{" "}
-                    <a href={links.signUp} target="_blank" rel="noopener noreferrer">
-                      Create a free account
-                    </a>
-                    .
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={onSubmit}>
-                  {/* Honeypot — hidden from users, filled by bots. */}
-                  <input
-                    type="text"
-                    name="company"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    aria-hidden="true"
-                    onChange={(e) => {
-                      company.current = e.target.value;
-                    }}
-                    style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
-                  />
-                  <div className="uline">
-                    <label htmlFor="access-name">Name</label>
-                    <input
-                      id="access-name"
-                      type="text"
-                      placeholder="Your name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="uline">
-                    <label htmlFor="access-email">Email</label>
-                    <input
-                      id="access-email"
-                      type="email"
-                      placeholder="you@university.edu"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="uline">
-                    <label htmlFor="access-university">University / College</label>
-                    <input
-                      id="access-university"
-                      type="text"
-                      placeholder="Where your team competes"
-                      value={university}
-                      onChange={(e) => setUniversity(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="uline-row">
-                    <div className="uline">
-                      <label htmlFor="access-role">Role</label>
-                      <select
-                        id="access-role"
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                        required
-                      >
-                        <option value="" disabled>
-                          Select role
-                        </option>
-                        <option value="Coach">Coach</option>
-                        <option value="Player">Player</option>
-                        <option value="Analyst">Analyst</option>
-                      </select>
-                    </div>
-                    <div className="uline">
-                      <label htmlFor="access-division">Division</label>
-                      <select
-                        id="access-division"
-                        value={division}
-                        onChange={(e) => setDivision(e.target.value)}
-                      >
-                        <option value="">Optional</option>
-                        <option value="NCAA D I">NCAA D I</option>
-                        <option value="NCAA D II">NCAA D II</option>
-                        <option value="NCAA D III">NCAA D III</option>
-                        <option value="NAIA">NAIA</option>
-                        <option value="JUCO">JUCO</option>
-                        <option value="Other">Other</option>
-                      </select>
-                    </div>
-                  </div>
-                  <button className="btn btn-primary" type="submit" disabled={submitting}>
-                    {submitting ? "Sending…" : "Request access"} <Icon n="arrow" size={16} />
-                  </button>
-                  {submitError && (
-                    <div className="access-note" role="alert">{submitError}</div>
-                  )}
-                  <div className="access-note">
-                    Individual player?{" "}
-                    <a href={links.signUp} target="_blank" rel="noopener noreferrer">
-                      Create a free account
-                    </a>
-                    .
-                  </div>
-                </form>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function Footer() {
-  return (
-    <footer>
-      <div className="wrap">
-        <div className="foot-top">
-          <div className="foot-brand">
-            <img src="/assets/logos/logo.svg" alt="Advantage" />
-            <p>Performance intelligence for competitive tennis. Built by former collegiate players.</p>
-          </div>
-          <nav className="foot-cols">
-            <div className="foot-col">
-              <h5>Product</h5>
-              <Link href="/#dashboard">Dashboard</Link>
-              <Link href="/#how">How it works</Link>
-              <Link href="/#features">Features</Link>
-              <Link href="/#access">Request access</Link>
-              <a href={links.signUp} target="_blank" rel="noopener noreferrer">
-                Create a free account
-              </a>
-            </div>
-            <div className="foot-col">
-              <h5>Company</h5>
-              <Link href="/about">About</Link>
-              <Link href="/contact">Contact</Link>
-              <a href={links.signIn} target="_blank" rel="noopener noreferrer">
-                Sign in
-              </a>
-            </div>
-          </nav>
-        </div>
-        <div className="foot-bottom">
-          <span className="cp">© 2026 Advantage Analytics. All rights reserved.</span>
-          <span className="foot-legal">
-            <Link href="/legal/privacy-policy">Privacy Policy</Link>
-            <Link href="/legal/terms-and-conditions">Terms &amp; Conditions</Link>
-          </span>
-        </div>
-      </div>
-    </footer>
-  );
-}

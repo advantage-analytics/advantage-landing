@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { AdvantageDashboard } from "./dashboard";
@@ -38,12 +39,12 @@ function HeroActions() {
   return (
     <div className="h-actions">
       <a className="hbtn hbtn-white" href="#access">
-        Request access
+        Join the pilot
         <ArrowUpRight size={16} />
       </a>
-      <a className="hbtn hbtn-glass" href="#dashboard">
-        See the dashboard
-      </a>
+      <Link className="hbtn hbtn-glass" href="/pilot">
+        See pilot terms
+      </Link>
     </div>
   );
 }
@@ -79,7 +80,7 @@ function HeroCCanvas({ dashRotateX }: { dashRotateX: MotionValue<number> | numbe
           position: "relative",
           zIndex: 5,
           textAlign: "center",
-          paddingTop: 136,
+          paddingTop: 126,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -92,8 +93,9 @@ function HeroCCanvas({ dashRotateX }: { dashRotateX: MotionValue<number> | numbe
         <h1 className="h-title" style={{ fontSize: 62, maxWidth: 820 }}>
           Walk on court knowing the pattern.
         </h1>
-        <p className="h-sub" style={{ maxWidth: 540 }}>
-          Professional-grade match analytics, built from electronic line-calling data.
+        <p className="h-sub" style={{ maxWidth: 560 }}>
+          Shot-by-shot match analytics, built from the video your program already shoots. Film the
+          match, upload the file, read the breakdown.
         </p>
         <div style={{ marginTop: 4 }}>
           <HeroActions />
@@ -118,7 +120,7 @@ function MobileHero() {
         <span className="h-eyebrow">Performance Intelligence</span>
         <h1 className="mh-title">Walk on court knowing the pattern.</h1>
         <p className="mh-sub">
-          Professional-grade match analytics, built from electronic line-calling data.
+          Shot-by-shot match analytics, built from the video your program already shoots.
         </p>
         <HeroActions />
       </div>

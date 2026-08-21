@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
+import Link from "next/link";
 import { links } from "@/lib/links";
 
 const ROLES = ["Player", "Coach", "Parent", "Other"];
@@ -32,6 +33,17 @@ function validate(v: Values): Record<string, string> {
   if (!v.message.trim()) e.message = "Add a short message.";
   return e;
 }
+
+/* Bringing a team is the likelier reason a coach is on this page than a general
+   enquiry, and the pilot is free — so it is offered before the form, not after
+   it. The individual lane stays a footnote under the submit. Module scope: it
+   closes over nothing, and this form re-renders on every keystroke. */
+const TEAM_LEAD = (
+  <p className="form-lead">
+    Bringing your team? <Link href="/pilot">Join the pilot</Link> — free through the
+    fall season.
+  </p>
+);
 
 export function ContactForm() {
   const [values, setValues] = useState<Values>(EMPTY);
@@ -76,6 +88,7 @@ export function ContactForm() {
   if (sent) {
     return (
       <div className="form-panel">
+        {TEAM_LEAD}
         <div className="form-sent" role="status" aria-live="polite">
           <div className="chk">
             <Check size={22} strokeWidth={2} aria-hidden="true" />
@@ -85,7 +98,7 @@ export function ContactForm() {
           </h3>
           <p>Thanks. We read every message and reply within two business days.</p>
           <p className="form-foot">
-            Bringing your team? <a href="/#access">Request access</a>. Individual player?{" "}
+            Individual player?{" "}
             <a href={links.signUp} target="_blank" rel="noopener noreferrer">
               Create a free account
             </a>
@@ -127,6 +140,7 @@ export function ContactForm() {
 
   return (
     <div className="form-panel">
+      {TEAM_LEAD}
       <form onSubmit={onSubmit} noValidate>
         {/* Honeypot — hidden from users, ignored by them, filled by bots. */}
         <input
@@ -247,7 +261,7 @@ export function ContactForm() {
           </p>
         )}
         <p className="form-foot">
-          Bringing your team? <a href="/#access">Request access</a>. Individual player?{" "}
+          Individual player?{" "}
           <a href={links.signUp} target="_blank" rel="noopener noreferrer">
             Create a free account
           </a>

@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { Check } from "lucide-react";
 import {
   CampaignFrame,
@@ -10,7 +9,8 @@ import {
   MAX_UPLOAD_LABEL,
   TURNAROUND,
 } from "@/lib/match-intake";
-import { CourtDiagram } from "./court-diagram";
+import { CourtDiagram } from "@/components/court-diagram";
+import { FOOTAGE_CHECKLIST } from "@/components/footage-checklist";
 import { MatchForm } from "./match-form";
 import "./send-a-match.css";
 
@@ -23,23 +23,8 @@ export const metadata = {
 /* The qualifier, stated before a coach spends an hour on an upload we'd have to
    refuse. Getting this wrong is the worst thing the product could do to a first
    impression, so it precedes the form: stacked above it on a phone, beside it in
-   the sticky rail on a desktop. */
-const CHECKLIST: ReactNode[] = [
-  <>
-    Filmed from <strong>behind the baseline</strong>, roughly centered on the
-    court
-  </>,
-  <>
-    Elevated if possible &mdash; a fence post, a balcony, the top row of
-    bleachers
-  </>,
-  <>Far service line visible</>,
-  <>Near court outside of baseline visible</>,
-  <>
-    <strong>1080p or better, 30fps</strong>
-  </>,
-  <>MP4 / H.264 &mdash; most phone and PlaySight exports already are</>,
-];
+   the sticky rail on a desktop. The list itself is shared with /pilot, which
+   asks the same question of the same coaches. */
 
 export default function Page() {
   return (
@@ -85,7 +70,7 @@ export default function Page() {
             </p>
 
             <ul className="sm-checks campaign-list">
-              {CHECKLIST.map((item, i) => (
+              {FOOTAGE_CHECKLIST.map((item, i) => (
                 <li className="campaign-item" key={i}>
                   <Check size={15} strokeWidth={1.75} aria-hidden="true" />
                   <span>{item}</span>

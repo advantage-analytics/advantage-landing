@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { links } from "@/lib/links";
@@ -20,42 +21,57 @@ import { links } from "@/lib/links";
 
    Below 820px the center links and inline actions give way to a
    single menu button that drops a frosted sheet with the full nav —
-   section links and the company pages, plus Sign in / Request access —
+   section links and the company pages, plus Sign in / Join the pilot —
    so a phone or small tablet keeps every destination the desktop bar
    offers.
    =========================================================== */
 
-// `page: true` is a real route (About, Contact) that gets a current-page
-// marker; the rest are homepage section anchors, prefixed with the route base
-// so they scroll on home and navigate-then-scroll from a subpage.
+// `page: true` is a real route (Pilot, About) that gets a current-page marker;
+// the rest are section anchors, resolved against LOCAL_ANCHORS below.
 const NAV_LINKS = [
   { href: "#dashboard", label: "Dashboard" },
   { href: "#features", label: "Features" },
+  { href: "/pilot", label: "Pilot", page: true },
   { href: "/about", label: "About", page: true },
-  { href: "/contact", label: "Contact", page: true },
 ];
 
-/* `subpage` renders the bar for a standalone page (About, Contact, legal) that
-   has no dark hero behind it: it's forced into its solid (frosted, dark-logo)
-   skin from the first paint, and every section anchor is prefixed with "/" so a
-   tap navigates home and then scrolls, instead of hunting for a #section that
-   doesn't exist on the current route. On the home page (`subpage` omitted) the
-   bar keeps its transparent-over-hero → solid-on-scroll behaviour and bare
-   in-page anchors. */
+// Section anchors that resolve in place on a route OTHER than the home page.
+// The home page needs no entry — it renders every section the nav links to, by
+// definition. This is a table of exceptions: /pilot carries its own copy of the
+// access form, so its CTA must scroll rather than bounce the visitor home.
+const LOCAL_ANCHORS: Record<string, readonly string[]> = {
+  "/pilot": ["#access"],
+};
+
+/* `subpage` says only one thing: there is no dark hero behind the bar, so it
+   wears its solid (frosted, dark-logo) skin from the first paint instead of
+   fading in on scroll. About, Contact and the legal pages pass it; /pilot does
+   not, because it has a mesh hero of its own.
+
+   Where the links point is a separate question, and it is answered by the route
+   rather than by a prop: off the home page every section anchor is prefixed
+   with "/" so a tap navigates home and then scrolls, instead of hunting for a
+   #section that doesn't exist here, and the brand mark goes home rather than to
+   the top of the current page. Deriving both from `pathname` is what lets
+   /pilot have a transparent bar AND correctly-rebased anchors — the two used to
+   be welded together under `subpage`. */
 export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
   const [solid, setSolid] = useState(subpage);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  // The home anchor and the section base differ by route: on a subpage they
-  // reach back to "/", on the home page they stay in-page.
-  const homeHref = subpage ? "/" : "#top";
-  const base = subpage ? "/" : "";
+  const isHome = pathname === "/";
+  const homeHref = isHome ? "#top" : "/";
+  // An anchor the current route actually renders scrolls in place; anything
+  // else navigates home first. /pilot renders its own access card, so its CTA
+  // must not bounce the visitor to the home page's copy of the same form.
+  const anchor = (hash: string) =>
+    isHome || LOCAL_ANCHORS[pathname]?.includes(hash) ? hash : `/${hash}`;
 
   // A page link resolves to its own route; a section anchor is rebased per
   // route. `aria-current` marks the link for the page you're on.
   const resolve = (l: (typeof NAV_LINKS)[number]) => ({
-    href: l.page ? l.href : `${base}${l.href}`,
+    href: l.page ? l.href : anchor(l.href),
     current: l.page && pathname === l.href ? ("page" as const) : undefined,
   });
 
@@ -108,7 +124,13 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
       <div className="site-nav-center">
         {NAV_LINKS.map((l) => {
           const { href, current } = resolve(l);
-          return (
+          // A route gets <Link> so it navigates client-side; a hash anchor
+          // gets a plain <a> so the browser handles the in-page scroll.
+          return l.page ? (
+            <Link key={l.href} href={href} aria-current={current}>
+              {l.label}
+            </Link>
+          ) : (
             <a key={l.href} href={href} aria-current={current}>
               {l.label}
             </a>
@@ -124,8 +146,8 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
         >
           Sign in
         </a>
-        <a className="site-cta" href={`${base}#access`}>
-          Request access
+        <a className="site-cta" href={anchor("#access")}>
+          Join the pilot
           <ArrowUpRight size={15} />
         </a>
       </div>
@@ -149,7 +171,16 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
         <div className="site-nav-sheet-inner">
           {NAV_LINKS.map((l) => {
             const { href, current } = resolve(l);
-            return (
+            return l.page ? (
+              <Link
+                key={l.href}
+                href={href}
+                aria-current={current}
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </Link>
+            ) : (
               <a
                 key={l.href}
                 href={href}
@@ -170,8 +201,8 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
             >
               Sign in
             </a>
-            <a className="site-cta" href={`${base}#access`} onClick={() => setOpen(false)}>
-              Request access
+            <a className="site-cta" href={anchor("#access")} onClick={() => setOpen(false)}>
+              Join the pilot
               <ArrowUpRight size={15} />
             </a>
           </div>

@@ -245,6 +245,24 @@ select.control option {
   height: 15px;
 }
 
+/* The team lane, above the form. A touch brighter and larger than .form-foot:
+   it is an offer, not a footnote, and it has to survive being read first. */
+.form-lead {
+  margin: 0 0 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  font: var(--fw-regular) 12.5px/1.55 var(--font-sans);
+  color: rgba(255, 255, 255, 0.7);
+}
+.form-lead a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.form-lead a:hover {
+  color: #dbeafe;
+}
+
 .form-foot {
   margin-top: 16px;
   text-align: center;

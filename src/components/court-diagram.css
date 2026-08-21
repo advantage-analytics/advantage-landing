@@ -1,0 +1,15 @@
+/* Styles for <CourtDiagram />. The drawing fills its container and scales by
+   aspect ratio; the host page's wrapper decides how wide that container is. */
+.court-diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.court-diagram-label {
+  font: var(--fw-medium) 12px var(--font-sans);
+  letter-spacing: -0.1px;
+  fill: var(--ink-secondary);
+}
+.court-diagram-label.is-muted {
+  fill: var(--ink-muted);
+}
