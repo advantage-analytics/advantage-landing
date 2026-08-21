@@ -34,10 +34,7 @@ export default function Page() {
                 src="/assets/marketing/team-ucla.jpg"
                 alt="Advantage's founder, left, courtside while managing the UCLA team"
               />
-              <figcaption className="about-inset-cap">
-                <i className="dot" aria-hidden="true" />
-                Our founder · courtside at UCLA
-              </figcaption>
+              <figcaption className="about-inset-cap">Our founder · courtside at UCLA</figcaption>
             </figure>
 
             <p>

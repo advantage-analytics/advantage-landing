@@ -40,13 +40,6 @@
   text-transform: uppercase;
   color: var(--ink-muted);
 }
-.about-inset-cap .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--signal-blue);
-  flex: 0 0 auto;
-}
 
 /* ---- The story ---- */
 /* Wider full-width measure earns more leading so the long lines stay readable. */

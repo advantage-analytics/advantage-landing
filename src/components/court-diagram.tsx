@@ -1,4 +1,10 @@
-/* The camera-angle diagram: a top-down court in hairline strokes with the two
+/* Shared by /send-a-match and /pilot — both pages ask a coach the same
+   qualifying question before they spend an hour on an upload, so they ask it
+   with the same drawing. The host page supplies the wrapper's width; the
+   component owns the drawing itself, colours included — both hosts render it
+   on the same light ground, so there is nothing to retune.
+
+   The camera-angle diagram: a top-down court in hairline strokes with the two
    camera positions marked. It is the qualifier made visual — a coach reads it
    in a second and knows, before spending an hour on an upload, whether their
    film will work.
@@ -14,6 +20,8 @@
    That is what keeps the court itself centred rather than shoved left, and it is
    why the "doesn't work" label wraps to two lines — one line is wide enough to
    push the whole composition off axis. */
+
+import "./court-diagram.css";
 
 // One camera, drawn pointing up, scaled up enough to read at ~40px: a body, a
 // lens barrel on the court-facing side, and a knocked-out white eye. Rotated
@@ -43,13 +51,13 @@ function Camera({
 export function CourtDiagram() {
   return (
     <svg
-      className="sm-court"
+      className="court-diagram"
       viewBox="0 0 300 308"
       role="img"
-      aria-labelledby="sm-court-title sm-court-desc"
+      aria-labelledby="court-diagram-title court-diagram-desc"
     >
-      <title id="sm-court-title">Where to put the camera</title>
-      <desc id="sm-court-desc">
+      <title id="court-diagram-title">Where to put the camera</title>
+      <desc id="court-diagram-desc">
         A top-down tennis court. A camera centered behind the baseline, marked
         with a green check, works. A camera at the side of the court, marked
         with a grey cross, doesn&rsquo;t work yet.
@@ -58,7 +66,7 @@ export function CourtDiagram() {
       {/* ---- The court, centred on x=150 ---- */}
       <g
         fill="none"
-        stroke="var(--sm-court-line)"
+        stroke="var(--hairline-medium)"
         strokeWidth="1.25"
         strokeLinecap="square"
       >
@@ -85,7 +93,7 @@ export function CourtDiagram() {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <text className="sm-court-label" x="150" y="296" textAnchor="middle">
+      <text className="court-diagram-label" x="150" y="296" textAnchor="middle">
         Works
       </text>
 
@@ -100,7 +108,7 @@ export function CourtDiagram() {
         strokeLinecap="round"
       />
       <text
-        className="sm-court-label is-muted"
+        className="court-diagram-label is-muted"
         x="258"
         y="164"
         textAnchor="middle"
@@ -108,7 +116,7 @@ export function CourtDiagram() {
         Doesn&rsquo;t
       </text>
       <text
-        className="sm-court-label is-muted"
+        className="court-diagram-label is-muted"
         x="258"
         y="180"
         textAnchor="middle"

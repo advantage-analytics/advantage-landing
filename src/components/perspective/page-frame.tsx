@@ -2,20 +2,32 @@
 
 import type { ReactNode } from "react";
 import { SiteNav } from "./site-nav";
-import { Footer, useReveal } from "./sections";
+import { Footer } from "./footer";
+import { useReveal } from "./reveal";
 import "./subpage.css";
 
 /* PageFrame — the standalone-route shell. It reproduces the home page's outer
-   structure (.perspective-page → SiteNav → main → Footer) but forces the nav
-   into its solid skin (there's no dark hero here) and runs the same
+   structure (.perspective-page → SiteNav → main → Footer) and runs the same
    reveal-on-scroll observer over the page's `.reveal` elements. About, Contact,
-   and the legal pages all render their content as children. */
-export function PageFrame({ children }: { children: ReactNode }) {
+   and the legal pages all render their content as children.
+
+   Pass `hero` for a route that carries its own dark masthead (/pilot): the
+   nav then keeps its transparent-over-hero skin, and <main> drops the top
+   padding that exists only to clear a solid bar. Without it — the default —
+   the bar is solid from first paint and <main> is inset below it. */
+export function PageFrame({
+  children,
+  hero,
+}: {
+  children: ReactNode;
+  hero?: ReactNode;
+}) {
   useReveal();
   return (
     <div className="perspective-page">
-      <SiteNav subpage />
-      <main className="subpage-main">{children}</main>
+      <SiteNav subpage={!hero} />
+      {hero}
+      <main className={hero ? undefined : "subpage-main"}>{children}</main>
       <Footer />
     </div>
   );

@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { createAirtableRecord } from "@/lib/airtable";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
+import { LEAD_SOURCES, type LeadSource } from "@/lib/leads";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
@@ -18,6 +20,12 @@ export async function POST(request: Request) {
   const role = String(body.role ?? "").trim();
   const division = String(body.division ?? "").trim();
   const company = String(body.company ?? "").trim(); // honeypot
+  // Which form produced the row. Client-supplied, so it is checked against the
+  // shared allowlist rather than written through — an arbitrary string from a
+  // POST would otherwise land in the Airtable column that triage sorts on.
+  const source = LEAD_SOURCES.includes(body.source as LeadSource)
+    ? (body.source as LeadSource)
+    : "Landing CTA";
 
   // Spam gate: bots fill the hidden field. Pretend success, do nothing.
   if (company) return NextResponse.json({ ok: true });
@@ -33,7 +41,7 @@ export async function POST(request: Request) {
       University: university,
       Role: role,
       Division: division,
-      Source: "Landing CTA",
+      Source: source,
       "Submitted At": new Date().toISOString(),
     });
   } catch (err) {
@@ -42,9 +50,10 @@ export async function POST(request: Request) {
   }
 
   await sendSubmissionEmail({
-    subject: `New access request: ${name}${university ? ` (${university})` : ""}`,
+    subject: `New pilot request: ${name}${university ? ` (${university})` : ""}`,
     replyTo: email,
-    html: `<h2>New access request</h2>
+    html: `<h2>New pilot request</h2>
+<p><strong>Source:</strong> ${escapeHtml(source)}</p>
 <p><strong>Name:</strong> ${escapeHtml(name)}</p>
 <p><strong>Email:</strong> ${escapeHtml(email)}</p>
 <p><strong>University:</strong> ${escapeHtml(university) || "-"}</p>

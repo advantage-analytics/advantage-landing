@@ -3,15 +3,16 @@
 import { useEffect } from "react";
 
 import { PerspectiveHero } from "@/components/perspective/hero";
+import { PilotTermsBand } from "@/components/perspective/pilot-terms";
 import { SiteNav } from "@/components/perspective/site-nav";
+import { Footer } from "@/components/perspective/footer";
+import { useReveal } from "@/components/perspective/reveal";
+import { RequestAccess } from "@/components/perspective/request-access";
 import {
   DashboardShowcase,
   HowItWorks,
   Features,
   BuiltForAthletes,
-  RequestAccess,
-  Footer,
-  useReveal,
 } from "@/components/perspective/sections";
 
 /* The hero and dashboard artboards are sized by useScaleToFit after mount, so
@@ -46,6 +47,14 @@ export default function Home() {
         <HowItWorks />
         <Features />
         <BuiltForAthletes />
+        <PilotTermsBand
+          id="pilot"
+          alt
+          eyebrow="Fall 2026 · Collegiate programs"
+          title="The Free Fall Season Pilot."
+          body="Every program that wants in, gets in — onboarding runs through September for the fall season. Four terms, no fine print."
+          cta={{ href: "/pilot", label: "Full pilot details" }}
+        />
         <RequestAccess />
       </main>
       <Footer />
