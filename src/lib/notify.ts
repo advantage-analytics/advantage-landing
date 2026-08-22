@@ -8,6 +8,10 @@ import { Resend } from "resend";
 type SubmissionEmail = {
   subject: string;
   html: string;
+  // Plain-text alternative. Optional only because the internal notifications
+  // are read by us in one client; anything sent outward should set it, since
+  // an HTML-only message is a spam-filter signal against the sending domain.
+  text?: string;
   // The person who submitted, so replies go straight to them.
   replyTo?: string;
   // Defaults to CONTACT_NOTIFY_TO — the inbox that receives every submission.
@@ -19,6 +23,7 @@ type SubmissionEmail = {
 export async function sendSubmissionEmail({
   subject,
   html,
+  text,
   replyTo,
   to: recipient,
 }: SubmissionEmail): Promise<void> {
@@ -40,6 +45,7 @@ export async function sendSubmissionEmail({
       to,
       subject,
       html,
+      ...(text ? { text } : {}),
       ...(replyTo ? { replyTo } : {}),
     });
     if (error) console.error("[notify] Resend returned an error:", error);

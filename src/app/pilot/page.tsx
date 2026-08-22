@@ -33,8 +33,8 @@ const STEPS = [
     p: "Name, school, role — nothing else.",
   },
   {
-    t: "A person replies within one business day.",
-    p: "A real reply, not a sequence — we set your program up over email.",
+    t: "We email you when the pilot opens.",
+    p: "A real reply from a person, not a sequence — with a start date as soon as we have one.",
   },
   {
     t: "Your staff gets accounts and upload access.",

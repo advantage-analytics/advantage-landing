@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAirtableRecord } from "@/lib/airtable";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
+import { contactReceivedEmail } from "@/lib/emails";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -45,10 +46,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Could not send your message." }, { status: 502 });
   }
 
-  await sendSubmissionEmail({
-    subject: `New contact message — ${name}`,
-    replyTo: email,
-    html: `<h2>New contact message</h2>
+  // Best-effort and parallel, for the same reason as the other intake routes:
+  // the Airtable row is already written, so neither send can fail the request,
+  // and serialising them would sit a second Resend round-trip in front of the
+  // sender's confirmation screen.
+  const confirmation = contactReceivedEmail({
+    name,
+    email,
+    role,
+    message,
+    university,
+    phone,
+  });
+
+  await Promise.all([
+    sendSubmissionEmail({
+      subject: `New contact message — ${name}`,
+      replyTo: email,
+      html: `<h2>New contact message</h2>
 <p><strong>Name:</strong> ${escapeHtml(name)}</p>
 <p><strong>Email:</strong> ${escapeHtml(email)}</p>
 <p><strong>Role:</strong> ${escapeHtml(role)}</p>
@@ -56,7 +71,16 @@ export async function POST(request: Request) {
 <p><strong>Phone:</strong> ${escapeHtml(phone) || "-"}</p>
 <p><strong>Message:</strong></p>
 <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`,
-  });
+    }),
+    // Replies land in the inbox that will answer, not back at the sender.
+    sendSubmissionEmail({
+      to: email,
+      replyTo: process.env.CONTACT_NOTIFY_TO,
+      subject: confirmation.subject,
+      html: confirmation.html,
+      text: confirmation.text,
+    }),
+  ]);
 
   return NextResponse.json({ ok: true });
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createAirtableRecord } from "@/lib/airtable";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
 import { LEAD_SOURCES, type LeadSource } from "@/lib/leads";
+import { pilotRequestEmail } from "@/lib/emails";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -48,17 +49,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Could not save your request." }, { status: 502 });
   }
 
-  await sendSubmissionEmail({
-    subject: `New pilot request: ${name}${university ? ` (${university})` : ""}`,
-    replyTo: email,
-    html: `<h2>New pilot request</h2>
+  // The row is the source of truth; both emails are best-effort and never fail
+  // the request once it's written. They go out together rather than in series —
+  // sequential awaits put a whole extra Resend round-trip between the coach and
+  // their confirmation screen.
+  const confirmation = pilotRequestEmail({ name, email, university, role, division });
+
+  await Promise.all([
+    sendSubmissionEmail({
+      subject: `New pilot request: ${name}${university ? ` (${university})` : ""}`,
+      replyTo: email,
+      html: `<h2>New pilot request</h2>
 <p><strong>Source:</strong> ${escapeHtml(source)}</p>
 <p><strong>Name:</strong> ${escapeHtml(name)}</p>
 <p><strong>Email:</strong> ${escapeHtml(email)}</p>
 <p><strong>University:</strong> ${escapeHtml(university) || "-"}</p>
 <p><strong>Role:</strong> ${escapeHtml(role) || "-"}</p>
 <p><strong>Division:</strong> ${escapeHtml(division) || "-"}</p>`,
-  });
+    }),
+    // Replies go to the inbox that will answer, not back to the coach.
+    sendSubmissionEmail({
+      to: email,
+      replyTo: process.env.CONTACT_NOTIFY_TO,
+      subject: confirmation.subject,
+      html: confirmation.html,
+      text: confirmation.text,
+    }),
+  ]);
 
   return NextResponse.json({ ok: true });
 }
