@@ -706,11 +706,19 @@ main > section.band:first-child { border-top: none; }
 .site-nav-center a:hover { color: #fff; }
 .site-nav.is-solid .site-nav-center a { color: var(--ink-secondary); }
 .site-nav.is-solid .site-nav-center a:hover { color: var(--ink); }
-/* Current-page marker — the active page link (About / Contact) simply reads in
-   full ink, darker than the muted ink-secondary of the other links. Section
-   anchors carry no active state, and a page link only reads active on its own
-   subpage, where the bar is always solid. */
-.site-nav-center a[aria-current="page"] { color: var(--ink); }
+/* Current-page marker — a hairline underscore under the active label, not a
+   colour shift. Ink-coloured text was fine on the always-solid subpages, but
+   /pilot carries a dark mesh hero of its own, so at the top of that page the
+   marker painted "Pilot" near-black against the mesh. The rule now leaves the
+   label at the bar's own full-strength colour and draws the line in
+   currentColor, so it rides white over the hero and turns ink with the text
+   once the bar goes solid. Section anchors still carry no active state. */
+.site-nav-center a[aria-current="page"] { position: relative; color: #fff; }
+.site-nav-center a[aria-current="page"]::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -6px;
+  height: 1.5px; border-radius: 1px; background: currentColor;
+}
+.site-nav.is-solid .site-nav-center a[aria-current="page"] { color: var(--ink); }
 
 .site-nav-actions { display: flex; align-items: center; gap: 14px; }
 .site-signin { display: inline-flex; align-items: center; padding: 11px 8px; margin: -11px -8px;
