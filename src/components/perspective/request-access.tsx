@@ -47,8 +47,8 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
               <span className="eyebrow">Join the pilot</span>
               <h3>Get your program on the fall pilot.</h3>
               <p>
-                The terms above are the whole pitch. Tell us about your team and we will set you up
-                personally — onboarding to match review.
+                The terms above are the whole pitch. Tell us about your team and we will email
+                you the moment the pilot opens.
               </p>
             </div>
             <div className="access-form">
@@ -59,7 +59,7 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
                   </div>
                   Request received.
                   <br />
-                  We will reach out at {email || "your inbox"} to get your program set up.
+                  We will email {email || "your inbox"} the moment the pilot opens.
                 </div>
               ) : (
                 <form onSubmit={onSubmit}>
@@ -151,7 +151,7 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
                   {submitError ? (
                     <div className="access-note" role="alert">{submitError}</div>
                   ) : null}
-                  <div className="access-note">We reply within one business day.</div>
+                  <div className="access-note">We will email you when the pilot opens.</div>
                 </form>
               )}
             </div>
