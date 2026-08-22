@@ -451,10 +451,15 @@ main > section.band:first-child { border-top: none; }
   color-scheme: dark; }
 .uline { margin-bottom: 22px; }
 .uline label { display:block; font: var(--fw-medium) 10px var(--font-sans); letter-spacing:2px; text-transform:uppercase; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
-.uline input, .uline select { width:100%; background:transparent; border:none; border-bottom: 1px solid rgba(255,255,255,0.22);
-  padding: 7px 0; color:#fff; font: var(--fw-regular) 15px var(--font-sans); outline:none;
+/* 16px is deliberate: iOS Safari zooms the whole page when a field smaller
+   than that takes focus, and it is the step .control and .sm-input already use.
+   The rule sits at 0.38 white — 3.50:1 on the navy, clearing SC 1.4.11's 3:1
+   for a control boundary, where the old 0.22 measured 2.00:1 and vanished in
+   daylight. */
+.uline input, .uline select { width:100%; background:transparent; border:none; border-bottom: 1px solid rgba(255,255,255,0.38);
+  padding: 7px 0; color:#fff; font: var(--fw-regular) 16px/1.4 var(--font-sans); outline:none;
   transition: border-color 300ms var(--ease-primary), border-bottom-width 300ms var(--ease-primary), padding-bottom 300ms var(--ease-primary); }
-.uline input::placeholder { color: rgba(255,255,255,0.4); }
+.uline input::placeholder { color: rgba(255,255,255,0.5); }
 /* Chrome autofill would paint an opaque light background over the dark band;
    keep the fill text white and postpone the background swap indefinitely. */
 .uline input:-webkit-autofill,
@@ -470,13 +475,18 @@ main > section.band:first-child { border-top: none; }
 .uline select { appearance:none; -webkit-appearance:none; cursor:pointer; border-radius:0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='rgba(255,255,255,0.55)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat; background-position: right 2px center; padding-right: 20px; }
-.uline select:invalid, .uline select:has(option[value=""]:checked) { color: rgba(255,255,255,0.4); }
+.uline select:invalid, .uline select:has(option[value=""]:checked) { color: rgba(255,255,255,0.5); }
 .uline select option { color: var(--ink, #0D0D0D); }
 /* Focus: rule grows 1px -> 2px and turns signal-blue over 300ms, padding
    compensating so the text holds still — same as the dashboard auth fields. */
 .uline input:focus, .uline select:focus { border-bottom-color: var(--signal-blue); border-bottom-width: 2px; padding-bottom: 6px; }
-/* Paired half-width fields (Role + Division) share one row. */
-.uline-row { display:grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+/* Paired half-width fields (Role + Division). Single column until there is
+   room for two, on the same 520px step .sm-pair uses — "NCAA D III" beside a
+   role in half of a phone is a select nobody can read. */
+.uline-row { display:grid; grid-template-columns: 1fr; }
+@media (min-width: 520px) {
+  .uline-row { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
 .access-form .btn { width:100%; height: 46px; margin-top: 4px; }
 .access-note { margin-top: 16px; font: var(--fw-regular) 11px/1.5 var(--font-sans); color: rgba(255,255,255,0.5); text-align:center; }
 .access-sent { color:#fff; font: var(--fw-regular) 14px/1.6 var(--font-sans); text-align:center; padding: 20px 0; }
@@ -484,7 +494,12 @@ main > section.band:first-child { border-top: none; }
 .access-sent .chk svg { width:20px; height:20px; stroke: currentColor; }
 /* Sits above the submit button: the escape hatch for a coach who wants a person
    before a form. Quiet enough not to compete with the CTA under it. */
-.access-ask { margin: 2px 0 14px; font: var(--fw-regular) 12px/1.5 var(--font-sans); color: rgba(255,255,255,0.6); }
+/* Scoped to .access-form for specificity, not for style: `.access-inner p`
+   above is (0,1,1) and a bare `.access-ask` is (0,1,0), so this paragraph has
+   been losing to the lede's 15px/0.78/18px-top treatment no matter where it sat
+   in the file. That is why the escape hatch has been rendering three steps
+   louder than intended and crowding the CTA under it. */
+.access-form .access-ask { margin: 2px 0 14px; font: var(--fw-regular) 12px/1.5 var(--font-sans); color: rgba(255,255,255,0.6); }
 .access-ask a { color: rgba(255,255,255,0.9); text-decoration: underline; text-underline-offset: 3px; }
 .access-ask a:hover { color: #fff; }
 
@@ -503,6 +518,69 @@ main > section.band:first-child { border-top: none; }
 /* Once the row wraps, margin-left:auto would strand the link on its own line
    flush right, reading as detached. Pull it back to the left edge. */
 @media (max-width: 620px) { .access-player .ap-link { margin-left: 0; } }
+
+/* ---- Narrow screens: the panel dissolves ----
+   The glass panel exists to hold the form apart from the copy in the two-column
+   split. Once .access-inner stacks there is no second column to hold it apart
+   from, so all it does is nest a card inside a card — and the two paddings are
+   not cheap: measured on a 375px phone, 56px of card plus 28px of panel on each
+   side left a 161px input, 43% of the screen. Below 640px the panel gives up its
+   background, border, radius and blur, and the fields run out to the card's own
+   gutters. The dark colour-scheme is declared on .access-form and deliberately
+   survives: it is what keeps the native select wheel from flashing white against
+   the navy. Losing the backdrop-filter also retires a viewport-width compositing
+   layer on exactly the devices least able to paint one. */
+@media (max-width: 720px) {
+  .access-card { padding: 48px 24px; }
+}
+@media (max-width: 640px) {
+  .access-form {
+    background: none;
+    border: none;
+    border-radius: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    /* The panel's edge is gone, so the card needs some other way to say the
+       reading stops here and the doing starts. A rule, the same one .access-player
+       already draws across the foot of the card — three stacked zones, one
+       separator vocabulary — rather than a gap that leaves a label looking like
+       another line of prose. */
+    padding: 30px 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+}
+@media (max-width: 400px) {
+  .access-card { padding: 40px 20px; border-radius: 16px; }
+}
+
+/* ---- Coarse pointers ----
+   Gated on pointer rather than width, matching the /send-a-match form: a 1024px
+   tablet is touch and a 900px window is not, and the fine-pointer rhythm keeps
+   its tighter spacing untouched. Fields go from a measured 33px to 46px, which
+   is the row height the intake form already ships. The label steps up because
+   10px at 2px tracking is a desktop reading size being asked to survive a phone
+   at arm's length with a keyboard covering half the screen. */
+@media (pointer: coarse) {
+  .uline { margin-bottom: 24px; }
+  .uline label { font-size: 11px; letter-spacing: 1.6px; margin-bottom: 8px; }
+  .uline input, .uline select { padding: 12px 0 11px; }
+  .uline input:focus, .uline select:focus { padding-bottom: 10px; }
+  /* Re-stated after the shorthand above, which zeroes the chevron's gutter. */
+  .uline select { padding-right: 26px; }
+  .access-form .btn { height: 50px; font-size: 14px; }
+  .access-note { font-size: 12px; }
+  /* The house rule campaign.css sets out: a standalone link gets real vertical
+     room on touch, an inline link inside a sentence is exempt from target sizing
+     and would break its line box if padded. .access-ask's mailto is a sentence;
+     it gets a size bump and room around the paragraph instead. */
+  .access-form .access-ask { margin: 6px 0 24px; font-size: 13px; }
+  /* An address has no sensible break point — left to wrap it splits as
+     "team@advantage-" / "analytics.com". nowrap moves it to its own line whole,
+     which it has room for down to 320px, and unlike inline-block it leaves the
+     line box alone. */
+  .access-ask a { white-space: nowrap; }
+  .access-player .ap-link { padding: 8px 0; }
+}
 
 /* ============ FOOTER ============ */
 .perspective-page footer { background: var(--surface-page); border-top:1px solid var(--hairline); padding: 56px 0 40px; }
@@ -541,9 +619,6 @@ main > section.band:first-child { border-top: none; }
   .dm-lower { grid-template-columns: 1fr; }
   .dm-kpis { grid-template-columns: repeat(3,1fr); }
   .access-inner { grid-template-columns: 1fr; gap: 32px; }
-}
-@media (max-width: 480px) {
-  .uline-row { grid-template-columns: 1fr; gap: 0; }
 }
 
 /* ============================================================
@@ -825,6 +900,10 @@ main > section.band:first-child { border-top: none; }
 @media (prefers-reduced-motion: reduce) {
   .site-nav, .site-logo, .site-nav-center a, .site-signin, .site-cta,
   .site-nav-toggle, .site-nav-sheet { transition: none; }
+  /* The focus underline grows 1px -> 2px with the padding compensating over
+     300ms. Animated border-width and padding are layout, and on a form that is
+     one of these per field — the same waiver send-a-match.css gives .sm-input. */
+  .uline input, .uline select { transition: none; }
 }
 
 /* Login-page mesh gradient (verbatim from advantage-dashboard globals.css) */

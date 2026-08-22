@@ -133,6 +133,9 @@
 
 /* ---- Right: glass form panel ---- */
 .form-panel {
+  /* Native select popups and scrollbars render dark rather than flashing white
+     against the navy — the same declaration .access-form carries. */
+  color-scheme: dark;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 16px;
@@ -160,10 +163,10 @@
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.38);
   padding: 8px 0 7px;
   color: #fff;
-  font: var(--fw-regular) 16px var(--font-sans);
+  font: var(--fw-regular) 16px/1.4 var(--font-sans);
   letter-spacing: -0.1px;
   outline: none;
   font-variant-numeric: tabular-nums;
@@ -171,8 +174,10 @@
     border-bottom-width 300ms var(--ease-primary),
     padding-bottom 300ms var(--ease-primary);
 }
+/* 0.5, not the 0.4 this started at: placeholder text owes the same 4.5:1 as any
+   other text, and 0.4 white on the navy measured 3.74:1. */
 .control::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.5);
 }
 /* Chrome autofill paints inputs with an opaque light background that wrecks
    the dark glass panel. Keep the fill text white and postpone the background
@@ -227,11 +232,25 @@ select.control {
 select.control option {
   color: var(--ink);
 }
+/* An unanswered select must not look answered. Without this the "Select"
+   placeholder paints in full white like a chosen value, and on a phone — where
+   the 11px label is the only other cue — that reads as a field already filled.
+   The result is a skipped question and an error at the end of the form. Matches
+   the dimming .uline select already does on the access card. */
+select.control:invalid,
+select.control:has(option[value=""]:checked) {
+  color: rgba(255, 255, 255, 0.5);
+}
 
 .field-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 520px) {
+  .field-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
 }
 
 .form-panel .btn-primary {
@@ -326,6 +345,12 @@ select.control option {
   .contact-card.reveal {
     transform: none;
   }
+  /* Same waiver the intake form gives .sm-input: the focus rule animates
+     border-width and padding, which is layout, once per field. */
+  .control,
+  .field > label {
+    transition: none;
+  }
 }
 
 /* ---- Responsive ---- */
@@ -344,11 +369,87 @@ select.control option {
 }
 
 @media (max-width: 560px) {
-  .field-row {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
   .contact-inner {
     padding: 36px 24px;
+  }
+}
+
+/* ---- Narrow screens: the panel dissolves ----
+   Same reasoning as the access card. Stacked, the glass panel is a card inside
+   a card, and on a 375px phone its 32px padding plus the card's 24px left a
+   217px field. Below 640px it hands its width back and the form runs to the
+   card's gutters. color-scheme stays: it is what keeps the native select wheel
+   from flashing white against the navy.
+
+   The rule moves with it. On desktop the panel's own edge says "page copy ends,
+   form begins" and .form-lead's bottom rule says "this offer is not one of the
+   fields". Stacked, the panel edge is gone and .form-lead's rule sits below the
+   offer, which leaves the offer reading as one more line of the signoff copy
+   above it. So the separator goes where the boundary actually is — above
+   .form-lead, at the top of the form — and .form-lead's own rule stands down
+   rather than drawing a second hairline 60px under the first. */
+@media (max-width: 640px) {
+  .form-panel {
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 30px 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .form-lead {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  /* Without the panel's padding the confirmation has no inset of its own. */
+  .form-sent {
+    padding: 32px 0 8px;
+  }
+}
+
+@media (max-width: 400px) {
+  .contact-inner {
+    padding: 32px 20px;
+  }
+}
+
+/* ---- Coarse pointers ----
+   Pointer-gated like /send-a-match, so a touch laptop gets the bigger targets
+   and a narrow desktop window keeps the tighter rhythm. 35.5px fields become
+   46px; the 10px label goes up a step to stay readable on a phone. */
+@media (pointer: coarse) {
+  .field {
+    margin-bottom: 24px;
+  }
+  .field > label {
+    font-size: 11px;
+    letter-spacing: 1.6px;
+  }
+  .control {
+    padding: 12px 0 11px;
+  }
+  .control:focus {
+    padding-bottom: 10px;
+  }
+  .control.is-error,
+  .control.is-error:focus {
+    padding-bottom: 11px;
+  }
+  /* Re-stated: the shorthand above zeroes the chevron's gutter. */
+  select.control {
+    padding-right: 26px;
+  }
+  .form-panel .btn-primary {
+    height: 50px;
+  }
+  .field-error {
+    font-size: 12.5px;
+  }
+  .form-lead {
+    font-size: 13.5px;
+  }
+  .form-foot {
+    font-size: 12px;
   }
 }

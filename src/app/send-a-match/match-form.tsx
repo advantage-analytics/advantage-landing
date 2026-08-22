@@ -290,6 +290,8 @@ export function MatchForm() {
           id={id("name")}
           type="text"
           autoComplete="name"
+          autoCapitalize="words"
+          enterKeyHint="next"
           value={values.name}
           onChange={set("name")}
           aria-invalid={!!errors.name}
@@ -307,6 +309,8 @@ export function MatchForm() {
           id={id("program")}
           type="text"
           autoComplete="organization"
+          autoCapitalize="words"
+          enterKeyHint="next"
           value={values.program}
           onChange={set("program")}
           aria-invalid={!!errors.program}
@@ -328,6 +332,10 @@ export function MatchForm() {
           type="email"
           inputMode="email"
           autoComplete="email"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          enterKeyHint="next"
           value={values.email}
           onChange={set("email")}
           aria-invalid={!!errors.email}
@@ -355,7 +363,10 @@ export function MatchForm() {
           type="url"
           inputMode="url"
           autoComplete="off"
+          autoCapitalize="none"
+          autoCorrect="off"
           spellCheck={false}
+          enterKeyHint="next"
           placeholder="https://"
           value={values.videoUrl}
           onChange={set("videoUrl")}
@@ -408,6 +419,8 @@ export function MatchForm() {
           className={cls("player")}
           id={id("player")}
           type="text"
+          autoCapitalize="words"
+          enterKeyHint="next"
           value={values.player}
           onChange={set("player")}
           aria-invalid={!!errors.player}
@@ -453,6 +466,8 @@ export function MatchForm() {
           className={cls("opponent")}
           id={id("opponent")}
           type="text"
+          autoCapitalize="words"
+          enterKeyHint="next"
           value={values.opponent}
           onChange={set("opponent")}
         />
@@ -475,6 +490,10 @@ export function MatchForm() {
             className={cls("score")}
             id={id("score")}
             type="text"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="next"
             placeholder="6-4, 7-5"
             value={values.score}
             onChange={set("score")}
