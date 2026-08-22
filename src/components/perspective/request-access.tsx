@@ -80,6 +80,9 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
                     <input
                       id="access-name"
                       type="text"
+                      autoComplete="name"
+                      autoCapitalize="words"
+                      enterKeyHint="next"
                       placeholder="Your name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -91,6 +94,12 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
                     <input
                       id="access-email"
                       type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                      spellCheck={false}
+                      enterKeyHint="next"
                       placeholder="you@university.edu"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -102,6 +111,9 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
                     <input
                       id="access-university"
                       type="text"
+                      autoComplete="organization"
+                      autoCapitalize="words"
+                      enterKeyHint="next"
                       placeholder="Where your team competes"
                       value={university}
                       onChange={(e) => setUniversity(e.target.value)}

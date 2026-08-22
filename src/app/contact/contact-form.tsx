@@ -167,6 +167,8 @@ export function ContactForm() {
             id={id("name")}
             type="text"
             autoComplete="name"
+            autoCapitalize="words"
+            enterKeyHint="next"
             placeholder="Your name"
             value={values.name}
             onChange={set("name")}
@@ -216,6 +218,10 @@ export function ContactForm() {
               type="email"
               inputMode="email"
               autoComplete="email"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              enterKeyHint="next"
               placeholder="you@club.com"
               value={values.email}
               onChange={set("email")}
