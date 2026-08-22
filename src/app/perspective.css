@@ -416,8 +416,13 @@ main > section.band:first-child { border-top: none; }
   color: var(--signal-blue); font-variant-numeric: tabular-nums; }
 .pb-row .v { margin: 0; font: var(--fw-light) 26px var(--font-sans); letter-spacing:-0.6px;
   color: var(--ink); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
-.pb-row .v small { font: var(--fw-regular) 12px var(--font-sans); letter-spacing: 0;
-  color: var(--ink-muted); margin-left: 10px; }
+/* The qualifier stacks under the figure, right-aligned with it, rather than
+   trailing it on the same line — the layout the launch social posts use, so a
+   coach who saw "75 hours / per program, per month" in the feed meets the same
+   two-line block here. */
+.pb-row .v small { display:block; margin: 5px 0 0;
+  font: var(--fw-regular) 12px var(--font-sans); letter-spacing: 0;
+  color: var(--ink-muted); }
 
 @media (max-width: 900px) {
   .pilot-band .pb-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -429,7 +434,6 @@ main > section.band:first-child { border-top: none; }
   .pb-row { grid-template-columns: 1fr; gap: 8px; padding: 22px 0; }
   .pb-row .l { grid-template-columns: 40px 1fr; gap: 16px; }
   .pb-row .v { text-align: left; white-space: normal; font-size: 23px; padding-left: 56px; }
-  .pb-row .v small { display:block; margin: 4px 0 0; }
 }
 
 /* ============ REQUEST ACCESS ============ */
