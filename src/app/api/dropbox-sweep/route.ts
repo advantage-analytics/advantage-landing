@@ -20,6 +20,21 @@
 // overlapping runs — cannot send the same email twice. No cursor to persist,
 // and a missed run is simply picked up by the next one.
 //
+// Nothing schedules this right now. The `crons` block that ran it every 15
+// minutes is out of vercel.json, because production stopped deploying the
+// moment that block was added and stayed pinned to the commit before it — with
+// the confirmation emails that shipped alongside never going live. Vercel's
+// Hobby plan only permits daily crons and rejects anything more frequent at
+// deploy validation, which fits, though the build log was never read to confirm
+// it. Restoring the schedule means putting back:
+//
+//   "crons": [{ "path": "/api/dropbox-sweep", "schedule": "*/15 * * * *" }]
+//
+// on a plan that allows it. Until then this route only runs if something calls
+// it, so the "your film landed" email does not go out on its own. Losing the
+// schedule costs nothing yet — see isDropboxConfigured below, which no-ops the
+// whole sweep until the Dropbox credentials are set.
+//
 // Env: DROPBOX_APP_KEY / DROPBOX_APP_SECRET / DROPBOX_REFRESH_TOKEN, plus
 // DROPBOX_ROOT_NAMESPACE_ID for the team root. CRON_SECRET guards the route.
 
