@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAirtableRecord } from "@/lib/airtable";
+import { honeypotTripped } from "@/lib/honeypot";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
 import { TURNAROUND, UPLOAD_URL } from "@/lib/match-intake";
 
@@ -48,10 +49,18 @@ export async function POST(request: Request) {
   const score = field("score", 120);
   const cameraPosition = field("cameraPosition");
   const notes = field("notes", 2000);
-  const company = field("company"); // honeypot
 
-  // Spam gate: bots fill the hidden field. Pretend success, do nothing.
-  if (company) return NextResponse.json({ ok: true });
+  // Spam signal, not a spam verdict. This route used to return { ok: true } and
+  // write nothing when the hidden field came back filled, which is how a coach
+  // reached the success screen — and the Dropbox upload window behind it — with
+  // no row anywhere. The submission is now always recorded; the flag only marks
+  // the internal ping and holds back the automatic reply. See lib/honeypot.
+  const flagged = honeypotTripped(body);
+  if (flagged) {
+    console.warn(
+      "[send-a-match] Honeypot tripped; recording the submission and flagging it.",
+    );
+  }
 
   // Derived server-side rather than trusted from the client, so the record
   // always matches what actually arrived. "Upload" means a Dropbox upload is on
@@ -128,9 +137,14 @@ export async function POST(request: Request) {
   await Promise.all([
     sendSubmissionEmail({
     to: NOTIFY_TO,
-    subject: `New match: ${player || name} — ${program || "unknown program"}`,
+    subject: `${flagged ? "[flagged] " : ""}New match: ${player || name} — ${program || "unknown program"}`,
     replyTo: email,
     html: `<h2>New match submission</h2>
+${
+  flagged
+    ? "<p><strong>Flagged:</strong> the hidden anti-spam field came back filled. It is recorded either way, and no automatic reply was sent — if this is a real coach, answer them by hand.</p>"
+    : ""
+}
 ${row("Coach", name)}
 ${row("Program", program)}
 ${row("Email", email)}
@@ -149,7 +163,11 @@ ${row("Camera", cameraPosition)}
 <p><strong>Notes:</strong></p>
 <p>${escapeHtml(notes).replace(/\n/g, "<br>") || "-"}</p>`,
     }),
-    sendSubmissionEmail({
+    // The automatic reply goes to an address the submitter typed in, so a
+    // flagged submission does not get one: if it really was a bot, that inbox
+    // belongs to someone who never asked us for anything, and unrequested mail
+    // from this domain is precisely what the cold campaign cannot afford.
+    ...(flagged ? [] : [sendSubmissionEmail({
     to: email,
     subject: "We've got your match",
     replyTo: NOTIFY_TO,
@@ -169,7 +187,7 @@ ${
     willUpload ? " of the film arriving" : ""
   }. If anything about the file needs sorting out, I'll email you directly.</p>
 <p>— Cj<br>Advantage Analytics</p>`,
-    }),
+    })]),
   ]);
 
   return NextResponse.json({ ok: true });

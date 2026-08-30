@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import { Icon } from "./icons";
+import { HoneypotField } from "@/components/honeypot-field";
+import { HONEYPOT_NAME } from "@/lib/honeypot";
 import { CONTACT_EMAIL, links } from "@/lib/links";
 import type { LeadSource } from "@/lib/leads";
 
@@ -15,7 +17,7 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   // Honeypot: hidden from users, filled by bots.
-  const company = useRef("");
+  const honeypot = useRef("");
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +27,7 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, university, role, division, source, company: company.current }),
+        body: JSON.stringify({ name, email, university, role, division, source, [HONEYPOT_NAME]: honeypot.current }),
       });
       if (!res.ok) throw new Error();
       setSent(true);
@@ -63,18 +65,11 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
                 </div>
               ) : (
                 <form onSubmit={onSubmit}>
-                  {/* Honeypot — hidden from users, filled by bots. */}
-                  <input
-                    type="text"
-                    name="company"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    aria-hidden="true"
-                    onChange={(e) => {
-                      company.current = e.target.value;
-                    }}
-                    style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
-                  />
+                  {/* Honeypot — hidden from users, filled by bots. This form
+                      asks for a university with autocomplete="organization", so
+                      the field also has to be invisible to the browser's own
+                      autofill; see lib/honeypot. */}
+                  <HoneypotField valueRef={honeypot} />
                   <div className="uline">
                     <label htmlFor="access-name">Name</label>
                     <input
