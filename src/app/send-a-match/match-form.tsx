@@ -2,7 +2,9 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { HoneypotField } from "@/components/honeypot-field";
 import { trackEvent } from "@/lib/analytics";
+import { HONEYPOT_NAME } from "@/lib/honeypot";
 import { CONTACT_EMAIL } from "@/lib/links";
 import {
   CAMERA_POSITIONS,
@@ -130,7 +132,7 @@ export function MatchForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   // Honeypot: real coaches never see this; bots that fill every field do.
-  const company = useRef("");
+  const honeypot = useRef("");
   const sentRef = useRef<HTMLHeadingElement>(null);
 
   const uid = useId();
@@ -237,7 +239,11 @@ export function MatchForm() {
       const res = await fetch("/api/send-a-match", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, sendMethod, company: company.current }),
+        body: JSON.stringify({
+          ...values,
+          sendMethod,
+          [HONEYPOT_NAME]: honeypot.current,
+        }),
       });
       if (!res.ok) throw new Error();
       trackEvent("send_a_match_submitted", {
@@ -259,24 +265,11 @@ export function MatchForm() {
 
   return (
     <form className="sm-form" onSubmit={onSubmit} noValidate>
-      {/* Honeypot — off-screen, out of the tab order, invisible to a coach. */}
-      <input
-        type="text"
-        name="company"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        onChange={(e) => {
-          company.current = e.target.value;
-        }}
-        style={{
-          position: "absolute",
-          left: "-9999px",
-          width: 1,
-          height: 1,
-          opacity: 0,
-        }}
-      />
+      {/* Honeypot — off-screen, out of the tab order, invisible to a coach.
+          It must also stay invisible to the browser's own autofill: this form
+          asks for an organization two fields down, and while this one was named
+          "company" a saved address profile filled it too. */}
+      <HoneypotField valueRef={honeypot} />
 
       <p className="sm-required-note">
         Fields marked {REQ} are required.

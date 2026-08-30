@@ -3,6 +3,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
+import { HoneypotField } from "@/components/honeypot-field";
+import { HONEYPOT_NAME } from "@/lib/honeypot";
 import { links } from "@/lib/links";
 
 const ROLES = ["Player", "Coach", "Parent", "Other"];
@@ -52,7 +54,7 @@ export function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   // Honeypot: real users never fill this; bots that auto-fill every field do.
-  const company = useRef("");
+  const honeypot = useRef("");
   const sentRef = useRef<HTMLHeadingElement>(null);
 
   const uid = useId();
@@ -127,7 +129,7 @@ export function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, company: company.current }),
+        body: JSON.stringify({ ...values, [HONEYPOT_NAME]: honeypot.current }),
       });
       if (!res.ok) throw new Error();
       setSent(true);
@@ -142,24 +144,9 @@ export function ContactForm() {
     <div className="form-panel">
       {TEAM_LEAD}
       <form onSubmit={onSubmit} noValidate>
-        {/* Honeypot — hidden from users, ignored by them, filled by bots. */}
-        <input
-          type="text"
-          name="company"
-          tabIndex={-1}
-          autoComplete="off"
-          aria-hidden="true"
-          onChange={(e) => {
-            company.current = e.target.value;
-          }}
-          style={{
-            position: "absolute",
-            left: "-9999px",
-            width: 1,
-            height: 1,
-            opacity: 0,
-          }}
-        />
+        {/* Honeypot — hidden from users, ignored by them, filled by bots. It has
+            to stay hidden from the browser's autofill too; see lib/honeypot. */}
+        <HoneypotField valueRef={honeypot} />
         <div className="field">
           <label htmlFor={id("name")}>Full name</label>
           <input

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAirtableRecord } from "@/lib/airtable";
+import { honeypotTripped } from "@/lib/honeypot";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
 import { contactReceivedEmail } from "@/lib/emails";
 
@@ -19,10 +20,14 @@ export async function POST(request: Request) {
   const email = String(body.email ?? "").trim();
   const phone = String(body.phone ?? "").trim();
   const message = String(body.message ?? "").trim();
-  const company = String(body.company ?? "").trim(); // honeypot
 
-  // Spam gate: bots fill the hidden field. Pretend success, do nothing.
-  if (company) return NextResponse.json({ ok: true });
+  // Spam signal, not a spam verdict — the message is recorded either way. The
+  // old gate returned { ok: true } and wrote nothing, which meant a browser
+  // autofilling the hidden field lost the message in silence. See lib/honeypot.
+  const flagged = honeypotTripped(body);
+  if (flagged) {
+    console.warn("[contact] Honeypot tripped; recording the message and flagging it.");
+  }
 
   // Mirror the client-side validate() in contact-form.tsx.
   if (!name) return NextResponse.json({ error: "Name is required." }, { status: 400 });
@@ -61,9 +66,14 @@ export async function POST(request: Request) {
 
   await Promise.all([
     sendSubmissionEmail({
-      subject: `New contact message — ${name}`,
+      subject: `${flagged ? "[flagged] " : ""}New contact message — ${name}`,
       replyTo: email,
       html: `<h2>New contact message</h2>
+${
+  flagged
+    ? "<p><strong>Flagged:</strong> the hidden anti-spam field came back filled. It is recorded either way, and no automatic reply was sent — if this is a real person, answer them by hand.</p>"
+    : ""
+}
 <p><strong>Name:</strong> ${escapeHtml(name)}</p>
 <p><strong>Email:</strong> ${escapeHtml(email)}</p>
 <p><strong>Role:</strong> ${escapeHtml(role)}</p>
@@ -72,14 +82,16 @@ export async function POST(request: Request) {
 <p><strong>Message:</strong></p>
 <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`,
     }),
-    // Replies land in the inbox that will answer, not back at the sender.
-    sendSubmissionEmail({
+    // Replies land in the inbox that will answer, not back at the sender. Held
+    // back on a flagged message: the address came from whoever filled the form,
+    // and if that was a bot, it belongs to someone who never wrote to us.
+    ...(flagged ? [] : [sendSubmissionEmail({
       to: email,
       replyTo: process.env.CONTACT_NOTIFY_TO,
       subject: confirmation.subject,
       html: confirmation.html,
       text: confirmation.text,
-    }),
+    })]),
   ]);
 
   return NextResponse.json({ ok: true });
