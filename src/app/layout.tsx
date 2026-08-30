@@ -3,6 +3,7 @@ import "./perspective.css";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Inter, Roboto_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -86,6 +87,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body className="min-h-dvh bg-background text-foreground antialiased">
         {children}
+        {/* Vercel Web Analytics. Until this landed the funnel was unmeasurable:
+            lib/analytics.ts hands every event to whatever tag is on the page,
+            and no tag was — so a coach reaching /send-a-match and a coach
+            completing the form looked identical from here, which is how a
+            silently dropped submission stayed invisible. Cookieless and
+            no-op outside production, so it costs nothing in dev. */}
+        <Analytics />
       </body>
     </html>
   );
