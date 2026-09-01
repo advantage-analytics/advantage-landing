@@ -13,7 +13,7 @@ export const TURNAROUND = "three business days";
 // shipping a button that goes nowhere, leaving link-paste as the only route in.
 export const UPLOAD_URL =
   process.env.NEXT_PUBLIC_DROPBOX_FILE_REQUEST_URL ??
-  "https://www.dropbox.com/request/uqjzic2w35d4yls7kxk5";
+  "https://www.dropbox.com/request/fu4968poqiaz44cmz3eu";
 
 export const START_ENDS = [
   "Near end (closest to the camera)",
