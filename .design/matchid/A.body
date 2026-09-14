@@ -72,12 +72,12 @@
         <!-- The two numbers that prove the sentence, and nothing else -->
         <div style="display: flex; gap: 12px; flex-shrink: 0;">
           <div class="card" style="width: 168px; gap: 10px; padding: 18px;">
-            <span class="eyebrow-sm">1st serve, deuce T</span>
-            <span class="tabular" style="font-size: 32px; font-weight: 300; letter-spacing: -0.5px; line-height: 1; color: var(--blue);">78%</span>
-            <span class="micro">won &middot; 27 of 35</span>
+            <span class="eyebrow-sm">Deuce T</span>
+            <span class="tabular" style="font-size: 32px; font-weight: 300; letter-spacing: -0.5px; line-height: 1; color: var(--blue);">77%</span>
+            <span class="micro">won &middot; 27 of 35, all sets</span>
           </div>
           <div class="card" style="width: 168px; gap: 10px; padding: 18px;">
-            <span class="eyebrow-sm">Same serve, set 3</span>
+            <span class="eyebrow-sm">Deuce T, set 3</span>
             <span class="tabular" style="font-size: 32px; font-weight: 300; letter-spacing: -0.5px; line-height: 1;">2</span>
             <span class="micro">attempts &middot; down from 19</span>
           </div>
@@ -88,15 +88,15 @@
       <div style="display: flex; flex-direction: column; gap: 10px;">
         <div style="display: flex; align-items: baseline; gap: 10px;">
           <span class="eyebrow">The evidence</span>
-          <span class="micro">6 points</span>
+          <span class="micro">4 points</span>
           <span style="flex-grow: 1;"></span>
           <span style="font-size: 11px; font-weight: 500; color: var(--blue);">Open all in Film room</span>
         </div>
         <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;">
-          <div class="card" style="padding: 0; overflow: hidden; gap: 0;"><span style="display: block; height: 96px; background: var(--ink-100);"></span><span style="display: flex; gap: 8px; padding: 9px 12px;"><span class="micro mono tabular">1:04:12</span><span class="micro">&middot; 5&ndash;4, 30&ndash;15</span></span></div>
-          <div class="card" style="padding: 0; overflow: hidden; gap: 0;"><span style="display: block; height: 96px; background: var(--ink-100);"></span><span style="display: flex; gap: 8px; padding: 9px 12px;"><span class="micro mono tabular">1:12:46</span><span class="micro">&middot; 6&ndash;5, 40&ndash;30</span></span></div>
-          <div class="card" style="padding: 0; overflow: hidden; gap: 0;"><span style="display: block; height: 96px; background: var(--ink-100);"></span><span style="display: flex; gap: 8px; padding: 9px 12px;"><span class="micro mono tabular">1:38:02</span><span class="micro">&middot; 3&ndash;3, deuce</span></span></div>
-          <div class="card" style="padding: 0; overflow: hidden; gap: 0;"><span style="display: block; height: 96px; background: var(--ink-100);"></span><span style="display: flex; gap: 8px; padding: 9px 12px;"><span class="micro mono tabular">1:51:29</span><span class="micro">&middot; 5&ndash;5, 15&ndash;30</span></span></div>
+          <div class="card" style="padding: 0; overflow: hidden; gap: 0;"><span style="display: block; height: 96px; background: var(--ink-100);"></span><span style="display: flex; gap: 8px; padding: 9px 12px;"><span class="micro mono tabular">0:38:11</span><span class="micro">&middot; S1 5&ndash;4, 30&ndash;15</span></span></div>
+          <div class="card" style="padding: 0; overflow: hidden; gap: 0;"><span style="display: block; height: 96px; background: var(--ink-100);"></span><span style="display: flex; gap: 8px; padding: 9px 12px;"><span class="micro mono tabular">1:12:46</span><span class="micro">&middot; S2 2&ndash;3, 40&ndash;30</span></span></div>
+          <div class="card" style="padding: 0; overflow: hidden; gap: 0;"><span style="display: block; height: 96px; background: var(--ink-100);"></span><span style="display: flex; gap: 8px; padding: 9px 12px;"><span class="micro mono tabular">1:38:02</span><span class="micro">&middot; S3 3&ndash;3, deuce</span></span></div>
+          <div class="card" style="padding: 0; overflow: hidden; gap: 0;"><span style="display: block; height: 96px; background: var(--ink-100);"></span><span style="display: flex; gap: 8px; padding: 9px 12px;"><span class="micro mono tabular">1:47:05</span><span class="micro">&middot; S3 5&ndash;5, 15&ndash;30</span></span></div>
         </div>
       </div>
 
@@ -142,7 +142,7 @@
 
   <div class="cap">
     <h3>Direction A &mdash; Lede first</h3>
-    <p>The report states its finding before it shows a number: one sentence, the two figures that prove it, and the clips that back it, all above the fold. The three tabs become chapters in one scroll, so the numbers and the film that explains them never sit on separate screens. Makes the Advantage Intelligence summary the product rather than a rail footnote, and reads the way a coach actually talks.</p>
+    <p>The report states its finding before it shows a number: one sentence, the two figures that prove it, and the clips that back it, all above the fold. The three tabs become chapters in one scroll, so a claim, the number under it and the clip that proves it sit together instead of one tab apart. Makes the Advantage Intelligence summary the product rather than a rail footnote, and reads the way a coach actually talks.</p>
     <p class="trade"><strong>Tradeoff:</strong> it is only as good as the generated insight &mdash; a thin or wrong lede damages the whole page, and every match must produce one. Analysts who want the raw comparison scroll past the argument to get it.</p>
   </div>
 </div>

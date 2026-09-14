@@ -17,6 +17,10 @@
           <span class="micro tabular" style="color: var(--ink-700);">Mar 14, 2026</span>
         </div>
         <div style="display: grid; grid-template-columns: 16px 1fr; align-items: center; gap: 8px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-400)" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16"></rect><path d="M3 12h18M12 4v16"></path></svg>
+          <span class="micro" style="color: var(--ink-700);">Hard</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 16px 1fr; align-items: center; gap: 8px;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-400)" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
           <span class="micro tabular mono" style="color: var(--ink-700);">02:14:38</span>
         </div>
