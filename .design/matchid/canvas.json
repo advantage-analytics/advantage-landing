@@ -1,14 +1,19 @@
 {
+  "pages": [
+    { "id": "page-1", "name": "Match report" },
+    { "id": "page-2", "name": "Explored" }
+  ],
   "artboards": [
-    { "file": "Current.dc.html", "x": 780, "y": 0, "w": 1440, "h": 1040 },
-    { "file": "Main.dc.html", "x": 0, "y": 1240, "w": 1440, "h": 1040 },
-    { "file": "DirectionB.dc.html", "x": 1560, "y": 1240, "w": 1440, "h": 1040 },
-    { "file": "DirectionC.dc.html", "x": 0, "y": 2480, "w": 1440, "h": 1040 },
-    { "file": "DirectionD.dc.html", "x": 1560, "y": 2480, "w": 1440, "h": 1040 }
+    { "file": "Main.dc.html", "page": "page-1", "x": 0, "y": 0, "w": 1440, "h": 1360 },
+    { "file": "NoVideo.dc.html", "page": "page-1", "x": 1560, "y": 0, "w": 1440, "h": 1360 },
+    { "file": "Current.dc.html", "page": "page-2", "x": 0, "y": 0, "w": 1440, "h": 1040 },
+    { "file": "DirectionB.dc.html", "page": "page-2", "x": 1560, "y": 0, "w": 1440, "h": 1040 },
+    { "file": "DirectionC.dc.html", "page": "page-2", "x": 0, "y": 1200, "w": 1440, "h": 1040 },
+    { "file": "DirectionD.dc.html", "page": "page-2", "x": 1560, "y": 1200, "w": 1440, "h": 1040 }
   ],
   "annotations": [
-    { "id": "brief", "x": 0, "y": -300, "w": 700, "text": "/dashboard/matches/[matchId] — the delivered breakdown.\n\nTop: the page as it ships today, recreated from the real components and tokens in advantage-dashboard.\n\nBelow: four directions, each pushing on a different axis. Sketch fidelity — grey bars stand in for prose, the numbers are sample values from a plausible match. Pick one and it gets built out properly." },
-    { "id": "axis", "x": 3120, "y": 1240, "w": 280, "text": "The axis each direction takes:\n\nA — lead with the finding\nB — lead with the court\nC — lead with the film\nD — lead with the numbers" }
+    { "id": "brief", "page": "page-1", "x": 0, "y": -260, "w": 700, "text": "/dashboard/matches/[matchId] — the delivered breakdown.\n\nDirection A folded into the page that exists: the rail stays, the three destinations stay, and the lede is added at the top of the Statistics pane.\n\nLeft: a match with film. Right: the same page for a SwingVision import, where the proof is points rather than clips.\n\nSketch fidelity — grey bars stand in for prose, figures are sample values." },
+    { "id": "explored", "page": "page-2", "x": 0, "y": -180, "w": 700, "text": "Kept for the record.\n\nCurrent — the three-tab report as it ships today.\nB — lead with the court. C — lead with the film. D — lead with the numbers.\n\nA was chosen; these are not being built." }
   ],
-  "launch": { "view": "canvas" }
+  "launch": { "view": "canvas", "page": "page-1" }
 }
