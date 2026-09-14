@@ -1,19 +1,136 @@
 {
   "pages": [
-    { "id": "page-1", "name": "Match report" },
-    { "id": "page-2", "name": "Explored" }
+    {
+      "id": "page-1",
+      "name": "Match report"
+    },
+    {
+      "id": "page-3",
+      "name": "Rail variations"
+    },
+    {
+      "id": "page-2",
+      "name": "Explored"
+    }
   ],
   "artboards": [
-    { "file": "Main.dc.html", "page": "page-1", "x": 0, "y": 0, "w": 1440, "h": 1360 },
-    { "file": "NoVideo.dc.html", "page": "page-1", "x": 1560, "y": 0, "w": 1440, "h": 1360 },
-    { "file": "Current.dc.html", "page": "page-2", "x": 0, "y": 0, "w": 1440, "h": 1040 },
-    { "file": "DirectionB.dc.html", "page": "page-2", "x": 1560, "y": 0, "w": 1440, "h": 1040 },
-    { "file": "DirectionC.dc.html", "page": "page-2", "x": 0, "y": 1200, "w": 1440, "h": 1040 },
-    { "file": "DirectionD.dc.html", "page": "page-2", "x": 1560, "y": 1200, "w": 1440, "h": 1040 }
+    {
+      "file": "Main.dc.html",
+      "page": "page-1",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1360
+    },
+    {
+      "file": "NoVideo.dc.html",
+      "page": "page-1",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 1360
+    },
+    {
+      "file": "Current.dc.html",
+      "page": "page-2",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1040
+    },
+    {
+      "file": "DirectionB.dc.html",
+      "page": "page-2",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 1040
+    },
+    {
+      "file": "DirectionC.dc.html",
+      "page": "page-2",
+      "x": 0,
+      "y": 1200,
+      "w": 1440,
+      "h": 1040
+    },
+    {
+      "file": "DirectionD.dc.html",
+      "page": "page-2",
+      "x": 1560,
+      "y": 1200,
+      "w": 1440,
+      "h": 1040
+    },
+    {
+      "file": "RailA.dc.html",
+      "page": "page-3",
+      "x": 0,
+      "y": 0,
+      "w": 380,
+      "h": 1060
+    },
+    {
+      "file": "RailB.dc.html",
+      "page": "page-3",
+      "x": 500,
+      "y": 0,
+      "w": 380,
+      "h": 1060
+    },
+    {
+      "file": "RailC.dc.html",
+      "page": "page-3",
+      "x": 1000,
+      "y": 0,
+      "w": 380,
+      "h": 1060
+    },
+    {
+      "file": "RailD.dc.html",
+      "page": "page-3",
+      "x": 1500,
+      "y": 0,
+      "w": 380,
+      "h": 1060
+    },
+    {
+      "file": "RailE.dc.html",
+      "page": "page-3",
+      "x": 2000,
+      "y": 0,
+      "w": 380,
+      "h": 1060
+    }
   ],
   "annotations": [
-    { "id": "brief", "page": "page-1", "x": 0, "y": -260, "w": 700, "text": "/dashboard/matches/[matchId] — the delivered breakdown.\n\nDirection A folded into the page that exists: the rail stays, the three destinations stay, and the lede is added at the top of the Statistics pane.\n\nLeft: a match with film. Right: the same page for a SwingVision import, where the proof is points rather than clips.\n\nSketch fidelity — grey bars stand in for prose, figures are sample values." },
-    { "id": "explored", "page": "page-2", "x": 0, "y": -180, "w": 700, "text": "Kept for the record.\n\nCurrent — the three-tab report as it ships today.\nB — lead with the court. C — lead with the film. D — lead with the numbers.\n\nA was chosen; these are not being built." }
+    {
+      "id": "brief",
+      "page": "page-1",
+      "x": 0,
+      "y": -260,
+      "w": 700,
+      "text": "/dashboard/matches/[matchId] \u2014 the delivered breakdown.\n\nDirection A folded into the page that exists: the rail stays, the three destinations stay, and the lede is added at the top of the Statistics pane.\n\nLeft: a match with film. Right: the same page for a SwingVision import, where the proof is points rather than clips.\n\nSketch fidelity \u2014 grey bars stand in for prose, figures are sample values."
+    },
+    {
+      "id": "explored",
+      "page": "page-2",
+      "x": 0,
+      "y": -180,
+      "w": 700,
+      "text": "Kept for the record.\n\nCurrent \u2014 the three-tab report as it ships today.\nB \u2014 lead with the court. C \u2014 lead with the film. D \u2014 lead with the numbers.\n\nA was chosen; these are not being built."
+    },
+    {
+      "id": "rails",
+      "page": "page-3",
+      "x": 0,
+      "y": -200,
+      "w": 700,
+      "text": "Five takes on the 300px match rail, in the design system: ink ramp, one blue, Inter with Roboto Mono on machine values only (timestamps \u2014 never stats), borders for structure.\n\n1 is the control. Each one after it moves a different thing: how the result reads, how much room the facts deserve, and whether the rail should carry a finding of its own."
+    }
   ],
-  "launch": { "view": "canvas", "page": "page-1" }
+  "launch": {
+    "view": "canvas",
+    "page": "page-3"
+  }
 }

@@ -1,0 +1,62 @@
+<div class="frame" style="width: 380px; height: 1060px;">
+  <div class="apphead" style="padding: 0 16px; gap: 10px;">
+    <span style="font-size: 13px; font-weight: 600; letter-spacing: -0.2px;">Advantage</span>
+    <span style="flex-grow: 1;"></span>
+    <span style="display: block; width: 22px; height: 22px; border-radius: 999px; background: var(--ink-100);"></span>
+  </div>
+  <div style="flex-grow: 1; display: flex; min-height: 0; background: var(--surface-muted);">
+    <div class="rail" style="flex: 0 0 300px; background: var(--surface-card); gap: 18px;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span class="eyebrow">Match</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-size: 13px; font-weight: 500;">M. Ellison</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--viz-good)" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+          <span style="font-size: 12px; color: var(--ink-500);">vs</span>
+          <span style="font-size: 13px; color: var(--ink-600);">R. Duval</span>
+        </div>
+        <span class="score">6&ndash;4 3&ndash;6 7&ndash;5</span>
+        <span class="micro tabular">Mar 14, 2026 &middot; Hard &middot; <span class="mono">02:14:38</span></span>
+      </div>
+
+      <!-- The rail answers a question no tab does: where this match sits in the
+           rivalry, and what form it arrived on. -->
+      <div style="display: flex; flex-direction: column; gap: 11px; border-top: 1px solid var(--border-hairline); padding-top: 15px;">
+        <span class="eyebrow">Against Duval</span>
+        <div style="display: flex; align-items: baseline; gap: 10px;">
+          <span class="tabular" style="font-size: 24px; font-weight: 300; letter-spacing: -0.4px;">3&ndash;2</span>
+          <span class="micro">in five meetings</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: center; gap: 9px;"><span style="width: 4px; height: 14px; border-radius: 2px; background: var(--blue);"></span><span class="micro" style="flex-grow: 1; color: var(--ink-700);">Mar 14, 2026 &middot; Hard</span><span class="micro tabular" style="color: var(--ink-900);">W</span></div>
+          <div style="display: flex; align-items: center; gap: 9px;"><span style="width: 4px; height: 14px; border-radius: 2px; background: var(--ink-200);"></span><span class="micro" style="flex-grow: 1;">Nov 2, 2025 &middot; Hard</span><span class="micro tabular">L</span></div>
+          <div style="display: flex; align-items: center; gap: 9px;"><span style="width: 4px; height: 14px; border-radius: 2px; background: var(--blue);"></span><span class="micro" style="flex-grow: 1;">Aug 19, 2025 &middot; Clay</span><span class="micro tabular">W</span></div>
+          <div style="display: flex; align-items: center; gap: 9px;"><span style="width: 4px; height: 14px; border-radius: 2px; background: var(--ink-200);"></span><span class="micro" style="flex-grow: 1;">Apr 6, 2025 &middot; Hard</span><span class="micro tabular">L</span></div>
+          <div style="display: flex; align-items: center; gap: 9px;"><span style="width: 4px; height: 14px; border-radius: 2px; background: var(--blue);"></span><span class="micro" style="flex-grow: 1;">Jan 30, 2025 &middot; Hard</span><span class="micro tabular">W</span></div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--border-hairline); padding-top: 15px;">
+        <span class="eyebrow">Last five matches</span>
+        <div style="display: flex; gap: 5px;">
+          <span style="flex: 1; height: 26px; border-radius: 5px; background: var(--blue-tint-12); border: 1px solid var(--blue-ring-30);"></span>
+          <span style="flex: 1; height: 26px; border-radius: 5px; background: var(--surface-subtle); border: 1px solid var(--border-medium);"></span>
+          <span style="flex: 1; height: 26px; border-radius: 5px; background: var(--blue-tint-12); border: 1px solid var(--blue-ring-30);"></span>
+          <span style="flex: 1; height: 26px; border-radius: 5px; background: var(--blue-tint-12); border: 1px solid var(--blue-ring-30);"></span>
+          <span style="flex: 1; height: 26px; border-radius: 5px; background: var(--surface-subtle); border: 1px solid var(--border-medium);"></span>
+        </div>
+        <span class="micro">Three of five, first serve steady at 62&ndash;65%</span>
+      </div>
+
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 7px; border-radius: 8px; background: var(--surface-subtle); padding: 11px 12px;">
+        <span class="eyebrow-sm">Match data</span>
+        <span class="bar" style="width: 100%;"></span>
+        <span class="bar" style="width: 54%;"></span>
+      </div>
+    </div>
+  </div>
+  <div class="cap">
+    <h3>Rail 5 &mdash; Context</h3>
+    <p>Treats the rail as the place for everything that is true around this match rather than inside it: the record against this opponent with the meetings listed, and the form the player arrived on. The tabs keep the match; the rail keeps the season.</p>
+    <p class="trade">The longest of the five, and it competes with the multi-match views elsewhere in the product. Useless on a first-ever match against a new opponent.</p>
+  </div>
+</div>

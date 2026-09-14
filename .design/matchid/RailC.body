@@ -1,0 +1,44 @@
+<div class="frame" style="width: 380px; height: 1060px;">
+  <div class="apphead" style="padding: 0 16px; gap: 10px;">
+    <span style="font-size: 13px; font-weight: 600; letter-spacing: -0.2px;">Advantage</span>
+    <span style="flex-grow: 1;"></span>
+    <span style="display: block; width: 22px; height: 22px; border-radius: 999px; background: var(--ink-100);"></span>
+  </div>
+  <div style="flex-grow: 1; display: flex; min-height: 0; background: var(--surface-muted);">
+    <div class="rail" style="flex: 0 0 300px; background: var(--surface-card); gap: 22px; padding: 22px 20px;">
+      <!-- Editorial: the result leads at display size, the way a headline does
+           on the marketing site, and everything under it is quieter. -->
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span class="eyebrow">Mar 14, 2026</span>
+        <span style="font-size: 40px; font-weight: 300; letter-spacing: -1px; line-height: 1.05; font-variant-numeric: tabular-nums;">6&ndash;4<br>3&ndash;6<br>7&ndash;5</span>
+        <div style="display: flex; align-items: center; gap: 6px; padding-top: 2px;">
+          <span style="font-size: 13px; font-weight: 500;">M. Ellison</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--viz-good)" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+          <span style="font-size: 12px; color: var(--ink-500);">vs</span>
+          <span style="font-size: 13px; color: var(--ink-600);">R. Duval</span>
+        </div>
+      </div>
+
+      <div style="height: 1px; background: var(--border-hairline);"></div>
+
+      <div style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between;"><span class="micro">Surface</span><span class="micro" style="color: var(--ink-900);">Hard</span></div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between;"><span class="micro">Duration</span><span class="micro tabular mono" style="color: var(--ink-900);">02:14:38</span></div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between;"><span class="micro">Points</span><span class="micro tabular" style="color: var(--ink-900);">247</span></div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between;"><span class="micro">Games</span><span class="micro tabular" style="color: var(--ink-900);">31</span></div>
+      </div>
+
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 7px; border-radius: 8px; background: var(--surface-subtle); padding: 11px 12px;">
+        <span class="eyebrow-sm">Match data</span>
+        <span class="bar" style="width: 100%;"></span>
+        <span class="bar" style="width: 86%;"></span>
+        <span class="bar" style="width: 54%;"></span>
+      </div>
+    </div>
+  </div>
+  <div class="cap">
+    <h3>Rail 3 &mdash; Editorial</h3>
+    <p>Borrows the marketing page&rsquo;s hierarchy: the result at 40px light with the date as its eyebrow, players in a quiet line underneath, a hairline, then the facts. Whitespace does the separating rather than icons or fills.</p>
+    <p class="trade">Spends the rail&rsquo;s most valuable space on a score the reader already knows, and a stacked score reads slower than one line.</p>
+  </div>
+</div>

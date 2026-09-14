@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Roboto+Mono:wght@400&display=swap');
+    /* Tokens lifted from advantage-dashboard src/styles/design-system + globals.css */
+    :root {
+      --ink-900: #0D0D0D; --ink-700: #525252; --ink-600: #71717A; --ink-500: #888888;
+      --ink-400: #AAAAAA; --ink-300: #CCCCCC; --ink-200: #E5E5EA; --ink-100: #F3F3F3;
+      --surface-card: #FFFFFF; --surface-muted: #FAFAFA; --surface-subtle: #F5F5F5;
+      --surface-dark: #0D0D0D;
+      --border-hairline: #F3F3F3; --border-medium: #E5E5EA;
+      --blue: #3B82F6; --blue-hover: #2563EB; --blue-tint-08: rgba(59,130,246,0.08);
+      --blue-tint-12: rgba(59,130,246,0.12); --blue-soft: #EBF2FD;
+      --player-2: #64748B; --viz-good: #5DB955; --error-strong: #E51837;
+      --radius: 0.625rem; --shadow-card: 0px 2px 8px 0px rgba(0,0,0,0.06);
+    }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: var(--surface-card); color: var(--ink-900); -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); } a:hover { color: var(--blue-hover); }
+    .frame { width: 1440px; height: 1040px; display: flex; flex-direction: column; background: var(--surface-card); }
+    /* dashboard chrome: the 44px header the match page sits under */
+    .apphead { height: 44px; flex-shrink: 0; border-bottom: 1px solid var(--border-hairline); display: flex; align-items: center; gap: 14px; padding: 0 20px; }
+    .page { flex-grow: 1; display: flex; min-height: 0; }
+    .rail { flex: 0 0 300px; border-right: 1px solid var(--border-hairline); padding: 18px 20px; display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+    .pane { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 6px 20px 16px; }
+    /* type scale */
+    .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink-400); }
+    .eyebrow-sm { font-size: 9px; font-weight: 400; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink-400); }
+    .micro { font-size: 11px; line-height: 1.4; color: var(--ink-500); }
+    .data { font-size: 14px; line-height: 1.5; color: var(--ink-900); }
+    .score { font-size: 26px; font-weight: 300; letter-spacing: -1px; font-variant-numeric: tabular-nums; color: var(--ink-900); }
+    .tabular { font-variant-numeric: tabular-nums; }
+    .mono { font-family: 'Roboto Mono', ui-monospace, monospace; }
+    .card { background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 14px; box-shadow: var(--shadow-card); padding: 16px 20px; display: flex; flex-direction: column; }
+    /* low-fi stand-ins for prose and unspecified chrome */
+    .bar { background: var(--ink-200); border-radius: 3px; height: 8px; display: block; }
+    .bar.d { background: var(--ink-300); }
+    .cap { flex-shrink: 0; border-top: 1px solid var(--border-medium); background: var(--surface-muted); padding: 16px 24px 20px; display: flex; flex-direction: column; gap: 6px; }
+    .cap h3 { margin: 0; font-size: 15px; font-weight: 500; letter-spacing: -0.3px; }
+    .cap p { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--ink-700); max-width: 110ch; }
+    .cap .trade { color: var(--ink-500); }
+  </style>
+</helmet>
+<div class="frame" style="width: 380px; height: 1060px;">
+  <div class="apphead" style="padding: 0 16px; gap: 10px;">
+    <span style="font-size: 13px; font-weight: 600; letter-spacing: -0.2px;">Advantage</span>
+    <span style="flex-grow: 1;"></span>
+    <span style="display: block; width: 22px; height: 22px; border-radius: 999px; background: var(--ink-100);"></span>
+  </div>
+  <div style="flex-grow: 1; display: flex; min-height: 0; background: var(--surface-muted);">
+    <div class="rail" style="flex: 0 0 300px; background: var(--surface-card); gap: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 9px;">
+        <span class="eyebrow">Match</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-size: 13px; font-weight: 500;">M. Ellison</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--viz-good)" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+          <span style="font-size: 12px; color: var(--ink-500);">vs</span>
+          <span style="font-size: 13px; color: var(--ink-600);">R. Duval</span>
+        </div>
+        <span class="score" style="font-size: 22px;">6&ndash;4 3&ndash;6 7&ndash;5</span>
+        <!-- Four fact rows collapse to one wrapped line, paying for the space
+             the shape below needs -->
+        <span class="micro tabular" style="line-height: 1.65;">Mar 14, 2026 &middot; Hard &middot; <span class="mono">02:14:38</span> &middot; 247 points &middot; 31 games</span>
+      </div>
+
+      <div style="height: 1px; background: var(--border-hairline);"></div>
+
+      <!-- What the space buys: the shape of the match, in the rail, on every tab -->
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span class="eyebrow">Serve placement</span>
+        <svg viewBox="0 0 260 150" width="260" height="150" aria-hidden="true">
+          <rect x="4" y="4" width="252" height="142" fill="none" stroke="var(--ink-300)" stroke-width="1"></rect>
+          <line x1="4" y1="75" x2="256" y2="75" stroke="var(--ink-200)" stroke-width="1"></line>
+          <line x1="130" y1="4" x2="130" y2="146" stroke="var(--ink-200)" stroke-width="1"></line>
+          <circle cx="110" cy="38" r="14" fill="var(--blue)" opacity="0.45"></circle>
+          <circle cx="120" cy="54" r="10" fill="var(--blue)" opacity="0.3"></circle>
+          <circle cx="150" cy="44" r="9" fill="var(--blue)" opacity="0.26"></circle>
+          <circle cx="216" cy="50" r="7" fill="var(--ink-400)" opacity="0.55"></circle>
+          <circle cx="34" cy="110" r="7" fill="var(--ink-400)" opacity="0.5"></circle>
+          <circle cx="142" cy="112" r="9" fill="var(--blue)" opacity="0.26"></circle>
+        </svg>
+        <div style="display: flex; align-items: baseline; gap: 8px;">
+          <span class="micro">Deuce T</span>
+          <span style="flex-grow: 1;"></span>
+          <span class="tabular" style="font-size: 14px; color: var(--blue);">77%</span>
+        </div>
+      </div>
+
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 7px; border-radius: 8px; background: var(--surface-subtle); padding: 11px 12px;">
+        <span class="eyebrow-sm">Match data</span>
+        <span class="bar" style="width: 100%;"></span>
+        <span class="bar" style="width: 86%;"></span>
+        <span class="bar" style="width: 54%;"></span>
+      </div>
+    </div>
+  </div>
+  <div class="cap">
+    <h3>Rail 4 &mdash; Compact, with a shape</h3>
+    <p>Compresses the facts into one wrapped meta line and spends what it saves on a serve-placement thumbnail that stays put on every tab. The rail stops being a caption and starts carrying a finding of its own.</p>
+    <p class="trade">A second home for something Shots &amp; placement owns, and it has nothing to show on a match with no placement data.</p>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
