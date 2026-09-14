@@ -47,50 +47,87 @@
     .cap .trade { color: var(--ink-500); }
   </style>
 </helmet>
-<div class="frame" style="width: 380px; height: 1060px;">
+<div class="frame" style="width: 380px; height: 1180px;">
   <div class="apphead" style="padding: 0 16px; gap: 10px;">
     <span style="font-size: 13px; font-weight: 600; letter-spacing: -0.2px;">Advantage</span>
     <span style="flex-grow: 1;"></span>
     <span style="display: block; width: 22px; height: 22px; border-radius: 999px; background: var(--ink-100);"></span>
   </div>
   <div style="flex-grow: 1; display: flex; min-height: 0; background: var(--surface-muted);">
-    <div class="rail" style="flex: 0 0 300px; background: var(--surface-card); gap: 18px;">
-      <div style="display: flex; flex-direction: column; gap: 12px;">
-        <span class="eyebrow">Result</span>
-        <!-- The score as a result you can read set by set, not one string.
-             Winner's row carries the ink; the dot marks who served first. -->
+    <div class="rail" style="flex: 0 0 300px; background: var(--surface-card); gap: 0; padding: 18px 20px;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: baseline;">
+          <span class="eyebrow" style="flex-grow: 1;">Result</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--viz-good)" stroke-width="2" aria-label="Verified result"><path d="M20 6 9 17l-5-5"></path></svg>
+        </div>
+
+        <!-- Five set columns are reserved whether or not they are used, so a
+             best-of-five does not reflow the block. Set columns are 24px;
+             the name takes what is left. -->
         <div style="display: flex; flex-direction: column;">
-          <div style="display: flex; align-items: center; padding-bottom: 7px; border-bottom: 1px solid var(--border-hairline);">
+          <div style="display: flex; align-items: center; padding-bottom: 6px; border-bottom: 1px solid var(--border-hairline);">
             <span style="flex-grow: 1;"></span>
-            <span class="eyebrow-sm" style="width: 26px; text-align: center;">1</span>
-            <span class="eyebrow-sm" style="width: 26px; text-align: center;">2</span>
-            <span class="eyebrow-sm" style="width: 26px; text-align: center;">3</span>
+            <span class="eyebrow-sm" style="width: 24px; text-align: center;">1</span>
+            <span class="eyebrow-sm" style="width: 24px; text-align: center;">2</span>
+            <span class="eyebrow-sm" style="width: 24px; text-align: center;">3</span>
           </div>
-          <div style="display: flex; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border-hairline);">
-            <span style="width: 7px; height: 7px; border-radius: 999px; background: var(--blue); margin-right: 8px;"></span>
-            <span style="flex-grow: 1; font-size: 13px; font-weight: 500;">M. Ellison</span>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--viz-good)" stroke-width="2" style="margin-right: 6px;" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
-            <span class="tabular" style="width: 26px; text-align: center; font-size: 17px; font-weight: 400;">6</span>
-            <span class="tabular" style="width: 26px; text-align: center; font-size: 17px; font-weight: 400; color: var(--ink-400);">3</span>
-            <span class="tabular" style="width: 26px; text-align: center; font-size: 17px; font-weight: 400;">7</span>
+          <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-hairline);">
+            <span style="width: 6px; height: 6px; border-radius: 999px; background: var(--blue); margin-right: 9px; flex-shrink: 0;"></span>
+            <span style="flex-grow: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 500;">M. Ellison</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 17px;">6</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 17px; color: var(--ink-400);">3</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 17px;">7</span>
           </div>
-          <div style="display: flex; align-items: center; padding: 9px 0;">
-            <span style="width: 7px; height: 7px; margin-right: 8px;"></span>
-            <span style="flex-grow: 1; font-size: 13px; color: var(--ink-600);">R. Duval</span>
-            <span class="tabular" style="width: 26px; text-align: center; font-size: 17px; font-weight: 400; color: var(--ink-400);">4</span>
-            <span class="tabular" style="width: 26px; text-align: center; font-size: 17px; font-weight: 400; color: var(--ink-600);">6</span>
-            <span class="tabular" style="width: 26px; text-align: center; font-size: 17px; font-weight: 400; color: var(--ink-400);">5</span>
+          <div style="display: flex; align-items: center; padding: 10px 0;">
+            <span style="width: 6px; margin-right: 9px; flex-shrink: 0;"></span>
+            <span style="flex-grow: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; color: var(--ink-600);">R. Duval</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 17px; color: var(--ink-400);">4</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 17px; color: var(--ink-600);">6</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 17px; color: var(--ink-400);">5</span>
           </div>
+        </div>
+        <!-- The dot needed saying out loud; unexplained marks are a puzzle -->
+        <div style="display: flex; align-items: center; gap: 7px;">
+          <span style="width: 6px; height: 6px; border-radius: 999px; background: var(--blue);"></span>
+          <span class="micro">Served first</span>
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 9px;">
-        <span class="eyebrow">Detail</span>
-        <div style="display: flex; align-items: baseline; justify-content: space-between;"><span class="micro">Date</span><span class="micro tabular" style="color: var(--ink-900);">Mar 14, 2026</span></div>
-        <div style="display: flex; align-items: baseline; justify-content: space-between;"><span class="micro">Surface</span><span class="micro" style="color: var(--ink-900);">Hard</span></div>
-        <div style="display: flex; align-items: baseline; justify-content: space-between;"><span class="micro">Duration</span><span class="micro tabular mono" style="color: var(--ink-900);">02:14:38</span></div>
-        <div style="display: flex; align-items: baseline; justify-content: space-between;"><span class="micro">Points</span><span class="micro tabular" style="color: var(--ink-900);">247</span></div>
-        <div style="display: flex; align-items: baseline; justify-content: space-between;"><span class="micro">Games</span><span class="micro tabular" style="color: var(--ink-900);">31</span></div>
+      <div style="height: 1px; background: var(--border-hairline); margin: 16px 0;"></div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="micro" style="flex-shrink: 0;">Date</span><span style="flex-grow: 1;"></span><span class="micro tabular" style="color: var(--ink-900);">Mar 14, 2026</span></div>
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="micro" style="flex-shrink: 0;">Surface</span><span style="flex-grow: 1;"></span><span class="micro" style="color: var(--ink-900);">Hard</span></div>
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="micro" style="flex-shrink: 0;">Duration</span><span style="flex-grow: 1;"></span><span class="micro tabular mono" style="color: var(--ink-900);">02:14:38</span></div>
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="micro" style="flex-shrink: 0;">Points</span><span style="flex-grow: 1;"></span><span class="micro tabular" style="color: var(--ink-900);">247</span></div>
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="micro" style="flex-shrink: 0;">Games</span><span style="flex-grow: 1;"></span><span class="micro tabular" style="color: var(--ink-900);">31</span></div>
+      </div>
+
+      <!-- The two cases the first pass left unanswered, as a spec block: a
+           five-setter fills the reserved columns, and a tiebreak carries its
+           points as a superscript rather than a second number. -->
+      <div style="margin-top: 22px; display: flex; flex-direction: column; gap: 9px;">
+        <span class="eyebrow-sm">Five sets, tiebreak</span>
+        <div style="display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-hairline);">
+            <span style="width: 6px; height: 6px; border-radius: 999px; background: var(--blue); margin-right: 9px; flex-shrink: 0;"></span>
+            <span style="flex-grow: 1; min-width: 0; font-size: 12px; font-weight: 500;">A. Reyes</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px;">7<sup style="font-size: 9px; color: var(--ink-500); vertical-align: super;">7</sup></span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px; color: var(--ink-400);">4</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px;">6</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px; color: var(--ink-400);">5</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px;">6</span>
+          </div>
+          <div style="display: flex; align-items: center; padding: 6px 0;">
+            <span style="width: 6px; margin-right: 9px; flex-shrink: 0;"></span>
+            <span style="flex-grow: 1; min-width: 0; font-size: 12px; color: var(--ink-600);">J. Okafor</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px; color: var(--ink-400);">6<sup style="font-size: 9px; color: var(--ink-400); vertical-align: super;">5</sup></span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px; color: var(--ink-600);">6</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px; color: var(--ink-400);">3</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px; color: var(--ink-600);">7</span>
+            <span class="tabular" style="width: 24px; text-align: center; font-size: 14px; color: var(--ink-400);">4</span>
+          </div>
+        </div>
       </div>
 
       <div style="margin-top: auto; display: flex; flex-direction: column; gap: 7px; border-radius: 8px; background: var(--surface-subtle); padding: 11px 12px;">
@@ -102,9 +139,9 @@
     </div>
   </div>
   <div class="cap">
-    <h3>Rail 2 &mdash; Scoreboard</h3>
-    <p>The identity block becomes a real scoreboard: a row per player, a column per set, the dropped set greyed and the serving player marked. Facts drop their icons for a label/value list, which is how the rest of the site sets out a spec.</p>
-    <p class="trade">Taller than the string it replaces, and a five-setter or a tiebreak column needs a rule for where the extra numbers go.</p>
+    <h3>Rail 2 &mdash; Scoreboard, cleaned up</h3>
+    <p>The three loose ends from the first pass are closed. Set columns are a fixed 24px and five of them are reserved, so a best-of-five fills the block instead of reflowing it; a tiebreak carries its points as a superscript rather than a second number; and the serve dot is labelled, since an unexplained mark is a puzzle. The verified check moves to the Result eyebrow, both names truncate, and the fact list right-aligns its values.</p>
+    <p class="trade">Still the taller of the two, and it asks the reader to parse a table where Rail 1 asks them to read a line.</p>
   </div>
 </div>
 </x-dc>
