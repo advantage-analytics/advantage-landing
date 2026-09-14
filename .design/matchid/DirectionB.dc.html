@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Roboto+Mono:wght@400&display=swap');
+    /* Tokens lifted from advantage-dashboard src/styles/design-system + globals.css */
+    :root {
+      --ink-900: #0D0D0D; --ink-700: #525252; --ink-600: #71717A; --ink-500: #888888;
+      --ink-400: #AAAAAA; --ink-300: #CCCCCC; --ink-200: #E5E5EA; --ink-100: #F3F3F3;
+      --surface-card: #FFFFFF; --surface-muted: #FAFAFA; --surface-subtle: #F5F5F5;
+      --surface-dark: #0D0D0D;
+      --border-hairline: #F3F3F3; --border-medium: #E5E5EA;
+      --blue: #3B82F6; --blue-hover: #2563EB; --blue-tint-08: rgba(59,130,246,0.08);
+      --blue-tint-12: rgba(59,130,246,0.12); --blue-soft: #EBF2FD;
+      --player-2: #64748B; --viz-good: #5DB955; --error-strong: #E51837;
+      --radius: 0.625rem; --shadow-card: 0px 2px 8px 0px rgba(0,0,0,0.06);
+    }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: var(--surface-card); color: var(--ink-900); -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); } a:hover { color: var(--blue-hover); }
+    .frame { width: 1440px; height: 1040px; display: flex; flex-direction: column; background: var(--surface-card); }
+    /* dashboard chrome: the 44px header the match page sits under */
+    .apphead { height: 44px; flex-shrink: 0; border-bottom: 1px solid var(--border-hairline); display: flex; align-items: center; gap: 14px; padding: 0 20px; }
+    .page { flex-grow: 1; display: flex; min-height: 0; }
+    .rail { flex: 0 0 300px; border-right: 1px solid var(--border-hairline); padding: 18px 20px; display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+    .pane { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 6px 20px 16px; }
+    /* type scale */
+    .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink-400); }
+    .eyebrow-sm { font-size: 9px; font-weight: 400; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink-400); }
+    .micro { font-size: 11px; line-height: 1.4; color: var(--ink-500); }
+    .data { font-size: 14px; line-height: 1.5; color: var(--ink-900); }
+    .score { font-size: 26px; font-weight: 300; letter-spacing: -1px; font-variant-numeric: tabular-nums; color: var(--ink-900); }
+    .tabular { font-variant-numeric: tabular-nums; }
+    .mono { font-family: 'Roboto Mono', ui-monospace, monospace; }
+    .card { background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 14px; box-shadow: var(--shadow-card); padding: 16px 20px; display: flex; flex-direction: column; }
+    /* low-fi stand-ins for prose and unspecified chrome */
+    .bar { background: var(--ink-200); border-radius: 3px; height: 8px; display: block; }
+    .bar.d { background: var(--ink-300); }
+    .cap { flex-shrink: 0; border-top: 1px solid var(--border-medium); background: var(--surface-muted); padding: 16px 24px 20px; display: flex; flex-direction: column; gap: 6px; }
+    .cap h3 { margin: 0; font-size: 15px; font-weight: 500; letter-spacing: -0.3px; }
+    .cap p { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--ink-700); max-width: 110ch; }
+    .cap .trade { color: var(--ink-500); }
+  </style>
+</helmet>
+<div class="frame">
+  <div class="apphead">
+    <span style="font-size: 13px; font-weight: 600; letter-spacing: -0.2px;">Advantage</span>
+    <span style="width: 1px; height: 16px; background: var(--border-medium);"></span>
+    <span class="micro">Matches</span>
+    <span class="micro" style="color: var(--ink-300);">/</span>
+    <span class="micro" style="color: var(--ink-900);">Ellison vs Duval</span>
+    <span style="flex-grow: 1;"></span>
+    <span style="display: block; width: 78px; height: 26px; border: 1px solid var(--border-medium); border-radius: 8px;"></span>
+    <span style="display: block; width: 26px; height: 26px; border-radius: 999px; background: var(--ink-100);"></span>
+  </div>
+  <div class="page">
+    <!-- The question rail: filters replace tabs -->
+    <div class="rail" style="gap: 18px;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <span class="eyebrow">Match</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-size: 13px; font-weight: 500;">M. Ellison</span>
+          <span style="font-size: 12px; color: var(--ink-500);">vs</span>
+          <span style="font-size: 13px; color: var(--ink-600);">R. Duval</span>
+        </div>
+        <span class="score" style="font-size: 22px;">6&ndash;4 3&ndash;6 7&ndash;5</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span class="eyebrow">Shot</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <span style="padding: 5px 11px; border-radius: 999px; background: var(--blue); color: #fff; font-size: 11px; font-weight: 500;">Serve</span>
+          <span style="padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border-medium); font-size: 11px; color: var(--ink-700);">Return</span>
+          <span style="padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border-medium); font-size: 11px; color: var(--ink-700);">Forehand</span>
+          <span style="padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border-medium); font-size: 11px; color: var(--ink-700);">Backhand</span>
+          <span style="padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border-medium); font-size: 11px; color: var(--ink-700);">Volley</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span class="eyebrow">Set</span>
+        <div style="display: flex; gap: 5px;">
+          <span style="flex-grow: 1; text-align: center; padding: 6px 0; border: 1px solid var(--border-medium); border-radius: 8px; font-size: 11px; color: var(--ink-700);">All</span>
+          <span style="flex-grow: 1; text-align: center; padding: 6px 0; border: 1px solid var(--border-medium); border-radius: 8px; font-size: 11px; color: var(--ink-700);">1</span>
+          <span style="flex-grow: 1; text-align: center; padding: 6px 0; border: 1px solid var(--border-medium); border-radius: 8px; font-size: 11px; color: var(--ink-700);">2</span>
+          <span style="flex-grow: 1; text-align: center; padding: 6px 0; border: 1px solid var(--blue); background: var(--blue-tint-12); border-radius: 8px; font-size: 11px; color: var(--blue); font-weight: 500;">3</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span class="eyebrow">Outcome</span>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;"><span style="width: 13px; height: 13px; border: 1px solid var(--blue); background: var(--blue); border-radius: 3px;"></span><span style="font-size: 12px; color: var(--ink-700);">Point won</span></div>
+          <div style="display: flex; align-items: center; gap: 8px;"><span style="width: 13px; height: 13px; border: 1px solid var(--border-medium); border-radius: 3px;"></span><span style="font-size: 12px; color: var(--ink-700);">Point lost</span></div>
+          <div style="display: flex; align-items: center; gap: 8px;"><span style="width: 13px; height: 13px; border: 1px solid var(--border-medium); border-radius: 3px;"></span><span style="font-size: 12px; color: var(--ink-700);">Fault</span></div>
+        </div>
+      </div>
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 6px; border-radius: 8px; background: var(--surface-subtle); padding: 11px 12px;">
+        <span class="eyebrow-sm">Reading this view</span>
+        <span class="bar" style="width: 100%;"></span>
+        <span class="bar" style="width: 72%;"></span>
+      </div>
+    </div>
+
+    <!-- The court IS the page -->
+    <div class="pane" style="background: var(--surface-muted); padding-top: 16px; gap: 12px;">
+      <div style="display: flex; align-items: baseline; gap: 12px;">
+        <h2 style="margin: 0; font-size: 16px; font-weight: 400; letter-spacing: -0.4px;">Serve placement &mdash; set 3</h2>
+        <span class="micro tabular">41 serves plotted</span>
+        <span style="flex-grow: 1;"></span>
+        <span style="font-size: 11px; font-weight: 500; color: var(--blue);">Watch these 41</span>
+      </div>
+      <div style="display: flex; gap: 14px; flex-grow: 1; min-height: 0;">
+        <div class="card" style="flex-grow: 1; align-items: center; justify-content: center; padding: 18px;">
+          <svg viewBox="0 0 380 600" width="352" height="556" aria-hidden="true">
+            <rect x="24" y="16" width="332" height="568" fill="none" stroke="var(--ink-300)" stroke-width="1.5"></rect>
+            <rect x="66" y="16" width="248" height="568" fill="none" stroke="var(--ink-200)" stroke-width="1"></rect>
+            <line x1="24" y1="300" x2="356" y2="300" stroke="var(--ink-900)" stroke-width="1.5"></line>
+            <line x1="66" y1="164" x2="314" y2="164" stroke="var(--ink-200)" stroke-width="1"></line>
+            <line x1="66" y1="436" x2="314" y2="436" stroke="var(--ink-200)" stroke-width="1"></line>
+            <line x1="190" y1="164" x2="190" y2="436" stroke="var(--ink-200)" stroke-width="1"></line>
+            <path d="M190 540 L166 196" stroke="var(--blue)" stroke-width="1" opacity="0.25"></path>
+            <path d="M190 540 L292 232" stroke="var(--ink-400)" stroke-width="1" opacity="0.25"></path>
+            <circle cx="158" cy="210" r="12" fill="var(--blue)" opacity="0.42"></circle>
+            <circle cx="168" cy="194" r="15" fill="var(--blue)" opacity="0.5"></circle>
+            <circle cx="150" cy="224" r="10" fill="var(--blue)" opacity="0.34"></circle>
+            <circle cx="176" cy="214" r="9" fill="var(--blue)" opacity="0.3"></circle>
+            <circle cx="222" cy="200" r="11" fill="var(--blue)" opacity="0.36"></circle>
+            <circle cx="292" cy="232" r="8" fill="var(--ink-400)" opacity="0.6"></circle>
+            <circle cx="278" cy="252" r="7" fill="var(--ink-400)" opacity="0.5"></circle>
+            <circle cx="214" cy="254" r="7" fill="var(--ink-400)" opacity="0.45"></circle>
+            <circle cx="94" cy="246" r="7" fill="var(--ink-400)" opacity="0.5"></circle>
+          </svg>
+        </div>
+        <!-- The numbers are a readout of whatever is currently drawn -->
+        <div style="width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px;">
+          <div class="card" style="gap: 8px;">
+            <span class="eyebrow">Deuce T</span>
+            <span class="tabular" style="font-size: 34px; font-weight: 300; letter-spacing: -0.5px; line-height: 1; color: var(--blue);">78%</span>
+            <span class="micro">points won &middot; 27 of 35</span>
+          </div>
+          <div class="card" style="gap: 12px;">
+            <span class="eyebrow">By zone</span>
+            <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 52px; font-size: 12px; color: var(--ink-700);">Wide</span><span class="bar" style="flex-grow: 1; height: 7px; max-width: 118px;"></span><span class="tabular" style="font-size: 13px;">41%</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 52px; font-size: 12px; color: var(--ink-700);">Body</span><span class="bar d" style="flex-grow: 1; height: 7px; max-width: 146px;"></span><span class="tabular" style="font-size: 13px;">52%</span></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 52px; font-size: 12px; color: var(--ink-700);">T</span><span style="flex-grow: 1; max-width: 196px; height: 7px; border-radius: 3px; background: var(--blue);"></span><span class="tabular" style="font-size: 13px;">78%</span></div>
+          </div>
+          <div class="card" style="gap: 10px; flex-grow: 1; min-height: 0;">
+            <div style="display: flex; align-items: baseline;"><span class="eyebrow">Selected</span><span style="flex-grow: 1;"></span><span class="micro tabular">6 serves</span></div>
+            <div style="display: flex; gap: 10px;"><span style="width: 72px; height: 44px; border-radius: 6px; background: var(--ink-100); flex-shrink: 0;"></span><span style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1; padding-top: 6px;"><span class="bar" style="width: 88%;"></span><span class="bar" style="width: 52%;"></span></span></div>
+            <div style="display: flex; gap: 10px;"><span style="width: 72px; height: 44px; border-radius: 6px; background: var(--ink-100); flex-shrink: 0;"></span><span style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1; padding-top: 6px;"><span class="bar" style="width: 76%;"></span><span class="bar" style="width: 44%;"></span></span></div>
+            <div style="display: flex; gap: 10px;"><span style="width: 72px; height: 44px; border-radius: 6px; background: var(--ink-100); flex-shrink: 0;"></span><span style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1; padding-top: 6px;"><span class="bar" style="width: 82%;"></span><span class="bar" style="width: 48%;"></span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cap">
+    <h3>Direction B &mdash; Court-first</h3>
+    <p>Promotes today's Shots tab to the whole page. Filters on the left pose a question, the court answers it, and every number on the right is a readout of what is currently drawn &mdash; select a cluster and the clips for exactly those points appear beneath it. Spatial truths land in a second, and it looks like nothing else a club coach has access to.</p>
+    <p class="trade"><strong>Tradeoff:</strong> everything non-spatial &mdash; rally length, momentum, error counts, the head-to-head comparison &mdash; loses its home and has to go somewhere else. A first-time visitor has to work the filters before the page tells them anything.</p>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

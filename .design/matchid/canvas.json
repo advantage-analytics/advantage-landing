@@ -1,0 +1,14 @@
+{
+  "artboards": [
+    { "file": "Current.dc.html", "x": 780, "y": 0, "w": 1440, "h": 1040 },
+    { "file": "Main.dc.html", "x": 0, "y": 1240, "w": 1440, "h": 1040 },
+    { "file": "DirectionB.dc.html", "x": 1560, "y": 1240, "w": 1440, "h": 1040 },
+    { "file": "DirectionC.dc.html", "x": 0, "y": 2480, "w": 1440, "h": 1040 },
+    { "file": "DirectionD.dc.html", "x": 1560, "y": 2480, "w": 1440, "h": 1040 }
+  ],
+  "annotations": [
+    { "id": "brief", "x": 0, "y": -40, "w": 700, "text": "/dashboard/matches/[matchId] — the delivered breakdown.\n\nTop: the page as it ships today, recreated from the real components and tokens in advantage-dashboard.\n\nBelow: four directions, each pushing on a different axis. Sketch fidelity — grey bars stand in for prose, the numbers are sample values from a plausible match. Pick one and it gets built out properly." },
+    { "id": "axis", "x": 3120, "y": 1240, "w": 280, "text": "The axis each direction takes:\n\nA — lead with the finding\nB — lead with the court\nC — lead with the film\nD — lead with the numbers" }
+  ],
+  "launch": { "view": "canvas" }
+}

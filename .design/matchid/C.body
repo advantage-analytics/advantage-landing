@@ -1,0 +1,109 @@
+<div class="frame">
+  <div class="apphead">
+    <span style="font-size: 13px; font-weight: 600; letter-spacing: -0.2px;">Advantage</span>
+    <span style="width: 1px; height: 16px; background: var(--border-medium);"></span>
+    <span class="micro">Matches</span>
+    <span class="micro" style="color: var(--ink-300);">/</span>
+    <span class="micro" style="color: var(--ink-900);">Ellison vs Duval</span>
+    <span style="flex-grow: 1;"></span>
+    <span style="display: block; width: 78px; height: 26px; border: 1px solid var(--border-medium); border-radius: 8px;"></span>
+    <span style="display: block; width: 26px; height: 26px; border-radius: 999px; background: var(--ink-100);"></span>
+  </div>
+  <div class="page">
+    <!-- Stats become the index; film is the spine -->
+    <div class="rail" style="gap: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <span class="eyebrow">Match</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-size: 13px; font-weight: 500;">M. Ellison</span>
+          <span style="font-size: 12px; color: var(--ink-500);">vs</span>
+          <span style="font-size: 13px; color: var(--ink-600);">R. Duval</span>
+        </div>
+        <span class="score" style="font-size: 22px;">6&ndash;4 3&ndash;6 7&ndash;5</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--border-hairline); padding-top: 14px;">
+        <span class="eyebrow">Jump to</span>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 7px 9px; border-radius: 8px; background: var(--blue-soft);"><span style="flex-grow: 1; font-size: 12px; font-weight: 500; color: var(--blue);">Break points faced</span><span class="tabular mono" style="font-size: 11px; color: var(--blue);">7</span></div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 7px 9px;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Double faults</span><span class="tabular mono" style="font-size: 11px; color: var(--ink-500);">3</span></div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 7px 9px;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Winners</span><span class="tabular mono" style="font-size: 11px; color: var(--ink-500);">28</span></div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 7px 9px;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Unforced errors</span><span class="tabular mono" style="font-size: 11px; color: var(--ink-500);">31</span></div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 7px 9px;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Rallies 10+</span><span class="tabular mono" style="font-size: 11px; color: var(--ink-500);">19</span></div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 7px 9px;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Net approaches</span><span class="tabular mono" style="font-size: 11px; color: var(--ink-500);">14</span></div>
+        </div>
+      </div>
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 7px;">
+        <span class="eyebrow-sm">Full statistics</span>
+        <span class="bar" style="width: 100%;"></span>
+        <span class="bar" style="width: 58%;"></span>
+      </div>
+    </div>
+
+    <div class="pane" style="padding-top: 16px; gap: 12px;">
+      <div style="display: flex; align-items: baseline; gap: 12px;">
+        <h2 style="margin: 0; font-size: 16px; font-weight: 400; letter-spacing: -0.4px;">Break points faced</h2>
+        <span class="micro tabular">7 points &middot; 4 saved</span>
+        <span style="flex-grow: 1;"></span>
+        <span class="micro">Playing 3 of 7</span>
+      </div>
+      <div style="display: flex; gap: 14px; flex-grow: 1; min-height: 0;">
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0;">
+          <!-- Player -->
+          <div style="flex-grow: 1; border-radius: 14px; background: var(--surface-dark); display: flex; align-items: center; justify-content: center; min-height: 0;">
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M10 8.5l6 3.5-6 3.5z" fill="rgba(255,255,255,0.55)" stroke="none"></path></svg>
+          </div>
+          <!-- Scrub with a tick per matching point -->
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <div style="position: relative; height: 22px;">
+              <span style="position: absolute; left: 0; right: 0; top: 10px; height: 3px; border-radius: 2px; background: var(--ink-200);"></span>
+              <span style="position: absolute; left: 0; width: 41%; top: 10px; height: 3px; border-radius: 2px; background: var(--blue);"></span>
+              <span style="position: absolute; left: 12%; top: 4px; width: 2px; height: 15px; background: var(--ink-400);"></span>
+              <span style="position: absolute; left: 27%; top: 4px; width: 2px; height: 15px; background: var(--ink-400);"></span>
+              <span style="position: absolute; left: 41%; top: 2px; width: 3px; height: 19px; background: var(--blue);"></span>
+              <span style="position: absolute; left: 58%; top: 4px; width: 2px; height: 15px; background: var(--ink-400);"></span>
+              <span style="position: absolute; left: 69%; top: 4px; width: 2px; height: 15px; background: var(--ink-400);"></span>
+              <span style="position: absolute; left: 84%; top: 4px; width: 2px; height: 15px; background: var(--ink-400);"></span>
+              <span style="position: absolute; left: 92%; top: 4px; width: 2px; height: 15px; background: var(--ink-400);"></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <span class="mono tabular micro" style="color: var(--ink-700);">01:12:46 / 02:14:38</span>
+              <span style="flex-grow: 1;"></span>
+              <span class="micro">Set 2 &middot; 5&ndash;4 &middot; 30&ndash;40</span>
+              <span style="width: 70px; height: 26px; border: 1px solid var(--border-medium); border-radius: 8px;"></span>
+            </div>
+          </div>
+        </div>
+        <!-- The point index: every matching point, in order -->
+        <div style="width: 320px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; min-height: 0;">
+          <div style="display: flex; align-items: baseline;"><span class="eyebrow">Points</span><span style="flex-grow: 1;"></span><span class="micro tabular">7</span></div>
+          <div class="card" style="padding: 11px 13px; gap: 7px; border-color: var(--blue); background: var(--blue-tint-08);">
+            <div style="display: flex; align-items: baseline; gap: 8px;"><span class="mono tabular" style="font-size: 11px; color: var(--blue);">01:12:46</span><span style="flex-grow: 1;"></span><span class="micro" style="color: var(--blue);">saved</span></div>
+            <span style="font-size: 12px; color: var(--ink-900);">S2 &middot; 5&ndash;4, 30&ndash;40 &middot; ace, T</span>
+          </div>
+          <div class="card" style="padding: 11px 13px; gap: 7px;">
+            <div style="display: flex; align-items: baseline; gap: 8px;"><span class="mono tabular" style="font-size: 11px; color: var(--ink-500);">01:38:02</span><span style="flex-grow: 1;"></span><span class="micro" style="color: var(--error-strong);">broken</span></div>
+            <span style="font-size: 12px; color: var(--ink-700);">S3 &middot; 3&ndash;3, deuce &middot; backhand UE</span>
+          </div>
+          <div class="card" style="padding: 11px 13px; gap: 7px;">
+            <div style="display: flex; align-items: baseline; gap: 8px;"><span class="mono tabular" style="font-size: 11px; color: var(--ink-500);">01:51:29</span><span style="flex-grow: 1;"></span><span class="micro" style="color: var(--viz-good);">saved</span></div>
+            <span style="font-size: 12px; color: var(--ink-700);">S3 &middot; 5&ndash;5, 15&ndash;40 &middot; forehand winner</span>
+          </div>
+          <div class="card" style="padding: 11px 13px; gap: 7px;">
+            <div style="display: flex; align-items: baseline; gap: 8px;"><span class="mono tabular" style="font-size: 11px; color: var(--ink-500);">02:02:11</span><span style="flex-grow: 1;"></span><span class="micro" style="color: var(--viz-good);">saved</span></div>
+            <span style="font-size: 12px; color: var(--ink-700);">S3 &middot; 6&ndash;5, 30&ndash;40 &middot; serve +1</span>
+          </div>
+          <div class="card" style="padding: 11px 13px; gap: 7px; opacity: 0.6;">
+            <div style="display: flex; align-items: baseline; gap: 8px;"><span class="mono tabular" style="font-size: 11px; color: var(--ink-500);">02:06:40</span></div>
+            <span class="bar" style="width: 78%;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cap">
+    <h3>Direction C &mdash; Film room as the spine</h3>
+    <p>Inverts today's hierarchy: the video is the page and the statistics are an index into it. Pick a stat in the rail &mdash; break points faced, unforced errors, rallies over ten &mdash; and the player queues exactly those points with the scrub ticked for each one. This is the reel a coach builds by hand before practice, already built. Strongest differentiator against a spreadsheet export.</p>
+    <p class="trade"><strong>Tradeoff:</strong> dead for the matches with no video &mdash; every SwingVision import and hand-scored match falls back to a second, lesser layout. Comparison against the opponent and against your own history has nowhere to sit.</p>
+  </div>
+</div>

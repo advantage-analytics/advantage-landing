@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Roboto+Mono:wght@400&display=swap');
+    /* Tokens lifted from advantage-dashboard src/styles/design-system + globals.css */
+    :root {
+      --ink-900: #0D0D0D; --ink-700: #525252; --ink-600: #71717A; --ink-500: #888888;
+      --ink-400: #AAAAAA; --ink-300: #CCCCCC; --ink-200: #E5E5EA; --ink-100: #F3F3F3;
+      --surface-card: #FFFFFF; --surface-muted: #FAFAFA; --surface-subtle: #F5F5F5;
+      --surface-dark: #0D0D0D;
+      --border-hairline: #F3F3F3; --border-medium: #E5E5EA;
+      --blue: #3B82F6; --blue-hover: #2563EB; --blue-tint-08: rgba(59,130,246,0.08);
+      --blue-tint-12: rgba(59,130,246,0.12); --blue-soft: #EBF2FD;
+      --player-2: #64748B; --viz-good: #5DB955; --error-strong: #E51837;
+      --radius: 0.625rem; --shadow-card: 0px 2px 8px 0px rgba(0,0,0,0.06);
+    }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: var(--surface-card); color: var(--ink-900); -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); } a:hover { color: var(--blue-hover); }
+    .frame { width: 1440px; height: 1040px; display: flex; flex-direction: column; background: var(--surface-card); }
+    /* dashboard chrome: the 44px header the match page sits under */
+    .apphead { height: 44px; flex-shrink: 0; border-bottom: 1px solid var(--border-hairline); display: flex; align-items: center; gap: 14px; padding: 0 20px; }
+    .page { flex-grow: 1; display: flex; min-height: 0; }
+    .rail { flex: 0 0 300px; border-right: 1px solid var(--border-hairline); padding: 18px 20px; display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+    .pane { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 6px 20px 16px; }
+    /* type scale */
+    .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink-400); }
+    .eyebrow-sm { font-size: 9px; font-weight: 400; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink-400); }
+    .micro { font-size: 11px; line-height: 1.4; color: var(--ink-500); }
+    .data { font-size: 14px; line-height: 1.5; color: var(--ink-900); }
+    .score { font-size: 26px; font-weight: 300; letter-spacing: -1px; font-variant-numeric: tabular-nums; color: var(--ink-900); }
+    .tabular { font-variant-numeric: tabular-nums; }
+    .mono { font-family: 'Roboto Mono', ui-monospace, monospace; }
+    .card { background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 14px; box-shadow: var(--shadow-card); padding: 16px 20px; display: flex; flex-direction: column; }
+    /* low-fi stand-ins for prose and unspecified chrome */
+    .bar { background: var(--ink-200); border-radius: 3px; height: 8px; display: block; }
+    .bar.d { background: var(--ink-300); }
+    .cap { flex-shrink: 0; border-top: 1px solid var(--border-medium); background: var(--surface-muted); padding: 16px 24px 20px; display: flex; flex-direction: column; gap: 6px; }
+    .cap h3 { margin: 0; font-size: 15px; font-weight: 500; letter-spacing: -0.3px; }
+    .cap p { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--ink-700); max-width: 110ch; }
+    .cap .trade { color: var(--ink-500); }
+  </style>
+</helmet>
+<div class="frame">
+  <div class="apphead">
+    <span style="font-size: 13px; font-weight: 600; letter-spacing: -0.2px;">Advantage</span>
+    <span style="width: 1px; height: 16px; background: var(--border-medium);"></span>
+    <span class="micro">Matches</span>
+    <span class="micro" style="color: var(--ink-300);">/</span>
+    <span class="micro" style="color: var(--ink-900);">Ellison vs Duval</span>
+    <span style="flex-grow: 1;"></span>
+    <span style="display: block; width: 78px; height: 26px; border: 1px solid var(--border-medium); border-radius: 8px;"></span>
+    <span style="display: block; width: 26px; height: 26px; border-radius: 999px; background: var(--ink-100);"></span>
+  </div>
+  <!-- No rail and no tabs: identity collapses into one scoreboard bar so the
+       whole 1440 goes to data -->
+  <div style="flex-shrink: 0; display: flex; align-items: center; gap: 20px; padding: 14px 24px; border-bottom: 1px solid var(--border-medium);">
+    <div style="display: flex; align-items: baseline; gap: 10px;">
+      <span style="font-size: 15px; font-weight: 500;">M. Ellison</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--viz-good)" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+      <span style="font-size: 13px; color: var(--ink-500);">vs</span>
+      <span style="font-size: 15px; color: var(--ink-600);">R. Duval</span>
+    </div>
+    <span class="score" style="font-size: 24px;">6&ndash;4 3&ndash;6 7&ndash;5</span>
+    <span style="width: 1px; height: 22px; background: var(--border-medium);"></span>
+    <span class="micro tabular">Mar 14 &middot; Hard &middot; <span class="mono">02:14:38</span> &middot; 247 points</span>
+    <span style="flex-grow: 1;"></span>
+    <div style="display: flex; gap: 5px;">
+      <span style="padding: 5px 10px; border-radius: 999px; background: var(--blue-tint-12); color: var(--blue); font-size: 10px; font-weight: 500;">All sets</span>
+      <span style="padding: 5px 10px; border-radius: 999px; border: 1px solid var(--border-medium); color: var(--ink-500); font-size: 10px;">S1</span>
+      <span style="padding: 5px 10px; border-radius: 999px; border: 1px solid var(--border-medium); color: var(--ink-500); font-size: 10px;">S2</span>
+      <span style="padding: 5px 10px; border-radius: 999px; border: 1px solid var(--border-medium); color: var(--ink-500); font-size: 10px;">S3</span>
+    </div>
+    <span style="width: 86px; height: 28px; border: 1px solid var(--border-medium); border-radius: 8px;"></span>
+  </div>
+
+  <div style="flex-grow: 1; min-height: 0; display: flex; flex-direction: column; gap: 12px; padding: 14px 24px 18px;">
+    <!-- The spine: every game in the match, in order, won/lost, breaks marked -->
+    <div class="card" style="gap: 11px;">
+      <div style="display: flex; align-items: baseline; gap: 12px;">
+        <span class="eyebrow">Game by game</span>
+        <span class="micro">31 games &middot; 5 breaks</span>
+        <span style="flex-grow: 1;"></span>
+        <span class="micro">Click a game to scrub the film</span>
+      </div>
+      <div style="display: flex; align-items: flex-end; gap: 3px; height: 64px;">
+        <span style="flex: 1; height: 62%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 38%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 74%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 55%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 88%; background: var(--ink-300); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 48%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 66%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 44%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 71%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 34%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 92%; background: var(--ink-300); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 58%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 64%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 41%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 77%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 52%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 84%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 36%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 68%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 46%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 96%; background: var(--ink-300); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 59%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 72%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 39%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 81%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 50%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 88%; background: var(--ink-300); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 63%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 45%; background: var(--ink-200); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 79%; background: var(--blue); border-radius: 2px;"></span>
+        <span style="flex: 1; height: 91%; background: var(--blue); border-radius: 2px;"></span>
+      </div>
+      <div style="display: flex; justify-content: space-between;"><span class="eyebrow-sm">Set 1</span><span class="eyebrow-sm">Set 2</span><span class="eyebrow-sm">Set 3</span></div>
+    </div>
+
+    <!-- Three ledger columns: the full comparison, no scrolling to find a stat -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; flex-grow: 1; min-height: 0;">
+      <div class="card" style="gap: 0;">
+        <div style="display: flex; align-items: center; padding-bottom: 9px; border-bottom: 1px solid var(--border-hairline);"><span class="eyebrow" style="flex-grow: 1;">Serve</span><span style="width: 62px; text-align: right; font-size: 11px; font-weight: 500;">You</span><span style="width: 62px; text-align: right; font-size: 11px; font-weight: 500; color: var(--ink-600);">Duval</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Aces</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">7</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">4</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Double faults</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">3</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">6</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0; background: var(--blue-tint-08); border-radius: 6px; padding-left: 8px; padding-right: 8px; margin: 2px -8px;"><span style="flex-grow: 1; font-size: 12px; font-weight: 500;">First serve in</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--blue); font-weight: 500;">64%</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">58%</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">1st serve points won</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">71%</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">63%</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">2nd serve points won</span><span style="width: 62px; text-align: right; font-size: 13px; font-weight: 300; font-style: italic; color: var(--ink-500);">&mdash;</span><span style="width: 62px; text-align: right; font-size: 13px; font-weight: 300; font-style: italic; color: var(--ink-500);">&mdash;</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Break points saved</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">57%</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">40%</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Service games won</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">81%</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">69%</span></div>
+      </div>
+      <div class="card" style="gap: 0;">
+        <div style="display: flex; align-items: center; padding-bottom: 9px; border-bottom: 1px solid var(--border-hairline);"><span class="eyebrow" style="flex-grow: 1;">Return</span><span style="width: 62px; text-align: right; font-size: 11px; font-weight: 500;">You</span><span style="width: 62px; text-align: right; font-size: 11px; font-weight: 500; color: var(--ink-600);">Duval</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">1st serve returns won</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">37%</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">29%</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">2nd serve returns won</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">52%</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">44%</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Return winners</span><span style="width: 62px; text-align: right; font-size: 13px; font-weight: 300; font-style: italic; color: var(--ink-500);">&mdash;</span><span style="width: 62px; text-align: right; font-size: 13px; font-weight: 300; font-style: italic; color: var(--ink-500);">&mdash;</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Break points converted</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">60%</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">43%</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Net points won</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">64%</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">57%</span></div>
+        <div style="height: 1px; background: var(--border-hairline); margin: 9px 0;"></div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <span class="eyebrow-sm">Rally length</span>
+          <div style="display: flex; align-items: flex-end; gap: 5px; height: 58px;">
+            <span style="flex: 1; height: 62%; background: var(--blue); border-radius: 2px 2px 0 0;"></span>
+            <span style="flex: 1; height: 88%; background: var(--blue); border-radius: 2px 2px 0 0;"></span>
+            <span style="flex: 1; height: 46%; background: var(--blue); border-radius: 2px 2px 0 0;"></span>
+            <span style="flex: 1; height: 30%; background: var(--blue); border-radius: 2px 2px 0 0;"></span>
+            <span style="flex: 1; height: 18%; background: var(--blue); border-radius: 2px 2px 0 0;"></span>
+            <span style="flex: 1; height: 10%; background: var(--blue); border-radius: 2px 2px 0 0;"></span>
+          </div>
+          <div style="display: flex; justify-content: space-between;"><span class="micro tabular">1&ndash;3</span><span class="micro tabular">4&ndash;6</span><span class="micro tabular">7&ndash;9</span><span class="micro tabular">10&ndash;12</span><span class="micro tabular">13&ndash;15</span><span class="micro tabular">16+</span></div>
+        </div>
+      </div>
+      <div class="card" style="gap: 0;">
+        <div style="display: flex; align-items: center; padding-bottom: 9px; border-bottom: 1px solid var(--border-hairline);"><span class="eyebrow" style="flex-grow: 1;">Points</span><span style="width: 62px; text-align: right; font-size: 11px; font-weight: 500;">You</span><span style="width: 62px; text-align: right; font-size: 11px; font-weight: 500; color: var(--ink-600);">Duval</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Winners</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">28</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">22</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Unforced errors</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">31</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">39</span></div>
+        <div style="display: flex; align-items: center; padding: 7px 0;"><span style="flex-grow: 1; font-size: 12px; color: var(--ink-700);">Total points won</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px;">128</span><span class="tabular" style="width: 62px; text-align: right; font-size: 13px; color: var(--ink-600);">119</span></div>
+        <div style="height: 1px; background: var(--border-hairline); margin: 9px 0;"></div>
+        <div style="display: flex; flex-direction: column; gap: 10px; flex-grow: 1;">
+          <span class="eyebrow-sm">Serve placement</span>
+          <div style="display: flex; gap: 14px; align-items: center;">
+            <svg viewBox="0 0 190 120" width="190" height="120" aria-hidden="true">
+              <rect x="6" y="5" width="178" height="110" fill="none" stroke="var(--ink-300)" stroke-width="1"></rect>
+              <line x1="6" y1="60" x2="184" y2="60" stroke="var(--ink-200)" stroke-width="1"></line>
+              <line x1="95" y1="5" x2="95" y2="115" stroke="var(--ink-200)" stroke-width="1"></line>
+              <circle cx="82" cy="32" r="11" fill="var(--blue)" opacity="0.45"></circle>
+              <circle cx="90" cy="44" r="8" fill="var(--blue)" opacity="0.3"></circle>
+              <circle cx="152" cy="40" r="6" fill="var(--ink-400)" opacity="0.55"></circle>
+              <circle cx="28" cy="86" r="6" fill="var(--ink-400)" opacity="0.5"></circle>
+              <circle cx="102" cy="88" r="8" fill="var(--blue)" opacity="0.3"></circle>
+            </svg>
+            <div style="display: flex; flex-direction: column; gap: 7px; flex-grow: 1;">
+              <div style="display: flex; justify-content: space-between;"><span class="micro" style="color: var(--ink-700);">Wide</span><span class="tabular" style="font-size: 12px;">41%</span></div>
+              <div style="display: flex; justify-content: space-between;"><span class="micro" style="color: var(--ink-700);">Body</span><span class="tabular" style="font-size: 12px;">52%</span></div>
+              <div style="display: flex; justify-content: space-between;"><span class="micro" style="color: var(--ink-700);">T</span><span class="tabular" style="font-size: 12px; color: var(--blue);">78%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cap">
+    <h3>Direction D &mdash; The ledger</h3>
+    <p>Everything on one screen, no tabs and no rail: identity collapses to a scoreboard bar, the game-by-game spine runs across the top, and three ledger columns carry the full comparison beneath it. Nothing is more than one glance away, printing and PDF export are near-free, and it respects the analyst who already knows what they are looking for.</p>
+    <p class="trade"><strong>Tradeoff:</strong> the densest and the coldest &mdash; it makes no argument and gives a first-time club player no way in. Adding a metric means finding space rather than adding a row, and it is the hardest of the four to collapse onto a phone.</p>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
