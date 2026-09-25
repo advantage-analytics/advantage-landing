@@ -37,6 +37,7 @@ export function Footer() {
           <span className="foot-legal">
             <Link href="/legal/privacy-policy">Privacy Policy</Link>
             <Link href="/legal/terms-and-conditions">Terms &amp; Conditions</Link>
+            <Link href="/legal/guardian-terms">Guardian Terms</Link>
           </span>
         </div>
       </div>

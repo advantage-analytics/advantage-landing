@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PageFrame, PageHead } from "@/components/perspective/page-frame";
 import "../legal.css";
 
@@ -12,7 +13,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Privacy Policy"
-        meta="Version 1.0 · Last updated August 13, 2025"
+        meta="Version 1.1 · Last updated September 25, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -193,6 +194,15 @@ export default function Page() {
                 Service, comply with legal obligations, resolve disputes, and enforce our agreements.
               </p>
               <p>When data is no longer needed, we securely delete or anonymize it.</p>
+              <p>
+                <strong>Match video:</strong> Uploaded match video is kept for up to one year after it was
+                last viewed, then deleted. You can remove a video sooner at any time.
+              </p>
+              <p>
+                <strong>Team matches:</strong> Matches you file to a team on Advantage belong to that team
+                and stay with it if you delete your account. Your details as uploader are removed from them.
+                Your personal matches are deleted with your account.
+              </p>
             </section>
 
             <section className="legal-sec">
@@ -214,12 +224,18 @@ export default function Page() {
             <section className="legal-sec">
               <h2>10. Children&apos;s Privacy</h2>
               <p>
-                Advantage does not knowingly collect personal information from children under the age of
-                13.
+                Children cannot create their own Advantage account. A player under 18 uses Advantage through
+                an account that their parent or legal guardian creates and manages. We collect information
+                about a junior player only through that account, with the guardian&apos;s consent, as
+                described in our{" "}
+                <Link className="legal-link" href="/legal/guardian-terms">
+                  Guardian Terms
+                </Link>
+                .
               </p>
               <p>
-                If we become aware that we have inadvertently collected such information, we will take
-                prompt steps to delete it.
+                If we learn that we have collected personal information from a child under 13 without a
+                parent or guardian&apos;s consent, we will take prompt steps to delete it.
               </p>
               <p>
                 If you are a parent or guardian and believe that your child has provided us with personal
