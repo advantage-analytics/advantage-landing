@@ -5,6 +5,7 @@ import { Icon } from "./icons";
 import { HoneypotField } from "@/components/honeypot-field";
 import { HONEYPOT_NAME } from "@/lib/honeypot";
 import { CONTACT_EMAIL, links } from "@/lib/links";
+import { INDIVIDUAL_BETA_OFFER } from "@/lib/pilot";
 import type { LeadSource } from "@/lib/leads";
 
 export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource }) {
@@ -167,7 +168,7 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
               to — this keeps that path visible without competing with the CTA. */}
           <div className="access-player">
             <span className="ap-q">For individuals</span>
-            <span className="ap-t">Free allocation, self-serve — no program required.</span>
+            <span className="ap-t">{INDIVIDUAL_BETA_OFFER} No program required.</span>
             <a className="ap-link" href={links.signUp} target="_blank" rel="noopener noreferrer">
               Create a free account <Icon n="arrow" size={14} />
             </a>

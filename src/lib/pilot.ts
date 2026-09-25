@@ -13,6 +13,13 @@ export const PILOT_HOURS = "75 hours";
 export const PILOT_HOURS_SCOPE = "per program, per month";
 // The same allowance said attributively, e.g. "its own 75-hour budget".
 export const PILOT_HOURS_ADJECTIVE = "75-hour";
+// Individuals (no program) during the same free window: the open beta. Their
+// own monthly figure, set by the dashboard's video caps; SwingVision imports
+// are not metered at all.
+export const INDIVIDUAL_BETA_HOURS = "2 hours";
+export const INDIVIDUAL_BETA_SCOPE = "of match video a month";
+export const INDIVIDUAL_BETA_OFFER = `Free during the beta: ${INDIVIDUAL_BETA_HOURS} ${INDIVIDUAL_BETA_SCOPE}, and unlimited SwingVision imports.`;
+
 export const PILOT_ONBOARDING_WINDOW =
   "Onboarding runs through September for the fall season.";
 
