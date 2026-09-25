@@ -5,6 +5,7 @@ import { PageFrame } from "@/components/perspective/page-frame";
 import { PilotTermsBand } from "@/components/perspective/pilot-terms";
 import { RequestAccess } from "@/components/perspective/request-access";
 import {
+  INDIVIDUAL_BETA_OFFER,
   PILOT_END_DATE,
   PILOT_HOURS,
   PILOT_HOURS_ADJECTIVE,
@@ -59,6 +60,10 @@ const QA = [
     a: "Behind the baseline, elevated if possible — the checklist above is the whole answer.",
   },
   { q: "Doubles?", a: "Singles only for now." },
+  {
+    q: "Playing on your own?",
+    a: `${INDIVIDUAL_BETA_OFFER} Create a free account; no program needed.`,
+  },
   {
     q: "Men’s and women’s teams?",
     a: `Set up separately, each with its own ${PILOT_HOURS_ADJECTIVE} budget.`,
