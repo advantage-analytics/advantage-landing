@@ -80,7 +80,7 @@
    ring-free (:focus-visible), keyboard tabbing always shows the blue ring.
    Dark surfaces (mesh hero, dark CTA card, transparent nav) swap to a white
    ring so it stays high-contrast over blue/navy. */
-.perspective-page :where(a, button, input, [tabindex]):focus-visible {
+.perspective-page :where(a, button, input, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--signal-blue);
   outline-offset: 3px;
   border-radius: 5px;
@@ -89,11 +89,12 @@
 .site-nav:not(.is-solid) :where(a, button):focus-visible,
 .access-card :where(a, button):focus-visible,
 .final-band :where(a, button):focus-visible,
+.beta-panel :where(a, button):focus-visible,
 .contact-card :where(a, button):focus-visible {
   outline-color: #fff;
   outline-offset: 4px;
 }
-.perspective-page :where(a, button, input):focus:not(:focus-visible) { outline: none; }
+.perspective-page :where(a, button, input, summary):focus:not(:focus-visible) { outline: none; }
 /* Form fields signal focus through their growing underline, not a rounded ring,
    so the redundant outline AND its rounded corners are removed across the site
    (links/buttons keep both). */
@@ -124,8 +125,8 @@
 .btn:active { transform: scale(0.97); }
 .btn-primary { background: var(--signal-blue); color:#fff; box-shadow: 0 1px 3px var(--blue-glow), 0 6px 18px var(--blue-glow); }
 .btn-primary:hover { background: var(--signal-blue-deep); }
-/* Launch CTA size (46px, 24px sides, 14px) and the two light-surface skins the
-   beta cards use: ink for the individual lane, outline for the program lane. */
+/* Launch CTA size (46px, 24px sides, 14px) and the two light-surface skins:
+   ink for the team band's CTA, outline for secondary actions. */
 .btn-lg { height: 46px; padding: 0 24px; font-size: 14px; }
 .btn-ink { background: var(--ink); color: #fff; box-shadow: 0 8px 26px rgba(13,13,13,.18); }
 .btn-ink:hover { background: #1D1D1F; }
@@ -207,40 +208,41 @@ section.band.proof-band { padding: 88px 0; overflow: hidden; }
 
 @media (max-width: 720px)  { section.band { padding: 64px 0; } }
 
-/* ============ HOW IT WORKS — editorial split ============
-   After the three boards and before the offer. A narrow intro column states
-   the premise and shows the one real still of the angle Advantage reads; the
-   wider column runs the three steps as a hairline ledger, the fact a coach
-   checks in mono beside each. The asymmetry is the structure — premise on
-   the left, procedure on the right. The page's only photograph. */
-.how-split { display: grid; grid-template-columns: 420px minmax(0, 1fr); gap: 80px; align-items: start; }
-.how-intro { display: flex; flex-direction: column; gap: 22px; }
-.how-intro h2 { margin: 0; font-weight: var(--fw-light); font-size: clamp(30px, 3.6vw, 46px); line-height: 1.06; letter-spacing: -1px; color: var(--ink); text-wrap: balance; }
-.how-intro p { margin: 0; max-width: 380px; font: var(--fw-regular) 15px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
-.how-still { position: relative; margin: 8px 0 0; width: 100%; aspect-ratio: 420 / 236; border-radius: 10px; overflow: hidden; background: var(--ink); }
-.how-still img { width: 100%; height: 100%; object-fit: cover; }
-.how-still figcaption { position: absolute; left: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 8px; height: 26px; padding: 0 10px;
-  border-radius: 6px; background: rgba(13,13,13,.72); color: #fff; font: var(--fw-medium) 11px var(--font-sans); white-space: nowrap; }
-.how-still figcaption i { width: 6px; height: 6px; border-radius: 50%; background: var(--win-green); display: block; }
-.how-ledger { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; border-top: 1px solid var(--hairline-medium); }
-.how-ledger li { display: grid; grid-template-columns: 64px minmax(0, 1fr) 150px; grid-template-rows: auto auto; gap: 6px 24px; align-items: baseline; padding: 26px 0; border-bottom: 1px solid var(--hairline); }
-.how-ledger li .n { grid-row: 1; }
-.how-ledger li h3 { grid-column: 2; grid-row: 1; }
-.how-ledger li p { grid-column: 2; grid-row: 2; max-width: 46ch; }
-.how-ledger li .spec { grid-column: 3; grid-row: 1; }
-.how-ledger .n { font: var(--fw-regular) 11px var(--font-mono); letter-spacing: 1px; color: var(--signal-blue); font-variant-numeric: tabular-nums; }
-.how-ledger h3 { margin: 0; font: var(--fw-regular) 22px/1.2 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); }
-.how-ledger p { margin: 0; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
-.how-ledger .spec { font: var(--fw-regular) 10px var(--font-mono); letter-spacing: .5px; color: var(--ink-muted); text-align: right; white-space: nowrap; }
-.how-ledger .how-foot { display: block; padding: 24px 0 0; border-bottom: none; font: var(--fw-regular) 13px/1.5 var(--font-sans); color: var(--ink-muted); max-width: 60ch; }
-.how-ledger .how-foot a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
-@media (max-width: 1023px) {
-  .how-split { grid-template-columns: 1fr; gap: 44px; }
-  .how-still { max-width: 520px; }
-  .how-ledger li { grid-template-columns: 48px minmax(0, 1fr); grid-template-rows: auto auto auto; gap: 6px 16px; padding: 22px 0; }
-  .how-ledger li .n { grid-row: 1 / span 3; align-self: start; padding-top: 6px; }
-  .how-ledger li h3 { font-size: 20px; }
-  .how-ledger li .spec { grid-column: 2; grid-row: 3; text-align: left; }
+/* ============ HOW IT WORKS — head + white panel ============
+   After the three boards and before the offer. Same build as the beta band
+   below it (a full-width head, headline left and premise flush right, then
+   one panel split into columns), in white where that one is navy: the pair
+   reads as one system and the navy stays the place a visitor picks a lane.
+   Each step is number, title, sentence, and the fact a coach checks pinned to
+   the column's foot under its own rule. The columns share their rows through
+   subgrid, so titles, sentences and facts sit level whatever wraps. */
+.how-head { display: flex; align-items: last baseline; justify-content: space-between; gap: 24px 48px; }
+.how-head .band-aside { flex: 0 1 340px; text-align: right; }
+.how-aside-tail { display: inline-block; }
+.how-panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(4, auto);
+  margin: 56px 0 0; padding: 0; list-style: none; background: var(--surface);
+  border: 1px solid var(--hairline-medium); border-radius: var(--r-card); box-shadow: var(--shadow-card); }
+.how-step { grid-row: span 4; display: grid; grid-template-rows: subgrid; row-gap: 0; padding: 44px 40px 40px; }
+.how-step + .how-step { border-left: 1px solid var(--hairline-medium); }
+.how-step .n { font: var(--fw-regular) 11px var(--font-mono); letter-spacing: 1px; color: var(--signal-blue); font-variant-numeric: tabular-nums; }
+.how-step h3 { margin: 28px 0 0; font: var(--fw-regular) 22px/1.2 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); text-wrap: balance; }
+.how-step p { margin: 12px 0 0; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
+.how-step p a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
+.how-step .spec { align-self: end; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--hairline);
+  font: var(--fw-regular) 10px var(--font-mono); letter-spacing: .5px; color: var(--ink-muted); }
+@media (max-width: 900px) {
+  .how-head { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .how-head .band-aside { flex: none; text-align: left; }
+  .how-panel { grid-template-columns: 1fr; grid-template-rows: none; margin-top: 40px; }
+  .how-step { grid-row: auto; display: flex; flex-direction: column; padding: 32px 32px 28px; }
+  .how-step + .how-step { border-left: none; border-top: 1px solid var(--hairline-medium); }
+  .how-step h3 { margin-top: 18px; }
+  .how-step .spec { align-self: stretch; margin-top: 24px; }
+}
+@media (max-width: 640px) {
+  .how-aside-tail { display: inline; }
+  .how-step { padding: 28px 22px 24px; }
+  .how-step h3 { font-size: 20px; }
 }
 
 .sec-head { max-width: 720px; }
@@ -493,71 +495,128 @@ section.band.proof-band { padding: 88px 0; overflow: hidden; }
    own stylesheet, components/perspective/mocks.css. */
 
 
-/* Beta terms: two lanes routed by who the visitor is, joined by an "or".
-   Both cards share one six-row structure (question, sentence, three facts,
-   action). On desktop the pair owns the rows and each card, and each card's
-   list, joins them through subgrid, so every line sits level with its
-   opposite whatever wraps. Stacked on narrow screens. */
-.beta-pair { margin-top: 52px; display: grid; grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr);
-  grid-template-rows: repeat(6, auto); }
-.beta-or { grid-column: 2; grid-row: 1 / span 6; align-self: center; text-align: center;
-  font: var(--fw-regular) 14px var(--font-sans); color: var(--ink-muted); }
-.beta-card { grid-row: 1 / span 6; display: grid; grid-template-rows: subgrid; row-gap: 0;
-  padding: 36px; border-radius: var(--r-card);
-  background: var(--surface); border: 1px solid var(--hairline-medium); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-.beta-card:first-child { grid-column: 1; }
-.beta-card:last-child { grid-column: 3; }
-.beta-ask { grid-row: 1; margin: 0; font: var(--fw-light) clamp(26px, 2.6vw, 32px)/1.15 var(--font-sans);
-  letter-spacing: -0.02em; color: var(--ink); text-wrap: balance; }
-.beta-line { grid-row: 2; margin: 10px 0 0; font: var(--fw-regular) 15px/1.6 var(--font-sans);
-  color: var(--ink-secondary); text-wrap: pretty; }
-.beta-list { grid-row: 3 / span 3; display: grid; grid-template-rows: subgrid; row-gap: 0;
-  margin: 24px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--hairline); }
-.beta-list li { padding: 10px 0; border-bottom: 1px solid var(--hairline);
-  font: var(--fw-regular) 14.5px/1.5 var(--font-sans); color: var(--ink-secondary); }
-/* Note beside the button. It never wraps under it: a long note wraps within
-   its own column, so both buttons stay level across the pair. */
-.beta-cta { grid-row: 6; margin-top: 32px; align-self: end;
-  display: flex; flex-wrap: nowrap; align-items: center; gap: 16px; }
-.beta-cta .btn { flex: none; }
-.beta-cta .note { flex: 1 1 auto; min-width: 0; font: var(--fw-regular) 12.5px/1.4 var(--font-sans); color: var(--ink-muted); }
-@media (max-width: 860px) {
-  .beta-pair { grid-template-columns: 1fr; grid-template-rows: none; }
-  .beta-card, .beta-card:first-child, .beta-card:last-child { grid-column: 1; grid-row: auto; grid-template-rows: none; }
-  .beta-ask, .beta-line, .beta-list, .beta-cta { grid-row: auto; }
-  .beta-list { grid-template-rows: none; }
-  .beta-or { grid-column: 1; grid-row: auto; padding: 12px 0; }
-}
-@media (max-width: 480px) {
-  .beta-card { padding: 28px 22px; }
-  .beta-cta { flex-direction: column; align-items: stretch; gap: 10px; }
-  .beta-cta .btn { width: 100%; }
-}
-
-/* FAQ — intro column beside open question/answer rows. */
-.faq-grid { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 80px; }
-.faq-intro h2 { margin: 18px 0 0; font-weight: var(--fw-light); letter-spacing: -1px;
-  font-size: clamp(30px, 3.6vw, 46px); line-height: 1.06; color: var(--ink); text-wrap: balance; }
-.faq-intro p { margin: 22px 0 0; font: var(--fw-regular) 15px/1.6 var(--font-sans); color: var(--ink-secondary); }
-.faq-intro a, .faq-row dd a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
-.faq-list { margin: 0; }
-.faq-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 40px;
-  padding: 26px 0; border-top: 1px solid var(--hairline-medium); }
-.faq-row:last-child { border-bottom: 1px solid var(--hairline-medium); }
-.faq-row dt { margin: 0; font: var(--fw-regular) 18px/1.35 var(--font-sans); letter-spacing: -0.3px; color: var(--ink); }
-.faq-row dd { margin: 0; font: var(--fw-regular) 15px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
-@media (max-width: 960px) {
-  .faq-grid { grid-template-columns: 1fr; gap: 40px; }
+/* Beta terms: two lanes routed by who the visitor is. The band sits between
+   two intro-beside-ledger bands (How it works, FAQ), so it breaks the rhythm
+   on purpose: a full-width band head, then one panel split down the middle.
+   One panel, not two cards, so the lanes read as halves of the same offer
+   rather than tiers to weigh; equal columns, identical structure, the same
+   button in each. The lanes share their rows through subgrid, so the
+   question, sentence, facts and action sit level whatever wraps.
+   The panel is the final band's material (navy, glow, dot grid; the shared
+   rules sit with the final band below), so the two places a visitor picks a
+   lane are one surface, and both lanes wear its white button. */
+/* Headline top-left, aside flush with the panel's right edge, so the two
+   frame the panel's width. The aside's last line sits on the headline's last
+   baseline; set right so its edge is the panel's. Stacks and turns left on
+   phones, where there is no right edge to hold. */
+.beta-head { display: flex; align-items: last baseline; justify-content: space-between; gap: 24px 48px; }
+.beta-head .band-aside { flex: 0 1 340px; text-align: right; }
+/* Break the headline and aside between their sentences, never inside one. */
+.beta-h2-tail { display: inline-block; }
+.beta-panel { position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, auto);
+  margin-top: 56px; border-radius: var(--r-card); color: #fff;
+  background: linear-gradient(135deg, #14224C 0%, #0E1A3E 60%, #0B1228 100%); }
+.beta-lane { position: relative; grid-row: span 5; display: grid; grid-template-rows: subgrid; row-gap: 0; padding: 48px 56px 44px; }
+.beta-lane + .beta-lane { border-left: 1px solid rgba(255,255,255,0.14); }
+.beta-tag { margin: 0 0 18px; font: var(--fw-medium) 10px/1.5 var(--font-sans); letter-spacing: 2.5px;
+  text-transform: uppercase; color: rgba(255,255,255,0.6); }
+.beta-ask { margin: 0; font: var(--fw-regular) 24px/1.2 var(--font-sans); letter-spacing: -0.5px; color: #fff; text-wrap: balance; }
+.beta-line { margin: 12px 0 0; max-width: 44ch; font: var(--fw-regular) 15px/1.6 var(--font-sans);
+  color: rgba(255,255,255,0.78); text-wrap: pretty; }
+.beta-facts { margin: 28px 0 0; padding: 24px 0 0; list-style: none; border-top: 1px solid rgba(255,255,255,0.14);
+  display: flex; flex-direction: column; gap: 12px; }
+.beta-facts li { display: flex; align-items: baseline; gap: 12px; font: var(--fw-regular) 14px/1.45 var(--font-sans);
+  color: rgba(255,255,255,0.78); text-wrap: pretty; }
+/* A short tick, drawn rather than an icon font: the same 1.5px stroke as the
+   FAQ's plus marks. */
+.beta-facts li::before { content: ""; flex: none; width: 9px; height: 5px; translate: 0 -3px;
+  border-left: 1.5px solid rgba(255,255,255,0.6); border-bottom: 1.5px solid rgba(255,255,255,0.6); rotate: -45deg; }
+.beta-cta { align-self: end; margin-top: 36px; display: flex; align-items: center; gap: 16px; }
+.beta-cta .hbtn { flex: none; }
+.beta-cta .hbtn-white { box-shadow: 0 8px 26px rgba(0,0,0,.4); }
+.beta-cta .hbtn-white:hover { background: #F3F3F3; }
+.beta-cta .note { min-width: 0; font: var(--fw-regular) 12.5px/1.4 var(--font-sans); color: rgba(255,255,255,0.7); }
+@media (max-width: 900px) {
+  .beta-head { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .beta-head .band-aside { flex: none; text-align: left; }
+  .beta-panel { grid-template-columns: 1fr; grid-template-rows: none; margin-top: 40px; }
+  .beta-lane { grid-row: auto; display: flex; flex-direction: column; padding: 36px 32px; }
+  .beta-lane + .beta-lane { border-left: none; border-top: 1px solid rgba(255,255,255,0.14); }
+  .beta-cta { align-self: stretch; }
 }
 @media (max-width: 640px) {
-  .faq-row { grid-template-columns: 1fr; gap: 8px; padding: 22px 0; }
-  .faq-row dt { font-size: 17px; }
+  .beta-h2-tail { display: inline; }
+  .beta-lane { padding: 32px 22px; }
+  .beta-ask { font-size: 21px; }
+  .beta-cta { flex-direction: column; align-items: stretch; gap: 10px; }
+  .beta-cta .hbtn { width: 100%; }
+  .beta-cta .note { text-align: center; }
+}
+
+/* FAQ — heading in the left column, the collapsed questions beside it.
+   Only the questions show; each opens in place, and the plus turns into a
+   minus when a row is open. The contact line follows the list in the DOM
+   (you look for it once you've read the questions); on desktop, where the
+   list is already in view beside it, it sits under the heading as the
+   column's supporting line. The band keeps the standard section padding;
+   rows are 26px (22px on phones). Every rule in the list is one colour, --hairline-medium. The heading is
+   .sec-head. */
+.faq { display: grid; grid-template-columns: 420px minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 80px; }
+/* A flex column: the inline eyebrow then sits on no line
+   box, so its top meets the list's top rule instead of riding 7px below it. */
+.faq-intro { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; align-items: flex-start; }
+.faq-list { grid-column: 2; grid-row: 1 / span 2; border-top: 1px solid var(--hairline-medium); }
+.faq-more { grid-column: 1; grid-row: 2; align-self: start; padding-top: 22px; }
+.faq-row { border-bottom: 1px solid var(--hairline-medium); }
+.faq-row summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; padding: 26px 0; font: var(--fw-regular) 18px/1.35 var(--font-sans); letter-spacing: -0.3px; color: var(--ink); }
+.faq-row summary::-webkit-details-marker { display: none; }
+.faq-mark { flex: none; position: relative; width: 12px; height: 12px; }
+.faq-mark::before, .faq-mark::after { content: ""; position: absolute; left: 0; top: 5.25px; width: 12px; height: 1.5px;
+  background: var(--ink-secondary); transition: transform .2s var(--ease-spring); }
+.faq-mark::after { transform: rotate(90deg); }
+.faq-row[open] .faq-mark::after { transform: rotate(0deg); }
+.faq-row summary:hover .faq-mark::before, .faq-row summary:hover .faq-mark::after { background: var(--ink); }
+.faq-row p { margin: -12px 0 0; padding: 0 36px 26px 0; max-width: 60ch; font: var(--fw-regular) 15px/1.6 var(--font-sans);
+  color: var(--ink-secondary); text-wrap: pretty; }
+.faq-more { margin: 0; font: var(--fw-regular) 15px/1.6 var(--font-sans); color: var(--ink-secondary); }
+.faq-more a, .faq-row p a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
+/* Opening a row: FaqItem grows it to its answer (320ms), the answer settles
+   in a beat behind, and the plus folds into a minus. Closing reverses in
+   220ms: .is-closing (set for the length of the shrink) fades the answer and
+   turns the minus back into a plus at once. */
+.faq-row p { opacity: 0; translate: 0 -6px; transition: opacity 150ms var(--ease-primary), translate 150ms var(--ease-primary); }
+.faq-row[open] p { opacity: 1; translate: 0 0;
+  transition: opacity 260ms var(--ease-spring) 60ms, translate 320ms var(--ease-spring) 60ms; }
+@starting-style { .faq-row[open] p { opacity: 0; translate: 0 -6px; } }
+.faq-row.is-closing p { opacity: 0; translate: 0 -6px; transition: opacity 150ms var(--ease-primary), translate 220ms var(--ease-primary); }
+.faq-row.is-closing .faq-mark::after { transform: rotate(90deg); }
+.faq-row summary { transition: color 160ms var(--ease-primary); }
+.faq-row summary:hover { color: var(--ink-secondary); }
+/* Reduced motion: FaqItem leaves the toggle to the browser (no growing
+   row), and there's no drift or rotation; the answer still fades so the
+   change of state reads. */
+@media (prefers-reduced-motion: reduce) {
+  .faq-mark::after { transition: none; }
+  .faq-row p, .faq-row[open] p { translate: none; transition: opacity 120ms linear; }
+  @starting-style { .faq-row[open] p { translate: none; } }
+}
+@media (max-width: 1023px) {
+  .faq { grid-template-columns: 1fr; grid-template-rows: none; }
+  .faq-intro, .faq-list, .faq-more { grid-column: 1; grid-row: auto; }
+  .faq-list { margin-top: 44px; }
+  .faq-more { padding-top: 28px; }
+}
+@media (max-width: 640px) {
+  .faq-list { margin-top: 32px; }
+  .faq-row summary { font-size: 17px; padding: 22px 0; }
+  .faq-row p { margin-top: -10px; padding: 0 0 22px; }
 }
 
 /* Final band — full-bleed navy, the closing ask and both lanes once more. */
 section.band.final-band { position: relative; overflow: hidden; padding: 130px 0; text-align: center; color: #fff;
   background: linear-gradient(135deg, #14224C 0%, #0E1A3E 60%, #0B1228 100%); }
-.final-band .ac-glow { position: absolute; inset: 0;
+.final-band .ac-glow, .beta-panel .ac-glow { position: absolute; inset: 0;
   background: radial-gradient(90% 140% at 88% 10%, rgba(59,130,246,.55) 0%, rgba(59,130,246,0) 50%),
               radial-gradient(70% 120% at 100% 100%, rgba(129,140,248,.35) 0%, rgba(129,140,248,0) 55%); }
 /* The site's dot grid, one setting for every dark surface: whole-pixel dots
@@ -567,10 +626,10 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    and easing to about a third across the far corner. The hero mesh has no
    single light, so its grid is even. The contact card repeats these values in
    contact.css; change both together. */
-.final-band .ac-grain, .access-card .ac-grain, .mesh-grain {
+.final-band .ac-grain, .access-card .ac-grain, .beta-panel .ac-grain, .mesh-grain {
   position: absolute; inset: 0; pointer-events: none; opacity: 0.03;
   background-image: radial-gradient(circle, #fff 0.8px, transparent 1.2px); background-size: 6px 6px; }
-.final-band .ac-grain, .access-card .ac-grain {
+.final-band .ac-grain, .access-card .ac-grain, .beta-panel .ac-grain {
   -webkit-mask-image: radial-gradient(130% 130% at 88% 10%, #000 25%, rgba(0,0,0,.35) 100%);
           mask-image: radial-gradient(130% 130% at 88% 10%, #000 25%, rgba(0,0,0,.35) 100%); }
 /* Two pairs, one break: the date sits tight on the headline, the small print

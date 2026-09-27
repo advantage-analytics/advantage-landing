@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
 import { MatchBreakdown, MB_H, MB_W } from "./match-breakdown";
 import { ProofSide } from "./band-parts";
@@ -49,65 +49,62 @@ export function DashboardShowcase() {
   );
 }
 
-// Three steps, one line each, with the fact a coach checks beside each: the
-// footage spec, the allowance, the turnaround. The footage qualifier (behind
-// the baseline, not side-on) lives in the FAQ and on /pilot in full; here the
-// point is how little there is to do.
-const HOW_STEPS = [
+// Three steps, with the fact a coach checks under each: the footage spec, the
+// allowance for each lane, the turnaround. Each fact lives in one place: the
+// camera angle in the first step, the export guide in the second.
+const HOW_STEPS: readonly { t: string; p: ReactNode; spec: string }[] = [
   {
     t: "Record the match.",
-    p: "Any full-court angle you already use. The export guide covers getting the file off the camera.",
+    p: "From behind the baseline, raised up if you can. Side-on film won’t give a full breakdown.",
     spec: "1080p · 30fps · MP4",
   },
   {
-    t: "Drop in the file.",
-    p: "Upload straight from the dashboard. Each match counts against your monthly hours.",
-    spec: "2 h / month · beta",
+    t: "Upload the file.",
+    p: (
+      <>
+        Straight from the dashboard. The <Link href={EXPORT_GUIDE_HREF}>export guide</Link> shows how to get it off
+        the camera.
+      </>
+    ),
+    spec: "2 h players · 75 h pilot",
   },
   {
     t: "Open the breakdown.",
-    p: "Serve, return and rally numbers, each one linked to the point on film.",
+    p: "Serve, return and rally numbers, each linked to the point on film. We email you when it’s ready.",
     spec: "within 24 h",
   },
-] as const;
+];
 
 /* How it works, on its own, after the three product boards and before the
    offer: the visitor has seen what comes back before they read how little it
-   takes, and the band hands straight into "pick your lane". An editorial
-   split — the premise and the one real still of the angle Advantage reads on
-   the left, the three steps as a hairline ledger on the right. The only
-   photograph on the page, which is where the band's weight comes from. */
+   takes, and the band hands straight into "pick your lane". Built as the
+   beta band is: a full-width head (headline left, premise flush right), then
+   one panel split into columns. White here, navy there: the same structure
+   in the page's two materials, so the two bands read as a pair and the navy
+   stays the place a visitor picks a lane. */
 export function HowItWorks() {
   return (
     <section className="band how-band" id="how">
-      <div className="wrap how-split">
-        <div className="how-intro reveal">
-          <span className="eyebrow">How it works</span>
-          <h2>No new cameras. No tagging.</h2>
-          <p>
-            The video your program already shoots is enough. Behind the baseline, raised up if you can. The same
-            file that produced the point you just watched.
+      <div className="wrap">
+        <div className="how-head reveal">
+          <div className="sec-head">
+            <span className="eyebrow">How it works</span>
+            <h2>No new cameras. No tagging.</h2>
+          </div>
+          <p className="band-aside">
+            The video you already shoot is enough.{" "}
+            <span className="how-aside-tail">Three steps from file to breakdown.</span>
           </p>
-          <figure className="how-still">
-            <img src="/assets/marketing/elc-court.jpg" alt="A singles court filmed from behind the baseline, the angle Advantage reads." />
-            <figcaption>
-              <i aria-hidden="true" />
-              Works · behind the baseline
-            </figcaption>
-          </figure>
         </div>
-        <ol className="how-ledger reveal" aria-label="Three steps">
+        <ol className="how-panel reveal" aria-label="Three steps">
           {HOW_STEPS.map((s, i) => (
-            <li key={s.t}>
+            <li className="how-step" key={s.t}>
               <span className="n">0{i + 1}</span>
               <h3>{s.t}</h3>
               <p>{s.p}</p>
               <span className="spec">{s.spec}</span>
             </li>
           ))}
-          <li className="how-foot">
-            Side-on film won’t give a full breakdown. The <Link href={EXPORT_GUIDE_HREF}>export guide</Link> shows how to get the file off the camera.
-          </li>
         </ol>
       </div>
     </section>
