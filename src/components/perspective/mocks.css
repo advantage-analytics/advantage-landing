@@ -251,9 +251,9 @@
 .th-dual .score > span { color: #888888; }
 .th-dual .strips { display: inline-flex; align-items: center; gap: 8px; }
 .th-dual .strips em { display: block; width: 1px; height: 12px; background: #E5E5EA; }
-.th-dual .lines { display: flex; flex-direction: column; margin-top: 16px; border-top: 1px solid #F3F3F3; }
+.th-dual .lines { display: flex; flex-direction: column; margin-top: 16px; }
 .th-dual .line { display: grid; grid-template-columns: 26px 14px minmax(112px, 1.2fr) minmax(104px, 1fr) 106px 128px 13px; align-items: center; gap: 12px;
-  padding: 12px 0; border-bottom: 1px solid #F3F3F3; }
+  padding: 12px 0; }
 .th-dual .line .slot { font: 400 11px var(--font-mono); color: #888888; }
 .th-dual .line > svg { flex: none; }
 .th-dual .line .us { font: 500 13px var(--font-sans); color: #0D0D0D; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -266,13 +266,12 @@
 
 /* top movers */
 /* A picture, not a list with hover rows: the rows sit flush with the card's
-   content edge, 14px of air above and below each, a hairline between them. */
+   content edge, spaced by their own padding with no rule between them. */
 .th-movers .rows { display: flex; flex-direction: column; margin-top: 10px; }
 /* Six fixed tracks so every row's columns line up down the list: avatar,
    name, form, the metric's name set right against its value, the delta. */
 .th-movers .mv { display: grid; grid-template-columns: 26px minmax(0, 1fr) 62px 118px 48px 40px; align-items: center; column-gap: 14px;
-  padding: 13px 0; border-bottom: 1px solid #F3F3F3; }
-.th-movers .mv:last-child { border-bottom: none; }
+  padding: 13px 0; }
 .th-movers .mv .av { width: 26px; height: 26px; font-size: 9px; }
 .th-movers .mv .nm { font: 500 13px var(--font-sans); color: #0D0D0D; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .th-movers .mv .th-ticks { justify-self: start; }
