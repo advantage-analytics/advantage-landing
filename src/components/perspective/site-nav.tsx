@@ -20,14 +20,16 @@ import { trackCta } from "@/lib/analytics";
    pixels), so there's no dependency on the hero's height settling —
    the race that used to flash the bar solid on first paint.
 
-   Below 820px the center links and inline actions give way to a
+   Below 920px the center links and inline actions give way to a
    single menu button that drops a frosted sheet with the full nav —
    section links and the company pages, plus Sign in / Join Free Beta —
    so a phone or small tablet keeps every destination the desktop bar
    offers.
    =========================================================== */
 
-// `page: true` is a real route (Pilot, About) that gets a current-page marker;
+// `page: true` is a real route (Pilot, About, Contact) that gets a current-page
+// marker. Contact is in the bar because the pilot is aimed at college programs,
+// and a coach committing a team looks for a person before they sign up;
 // the rest are section anchors, resolved against LOCAL_ANCHORS below.
 const NAV_LINKS = [
   { href: "#dashboard", label: "Dashboard" },
@@ -35,6 +37,7 @@ const NAV_LINKS = [
   { href: "#team", label: "Team" },
   { href: "/pilot", label: "Pilot", page: true },
   { href: "/about", label: "About", page: true },
+  { href: "/contact", label: "Contact", page: true },
 ];
 
 // Section anchors that resolve in place on a route OTHER than the home page.
@@ -96,7 +99,7 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
       if (e.key === "Escape") setOpen(false);
     };
     const onResize = () => {
-      if (window.innerWidth > 820) setOpen(false);
+      if (window.innerWidth > 920) setOpen(false);
     };
     window.addEventListener("keydown", onKey);
     window.addEventListener("resize", onResize);
@@ -157,7 +160,7 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
         </a>
       </div>
 
-      {/* Compact-only menu trigger (shown ≤820px via CSS). */}
+      {/* Compact-only menu trigger (shown ≤920px via CSS). */}
       <button
         type="button"
         className="site-nav-toggle"
