@@ -1,10 +1,11 @@
 // The commercial terms of the Free Fall Season Pilot.
 //
 // Every surface that quotes a date, an allowance, or the onboarding window
-// reads them from here: the landing page's fall-pilot band, /pilot's ledger,
-// /pilot's Q&A, and that route's metadata. A coach reads at least two of those
-// before deciding, and the band promises "four terms, no fine print" — so two
-// versions of the offer is exactly the failure the copy claims can't happen.
+// reads them from here: the home page's beta lanes and FAQ, /pilot's terms
+// strip, its questions, and that route's metadata. A coach reads at least two
+// of those before deciding, and /pilot promises "four terms, no fine print" —
+// so two versions of the offer is exactly the failure the copy says can't
+// happen.
 // Extending the pilot should be one edit in this file.
 
 export const PILOT_END_DATE = "December 31, 2026";
@@ -22,11 +23,11 @@ export const BETA_END_SHORT = "Dec\u00a031";
 export const INDIVIDUAL_BETA_SHORT =
   "The free beta gives you 2 hours of film a month. No program or card needed.";
 
-// Rendered as a data ledger rather than a pricing card — `s` is the qualifying
-// note that sits beside a figure.
-export const PILOT_TERMS: readonly { l: string; v: string; s?: string }[] = [
-  { l: "Free through", v: PILOT_END_DATE },
-  { l: "Processed video", v: PILOT_HOURS, s: PILOT_HOURS_SCOPE },
-  { l: "Hardware · contract · cost", v: "None" },
-  { l: "Paid plans begin", v: PILOT_PAID_PLANS_BEGIN },
+// /pilot's terms strip: the label, the figure, and the line under it. Every
+// term carries its line so the four columns sit level.
+export const PILOT_TERMS: readonly { l: string; v: string; s: string }[] = [
+  { l: "Cost", v: "Free", s: `through ${PILOT_END_DATE}` },
+  { l: "Film", v: PILOT_HOURS, s: PILOT_HOURS_SCOPE },
+  { l: "Commitment", v: "None", s: "No hardware, no contract" },
+  { l: "Paid plans", v: PILOT_PAID_PLANS_BEGIN, s: "Nothing is charged before then" },
 ];

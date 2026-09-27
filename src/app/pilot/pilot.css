@@ -1,13 +1,15 @@
 /* ============ /pilot — the Free Fall Season Pilot ============
-   Route-local styles only. The bands, the terms ledger (.pb-*), the access
-   card and the numbered list (.hiw-*) are all the site's own components,
-   reused verbatim; what lives here is the masthead, the footage checklist,
-   and the two-column Q&A. */
+   Route-local styles only. The band heads (.proof-head), the steps panel
+   (.how-panel), the FAQ (.faq-*) and the access card are the home page's own
+   components, reused verbatim; what lives here is the masthead, the terms
+   strip, the footage panel, and the fourth column the steps panel needs. */
 
 /* ---- Masthead ----------------------------------------------------------
-   The same mesh as the home hero, but flowing rather than a fixed artboard:
+   The home hero's mesh and live grid, flowing rather than a fixed artboard:
    there is no dashboard to hold in perspective here, so the panel is only as
-   tall as its type. The top padding clears the fixed nav. */
+   tall as its type. Type is the home hero's: 62px light title, one light
+   support line. The top padding clears the fixed nav, and the foot melts into
+   the white band below the way the home hero does. */
 .pv-hero {
   position: relative;
   overflow: hidden;
@@ -16,7 +18,23 @@
 .pv-veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(11, 20, 55, 0.4) 0%, rgba(11, 20, 55, 0) 60%);
+  background: linear-gradient(to bottom, rgba(11, 20, 55, 0.3) 0%, rgba(11, 20, 55, 0) 45%);
+}
+.pv-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.4) 70%,
+    rgba(255, 255, 255, 0.85) 90%,
+    #fff 100%);
 }
 .pv-hero .wrap {
   position: relative;
@@ -26,57 +44,126 @@
   align-items: center;
   text-align: center;
   gap: 22px;
-  padding-top: 168px;
-  padding-bottom: 104px;
+  padding-top: 176px;
+  padding-bottom: 168px;
 }
-/* .h-title is sized by its caller; .h-sub only needs a measure here. */
 .pv-hero .h-title {
-  font-size: clamp(32px, 4.4vw, 56px);
-  max-width: 17ch;
+  font-size: clamp(40px, 4.4vw, 62px);
+  max-width: 820px;
   text-wrap: balance;
 }
 .pv-hero .h-sub {
   max-width: 560px;
 }
+.pv-hero .h-actions {
+  margin-top: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/* The individual lane, one quiet line under the program CTAs. */
 .pv-hero .meta {
   margin: 0;
   font: var(--fw-regular) 13px/1.5 var(--font-sans);
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.82);
 }
-/* The individual lane, one line under the program CTAs. */
 .pv-hero .meta a {
   color: #fff;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.pv-hero .h-actions {
-  margin-top: 6px;
-  flex-wrap: wrap;
-  justify-content: center;
+
+/* ---- The terms ---------------------------------------------------------
+   Four figures across the container under one rule, hairlines between the
+   columns: the page's data voice (mono index, uppercase label, light figure)
+   at the scale of a headline. The columns share their rows through subgrid,
+   so the figures and the lines under them sit level whatever wraps. */
+.pv-terms {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(3, auto);
+  margin: 56px 0 0;
+  border-top: 1px solid var(--hairline-medium);
+}
+.pv-term {
+  grid-row: span 3;
+  display: grid;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  padding: 28px 32px 4px;
+}
+.pv-term:first-child { padding-left: 0; }
+.pv-term + .pv-term { border-left: 1px solid var(--hairline-medium); }
+.pv-term .l {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font: var(--fw-medium) 10px/1.5 var(--font-sans);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+.pv-term .n {
+  font: var(--fw-regular) 11px var(--font-mono);
+  letter-spacing: 1px;
+  color: var(--signal-blue);
+  font-variant-numeric: tabular-nums;
+}
+.pv-term .v {
+  margin: 36px 0 0;
+  font: var(--fw-light) clamp(28px, 2.6vw, 36px)/1.05 var(--font-sans);
+  letter-spacing: -1px;
+  white-space: nowrap;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.pv-term .s {
+  margin: 12px 0 0;
+  font: var(--fw-regular) 14px/1.5 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
 }
 
 /* ---- Will your footage work? ------------------------------------------
-   Hairline rows, one green check each. The green is the page's only
-   non-blue accent and it is doing real work: it marks the affirmative. */
+   The drawing and the list as one unit: the court in a tinted tile on the
+   left, the checklist beside it in hairline rows, one green check each. The
+   green is the page's only non-blue accent and it is doing real work: it
+   marks the affirmative. */
+.pv-footage {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 72px;
+  align-items: center;
+  margin-top: 56px;
+}
+.pv-angle {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  background: var(--surface-subtle);
+  border-radius: var(--r-card);
+}
+.pv-angle > * { width: 100%; max-width: 320px; }
 .pv-checks {
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--hairline-medium);
 }
 .pv-checkrow {
   display: grid;
   grid-template-columns: 22px 1fr;
   gap: 16px;
-  padding: 15px 0;
-  border-bottom: 1px solid var(--hairline);
-  font: var(--fw-regular) 14px/1.5 var(--font-sans);
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline-medium);
+  font: var(--fw-regular) 15px/1.5 var(--font-sans);
   color: var(--ink-secondary);
   text-wrap: pretty;
 }
 .pv-checkrow svg {
   color: var(--win-green);
-  margin-top: 2px;
+  margin-top: 3px;
 }
 .pv-checkrow strong {
   font-weight: var(--fw-medium);
@@ -89,78 +176,106 @@
   padding: 14px 16px;
   background: var(--surface-subtle);
   border-radius: var(--r-element);
-  font: var(--fw-regular) 13px/1.6 var(--font-sans);
+  font: var(--fw-regular) 13.5px/1.6 var(--font-sans);
   color: var(--ink-secondary);
 }
 .pv-caution strong {
   font-weight: var(--fw-medium);
   color: var(--ink);
 }
-.pv-diagram {
-  margin-top: 36px;
-  max-width: 320px;
-}
 
-/* ---- Questions ---------------------------------------------------------
-   Two columns of hairline rows. Seven short answers read faster side by side
-   than as one long column, and none of them is worth an accordion. */
-.pv-qa {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0 64px;
-  margin: 48px 0 0;
-  border-top: 1px solid var(--hairline);
+/* ---- What happens next -------------------------------------------------
+   How it works' panel with a fourth column. Between 1100px and the panel's
+   own stacking point (900px) four columns get too narrow for their
+   sentences, so they pair up two by two. */
+.how-panel.is-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.how-panel.is-four .how-step { padding: 40px 32px 36px; }
+@media (max-width: 1100px) and (min-width: 901px) {
+  .how-panel.is-four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .how-panel.is-four .how-step:nth-child(3) { border-left: none; }
+  .how-panel.is-four .how-step:nth-child(n + 3) { border-top: 1px solid var(--hairline-medium); }
 }
-.pv-qa-row {
-  padding: 20px 0;
-  border-bottom: 1px solid var(--hairline);
-}
-.pv-qa-row .q {
-  margin: 0;
-  font: var(--fw-medium) 15px/1.4 var(--font-sans);
-  letter-spacing: -0.2px;
-  color: var(--ink);
-}
-.pv-qa-row .a {
-  margin: 8px 0 0;
-  font: var(--fw-regular) 13.5px/1.6 var(--font-sans);
-  color: var(--ink-secondary);
-  max-width: 44ch;
-}
-
 @media (max-width: 900px) {
-  .pv-qa {
-    grid-template-columns: 1fr;
+  /* The column count above outranks the home panel's own stacking rule. */
+  .how-panel.is-four { grid-template-columns: 1fr; }
+  .how-panel.is-four .how-step { padding: 32px 32px 28px; }
+}
+@media (max-width: 640px) {
+  .how-panel.is-four .how-step { padding: 28px 22px 24px; }
+}
+
+/* ---- Entrances ----------------------------------------------------------
+   The home page's grammar (see perspective.css, "Entrances, per section"):
+   the terms arrive left to right like the steps do; the footage tile settles
+   first and the checks follow it down the list. */
+@media (prefers-reduced-motion: no-preference) {
+  .perspective-page[data-reveal-armed] .pv-term {
+    transition: opacity 600ms var(--ease-spring), translate 700ms var(--ease-spring);
+    transition-delay: calc(140ms + var(--ti, 0) * 90ms);
   }
-  .pv-hero .wrap {
-    padding-top: 140px;
-    padding-bottom: 80px;
+  .perspective-page[data-reveal-armed] .pv-term:nth-child(2) { --ti: 1; }
+  .perspective-page[data-reveal-armed] .pv-term:nth-child(3) { --ti: 2; }
+  .perspective-page[data-reveal-armed] .pv-term:nth-child(4) { --ti: 3; }
+  .perspective-page[data-reveal-armed] .pv-terms.reveal:not(.in) { opacity: 1; transform: none; }
+  .perspective-page[data-reveal-armed] .pv-terms.reveal:not(.in) .pv-term { opacity: 0; translate: 0 12px; }
+
+  .perspective-page[data-reveal-armed] .pv-checkrow {
+    transition: opacity 500ms var(--ease-spring), translate 600ms var(--ease-spring);
+    transition-delay: calc(220ms + var(--ci, 0) * 50ms);
   }
+  .perspective-page[data-reveal-armed] .pv-checkrow:nth-child(2) { --ci: 1; }
+  .perspective-page[data-reveal-armed] .pv-checkrow:nth-child(3) { --ci: 2; }
+  .perspective-page[data-reveal-armed] .pv-checkrow:nth-child(4) { --ci: 3; }
+  .perspective-page[data-reveal-armed] .pv-checkrow:nth-child(5) { --ci: 4; }
+  .perspective-page[data-reveal-armed] .pv-checkrow:nth-child(n + 6) { --ci: 5; }
+  .perspective-page[data-reveal-armed] .pv-footage.reveal:not(.in) .pv-checkrow { opacity: 0; translate: 0 8px; }
+  .perspective-page[data-reveal-armed] .pv-caution { transition: opacity 600ms var(--ease-spring) 540ms; }
+  .perspective-page[data-reveal-armed] .pv-footage.reveal:not(.in) .pv-caution { opacity: 0; }
+}
+
+/* ---- Responsive ---------------------------------------------------------- */
+@media (max-width: 1023px) {
+  .pv-terms { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; }
+  .pv-term { grid-row: auto; display: flex; flex-direction: column; padding: 28px 28px 32px; }
+  .pv-term:nth-child(odd) { padding-left: 0; border-left: none; }
+  .pv-term:nth-child(n + 3) { border-top: 1px solid var(--hairline-medium); }
+  .pv-term .v { margin-top: 24px; }
+  .pv-hero .wrap { padding-top: 148px; padding-bottom: 132px; }
+}
+@media (max-width: 900px) {
+  .pv-footage { grid-template-columns: 1fr; gap: 32px; margin-top: 40px; }
+  .pv-terms { margin-top: 40px; }
 }
 @media (max-width: 560px) {
+  .pv-terms { grid-template-columns: 1fr; }
+  .pv-term,
+  .pv-term:nth-child(odd) { padding: 24px 0; border-left: none; }
+  .pv-term + .pv-term { border-left: none; border-top: 1px solid var(--hairline-medium); }
+  .pv-term .v { margin-top: 14px; font-size: 32px; }
+  .pv-angle { padding: 32px 24px; }
+}
+/* Below 768px, the home mobile hero: left-aligned, the title at the phone
+   scale, stacked full-width CTAs. */
+@media (max-width: 767px) {
   .pv-hero .wrap {
-    padding-top: 118px;
-    padding-bottom: 64px;
-    gap: 18px;
+    align-items: flex-start;
+    text-align: left;
+    padding-top: 112px;
+    padding-bottom: 96px;
+    gap: 20px;
   }
-  .pv-hero .h-sub {
-    font-size: 16px;
+  .pv-hero .h-title {
+    font-size: clamp(34px, 10.5vw, 46px);
+    line-height: 1.03;
+    letter-spacing: -1.2px;
+    max-width: 12ch;
   }
-  /* Stacked CTAs at full width, matching the mobile hero on the home page. */
+  .pv-hero .h-sub { font-size: 16px; max-width: 36ch; }
   .pv-hero .h-actions {
     align-self: stretch;
     flex-direction: column;
+    gap: 11px;
+    margin-top: 8px;
   }
-  .pv-hero .h-actions .hbtn {
-    width: 100%;
-  }
-  .pv-diagram {
-    margin-inline: auto;
-  }
-}
-
-/* Step 3's two outcomes lead with a darker phrase so they read apart. */
-.hiw-item-body p strong {
-  font-weight: var(--fw-medium);
-  color: var(--ink);
+  .pv-hero .h-actions .hbtn { width: 100%; height: 52px; font-size: 15px; }
 }
