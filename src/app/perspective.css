@@ -348,9 +348,8 @@ section.band.proof-band { padding: 88px 0; overflow: hidden; }
 .access-card .ac-glow { position:absolute; inset:0; z-index:0;
   background: radial-gradient(90% 140% at 88% 10%, rgba(59,130,246,.55) 0%, rgba(59,130,246,0) 50%),
               radial-gradient(70% 120% at 100% 100%, rgba(129,140,248,.35) 0%, rgba(129,140,248,0) 55%); }
-/* Same fine dotted grain as the contact card, layered over the glow. */
-.access-card .ac-grain { position:absolute; inset:0; z-index:0; pointer-events:none; opacity:0.05;
-  background-image: radial-gradient(rgba(255,255,255,0.5) 0.5px, transparent 0.6px); background-size: 4px 4px; }
+/* Dot grid over the glow: the shared rule sits with the final band below. */
+.access-card .ac-grain { z-index:0; }
 .access-inner { position:relative; z-index:1; display:grid; grid-template-columns: 1fr 0.9fr; gap: 48px; align-items:center; }
 .access-inner .eyebrow { color: rgba(255,255,255,0.7); }
 .access-inner h3 { margin: 18px 0 0; color:#fff; font-weight: var(--fw-light); font-size: clamp(28px,3.2vw,40px); letter-spacing:-0.9px; line-height:1.08; }
@@ -561,8 +560,19 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
 .final-band .ac-glow { position: absolute; inset: 0;
   background: radial-gradient(90% 140% at 88% 10%, rgba(59,130,246,.55) 0%, rgba(59,130,246,0) 50%),
               radial-gradient(70% 120% at 100% 100%, rgba(129,140,248,.35) 0%, rgba(129,140,248,0) 55%); }
-.final-band .ac-grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.05;
-  background-image: radial-gradient(rgba(255,255,255,0.5) 0.5px, transparent 0.6px); background-size: 4px 4px; }
+/* The site's dot grid, one setting for every dark surface: whole-pixel dots
+   on a 6px pitch at 3% white, the faintest that still reads at 100% zoom (the
+   old half-pixel dots landed near 2% and only showed when zoomed). On the navy
+   surfaces a mask ties the grid to the top-right glow, fullest under the light
+   and easing to about a third across the far corner. The hero mesh has no
+   single light, so its grid is even. The contact card repeats these values in
+   contact.css; change both together. */
+.final-band .ac-grain, .access-card .ac-grain, .mesh-grain {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.03;
+  background-image: radial-gradient(circle, #fff 0.8px, transparent 1.2px); background-size: 6px 6px; }
+.final-band .ac-grain, .access-card .ac-grain {
+  -webkit-mask-image: radial-gradient(130% 130% at 88% 10%, #000 25%, rgba(0,0,0,.35) 100%);
+          mask-image: radial-gradient(130% 130% at 88% 10%, #000 25%, rgba(0,0,0,.35) 100%); }
 /* Two pairs, one break: the date sits tight on the headline, the small print
    sits tight under the buttons, and the widest interval separates the ask from
    the action. 16 / 40 / 16 at every width. */
@@ -922,7 +932,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
     radial-gradient(ellipse 50% 50% at 70% 45%, #A78BFA 0%, transparent 40%),
     linear-gradient(135deg, #5B8DEF, #7BA4F7, #818CF8);
 }
-.mesh-grain { position:absolute; inset:0; background-image: radial-gradient(rgba(255,255,255,.5) .5px, transparent .6px); background-size:4px 4px; opacity:.06; pointer-events:none; }
+/* .mesh-grain: the shared dot grid, defined with the final band. */
 
 /* shared hero typography (verbatim) */
 .h-eyebrow { display:inline-flex; align-items:center; gap:11px; font:var(--fw-medium) 11px/1 var(--font-sans); letter-spacing:2.6px; text-transform:uppercase; color:rgba(255,255,255,.82); }
