@@ -97,7 +97,7 @@
 .dh-ai .mk { display: flex; width: 16px; height: 16px; flex: none; align-items: center; justify-content: center; border-radius: 3px; background: #0D0D0D; }
 /* The engine mark, as the dashboard's Focus card draws it: a white 9×6
    swoosh in a 16px ink square. Sized here, not just by the img attributes,
-   because a host frame (.browser-screen img) sets width:100% on images. */
+   so no host frame that sizes images can stretch it. */
 .dh .dh-ai .mk img { width: 9px; height: 6px; max-width: none; filter: brightness(0) invert(1); display: block; }
 .dh-ai .nm { font: 400 12px var(--font-sans); color: #525252; }
 .dh-ai .bd { display: flex; flex-direction: column; gap: 12px; }

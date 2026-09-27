@@ -36,7 +36,7 @@ export const RAIL_BOTTOM: ReactNode[] = [
   <Fragment key="i7"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M9 3v18" /><path d="m14 9 3 3-3 3" /></Fragment>,
 ];
 
-function spark(d: number[]) {
+export function spark(d: number[]) {
   const w = 80, h = 28, p = 2;
   const min = Math.min(...d), max = Math.max(...d), r = max - min || 1;
   const pts = d.map((v, i) => [p + (i / (d.length - 1)) * (w - p * 2), h - p - ((v - min) / r) * (h - p * 2)]);

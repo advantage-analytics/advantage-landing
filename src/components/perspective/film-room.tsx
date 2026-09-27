@@ -20,11 +20,12 @@ import {
   Volume2,
   X,
 } from "lucide-react";
-import { BandHead, Trio, type TrioItem } from "./band-parts";
-import { MockFrame } from "./mock-frame";
+import { ProofSide } from "./band-parts";
+import { MockFrame, MOCK_H, MOCK_W } from "./mock-frame";
 
 /* Film room — the dashboard's fullscreen film viewer, ported from the design
-   board's 1280×720 mock and driven, as the real one is, by the video's clock.
+   board's mock at the same 1440×944 the other product boards use — so the
+   three read as one size — and driven, as the real one is, by the video's clock.
 
    The footage is one real point (public/assets/marketing/film-room.mp4:
    Quan v Gomez, Indian Wells, set 1 game 5 at 2-2, 40-AD, Quan serving). Its
@@ -103,8 +104,10 @@ function activeShotAt(t: number) {
 type Row =
   | { head: string; note: string }
   | { who: Who; t: string; d: string; score: string; playing?: boolean };
-/* Set 1 · game 5 on Quan's serve, the points that brought it to 40-AD, then
-   the one on film. Score is the score before the point, as the app shows it. */
+/* Set 1 · game 5 on Quan's serve, the points that brought it to 40-AD, the
+   one on film, then the games after it — the list clips at the frame's foot,
+   so what shows is a match in progress. Score is the score before the point,
+   as the app shows it. */
 const ROWS: readonly Row[] = [
   { head: "Set 1 · Game 5", note: "2-2 · Quan serves" },
   { who: "you", t: "Ace · Quan, wide", d: "Set 1 · game 5", score: "0-0" },
@@ -115,6 +118,17 @@ const ROWS: readonly Row[] = [
   { who: "you", t: "Winner · Quan backhand", d: "Set 1 · game 5 · 6 shots", score: "30-40" },
   { who: "opp", t: "Winner · Gomez forehand", d: "Set 1 · game 5 · 4 shots", score: "40-40" },
   { who: "you", t: "Unforced error · Quan forehand", d: "Set 1 · game 5 · 5 shots", score: "40-AD", playing: true },
+  // The points still to come, so the list reads as a match rather than a clip.
+  { head: "Set 1 · Game 6", note: "2-3 · Gomez serves" },
+  { who: "opp", t: "Ace · Gomez, wide", d: "Set 1 · game 6", score: "0-0" },
+  { who: "you", t: "Winner · Quan backhand", d: "Set 1 · game 6 · 8 shots", score: "15-0" },
+  { who: "opp", t: "Double fault · Gomez", d: "Set 1 · game 6", score: "15-15" },
+  { who: "you", t: "Forced error · Gomez forehand", d: "Set 1 · game 6 · 6 shots", score: "15-30" },
+  { who: "opp", t: "Winner · Gomez forehand", d: "Set 1 · game 6 · 3 shots", score: "15-40" },
+  { who: "you", t: "Winner · Quan return", d: "Set 1 · game 6 · 2 shots", score: "30-40" },
+  { head: "Set 1 · Game 7", note: "3-3 · Quan serves" },
+  { who: "you", t: "Ace · Quan, T", d: "Set 1 · game 7", score: "0-0" },
+  { who: "opp", t: "Unforced error · Gomez backhand", d: "Set 1 · game 7 · 9 shots", score: "15-0" },
 ];
 
 const RM_QUERY = "(prefers-reduced-motion: reduce)";
@@ -478,40 +492,28 @@ function FilmRoomMock() {
   );
 }
 
-const FILM_NOTES: readonly TrioItem[] = [
-  { k: "Board", t: "Pick a stat.", p: "Every point behind the number, filtered by serve, return or rally length." },
-  {
-    k: "Video",
-    t: "Watch the rally.",
-    p: "Film cues to the first ball with the score pinned. Step point to point from the transport bar.",
-  },
-  {
-    k: "Court",
-    t: "See where it landed.",
-    p: "Each shot plots on the court as it plays, so the pattern and the footage read together.",
-  },
-];
-
 export function FilmRoom() {
   return (
-    <section className="band alt" id="film">
+    <section className="band alt proof-band" id="film">
       <div className="wrap">
-        <BandHead
-          eyebrow="Film room"
-          title="Every number opens the point."
-          aside="Tap any stat and the film jumps to that rally, with the score, the shots and where each ball landed."
-        />
-        <div
-          role="img"
-          aria-label="The Advantage film room: match video with the live score, a mini court plotting each shot of the rally, and the point list open on the current point."
-        >
-          <MockFrame className="is-film">
-            <div inert className="film-inert">
-              <FilmRoomMock />
-            </div>
-          </MockFrame>
+        <div className="proof is-flip" style={{ "--ratio": MOCK_W / MOCK_H } as CSSProperties}>
+          <ProofSide
+            eyebrow="Film room"
+            title="Every number opens the point."
+            aside="Tap any stat and the film jumps to that rally, with the score, the shots and where each ball landed."
+          />
+          <div
+            className="proof-board"
+            role="img"
+            aria-label="The Advantage film room: match video with the live score, a mini court plotting each shot of the rally, and the point list open on the current point."
+          >
+            <MockFrame className="is-film">
+              <div inert className="film-inert">
+                <FilmRoomMock />
+              </div>
+            </MockFrame>
+          </div>
         </div>
-        <Trio items={FILM_NOTES} label="How the film room reads" />
       </div>
     </section>
   );

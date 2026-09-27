@@ -8,7 +8,7 @@ import { Footer } from "@/components/perspective/footer";
 import { useReveal } from "@/components/perspective/reveal";
 import { DashboardShowcase, HowItWorks } from "@/components/perspective/sections";
 import { FilmRoom } from "@/components/perspective/film-room";
-import { TeamRoster } from "@/components/perspective/team-roster";
+import { TeamBand } from "@/components/perspective/team-band";
 import { BetaTerms } from "@/components/perspective/beta-terms";
 import { Faq } from "@/components/perspective/faq";
 import { FinalBand } from "@/components/perspective/final-band";
@@ -43,7 +43,7 @@ export default function Home() {
       <main>
         <DashboardShowcase />
         <FilmRoom />
-        <TeamRoster />
+        <TeamBand />
         <HowItWorks />
         <BetaTerms />
         <Faq />

@@ -8,8 +8,8 @@ import type { CSSProperties, ReactNode } from "react";
    dashboard showcase has always used, so every band on the page sits on one
    header rhythm.
 
-   Trio — a three-column numbered ledger under a hairline. Film room uses it for
-   the three notes under its mock; How it works uses it for the three steps. */
+   ProofSide — the left column of a proof band (breakdown, film room, team):
+   copy, and for the team band the coach's action, beside a product board. */
 
 export function BandHead({
   eyebrow,
@@ -31,22 +31,30 @@ export function BandHead({
   );
 }
 
-export type TrioItem = { k: string; t: string; p: ReactNode };
-
-export function Trio({ items, label }: { items: readonly TrioItem[]; label?: string }) {
+/* ProofSide — the left column of a proof band: eyebrow, headline and aside
+   at the top, the support (the team CTA) pinned to the bottom so it ends
+   level with the board beside it. The board is the band's primary; this
+   column captions it, which is why the headline is a size down from the
+   full-width band head. */
+export function ProofSide({
+  eyebrow,
+  title,
+  aside,
+  children,
+}: {
+  eyebrow?: ReactNode;
+  title: ReactNode;
+  aside?: ReactNode;
+  children?: ReactNode;
+}) {
   return (
-    <ol className="trio" aria-label={label}>
-      {items.map((it, i) => (
-        <li className="trio-item reveal" key={it.k} style={{ "--ri": i } as CSSProperties}>
-          <span className="trio-kicker">
-            <span className="n">0{i + 1}</span>
-            <i aria-hidden="true" />
-            {it.k}
-          </span>
-          <h4>{it.t}</h4>
-          <p>{it.p}</p>
-        </li>
-      ))}
-    </ol>
+    <div className="proof-side">
+      <div className="proof-head reveal">
+        {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
+        <h2>{title}</h2>
+        {aside ? <p className="band-aside">{aside}</p> : null}
+      </div>
+      {children ? <div className="proof-support">{children}</div> : null}
+    </div>
   );
 }

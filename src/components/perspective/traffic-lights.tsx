@@ -1,5 +1,5 @@
 // The three macOS-style window dots shared by the hero and dashboard-showcase
-// browser chrome. The container class differs per surface (.windots / .browser-dots)
+// browser chrome on the hero window. The container class is the caller's (.windots)
 // and carries the layout, so it's passed in.
 export function TrafficLights({ className }: { className?: string }) {
   return (

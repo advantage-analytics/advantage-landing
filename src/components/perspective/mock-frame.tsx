@@ -4,14 +4,14 @@ import type { ReactNode } from "react";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
 import "./mocks.css";
 
-/* The frame the product mocks sit in: a fixed artboard (1280×720 by
+/* The frame the product mocks sit in: a fixed artboard (1440×944 by
    default; the roster board passes the dashboard's 1440×900), drawn at its
    native size and scaled to the band's width, the same way the dashboard
    showcase fits its artboard. aspect-ratio reserves the fitted height
    before the fit effect runs, so anchors below this band land on target. */
 
-export const MOCK_W = 1280;
-export const MOCK_H = 720;
+export const MOCK_W = 1440;
+export const MOCK_H = 944;
 
 export function MockFrame({
   children,
