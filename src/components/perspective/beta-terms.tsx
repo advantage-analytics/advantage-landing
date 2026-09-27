@@ -1,29 +1,33 @@
-import type { CSSProperties } from "react";
+import { Fragment, type CSSProperties } from "react";
 import { BandHead } from "./band-parts";
 import { ApplyPilotLink, JoinBetaLink } from "./cta-links";
 import { BETA_END_SHORT } from "@/lib/pilot";
 
-/* The two ways in, side by side. This is the one place on the page the lanes
-   are cards: the figure is the whole comparison (2 hrs against 75), so it gets
-   the size, and each card ends on its own CTA. Individuals get the ink button,
-   programs the outlined one, so the pair never reads as primary/secondary. */
+/* The two lanes, routed by who the visitor is. These are not tiers to weigh
+   against each other: an individual player is on the free beta, a college
+   program is on the fall pilot, and nobody chooses between them. So each card
+   opens with the question the visitor answers about themselves, the hours are
+   a plain fact rather than a headline figure, and both CTAs share one ink
+   button so neither lane reads as the better plan.
+
+   Both cards run on one six-row structure (question, sentence, three facts,
+   action). On desktop the pair's rows are shared through subgrid, so every
+   line sits level with its opposite whatever wraps. */
 
 const LANES = [
   {
-    label: "Free beta · Individuals",
-    fig: "2 hrs",
-    qual: "of film a month",
-    points: ["Self-serve. No program or card needed", "Full dashboard and film room", `Free through ${BETA_END_SHORT}`],
+    ask: "An individual player?",
+    line: "You're on the free beta. Sign up and start on your own.",
+    points: ["Full dashboard and film room", "2 hours of film a month", "No program or card needed"],
     cta: <JoinBetaLink className="btn btn-lg btn-ink" placement="home-beta-card" />,
-    note: "Sign up in a minute.",
+    note: "Takes about a minute.",
   },
   {
-    label: "Fall pilot · Programs",
-    fig: "75 hrs",
-    qual: "of film a month, shared by the team",
-    points: ["For college programs", "Team roster and shared film", "No hardware, no contract"],
-    cta: <ApplyPilotLink className="btn btn-lg btn-outline" placement="home-beta-card" />,
-    note: "Apply on the pilot page.",
+    ask: "With a college program?",
+    line: "Your team is on the fall pilot. Your program applies once for everyone.",
+    points: ["Team roster and shared film", "75 hours of film a month, shared by the team", "No hardware, no contract"],
+    cta: <ApplyPilotLink className="btn btn-lg btn-ink" placement="home-beta-card" />,
+    note: "Details and application on the pilot page.",
   },
 ];
 
@@ -32,28 +36,31 @@ export function BetaTerms() {
     <section className="band alt" id="beta">
       <div className="wrap">
         <BandHead
-          eyebrow="Beta terms"
-          title={`Free through ${BETA_END_SHORT}. Two ways in.`}
-          aside="Players sign up and start. Programs apply for the fall pilot."
+          title="One plan for players. One for college programs."
+          aside={`Both are free through ${BETA_END_SHORT}. You're on whichever one fits you.`}
         />
-        <div className="beta-grid">
+        <div className="beta-pair">
           {LANES.map((l, i) => (
-            <div className="beta-card reveal" key={l.label} style={{ "--ri": i } as CSSProperties}>
-              <span className="beta-label">{l.label}</span>
-              <div className="beta-fig">
-                <span className="n">{l.fig}</span>
-                <span className="q">{l.qual}</span>
+            <Fragment key={l.ask}>
+              {i > 0 ? (
+                <span className="beta-or" aria-hidden="true">
+                  or
+                </span>
+              ) : null}
+              <div className="beta-card reveal" style={{ "--ri": i } as CSSProperties}>
+                <h3 className="beta-ask">{l.ask}</h3>
+                <p className="beta-line">{l.line}</p>
+                <ul className="beta-list">
+                  {l.points.map((p) => (
+                    <li key={p}>{p}</li>
+                  ))}
+                </ul>
+                <div className="beta-cta">
+                  {l.cta}
+                  <span className="note">{l.note}</span>
+                </div>
               </div>
-              <ul className="beta-list">
-                {l.points.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
-              </ul>
-              <div className="beta-cta">
-                {l.cta}
-                <span className="note">{l.note}</span>
-              </div>
-            </div>
+            </Fragment>
           ))}
         </div>
       </div>

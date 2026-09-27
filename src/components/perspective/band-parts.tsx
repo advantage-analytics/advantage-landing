@@ -16,14 +16,14 @@ export function BandHead({
   title,
   aside,
 }: {
-  eyebrow: ReactNode;
+  eyebrow?: ReactNode;
   title: ReactNode;
   aside?: ReactNode;
 }) {
   return (
     <div className="show-head reveal">
       <div className="sec-head">
-        <span className="eyebrow">{eyebrow}</span>
+        {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
         <h2>{title}</h2>
       </div>
       {aside ? <p className="band-aside">{aside}</p> : null}
