@@ -1,6 +1,6 @@
 import { Fragment, type CSSProperties } from "react";
 import { BandHead } from "./band-parts";
-import { ApplyPilotLink, JoinBetaLink } from "./cta-links";
+import { FindTeamLink, JoinBetaLink } from "./cta-links";
 import { BETA_END_SHORT } from "@/lib/pilot";
 
 /* The two lanes, routed by who the visitor is. These are not tiers to weigh
@@ -24,10 +24,10 @@ const LANES = [
   },
   {
     ask: "With a college program?",
-    line: "Your team is on the fall pilot. Your program applies once for everyone.",
+    line: "Your team is on the fall pilot. Sign up and find your team in the dashboard.",
     points: ["Team roster and shared film", "75 hours of film a month, shared by the team", "No hardware, no contract"],
-    cta: <ApplyPilotLink className="btn btn-lg btn-ink" placement="home-beta-card" />,
-    note: "Details and application on the pilot page.",
+    cta: <FindTeamLink className="btn btn-lg btn-ink" placement="home-beta-card" />,
+    note: "Instant with your school email.",
   },
 ];
 

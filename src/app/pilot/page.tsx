@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
 import { Check } from "lucide-react";
 import { CourtDiagram } from "@/components/court-diagram";
 import { FOOTAGE_CHECKLIST } from "@/components/footage-checklist";
 import { PageFrame } from "@/components/perspective/page-frame";
-import { ApplyPilotLink, JoinBetaLink } from "@/components/perspective/cta-links";
+import { FindTeamLink, JoinBetaLink } from "@/components/perspective/cta-links";
 import { PilotTermsBand } from "@/components/perspective/pilot-terms";
 import { RequestAccess } from "@/components/perspective/request-access";
 import {
@@ -25,20 +26,28 @@ export const metadata = {
    has to read as part of the site a coach was already browsing.
 
    Order is the order the questions arrive in: what does it cost, will my
-   footage even work, what happens if I say yes, and then the form. */
+   footage even work, what happens when I sign up, and then the way in. */
 
-const STEPS = [
+const STEPS: readonly { t: string; p: ReactNode }[] = [
   {
-    t: "Apply below.",
-    p: "Name, school, role — nothing else.",
+    t: "Create an account.",
+    p: "Use your school email. It’s how we recognize you as a coach.",
   },
   {
-    t: "We reply by email.",
-    p: "A real reply from a person, not a sequence — with your start date.",
+    t: "Find your team.",
+    p: "Search your school and choose the men’s or women’s team you coach.",
   },
   {
-    t: "Your staff gets accounts and upload access.",
-    p: "With a short walkthrough of the first upload. Already on SwingVision? Those matches import too.",
+    t: "We check your email against the staff list.",
+    p: (
+      <>
+        <strong>If it’s on the list,</strong> the pilot turns on right away, with{" "}
+        {PILOT_HOURS} a month for the team.
+        <br />
+        <strong>If it isn’t,</strong> a person confirms you coach there and emails
+        you when it’s on.
+      </>
+    ),
   },
   {
     t: "Send match video.",
@@ -64,6 +73,14 @@ const QA = [
     a: `Set up separately, each with its own ${PILOT_HOURS_ADJECTIVE} budget.`,
   },
   {
+    q: "What if my email isn’t recognized?",
+    a: "You can still sign up and find your team. A person confirms you coach there and emails you when the pilot is on.",
+  },
+  {
+    q: "My school isn’t listed.",
+    a: "Tell us with the form at the bottom of this page and we’ll add it.",
+  },
+  {
     q: "Can individual players join?",
     a: "Yes. The free beta is 2 hours a month, self-serve. No program required.",
   },
@@ -74,7 +91,7 @@ const PilotMasthead = () => (
     <div className="mesh-grain" aria-hidden="true" />
     <div className="pv-veil" aria-hidden="true" />
     <div className="wrap">
-      <span className="h-eyebrow">Fall Pilot · Applications open</span>
+      <span className="h-eyebrow">Fall Pilot · Open now</span>
       <h1 className="h-title">The fall season, free, on your own footage.</h1>
       <p className="h-sub">
         Advantage turns the match video your program already shoots into
@@ -82,12 +99,7 @@ const PilotMasthead = () => (
         {PILOT_END_DATE}.
       </p>
       <div className="h-actions">
-        <ApplyPilotLink
-          className="hbtn hbtn-white"
-          href="#access"
-          placement="pilot-hero"
-          icon={16}
-        />
+        <FindTeamLink className="hbtn hbtn-white" placement="pilot-hero" />
         <a className="hbtn hbtn-glass" href="#footage">
           Will your footage work?
         </a>
@@ -150,10 +162,10 @@ export default function Page() {
           <div className="hiw-split reveal">
             <div className="hiw-intro">
               <span className="eyebrow">What happens next</span>
-              <h2>From the application to the first breakdown.</h2>
+              <h2>From sign-up to the first breakdown.</h2>
               <p>
-                No call required. A person sets your program up over email — the
-                four steps beside this are the whole onboarding.
+                No application and no call. Nearly every college program is
+                already in the dashboard, waiting for its coaches.
               </p>
             </div>
             <ol className="hiw-list">
@@ -190,7 +202,7 @@ export default function Page() {
         </div>
       </section>
 
-      <RequestAccess source="Pilot page" />
+      <RequestAccess />
     </PageFrame>
   );
 }

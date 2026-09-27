@@ -26,7 +26,9 @@ export function Footer() {
             <div className="foot-col">
               <h5>Programs</h5>
               <Link href="/pilot">Pilot</Link>
-              <Link href="/pilot#access">Apply for Pilot</Link>
+              <a href={links.signUp} target="_blank" rel="noopener noreferrer">
+                Find Your Team
+              </a>
               <a href={links.signUp} target="_blank" rel="noopener noreferrer">
                 Join Free Beta
               </a>

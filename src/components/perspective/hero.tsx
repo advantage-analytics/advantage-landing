@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useSyncExternalStore } from "react";
-import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { DashboardHome } from "./dashboard-home";
@@ -40,7 +39,8 @@ const BrowserBar = () => (
   </div>
 );
 
-// The two lanes: individuals sign up in the app, programs apply on /pilot.
+// The two lanes: individuals sign up in the app, and so do coaches, who then
+// find their team there.
 function HeroActions() {
   return (
     <div className="h-actions">
@@ -54,13 +54,16 @@ function HeroActions() {
         Join Free Beta
         <ArrowUpRight size={16} />
       </a>
-      <Link
+      <a
         className="hbtn hbtn-glass"
-        href="/pilot#access"
-        onClick={() => trackCta("apply_for_pilot", "home-hero")}
+        href={links.signUp}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => trackCta("find_your_team", "home-hero")}
       >
-        Apply for Pilot
-      </Link>
+        Find Your Team
+        <ArrowUpRight size={16} />
+      </a>
     </div>
   );
 }

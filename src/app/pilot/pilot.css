@@ -158,3 +158,9 @@
     margin-inline: auto;
   }
 }
+
+/* Step 3's two outcomes lead with a darker phrase so they read apart. */
+.hiw-item-body p strong {
+  font-weight: var(--fw-medium);
+  color: var(--ink);
+}

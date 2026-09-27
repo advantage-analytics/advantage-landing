@@ -327,16 +327,13 @@ section.band.alt + section.band.alt { border-top: none; }
 .access-sent { color:#fff; font: var(--fw-regular) 14px/1.6 var(--font-sans); text-align:center; padding: 20px 0; }
 .access-sent .chk { width:42px; height:42px; border-radius:50%; background: var(--win-tint); color: var(--win-green); display:flex; align-items:center; justify-content:center; margin: 0 auto 16px; }
 .access-sent .chk svg { width:20px; height:20px; stroke: currentColor; }
-/* Sits above the submit button: the escape hatch for a coach who wants a person
-   before a form. Quiet enough not to compete with the CTA under it. */
-/* Scoped to .access-form for specificity, not for style: `.access-inner p`
-   above is (0,1,1) and a bare `.access-ask` is (0,1,0), so this paragraph has
-   been losing to the lede's 15px/0.78/18px-top treatment no matter where it sat
-   in the file. That is why the escape hatch has been rendering three steps
-   louder than intended and crowding the CTA under it. */
-.access-form .access-ask { margin: 2px 0 14px; font: var(--fw-regular) 12px/1.5 var(--font-sans); color: rgba(255,255,255,0.6); }
-.access-ask a { color: rgba(255,255,255,0.9); text-decoration: underline; text-underline-offset: 3px; }
-.access-ask a:hover { color: #fff; }
+/* Opens the missing-school form. Scoped to .access-form for specificity:
+   `.access-inner p` above is (0,1,1) and would otherwise hand this line the
+   lede's 15px/0.78/18px-top treatment. */
+.access-form .access-lead { margin: 0 0 20px; font: var(--fw-regular) 13px/1.5 var(--font-sans); color: rgba(255,255,255,0.72); }
+.access-lead strong { font-weight: var(--fw-medium); color: #fff; }
+/* The coach CTA under the lede. */
+.access-inner .access-actions { margin-top: 28px; }
 
 /* The individual lane, as a rule across the foot of the card. Outside
    .access-inner so it survives the form's sent state — the path stays visible
@@ -404,16 +401,6 @@ section.band.alt + section.band.alt { border-top: none; }
   .uline select { padding-right: 26px; }
   .access-form .btn { height: 50px; font-size: 14px; }
   .access-note { font-size: 12px; }
-  /* The house rule campaign.css sets out: a standalone link gets real vertical
-     room on touch, an inline link inside a sentence is exempt from target sizing
-     and would break its line box if padded. .access-ask's mailto is a sentence;
-     it gets a size bump and room around the paragraph instead. */
-  .access-form .access-ask { margin: 6px 0 24px; font-size: 13px; }
-  /* An address has no sensible break point — left to wrap it splits as
-     "team@advantage-" / "analytics.com". nowrap moves it to its own line whole,
-     which it has room for down to 320px, and unlike inline-block it leaves the
-     line box alone. */
-  .access-ask a { white-space: nowrap; }
   .access-player .ap-link { padding: 8px 0; }
 }
 

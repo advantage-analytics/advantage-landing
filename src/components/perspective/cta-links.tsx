@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { links } from "@/lib/links";
 import { trackCta } from "@/lib/analytics";
@@ -35,23 +34,30 @@ export function JoinBetaLink({
   );
 }
 
-export function ApplyPilotLink({
+// The program lane. A coach signs up in the app and finds their team there;
+// nearly every college program is already listed. A school-email match turns
+// the pilot on at once, and anyone else is confirmed by hand.
+export function FindTeamLink({
   className,
   placement,
-  href = "/pilot#access",
-  children = "Apply for Pilot",
-  icon = false,
+  children = "Find Your Team",
+  icon = 16,
 }: {
   className?: string;
   placement: string;
-  href?: string;
   children?: ReactNode;
   icon?: number | false;
 }) {
   return (
-    <Link className={className} href={href} onClick={() => trackCta("apply_for_pilot", placement)}>
+    <a
+      className={className}
+      href={links.signUp}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => trackCta("find_your_team", placement)}
+    >
       {children}
       {icon ? <ArrowUpRight size={icon} aria-hidden="true" /> : null}
-    </Link>
+    </a>
   );
 }

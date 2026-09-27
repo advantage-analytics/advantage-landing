@@ -15,7 +15,7 @@ const QA: readonly { q: string; a: ReactNode }[] = [
   },
   {
     q: "Who is the fall pilot for?",
-    a: `College programs. The team gets 75 hours of film a month. Paid plans begin ${PILOT_PAID_PLANS_BEGIN}.`,
+    a: `College programs. Coaches sign up and find their team, which gets 75 hours of film a month. Paid plans begin ${PILOT_PAID_PLANS_BEGIN}.`,
   },
   {
     q: "What video works?",

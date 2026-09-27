@@ -20,7 +20,7 @@ export const PILOT_HOURS_ADJECTIVE = "75-hour";
 // Non-breaking space: "Dec" and "31" never split across a line.
 export const BETA_END_SHORT = "Dec\u00a031";
 export const INDIVIDUAL_BETA_SHORT =
-  "Free beta — 2 hrs/month, self-serve, no program required.";
+  "The free beta gives you 2 hours of film a month. No program or card needed.";
 
 // Rendered as a data ledger rather than a pricing card — `s` is the qualifying
 // note that sits beside a figure.

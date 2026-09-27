@@ -59,12 +59,17 @@ export async function POST(request: Request) {
   // sequential awaits put a whole extra Resend round-trip between the coach and
   // their confirmation screen.
   const confirmation = pilotRequestEmail({ name, email, university, role, division });
+  // A missing-school request isn't a pilot application, and the pilot
+  // confirmation email would tell that coach the wrong story. The team is
+  // notified and replies by hand once the school is added.
+  const missingSchool = source === "Missing school";
+  const label = missingSchool ? "Missing school" : "New pilot request";
 
   await Promise.all([
     sendSubmissionEmail({
-      subject: `${flagged ? "[flagged] " : ""}New pilot request: ${name}${university ? ` (${university})` : ""}`,
+      subject: `${flagged ? "[flagged] " : ""}${label}: ${name}${university ? ` (${university})` : ""}`,
       replyTo: email,
-      html: `<h2>New pilot request</h2>
+      html: `<h2>${label}</h2>
 ${
   flagged
     ? "<p><strong>Flagged:</strong> the hidden anti-spam field came back filled. It is recorded either way, and no automatic reply was sent — if this is a real program, answer them by hand.</p>"
@@ -80,7 +85,7 @@ ${
     // Replies go to the inbox that will answer, not back to the coach. Held
     // back on a flagged request: the address came from the submitter, and if a
     // bot supplied it, it belongs to someone who never wrote to us.
-    ...(flagged ? [] : [sendSubmissionEmail({
+    ...(flagged || missingSchool ? [] : [sendSubmissionEmail({
       to: email,
       replyTo: process.env.CONTACT_NOTIFY_TO,
       subject: confirmation.subject,
