@@ -1,29 +1,25 @@
 import type { ReactNode } from "react";
 
-/* ProofSide — the left column of a proof band: eyebrow, headline and aside
-   at the top, the support (the team CTA) pinned to the bottom so it ends
-   level with the board beside it. The board is the band's primary; this
-   column captions it, which is why the headline is a size down from the
-   full-width band head. */
-export function ProofSide({
+/* ProofHead — the head of a product band, built as How it works' and the
+   beta band's are: eyebrow and headline on the left, the aside flush right
+   with its last line on the headline's last baseline. The board runs the
+   container's full width below it. */
+export function ProofHead({
   eyebrow,
   title,
   aside,
-  children,
 }: {
   eyebrow?: ReactNode;
   title: ReactNode;
   aside?: ReactNode;
-  children?: ReactNode;
 }) {
   return (
-    <div className="proof-side">
-      <div className="proof-head reveal">
+    <div className="proof-head reveal">
+      <div className="sec-head">
         {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
         <h2>{title}</h2>
-        {aside ? <p className="band-aside">{aside}</p> : null}
       </div>
-      {children ? <div className="proof-support">{children}</div> : null}
+      {aside ? <p className="band-aside">{aside}</p> : null}
     </div>
   );
 }

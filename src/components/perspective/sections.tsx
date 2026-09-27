@@ -1,9 +1,9 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { MatchBreakdown, MB_H, MB_W } from "./match-breakdown";
-import { ProofSide } from "./band-parts";
+import { ProofHead } from "./band-parts";
 import { MockFrame } from "./mock-frame";
 import { EXPORT_GUIDE_HREF } from "@/lib/match-intake";
 
@@ -24,25 +24,23 @@ export function DashboardShowcase() {
   return (
     <section className="band alt proof-band" id="dashboard">
       <div className="wrap">
-        <div className="proof" style={{ "--ratio": MB_W / MB_H } as CSSProperties}>
-          <ProofSide
-            eyebrow="The breakdown"
-            title="Know exactly what to drill."
-            aside="One match, every serve, return and rally, distilled into the numbers that decided it. No noise, no decoration."
-          />
-          {/* Decorative screenshot: role="img" carries the honest description and
-              `inert` keeps the pictured controls out of the tab order. */}
-          <div
-            className="proof-board"
-            role="img"
-            aria-label="The Advantage match report for one match: the final score, an Advantage Intelligence insight, serve, return and point statistics head to head, the running points margin, rally lengths, and how each player's points ended."
-          >
-            <MockFrame className="is-light" width={MB_W} height={MB_H}>
-              <div inert className="film-inert">
-                <MatchBreakdown />
-              </div>
-            </MockFrame>
-          </div>
+        <ProofHead
+          eyebrow="The breakdown"
+          title="Know exactly what to drill."
+          aside="Every serve, return and rally next to your opponent’s, and a read on what decided it."
+        />
+        {/* Decorative screenshot: role="img" carries the honest description and
+            `inert` keeps the pictured controls out of the tab order. */}
+        <div
+          className="proof-board reveal"
+          role="img"
+          aria-label="The Advantage match report for one match: the final score, an Advantage Intelligence insight, serve, return and point statistics head to head, the running points margin, rally lengths, and how each player's points ended."
+        >
+          <MockFrame className="is-light" width={MB_W} height={MB_H}>
+            <div inert className="film-inert">
+              <MatchBreakdown />
+            </div>
+          </MockFrame>
         </div>
       </div>
     </section>

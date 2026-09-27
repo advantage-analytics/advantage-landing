@@ -146,64 +146,41 @@ section.band.alt + section.band.alt { border-top: none; }
    dead space on a tablet or phone. */
 @media (max-width: 1023px) { section.band { padding: 88px 0; } }
 /* ============ PROOF BANDS — breakdown, film room, team ============
-   One skeleton for the three product bands, sized to fit a viewport: a left
-   column (eyebrow, headline, aside at the top; the support — a step rail or
-   the coach CTA — pinned to the bottom) beside the product board, which
-   bleeds to the right edge of the viewport and is capped so the band never
-   runs past the screen. The board is the band's primary and the column
-   captions it, which is why the headline sits a size under the full-width
-   band head. The band's own height is the board's; both columns end level.
-
-   The cap: the board's height may not exceed the viewport less the band's
-   vertical chrome (padding, the sticky bar), and its width follows from the
-   board's own ratio (`--ratio`, set per band). A floor keeps it legible on a
-   short window. Under 1024px the column sits above the board, the bleed and
-   the cap come off, and the board takes the container's width. */
-section.band.proof-band { padding: 88px 0; overflow: hidden; }
-.proof { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 48px; align-items: stretch; }
-.proof-side { display: flex; flex-direction: column; justify-content: space-between; gap: 40px; min-width: 0; }
-.proof-head { display: flex; flex-direction: column; gap: 16px; }
-.proof-head h2 { margin: 0; font-weight: var(--fw-light); font-size: clamp(28px, 2.7vw, 38px); line-height: 1.08; letter-spacing: -0.8px; color: var(--ink); text-wrap: balance; }
-.proof-head .band-aside { max-width: none; font-size: 14px; }
-.proof-support { display: flex; flex-direction: column; }
-.proof-board { width: min(calc(100% + min(260px, max(40px, (100vw - 1160px) / 2))), max(640px, calc((100vh - 264px) * var(--ratio, 1.5)))); }
+   One skeleton for the three product bands, the build How it works and the
+   beta band use: a full-width head (eyebrow and headline left, the aside
+   flush right on the headline's last baseline), then the product board at
+   the container's full width below it. The board is the band's primary, so
+   it gets the whole measure; the team band adds the coach lane's link
+   under its board. */
+.proof-head { display: flex; align-items: last baseline; justify-content: space-between; gap: 24px 48px; }
+.proof-head .band-aside { flex: 0 1 380px; text-align: right; }
+.proof-board { margin-top: 56px; }
 .proof-board .mock-frame { margin-top: 0; }
-/* Every other board sits on the left and bleeds off the left edge — the film
-   room, the dark one, is the hinge between the two white boards. Same column
-   and cap; only the order and the edge change. */
-.proof.is-flip { grid-template-columns: minmax(0, 1fr) 320px; }
-.proof.is-flip .proof-side { order: 2; }
-.proof.is-flip .proof-board { order: 1; justify-self: end; }
-/* The one authored entrance: the copy rises as every reveal does, and the
-   board slides in from the edge it bleeds off, a beat later, so the motion
-   explains the structure. Off under reduced motion with the rest. */
-@media (prefers-reduced-motion: no-preference) {
-  .proof-board .mock-frame.reveal { transition-delay: 140ms; }
-  .perspective-page[data-reveal-armed] .proof-board .mock-frame.reveal:not(.in) { transform: translateX(32px); }
-  .perspective-page[data-reveal-armed] .proof.is-flip .proof-board .mock-frame.reveal:not(.in) { transform: translateX(-32px); }
-}
 /* The tallest board is shown through a window; it fades out at the bottom so
    the cut reads as "continues", not as a broken board. */
 .mock-frame.is-cropped { position: relative; }
 .mock-frame.is-cropped::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none;
   background: linear-gradient(to bottom, rgba(255,255,255,0), #fff 92%); }
 
-/* The coach lane's action in the team band's column. */
-.proof-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
-.proof-cta .note { font: var(--fw-regular) 13px/1.5 var(--font-sans); color: var(--ink-muted); text-wrap: pretty; }
+/* The coach lane's way in under the team board: one text link in the
+   buttons' blue, deepening on hover as the buttons do, its underline and
+   arrow answering the pointer. */
+.proof-cta { margin: 28px 0 0; }
+.proof-link { display: inline-flex; align-items: center; gap: 6px; font: var(--fw-medium) 14px/1.4 var(--font-sans);
+  color: var(--signal-blue); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px;
+  transition: color 160ms var(--ease-primary), text-decoration-color 160ms var(--ease-primary); }
+.proof-link svg { transition: translate 200ms var(--ease-spring); }
+.proof-link:hover { color: var(--signal-blue-deep); text-decoration-color: currentColor; }
+.proof-link:hover svg { translate: 2px -2px; }
+@media (prefers-reduced-motion: reduce) { .proof-link:hover svg { translate: none; } }
 
-@media (max-width: 1023px) {
-  section.band.proof-band { padding: 72px 0; }
-  .proof, .proof.is-flip { grid-template-columns: 1fr; gap: 32px; align-items: start; }
-  .proof.is-flip .proof-side { order: 1; }
-  .proof.is-flip .proof-board { order: 2; justify-self: stretch; }
-  .proof-side { gap: 28px; }
-  .proof-board { width: 100%; }
+@media (max-width: 900px) {
+  .proof-head { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .proof-head .band-aside { flex: none; text-align: left; }
+  .proof-board { margin-top: 40px; }
 }
 @media (max-width: 720px) {
-  section.band.proof-band { padding: 56px 0; }
-  .proof-cta { align-items: stretch; }
-  .proof-cta .btn { width: 100%; }
+  .proof-cta { margin-top: 20px; }
 }
 
 @media (max-width: 720px)  { section.band { padding: 64px 0; } }

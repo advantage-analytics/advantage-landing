@@ -20,8 +20,8 @@ import {
   Volume2,
   X,
 } from "lucide-react";
-import { ProofSide } from "./band-parts";
-import { MockFrame, MOCK_H, MOCK_W } from "./mock-frame";
+import { ProofHead } from "./band-parts";
+import { MockFrame } from "./mock-frame";
 
 /* Film room — the dashboard's fullscreen film viewer, ported from the design
    board's mock at the same 1440×944 the other product boards use — so the
@@ -496,23 +496,21 @@ export function FilmRoom() {
   return (
     <section className="band alt proof-band" id="film">
       <div className="wrap">
-        <div className="proof is-flip" style={{ "--ratio": MOCK_W / MOCK_H } as CSSProperties}>
-          <ProofSide
-            eyebrow="Film room"
-            title="Every number opens the point."
-            aside="Tap any stat and the film jumps to that rally, with the score, the shots and where each ball landed."
-          />
-          <div
-            className="proof-board"
-            role="img"
-            aria-label="The Advantage film room: match video with the live score, a mini court plotting each shot of the rally, and the point list open on the current point."
-          >
-            <MockFrame className="is-film">
-              <div inert className="film-inert">
-                <FilmRoomMock />
-              </div>
-            </MockFrame>
-          </div>
+        <ProofHead
+          eyebrow="Film room"
+          title="Every number opens the point."
+          aside="Pick any number and the film jumps to that point, every shot and where it landed."
+        />
+        <div
+          className="proof-board reveal"
+          role="img"
+          aria-label="The Advantage film room: match video with the live score, a mini court plotting each shot of the rally, and the point list open on the current point."
+        >
+          <MockFrame className="is-film">
+            <div inert className="film-inert">
+              <FilmRoomMock />
+            </div>
+          </MockFrame>
         </div>
       </div>
     </section>
