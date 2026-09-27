@@ -22,19 +22,20 @@ import { trackCta } from "@/lib/analytics";
 
    Below 920px the center links and inline actions give way to a
    single menu button that drops a frosted sheet with the full nav —
-   section links and the company pages, plus Sign in / Join Free Beta —
+   section links and the company pages, plus Sign in / Sign up —
    so a phone or small tablet keeps every destination the desktop bar
    offers.
    =========================================================== */
 
-// `page: true` is a real route (Pilot, About, Contact) that gets a current-page
-// marker. Contact is in the bar because the pilot is aimed at college programs,
-// and a coach committing a team looks for a person before they sign up;
-// the rest are section anchors, resolved against LOCAL_ANCHORS below.
+// Five links, kept short on purpose. Product lands on the first of the three
+// product bands (the other two follow it on the scroll), How it works on the
+// steps. `page: true` is a real route (Pilot, About, Contact) that gets a
+// current-page marker. Contact is in the bar because the pilot is aimed at
+// college programs, and a coach committing a team looks for a person before
+// they sign up; the anchors resolve against LOCAL_ANCHORS below.
 const NAV_LINKS = [
-  { href: "#dashboard", label: "Dashboard" },
-  { href: "#film", label: "Film room" },
-  { href: "#team", label: "Team" },
+  { href: "#dashboard", label: "Product" },
+  { href: "#how", label: "How it works" },
   { href: "/pilot", label: "Pilot", page: true },
   { href: "/about", label: "About", page: true },
   { href: "/contact", label: "Contact", page: true },
@@ -153,9 +154,9 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
           href={links.signUp}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => trackCta("join_free_beta", "nav")}
+          onClick={() => trackCta("sign_up", "nav")}
         >
-          Join Free Beta
+          Sign up
           <ArrowUpRight size={15} />
         </a>
       </div>
@@ -215,11 +216,11 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
-                trackCta("join_free_beta", "nav-sheet");
+                trackCta("sign_up", "nav-sheet");
                 setOpen(false);
               }}
             >
-              Join Free Beta
+              Sign up
               <ArrowUpRight size={15} />
             </a>
           </div>

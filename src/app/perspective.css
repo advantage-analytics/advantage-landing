@@ -929,7 +929,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   color: #fff; box-shadow: 0 6px 18px -6px rgba(59, 130, 246, .5); }
 .site-nav.is-solid .site-cta:hover { background: var(--signal-blue-deep); border-color: var(--signal-blue-deep); }
 
-/* Compact menu trigger + drop-down sheet — both off above the 920px breakpoint (six center links plus the actions need the room),
+/* Compact menu trigger + drop-down sheet — both off above the 920px breakpoint (five center links plus the actions need the room),
    where the inline center links and actions carry the nav. */
 .site-nav-toggle { display: none; }
 .site-nav-sheet { display: none; }
