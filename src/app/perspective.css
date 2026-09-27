@@ -484,9 +484,12 @@ section.band.alt + section.band.alt { border-top: none; }
   margin: 24px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--hairline); }
 .beta-list li { padding: 10px 0; border-bottom: 1px solid var(--hairline);
   font: var(--fw-regular) 14.5px/1.5 var(--font-sans); color: var(--ink-secondary); }
+/* Note beside the button. It never wraps under it: a long note wraps within
+   its own column, so both buttons stay level across the pair. */
 .beta-cta { grid-row: 6; margin-top: 32px; align-self: end;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.beta-cta .note { font: var(--fw-regular) 12.5px/1.4 var(--font-sans); color: var(--ink-muted); }
+  display: flex; flex-wrap: nowrap; align-items: center; gap: 16px; }
+.beta-cta .btn { flex: none; }
+.beta-cta .note { flex: 1 1 auto; min-width: 0; font: var(--fw-regular) 12.5px/1.4 var(--font-sans); color: var(--ink-muted); }
 @media (max-width: 860px) {
   .beta-pair { grid-template-columns: 1fr; grid-template-rows: none; }
   .beta-card, .beta-card:first-child, .beta-card:last-child { grid-column: 1; grid-row: auto; grid-template-rows: none; }
@@ -496,7 +499,7 @@ section.band.alt + section.band.alt { border-top: none; }
 }
 @media (max-width: 480px) {
   .beta-card { padding: 28px 22px; }
-  .beta-cta { align-items: stretch; }
+  .beta-cta { flex-direction: column; align-items: stretch; gap: 10px; }
   .beta-cta .btn { width: 100%; }
 }
 
