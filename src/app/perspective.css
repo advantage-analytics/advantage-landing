@@ -647,6 +647,66 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .perspective-page[data-reveal-armed] .reveal:not(.in) { opacity:0; transform: translateY(24px); }
 }
 
+/* Entrances, per section. Every band still arrives through .reveal; these
+   say what each one's arrival means, all keyed off the same `.in` and gated
+   the same way (armed page, motion allowed), so a failed script or reduced
+   motion shows every band finished.
+   - Heads: the aside follows its headline a beat later, in reading order.
+   - Product boards: the screen draws top to bottom, the way a page loads,
+     a beat after the head.
+   - How it works, FAQ: lists, so their items arrive in order (capped).
+   - Navy (beta panel, final band): the page's authored moment. The panel
+     settles, both lanes arrive together (never one before the other: the
+     lanes are not ranked), then the light comes up behind them. The final
+     band's glow blooms the same way, so the navy is one material that lights
+     up wherever it appears. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Heads */
+  .perspective-page[data-reveal-armed] :is(.proof-head, .how-head, .beta-head) .band-aside {
+    transition: opacity 600ms var(--ease-spring) 120ms, translate 700ms var(--ease-spring) 120ms; }
+  .perspective-page[data-reveal-armed] :is(.proof-head, .how-head, .beta-head).reveal:not(.in) .band-aside { opacity: 0; translate: 0 10px; }
+
+  /* Product boards: a wipe from the top edge, the frame's shadow included
+     once it lands (the negative insets leave room for it). The unclipped
+     wrapper (.proof-board) is what the observer watches: a target clipped
+     to nothing never counts as intersecting. So the wrapper never hides
+     itself, the frame ignores its own reveal, and the wrapper's `.in` drives
+     the frame. */
+  .perspective-page[data-reveal-armed] .proof-board.reveal:not(.in) { opacity: 1; transform: none; }
+  .perspective-page[data-reveal-armed] .proof-board .mock-frame.reveal:not(.in) { opacity: 1; transform: none; }
+  .perspective-page[data-reveal-armed] .proof-board .mock-frame.reveal {
+    clip-path: inset(-60px -100px -140px -100px);
+    transition: opacity 300ms var(--ease-primary) 160ms, transform 1000ms var(--ease-spring) 160ms,
+                clip-path 1000ms cubic-bezier(0.16, 1, 0.3, 1) 160ms; }
+  .perspective-page[data-reveal-armed] .proof-board.reveal:not(.in) .mock-frame.reveal { opacity: 0; transform: translateY(16px); clip-path: inset(0 0 100% 0); }
+  .perspective-page[data-reveal-armed] .proof-cta.reveal { transition-delay: 260ms; }
+
+  /* How it works: the three steps in order. */
+  .perspective-page[data-reveal-armed] .how-step { transition: opacity 600ms var(--ease-spring), translate 700ms var(--ease-spring);
+    transition-delay: calc(160ms + var(--si, 0) * 90ms); }
+  .perspective-page[data-reveal-armed] .how-step:nth-child(2) { --si: 1; }
+  .perspective-page[data-reveal-armed] .how-step:nth-child(3) { --si: 2; }
+  .perspective-page[data-reveal-armed] .how-panel.reveal:not(.in) .how-step { opacity: 0; translate: 0 12px; }
+
+  /* FAQ: the questions in order, 50ms apart. */
+  .perspective-page[data-reveal-armed] .faq-row { transition: opacity 500ms var(--ease-spring), translate 600ms var(--ease-spring);
+    transition-delay: calc(100ms + var(--fi, 0) * 50ms); }
+  .perspective-page[data-reveal-armed] .faq-row:nth-child(2) { --fi: 1; } .perspective-page[data-reveal-armed] .faq-row:nth-child(3) { --fi: 2; }
+  .perspective-page[data-reveal-armed] .faq-row:nth-child(4) { --fi: 3; } .perspective-page[data-reveal-armed] .faq-row:nth-child(5) { --fi: 4; }
+  .perspective-page[data-reveal-armed] .faq-row:nth-child(n+6) { --fi: 5; }
+  .perspective-page[data-reveal-armed] .faq-list.reveal:not(.in) .faq-row { opacity: 0; translate: 0 8px; }
+
+  /* Navy: settle, lanes together, then the light. */
+  .perspective-page[data-reveal-armed] .beta-panel.reveal:not(.in) { transform: translateY(20px) scale(0.985); }
+  .perspective-page[data-reveal-armed] .beta-lane { transition: opacity 600ms var(--ease-spring) 220ms, translate 700ms var(--ease-spring) 220ms; }
+  .perspective-page[data-reveal-armed] .beta-panel.reveal:not(.in) .beta-lane { opacity: 0; translate: 0 10px; }
+  .perspective-page[data-reveal-armed] :is(.beta-panel, .final-band) :is(.ac-glow, .ac-grain) { transition: opacity 1400ms var(--ease-primary) 420ms; }
+  .perspective-page[data-reveal-armed] .beta-panel.reveal:not(.in) .ac-glow,
+  .perspective-page[data-reveal-armed] .final-band:has(.final-inner.reveal:not(.in)) .ac-glow { opacity: 0; }
+  .perspective-page[data-reveal-armed] .beta-panel.reveal:not(.in) .ac-grain,
+  .perspective-page[data-reveal-armed] .final-band:has(.final-inner.reveal:not(.in)) .ac-grain { opacity: 0; }
+}
+
 @media (max-width: 960px) {
   .access-inner { grid-template-columns: 1fr; gap: 32px; }
 }
