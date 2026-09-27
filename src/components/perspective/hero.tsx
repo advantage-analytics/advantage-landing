@@ -10,7 +10,7 @@ import { links } from "@/lib/links";
 import { trackCta } from "@/lib/analytics";
 import { BETA_END_SHORT } from "@/lib/pilot";
 
-const HERO_EYEBROW = `Public beta · Free through ${BETA_END_SHORT}`;
+const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
 
 /* ===========================================================
    Perspective hero — two compositions, one section.
@@ -115,14 +115,13 @@ function HeroCCanvas({ dashRotateX }: { dashRotateX: MotionValue<number> | numbe
           Walk on court knowing the pattern.
         </h1>
         <p className="h-sub" style={{ maxWidth: 560 }}>
-          Shot-by-shot match analytics, built from the video your program already shoots. Film the
-          match, upload the file, read the breakdown.
+          Match analytics from the video you already shoot.
         </p>
         <div style={{ marginTop: 4 }}>
           <HeroActions />
         </div>
       </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 470, bottom: 0, perspective: "2000px", perspectiveOrigin: "50% 0%", zIndex: 3 }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 442, bottom: 0, perspective: "2000px", perspectiveOrigin: "50% 0%", zIndex: 3 }}>
         <PHDashWindow rotateX={dashRotateX} />
       </div>
     </div>
@@ -140,9 +139,7 @@ function MobileHero() {
       <div className="mh-inner">
         <span className="h-eyebrow">{HERO_EYEBROW}</span>
         <h1 className="mh-title">Walk on court knowing the pattern.</h1>
-        <p className="mh-sub">
-          Shot-by-shot match analytics, built from the video your program already shoots.
-        </p>
+        <p className="mh-sub">Match analytics from the video you already shoot.</p>
         <HeroActions />
       </div>
       <div className="mh-peek" aria-hidden="true">
