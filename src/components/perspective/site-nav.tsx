@@ -32,10 +32,17 @@ import { trackCta } from "@/lib/analytics";
 // steps. `page: true` is a real route (Pilot, About, Contact) that gets a
 // current-page marker. Contact is in the bar because the pilot is aimed at
 // college programs, and a coach committing a team looks for a person before
-// they sign up; the anchors resolve against LOCAL_ANCHORS below.
-const NAV_LINKS = [
-  { href: "#dashboard", label: "Product" },
-  { href: "#how", label: "How it works" },
+// they sign up; the anchors resolve against LOCAL_ANCHORS below. `spans` lists
+// the section ids an anchor stands for, so Product stays marked through all
+// three product bands, not only the first.
+const NAV_LINKS: {
+  href: string;
+  label: string;
+  page?: boolean;
+  spans?: readonly string[];
+}[] = [
+  { href: "#dashboard", label: "Product", spans: ["dashboard", "film", "team"] },
+  { href: "#how", label: "How it works", spans: ["how"] },
   { href: "/pilot", label: "Pilot", page: true },
   { href: "/about", label: "About", page: true },
   { href: "/contact", label: "Contact", page: true },
@@ -62,6 +69,8 @@ const LOCAL_ANCHORS: Record<string, readonly string[]> = {};
 export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
   const [solid, setSolid] = useState(subpage);
   const [open, setOpen] = useState(false);
+  // The home section under the reading line, or null between marked sections.
+  const [section, setSection] = useState<string | null>(null);
   const pathname = usePathname();
 
   const isHome = pathname === "/";
@@ -72,11 +81,48 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
     isHome || LOCAL_ANCHORS[pathname]?.includes(hash) ? hash : `/${hash}`;
 
   // A page link resolves to its own route; a section anchor is rebased per
-  // route. `aria-current` marks the link for the page you're on.
+  // route. `aria-current` marks the link for the page you're on, or for the
+  // home section you're scrolled into.
   const resolve = (l: (typeof NAV_LINKS)[number]) => ({
     href: l.page ? l.href : anchor(l.href),
-    current: l.page && pathname === l.href ? ("page" as const) : undefined,
+    current: l.page
+      ? pathname === l.href
+        ? ("page" as const)
+        : undefined
+      : isHome && section && l.spans?.includes(section)
+        ? ("location" as const)
+        : undefined,
   });
+
+  // Scroll spy for the section anchors. A section is current while it
+  // straddles a reading line a third of the way down the viewport, so the mark
+  // moves as a section's heading settles under the bar rather than when its
+  // first pixel appears.
+  useEffect(() => {
+    if (!isHome) return;
+    const ids = NAV_LINKS.flatMap((l) => l.spans ?? []);
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const line = window.innerHeight / 3;
+      const hit = ids.find((id) => {
+        const r = document.getElementById(id)?.getBoundingClientRect();
+        return r ? r.top <= line && r.bottom > line : false;
+      });
+      setSection(hit ?? null);
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [isHome]);
 
   useEffect(() => {
     const update = () => {

@@ -900,13 +900,19 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    marker painted "Pilot" near-black against the mesh. The rule now leaves the
    label at the bar's own full-strength colour and draws the line in
    currentColor, so it rides white over the hero and turns ink with the text
-   once the bar goes solid. Section anchors still carry no active state. */
-.site-nav-center a[aria-current="page"] { position: relative; color: #fff; }
-.site-nav-center a[aria-current="page"]::after {
+   once the bar goes solid. Section anchors wear the same mark while you're
+   scrolled into their section (aria-current="location"); it grows in from
+   the left so the hand-off between Product and How it works reads as motion. */
+.site-nav-center a { position: relative; }
+.site-nav-center a::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: -6px;
   height: 1.5px; border-radius: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .32s var(--ease-primary);
 }
-.site-nav.is-solid .site-nav-center a[aria-current="page"] { color: var(--ink); }
+.site-nav-center a[aria-current]::after { transform: scaleX(1); }
+.site-nav-center a[aria-current] { color: #fff; }
+.site-nav.is-solid .site-nav-center a[aria-current] { color: var(--ink); }
 
 .site-nav-actions { display: flex; align-items: center; gap: 14px; }
 .site-signin { display: inline-flex; align-items: center; padding: 11px 8px; margin: -11px -8px;
@@ -990,7 +996,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   }
   .site-nav-sheet-inner > a:hover { color: var(--ink); }
   /* Current page in the compact sheet reads in full ink (no side accent). */
-  .site-nav-sheet-inner > a[aria-current="page"] { color: var(--ink); }
+  .site-nav-sheet-inner > a[aria-current] { color: var(--ink); }
   .site-nav-sheet-div { height: 1px; background: var(--hairline); margin: 12px 0 4px; }
   .site-nav-sheet-actions {
     display: flex; align-items: center; justify-content: space-between;
@@ -1011,7 +1017,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .site-nav, .site-logo, .site-nav-center a, .site-signin, .site-cta,
+  .site-nav, .site-logo, .site-nav-center a, .site-nav-center a::after, .site-signin, .site-cta,
   .site-nav-toggle, .site-nav-sheet { transition: none; }
   /* The focus underline grows 1px -> 2px with the padding compensating over
      300ms. Animated border-width and padding are layout, and on a form that is
