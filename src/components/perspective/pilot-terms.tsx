@@ -8,13 +8,13 @@ import { PILOT_TERMS } from "@/lib/pilot";
    no box, no shadow, no tiers. Hairline rows and tabular figures say "these are
    the facts" where a card would say "here is our product tier".
 
-   One band, two placements: the landing page shows it with a link through to
-   /pilot, and /pilot shows it as its own opening section. Both read the same
-   PILOT_TERMS, so the two can never quote different numbers.
+   /pilot opens with it. The home page now states the lanes in its beta-terms
+   cards instead; the optional `cta` link is kept for a placement that wants to
+   point through to /pilot. It reads PILOT_TERMS, so the ledger and the pilot
+   Q&A can never quote different numbers.
 
    No "use client" here on purpose — it is static markup, so on /pilot (a server
-   component) it renders entirely on the server and ships no client JS. The
-   landing page's client tree can still import it normally. */
+   component) it renders entirely on the server and ships no client JS. */
 export function PilotTermsBand({
   id,
   alt = false,

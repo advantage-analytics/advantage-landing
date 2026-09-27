@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { links } from "@/lib/links";
+import { trackCta } from "@/lib/analytics";
 
 /* ===========================================================
    Site nav — a sticky header for the whole page.
@@ -21,7 +22,7 @@ import { links } from "@/lib/links";
 
    Below 820px the center links and inline actions give way to a
    single menu button that drops a frosted sheet with the full nav —
-   section links and the company pages, plus Sign in / Join the pilot —
+   section links and the company pages, plus Sign in / Join Free Beta —
    so a phone or small tablet keeps every destination the desktop bar
    offers.
    =========================================================== */
@@ -30,18 +31,17 @@ import { links } from "@/lib/links";
 // the rest are section anchors, resolved against LOCAL_ANCHORS below.
 const NAV_LINKS = [
   { href: "#dashboard", label: "Dashboard" },
-  { href: "#features", label: "Features" },
+  { href: "#film", label: "Film room" },
+  { href: "#shots", label: "Shot map" },
   { href: "/pilot", label: "Pilot", page: true },
   { href: "/about", label: "About", page: true },
 ];
 
 // Section anchors that resolve in place on a route OTHER than the home page.
 // The home page needs no entry — it renders every section the nav links to, by
-// definition. This is a table of exceptions: /pilot carries its own copy of the
-// access form, so its CTA must scroll rather than bounce the visitor home.
-const LOCAL_ANCHORS: Record<string, readonly string[]> = {
-  "/pilot": ["#access"],
-};
+// definition. Empty today: the nav's only anchors are home-page sections, and
+// the CTA leaves the site for sign-up. Kept as the seam for the next exception.
+const LOCAL_ANCHORS: Record<string, readonly string[]> = {};
 
 /* `subpage` says only one thing: there is no dark hero behind the bar, so it
    wears its solid (frosted, dark-logo) skin from the first paint instead of
@@ -63,8 +63,7 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
   const isHome = pathname === "/";
   const homeHref = isHome ? "#top" : "/";
   // An anchor the current route actually renders scrolls in place; anything
-  // else navigates home first. /pilot renders its own access card, so its CTA
-  // must not bounce the visitor to the home page's copy of the same form.
+  // else navigates home first.
   const anchor = (hash: string) =>
     isHome || LOCAL_ANCHORS[pathname]?.includes(hash) ? hash : `/${hash}`;
 
@@ -146,8 +145,14 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
         >
           Sign in
         </a>
-        <a className="site-cta" href={anchor("#access")}>
-          Join the pilot
+        <a
+          className="site-cta"
+          href={links.signUp}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackCta("join_free_beta", "nav")}
+        >
+          Join Free Beta
           <ArrowUpRight size={15} />
         </a>
       </div>
@@ -201,8 +206,17 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
             >
               Sign in
             </a>
-            <a className="site-cta" href={anchor("#access")} onClick={() => setOpen(false)}>
-              Join the pilot
+            <a
+              className="site-cta"
+              href={links.signUp}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                trackCta("join_free_beta", "nav-sheet");
+                setOpen(false);
+              }}
+            >
+              Join Free Beta
               <ArrowUpRight size={15} />
             </a>
           </div>

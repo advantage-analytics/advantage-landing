@@ -2,15 +2,14 @@ import { Check } from "lucide-react";
 import { CourtDiagram } from "@/components/court-diagram";
 import { FOOTAGE_CHECKLIST } from "@/components/footage-checklist";
 import { PageFrame } from "@/components/perspective/page-frame";
+import { ApplyPilotLink, JoinBetaLink } from "@/components/perspective/cta-links";
 import { PilotTermsBand } from "@/components/perspective/pilot-terms";
 import { RequestAccess } from "@/components/perspective/request-access";
 import {
-  INDIVIDUAL_BETA_OFFER,
   PILOT_END_DATE,
   PILOT_HOURS,
   PILOT_HOURS_ADJECTIVE,
   PILOT_HOURS_SCOPE,
-  PILOT_ONBOARDING_WINDOW,
   PILOT_PAID_PLANS_BEGIN,
 } from "@/lib/pilot";
 import "./pilot.css";
@@ -30,12 +29,12 @@ export const metadata = {
 
 const STEPS = [
   {
-    t: "Send the form below.",
+    t: "Apply below.",
     p: "Name, school, role — nothing else.",
   },
   {
-    t: "We email you when the pilot opens.",
-    p: "A real reply from a person, not a sequence — with a start date as soon as we have one.",
+    t: "We reply by email.",
+    p: "A real reply from a person, not a sequence — with your start date.",
   },
   {
     t: "Your staff gets accounts and upload access.",
@@ -61,12 +60,12 @@ const QA = [
   },
   { q: "Doubles?", a: "Singles only for now." },
   {
-    q: "Playing on your own?",
-    a: `${INDIVIDUAL_BETA_OFFER} Create a free account; no program needed.`,
-  },
-  {
     q: "Men’s and women’s teams?",
     a: `Set up separately, each with its own ${PILOT_HOURS_ADJECTIVE} budget.`,
+  },
+  {
+    q: "Can individual players join?",
+    a: "Yes. The free beta is 2 hours a month, self-serve. No program required.",
   },
 ];
 
@@ -75,22 +74,28 @@ const PilotMasthead = () => (
     <div className="mesh-grain" aria-hidden="true" />
     <div className="pv-veil" aria-hidden="true" />
     <div className="wrap">
-      <span className="h-eyebrow">Free Fall Season Pilot</span>
+      <span className="h-eyebrow">Fall Pilot · Applications open</span>
       <h1 className="h-title">The fall season, free, on your own footage.</h1>
       <p className="h-sub">
         Advantage turns the match video your program already shoots into
-        shot-by-shot analytics. For collegiate programs, now through{" "}
+        shot-by-shot analytics. For college programs, free through{" "}
         {PILOT_END_DATE}.
       </p>
       <div className="h-actions">
-        <a className="hbtn hbtn-white" href="#access">
-          Join the pilot
-        </a>
+        <ApplyPilotLink
+          className="hbtn hbtn-white"
+          href="#access"
+          placement="pilot-hero"
+          icon={16}
+        />
         <a className="hbtn hbtn-glass" href="#footage">
           Will your footage work?
         </a>
       </div>
-      <p className="meta">{PILOT_ONBOARDING_WINDOW}</p>
+      <p className="meta">
+        Playing on your own?{" "}
+        <JoinBetaLink placement="pilot-hero" icon={false} /> instead.
+      </p>
     </div>
   </header>
 );
@@ -102,7 +107,7 @@ export default function Page() {
         id="terms"
         eyebrow="The terms"
         title="Four terms, no fine print."
-        body="Every program that wants in, gets in. The dates below are the entire commercial offer — nothing else is asked of you this season."
+        body="The dates below are the entire commercial offer — nothing else is asked of you this season."
       />
 
       {/* The qualifier, asked before the ask. A coach who finds out here that
@@ -145,7 +150,7 @@ export default function Page() {
           <div className="hiw-split reveal">
             <div className="hiw-intro">
               <span className="eyebrow">What happens next</span>
-              <h2>From the form to the first breakdown.</h2>
+              <h2>From the application to the first breakdown.</h2>
               <p>
                 No call required. A person sets your program up over email — the
                 four steps beside this are the whole onboarding.

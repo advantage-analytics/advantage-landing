@@ -4,15 +4,20 @@ import { useRef, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { AdvantageDashboard } from "./dashboard";
+import { DashboardHome } from "./dashboard-home";
 import { TrafficLights } from "./traffic-lights";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
+import { links } from "@/lib/links";
+import { trackCta } from "@/lib/analytics";
+import { BETA_END_SHORT } from "@/lib/pilot";
+
+const HERO_EYEBROW = `Public beta · Free through ${BETA_END_SHORT}`;
 
 /* ===========================================================
    Perspective hero — two compositions, one section.
 
    • Desktop / tablet (≥768px): a native 1440×860 mesh-gradient
-     artboard with centered copy and the real AdvantageDashboard
+     artboard with centered copy and the dashboard Home
      tilted in 3D, scaled to fill the viewport width (HeroCCanvas).
    • Mobile (<768px): a real flowing layout — full-size headline,
      subhead, stacked CTAs over the mesh, with a legible slice of
@@ -35,15 +40,26 @@ const BrowserBar = () => (
   </div>
 );
 
+// The two lanes: individuals sign up in the app, programs apply on /pilot.
 function HeroActions() {
   return (
     <div className="h-actions">
-      <a className="hbtn hbtn-white" href="#access">
-        Join the pilot
+      <a
+        className="hbtn hbtn-white"
+        href={links.signUp}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => trackCta("join_free_beta", "home-hero")}
+      >
+        Join Free Beta
         <ArrowUpRight size={16} />
       </a>
-      <Link className="hbtn hbtn-glass" href="/pilot">
-        See pilot terms
+      <Link
+        className="hbtn hbtn-glass"
+        href="/pilot#access"
+        onClick={() => trackCta("apply_for_pilot", "home-hero")}
+      >
+        Apply for Pilot
       </Link>
     </div>
   );
@@ -66,15 +82,19 @@ function PHDashWindow({ rotateX }: { rotateX: MotionValue<number> | number }) {
       }}
     >
       <BrowserBar />
-      <AdvantageDashboard />
+      <div inert>
+        <DashboardHome />
+      </div>
     </motion.div>
   );
 }
 
 function HeroCCanvas({ dashRotateX }: { dashRotateX: MotionValue<number> | number }) {
   return (
-    <div className="brand-mesh heroC-canvas">
-      <div className="mesh-grain" />
+    // Transparent: the mesh and grain are painted by .heroC-desktop across the
+    // full viewport width, so they keep going past the artboard once its
+    // scale is capped on wide screens (or a zoomed-out browser).
+    <div className="heroC-canvas">
       <div
         style={{
           position: "relative",
@@ -87,9 +107,7 @@ function HeroCCanvas({ dashRotateX }: { dashRotateX: MotionValue<number> | numbe
           gap: 22,
         }}
       >
-        <span className="h-eyebrow">
-          Performance Intelligence
-        </span>
+        <span className="h-eyebrow">{HERO_EYEBROW}</span>
         <h1 className="h-title" style={{ fontSize: 62, maxWidth: 820 }}>
           Walk on court knowing the pattern.
         </h1>
@@ -117,7 +135,7 @@ function MobileHero() {
     <div className="heroC-mobile brand-mesh">
       <div className="mesh-grain" />
       <div className="mh-inner">
-        <span className="h-eyebrow">Performance Intelligence</span>
+        <span className="h-eyebrow">{HERO_EYEBROW}</span>
         <h1 className="mh-title">Walk on court knowing the pattern.</h1>
         <p className="mh-sub">
           Shot-by-shot match analytics, built from the video your program already shoots.
@@ -127,8 +145,8 @@ function MobileHero() {
       <div className="mh-peek" aria-hidden="true">
         <div className="mh-window winframe">
           <BrowserBar />
-          <div className="mh-dash">
-            <AdvantageDashboard />
+          <div className="mh-dash" inert>
+            <DashboardHome />
           </div>
         </div>
       </div>
@@ -185,7 +203,8 @@ export function PerspectiveHero() {
         ref={outerRef}
         style={{ aspectRatio: `${ART_W} / ${ART_H}`, maxHeight: ART_H * ART_MAX_SCALE }}
       >
-        <div ref={innerRef} style={{ position: "absolute", top: 0, transformOrigin: "top left" }}>
+        <div className="mesh-grain" aria-hidden="true" />
+        <div ref={innerRef} className="heroC-fit">
           <HeroCCanvas dashRotateX={reduce ? 32 : dashRotateX} />
         </div>
       </div>

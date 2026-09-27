@@ -41,7 +41,13 @@
 .pv-hero .meta {
   margin: 0;
   font: var(--fw-regular) 13px/1.5 var(--font-sans);
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(255, 255, 255, 0.75);
+}
+/* The individual lane, one line under the program CTAs. */
+.pv-hero .meta a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .pv-hero .h-actions {
   margin-top: 6px;

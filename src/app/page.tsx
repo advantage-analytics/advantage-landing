@@ -3,20 +3,18 @@
 import { useEffect } from "react";
 
 import { PerspectiveHero } from "@/components/perspective/hero";
-import { PilotTermsBand } from "@/components/perspective/pilot-terms";
 import { SiteNav } from "@/components/perspective/site-nav";
 import { Footer } from "@/components/perspective/footer";
 import { useReveal } from "@/components/perspective/reveal";
-import { RequestAccess } from "@/components/perspective/request-access";
-import {
-  DashboardShowcase,
-  HowItWorks,
-  Features,
-  BuiltForAthletes,
-} from "@/components/perspective/sections";
+import { DashboardShowcase, HowItWorks } from "@/components/perspective/sections";
+import { FilmRoom } from "@/components/perspective/film-room";
+import { ShotMap } from "@/components/perspective/shot-map";
+import { BetaTerms } from "@/components/perspective/beta-terms";
+import { Faq } from "@/components/perspective/faq";
+import { FinalBand } from "@/components/perspective/final-band";
 
 /* The hero and dashboard artboards are sized by useScaleToFit after mount, so
-   a hash landing (/#access from the nav on another page, or a fresh load) is
+   a hash landing (/#film from the nav on another page, or a fresh load) is
    scrolled against pre-fit layout and can end up off target. Child effects run
    before this one, so by now the artboards hold their final heights — re-anchor
    once, instantly, to the corrected position. (That ordering breaks if an
@@ -44,18 +42,12 @@ export default function Home() {
       <PerspectiveHero />
       <main>
         <DashboardShowcase />
+        <FilmRoom />
+        <ShotMap />
         <HowItWorks />
-        <Features />
-        <BuiltForAthletes />
-        <PilotTermsBand
-          id="pilot"
-          alt
-          eyebrow="Fall 2026 · Collegiate programs"
-          title="The Free Fall Season Pilot."
-          body="Every program that wants in, gets in — onboarding runs through September for the fall season. Four terms, no fine print."
-          cta={{ href: "/pilot", label: "Full pilot details" }}
-        />
-        <RequestAccess />
+        <BetaTerms />
+        <Faq />
+        <FinalBand />
       </main>
       <Footer />
     </div>

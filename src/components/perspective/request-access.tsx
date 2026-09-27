@@ -5,7 +5,10 @@ import { Icon } from "./icons";
 import { HoneypotField } from "@/components/honeypot-field";
 import { HONEYPOT_NAME } from "@/lib/honeypot";
 import { CONTACT_EMAIL, links } from "@/lib/links";
-import { INDIVIDUAL_BETA_OFFER } from "@/lib/pilot";
+import { INDIVIDUAL_BETA_SHORT } from "@/lib/pilot";
+import { trackCta } from "@/lib/analytics";
+
+const REPLY_LINE = "We reply by email with your start date.";
 import type { LeadSource } from "@/lib/leads";
 
 export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource }) {
@@ -20,9 +23,29 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
   // Honeypot: hidden from users, filled by bots.
   const honeypot = useRef("");
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitError("");
+    // The form is noValidate so one inline message, in the card's own voice,
+    // replaces the browser's bubbles. Checked in field order; the first miss
+    // takes focus. Whitespace-only answers count as blank, and the email needs
+    // a domain dot ("coach@school" is a typo, not an address).
+    const form = e.currentTarget;
+    const blank = [
+      [name, "access-name", "your name"],
+      [university, "access-university", "your university or college"],
+      [role, "access-role", "your role"],
+    ].find(([v]) => !v.trim());
+    if (blank) {
+      setSubmitError(`Please add ${blank[2]}.`);
+      form.querySelector<HTMLElement>(`#${blank[1]}`)?.focus();
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setSubmitError("Please enter a valid email address.");
+      form.querySelector<HTMLElement>("#access-email")?.focus();
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await fetch("/api/leads", {
@@ -31,6 +54,7 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
         body: JSON.stringify({ name, email, university, role, division, source, [HONEYPOT_NAME]: honeypot.current }),
       });
       if (!res.ok) throw new Error();
+      trackCta("apply_for_pilot", `submitted:${source}`);
       setSent(true);
     } catch {
       setSubmitError("Something went wrong. Please try again.");
@@ -47,25 +71,25 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
           <div className="ac-grain" aria-hidden="true" />
           <div className="access-inner">
             <div>
-              <span className="eyebrow">Join the pilot</span>
-              <h3>Get your program on the fall pilot.</h3>
+              <span className="eyebrow">Apply</span>
+              <h3>Apply for the fall pilot.</h3>
               <p>
-                The terms above are the whole pitch. Tell us about your team and we will email
-                you the moment the pilot opens.
+                The terms above are the whole pitch. Tell us about your team and a person
+                replies with next steps.
               </p>
             </div>
             <div className="access-form">
               {sent ? (
-                <div className="access-sent">
+                <div className="access-sent" role="status">
                   <div className="chk">
                     <Icon n="check" size={20} />
                   </div>
-                  Request received.
+                  Application received.
                   <br />
-                  We will email {email || "your inbox"} the moment the pilot opens.
+                  {REPLY_LINE}
                 </div>
               ) : (
-                <form onSubmit={onSubmit}>
+                <form onSubmit={onSubmit} noValidate>
                   {/* Honeypot — hidden from users, filled by bots. This form
                       asks for a university with autocomplete="organization", so
                       the field also has to be invisible to the browser's own
@@ -154,12 +178,12 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
                     Question first? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
                   </p>
                   <button className="btn btn-primary" type="submit" disabled={submitting}>
-                    {submitting ? "Sending…" : "Join the pilot"} <Icon n="arrow" size={16} />
+                    {submitting ? "Sending…" : "Apply for Pilot"} <Icon n="arrow" size={16} />
                   </button>
                   {submitError ? (
                     <div className="access-note" role="alert">{submitError}</div>
                   ) : null}
-                  <div className="access-note">We will email you when the pilot opens.</div>
+                  <div className="access-note">{REPLY_LINE}</div>
                 </form>
               )}
             </div>
@@ -168,9 +192,15 @@ export function RequestAccess({ source = "Landing CTA" }: { source?: LeadSource 
               to — this keeps that path visible without competing with the CTA. */}
           <div className="access-player">
             <span className="ap-q">For individuals</span>
-            <span className="ap-t">{INDIVIDUAL_BETA_OFFER} No program required.</span>
-            <a className="ap-link" href={links.signUp} target="_blank" rel="noopener noreferrer">
-              Create a free account <Icon n="arrow" size={14} />
+            <span className="ap-t">{INDIVIDUAL_BETA_SHORT}</span>
+            <a
+              className="ap-link"
+              href={links.signUp}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackCta("join_free_beta", `access-card:${source}`)}
+            >
+              Join Free Beta <Icon n="arrow" size={14} />
             </a>
           </div>
         </div>
