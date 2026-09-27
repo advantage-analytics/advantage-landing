@@ -1,69 +1,49 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
-import { Icon } from "./icons";
+import { ProofHead } from "./band-parts";
 import { PILOT_TERMS } from "@/lib/pilot";
 
-/* The fall pilot's commercial terms, told in the page's data voice: a narrow
-   statement column beside a four-row ledger. Deliberately not a pricing card —
-   no box, no shadow, no tiers. Hairline rows and tabular figures say "these are
-   the facts" where a card would say "here is our product tier".
+/* The fall pilot's commercial terms, told in the page's data voice. Built as
+   the home bands are: a full-width head (headline left, the aside flush right
+   on its last baseline), then the four terms as one strip of figures across
+   the container. Deliberately not a pricing card: no box, no shadow, no tiers.
+   Hairline columns and light figures say "these are the facts" where a card
+   would say "here is our product tier".
 
-   One band, two placements: the landing page shows it with a link through to
-   /pilot, and /pilot shows it as its own opening section. Both read the same
-   PILOT_TERMS, so the two can never quote different numbers.
-
-   No "use client" here on purpose — it is static markup, so on /pilot (a server
-   component) it renders entirely on the server and ships no client JS. The
-   landing page's client tree can still import it normally. */
+   It reads PILOT_TERMS, so the strip and the rest of /pilot can never quote
+   different numbers. No "use client": static markup, rendered on the server. */
 export function PilotTermsBand({
   id,
   alt = false,
   eyebrow,
   title,
-  body,
-  cta,
+  aside,
 }: {
   id: string;
   alt?: boolean;
   eyebrow: ReactNode;
   title: ReactNode;
-  body: ReactNode;
-  cta?: { href: string; label: string };
+  aside: ReactNode;
 }) {
   return (
-    <section className={`band${alt ? " alt" : ""} pilot-band`} id={id}>
+    <section className={`band${alt ? " alt" : ""}`} id={id}>
       <div className="wrap">
-        <div className="pb-grid reveal">
-          <div className="pb-intro">
-            <span className="eyebrow">{eyebrow}</span>
-            <h3>{title}</h3>
-            <p>{body}</p>
-            {cta ? (
-              <Link className="pb-link" href={cta.href}>
-                {cta.label} <Icon n="arrow" size={13} />
-              </Link>
-            ) : null}
-          </div>
-          <dl className="pb-ledger">
-            {PILOT_TERMS.map((t, i) => (
-              <div className="pb-row" key={t.l}>
-                {/* The index lives inside the <dt>: a <dl>'s <div> wrapper may
-                    contain only dt/dd, and a stray <span> there breaks the
-                    term/description pairing for assistive tech. */}
-                <dt className="l">
-                  <span className="n" aria-hidden="true">
-                    0{i + 1}
-                  </span>
-                  <span className="t">{t.l}</span>
-                </dt>
-                <dd className="v">
-                  {t.v}
-                  {t.s ? <small>{t.s}</small> : null}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <ProofHead eyebrow={eyebrow} title={title} aside={aside} />
+        <dl className="pv-terms reveal">
+          {PILOT_TERMS.map((t, i) => (
+            // A <dl>'s <div> wrapper may hold only dt/dd, so the index sits
+            // inside the <dt> rather than beside it.
+            <div className="pv-term" key={t.l}>
+              <dt className="l">
+                <span className="n" aria-hidden="true">
+                  0{i + 1}
+                </span>
+                {t.l}
+              </dt>
+              <dd className="v">{t.v}</dd>
+              <dd className="s">{t.s}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );

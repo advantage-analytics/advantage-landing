@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { PageFrame } from "@/components/perspective/page-frame";
 import { ContactForm } from "./contact-form";
 import "./contact.css";
+import { LiveDots } from "@/components/perspective/live-dots";
 
 export const metadata = {
   title: "Contact — Advantage",
@@ -20,7 +21,7 @@ export default function Page() {
               line; the glass underline form sits on the right. */}
           <div className="contact-card reveal">
             <div className="contact-glow" aria-hidden="true" />
-            <div className="contact-grain" aria-hidden="true" />
+            <LiveDots className="contact-grain" />
             <div className="contact-inner">
               <div className="contact-copy">
                 <h1>Let&rsquo;s talk.</h1>

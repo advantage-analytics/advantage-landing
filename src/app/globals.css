@@ -116,6 +116,16 @@
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
+  /* clip, not hidden, wherever it's supported: hidden turns <body> into a
+     scroll container that never scrolls, which freezes every view() scroll
+     timeline (and position: sticky) on the page. Behind @supports because
+     the CSS build folds a plain hidden-then-clip pair back to hidden. */
+  @supports (overflow-x: clip) {
+    html,
+    body {
+      overflow-x: clip;
+    }
+  }
   ::selection {
     background-color: var(--color-blue-tint-12);
   }

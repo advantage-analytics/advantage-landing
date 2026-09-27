@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { links } from "@/lib/links";
+import { trackCta } from "@/lib/analytics";
 
 /* ===========================================================
    Site nav — a sticky header for the whole page.
@@ -19,29 +20,39 @@ import { links } from "@/lib/links";
    pixels), so there's no dependency on the hero's height settling —
    the race that used to flash the bar solid on first paint.
 
-   Below 820px the center links and inline actions give way to a
+   Below 920px the center links and inline actions give way to a
    single menu button that drops a frosted sheet with the full nav —
-   section links and the company pages, plus Sign in / Join the pilot —
+   section links and the company pages, plus Sign in / Sign up —
    so a phone or small tablet keeps every destination the desktop bar
    offers.
    =========================================================== */
 
-// `page: true` is a real route (Pilot, About) that gets a current-page marker;
-// the rest are section anchors, resolved against LOCAL_ANCHORS below.
-const NAV_LINKS = [
-  { href: "#dashboard", label: "Dashboard" },
-  { href: "#features", label: "Features" },
+// Five links, kept short on purpose. Product lands on the first of the three
+// product bands (the other two follow it on the scroll), How it works on the
+// steps. `page: true` is a real route (Pilot, About, Contact) that gets a
+// current-page marker. Contact is in the bar because the pilot is aimed at
+// college programs, and a coach committing a team looks for a person before
+// they sign up; the anchors resolve against LOCAL_ANCHORS below. `spans` lists
+// the section ids an anchor stands for, so Product stays marked through all
+// three product bands, not only the first.
+const NAV_LINKS: {
+  href: string;
+  label: string;
+  page?: boolean;
+  spans?: readonly string[];
+}[] = [
+  { href: "#dashboard", label: "Product", spans: ["dashboard", "film", "team"] },
+  { href: "#how", label: "How it works", spans: ["how"] },
   { href: "/pilot", label: "Pilot", page: true },
   { href: "/about", label: "About", page: true },
+  { href: "/contact", label: "Contact", page: true },
 ];
 
 // Section anchors that resolve in place on a route OTHER than the home page.
 // The home page needs no entry — it renders every section the nav links to, by
-// definition. This is a table of exceptions: /pilot carries its own copy of the
-// access form, so its CTA must scroll rather than bounce the visitor home.
-const LOCAL_ANCHORS: Record<string, readonly string[]> = {
-  "/pilot": ["#access"],
-};
+// definition. Empty today: the nav's only anchors are home-page sections, and
+// the CTA leaves the site for sign-up. Kept as the seam for the next exception.
+const LOCAL_ANCHORS: Record<string, readonly string[]> = {};
 
 /* `subpage` says only one thing: there is no dark hero behind the bar, so it
    wears its solid (frosted, dark-logo) skin from the first paint instead of
@@ -58,22 +69,60 @@ const LOCAL_ANCHORS: Record<string, readonly string[]> = {
 export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
   const [solid, setSolid] = useState(subpage);
   const [open, setOpen] = useState(false);
+  // The home section under the reading line, or null between marked sections.
+  const [section, setSection] = useState<string | null>(null);
   const pathname = usePathname();
 
   const isHome = pathname === "/";
   const homeHref = isHome ? "#top" : "/";
   // An anchor the current route actually renders scrolls in place; anything
-  // else navigates home first. /pilot renders its own access card, so its CTA
-  // must not bounce the visitor to the home page's copy of the same form.
+  // else navigates home first.
   const anchor = (hash: string) =>
     isHome || LOCAL_ANCHORS[pathname]?.includes(hash) ? hash : `/${hash}`;
 
   // A page link resolves to its own route; a section anchor is rebased per
-  // route. `aria-current` marks the link for the page you're on.
+  // route. `aria-current` marks the link for the page you're on, or for the
+  // home section you're scrolled into.
   const resolve = (l: (typeof NAV_LINKS)[number]) => ({
     href: l.page ? l.href : anchor(l.href),
-    current: l.page && pathname === l.href ? ("page" as const) : undefined,
+    current: l.page
+      ? pathname === l.href
+        ? ("page" as const)
+        : undefined
+      : isHome && section && l.spans?.includes(section)
+        ? ("location" as const)
+        : undefined,
   });
+
+  // Scroll spy for the section anchors. A section is current while it
+  // straddles a reading line a third of the way down the viewport, so the mark
+  // moves as a section's heading settles under the bar rather than when its
+  // first pixel appears.
+  useEffect(() => {
+    if (!isHome) return;
+    const ids = NAV_LINKS.flatMap((l) => l.spans ?? []);
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const line = window.innerHeight / 3;
+      const hit = ids.find((id) => {
+        const r = document.getElementById(id)?.getBoundingClientRect();
+        return r ? r.top <= line && r.bottom > line : false;
+      });
+      setSection(hit ?? null);
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [isHome]);
 
   useEffect(() => {
     const update = () => {
@@ -97,7 +146,7 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
       if (e.key === "Escape") setOpen(false);
     };
     const onResize = () => {
-      if (window.innerWidth > 820) setOpen(false);
+      if (window.innerWidth > 920) setOpen(false);
     };
     window.addEventListener("keydown", onKey);
     window.addEventListener("resize", onResize);
@@ -146,13 +195,19 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
         >
           Sign in
         </a>
-        <a className="site-cta" href={anchor("#access")}>
-          Join the pilot
+        <a
+          className="site-cta"
+          href={links.signUp}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackCta("sign_up", "nav")}
+        >
+          Sign up
           <ArrowUpRight size={15} />
         </a>
       </div>
 
-      {/* Compact-only menu trigger (shown ≤820px via CSS). */}
+      {/* Compact-only menu trigger (shown ≤920px via CSS). */}
       <button
         type="button"
         className="site-nav-toggle"
@@ -201,8 +256,17 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
             >
               Sign in
             </a>
-            <a className="site-cta" href={anchor("#access")} onClick={() => setOpen(false)}>
-              Join the pilot
+            <a
+              className="site-cta"
+              href={links.signUp}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                trackCta("sign_up", "nav-sheet");
+                setOpen(false);
+              }}
+            >
+              Sign up
               <ArrowUpRight size={15} />
             </a>
           </div>

@@ -42,8 +42,11 @@ function validate(v: Values): Record<string, string> {
    closes over nothing, and this form re-renders on every keystroke. */
 const TEAM_LEAD = (
   <p className="form-lead">
-    Bringing your team? <Link href="/pilot">Join the pilot</Link> — free through the
-    fall season.
+    Bringing your team?{" "}
+    <a href={links.signUp} target="_blank" rel="noopener noreferrer">
+      Sign up and find your team
+    </a>
+    . The <Link href="/pilot">pilot</Link> is free through the fall season.
   </p>
 );
 
@@ -102,7 +105,7 @@ export function ContactForm() {
           <p className="form-foot">
             Individual player?{" "}
             <a href={links.signUp} target="_blank" rel="noopener noreferrer">
-              Create a free account
+              Join Free Beta
             </a>
             .
           </p>
@@ -256,7 +259,7 @@ export function ContactForm() {
         <p className="form-foot">
           Individual player?{" "}
           <a href={links.signUp} target="_blank" rel="noopener noreferrer">
-            Create a free account
+            Join Free Beta
           </a>
           .
         </p>

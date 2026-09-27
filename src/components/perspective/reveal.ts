@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
    The CSS hides .reveal only under .perspective-page[data-reveal-armed], set
    here at hydration — server-rendered content stays visible while JS loads,
-   so a hash landing (/#access) never sits on a blank section. Arming the
+   so a hash landing (/#faq) never sits on a blank section. Arming the
    page wrapper (not <html>) keeps the gate per-mount and fail-open: each
    navigation starts unarmed, and a page that renders .reveal without calling
    this hook shows its content rather than hiding it forever. Elements

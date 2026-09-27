@@ -40,3 +40,13 @@ export function trackEvent(name: string, props: EventProps = {}): void {
     console.warn("[analytics] event dropped:", err);
   }
 }
+
+// The two launch CTAs. One event name per lane, with `placement` saying which
+// button on which page, so the beta/pilot split is readable per surface.
+// Programs no longer apply: a coach signs up and finds their team, so the
+// program lane is `find_your_team`. `sign_up` is the nav's button, which serves
+// both lanes, so its clicks are counted apart from either.
+export type CtaLane = "join_free_beta" | "find_your_team" | "sign_up";
+export function trackCta(lane: CtaLane, placement: string): void {
+  trackEvent(`${lane}_click`, { placement });
+}
