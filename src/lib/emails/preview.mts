@@ -2,7 +2,6 @@
 // can be eyeballed and test-sent without filling the real forms. Not imported
 // by the app.
 import { writeFileSync } from "node:fs";
-import { pilotRequestEmail } from "./pilot-request";
 import { contactReceivedEmail } from "./contact-received";
 import { matchReceivedEmail } from "./match-received";
 import { SIDE_ANGLE } from "../match-intake";
@@ -10,13 +9,6 @@ import { SIDE_ANGLE } from "../match-intake";
 const out = process.argv[2];
 
 const samples = {
-  "pilot-request": pilotRequestEmail({
-    name: "Marcus Ellison",
-    email: "mellison@northbay.edu",
-    university: "North Bay University",
-    role: "Coach",
-    division: "NCAA D I",
-  }),
   "contact-received": contactReceivedEmail({
     name: "Priya Raman",
     email: "priya.raman@example.com",

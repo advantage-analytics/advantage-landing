@@ -4,11 +4,11 @@
 // verbatim. That is not politeness: it is proof the text arrived intact and a
 // chance to notice a typo'd address before our reply bounces into nothing.
 //
-// Like the pilot confirmation, this deliberately does not offer /send-a-match —
-// that ask belongs to the cold outreach campaign and is reserved for it. The
-// pilot is a fair thing to point at instead, because it's what most people
-// writing in are asking about, and because joining a waitlist costs the reader
-// nothing if we're slow.
+// This deliberately does not offer /send-a-match — that ask belongs to the cold
+// outreach campaign and is reserved for it. The pilot is a fair thing to point
+// at instead, because it's what most people writing in are asking about, and
+// because a coach can turn it on themselves: they sign up with their school
+// email and find their team, with no reply from us on the critical path.
 //
 // Everyone else on this list is a coach. Here the sender might be a player or a
 // parent, so the copy stays lane-neutral — no assumption of a program, and the
@@ -80,7 +80,7 @@ export function contactReceivedEmail(input: ContactReceivedInput): EmailContent 
     ]),
 
     paras([
-      `If you're asking on behalf of a team, the Free Fall Pilot is probably the answer: free through ${strong(PILOT_END_DATE)}, no hardware, no contract, no cost. It isn't open yet — put your program on the list and we'll email you when it is.`,
+      `If you're asking on behalf of a team, the Free Fall Pilot is probably the answer: free through ${strong(PILOT_END_DATE)}, no hardware, no contract, no cost. It's open now — sign up with your school email, find your team, and it turns on.`,
     ]),
 
     button("See the Free Fall Pilot", PILOT_URL),
@@ -120,7 +120,7 @@ ${input.message.trim() || "(no message)"}
 Sent as
 ${sentAs}
 
-If you're asking on behalf of a team, the Free Fall Pilot is probably the answer: free through ${PILOT_END_DATE}, no hardware, no contract, no cost. It isn't open yet — put your program on the list and we'll email you when it is.
+If you're asking on behalf of a team, the Free Fall Pilot is probably the answer: free through ${PILOT_END_DATE}, no hardware, no contract, no cost. It's open now — sign up with your school email, find your team, and it turns on.
 
 ${PILOT_URL}
 

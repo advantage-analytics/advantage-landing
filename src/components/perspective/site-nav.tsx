@@ -32,7 +32,7 @@ import { trackCta } from "@/lib/analytics";
 const NAV_LINKS = [
   { href: "#dashboard", label: "Dashboard" },
   { href: "#film", label: "Film room" },
-  { href: "#shots", label: "Shot map" },
+  { href: "#team", label: "Team" },
   { href: "/pilot", label: "Pilot", page: true },
   { href: "/about", label: "About", page: true },
 ];

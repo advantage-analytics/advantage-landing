@@ -3,7 +3,6 @@ import { createAirtableRecord } from "@/lib/airtable";
 import { honeypotTripped } from "@/lib/honeypot";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
 import { LEAD_SOURCES, type LeadSource } from "@/lib/leads";
-import { pilotRequestEmail } from "@/lib/emails";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -25,7 +24,7 @@ export async function POST(request: Request) {
   // POST would otherwise land in the Airtable column that triage sorts on.
   const source = LEAD_SOURCES.includes(body.source as LeadSource)
     ? (body.source as LeadSource)
-    : "Landing CTA";
+    : "Missing school";
 
   // Spam signal, not a spam verdict — the request is recorded either way. The
   // old gate returned { ok: true } and wrote nothing, which meant a browser
@@ -54,25 +53,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Could not save your request." }, { status: 502 });
   }
 
-  // The row is the source of truth; both emails are best-effort and never fail
-  // the request once it's written. They go out together rather than in series —
-  // sequential awaits put a whole extra Resend round-trip between the coach and
-  // their confirmation screen.
-  const confirmation = pilotRequestEmail({ name, email, university, role, division });
-  // A missing-school request isn't a pilot application, and the pilot
-  // confirmation email would tell that coach the wrong story. The team is
-  // notified and replies by hand once the school is added.
-  const missingSchool = source === "Missing school";
-  const label = missingSchool ? "Missing school" : "New pilot request";
+  // The row is the source of truth; the notification is best-effort and never
+  // fails the request once it's written. There is no automatic reply to the
+  // coach: a missing-school request is answered by hand once the school is
+  // added, and the retired pilot-application confirmation (which told the
+  // reader the pilot "isn't open yet") would tell them the wrong story.
+  const label = source === "Missing school" ? "Missing school" : "New pilot request";
 
-  await Promise.all([
-    sendSubmissionEmail({
-      subject: `${flagged ? "[flagged] " : ""}${label}: ${name}${university ? ` (${university})` : ""}`,
-      replyTo: email,
-      html: `<h2>${label}</h2>
+  await sendSubmissionEmail({
+    subject: `${flagged ? "[flagged] " : ""}${label}: ${name}${university ? ` (${university})` : ""}`,
+    replyTo: email,
+    html: `<h2>${label}</h2>
 ${
   flagged
-    ? "<p><strong>Flagged:</strong> the hidden anti-spam field came back filled. It is recorded either way, and no automatic reply was sent — if this is a real program, answer them by hand.</p>"
+    ? "<p><strong>Flagged:</strong> the hidden anti-spam field came back filled. It is recorded either way — if this is a real program, answer them by hand.</p>"
     : ""
 }
 <p><strong>Source:</strong> ${escapeHtml(source)}</p>
@@ -81,18 +75,7 @@ ${
 <p><strong>University:</strong> ${escapeHtml(university) || "-"}</p>
 <p><strong>Role:</strong> ${escapeHtml(role) || "-"}</p>
 <p><strong>Division:</strong> ${escapeHtml(division) || "-"}</p>`,
-    }),
-    // Replies go to the inbox that will answer, not back to the coach. Held
-    // back on a flagged request: the address came from the submitter, and if a
-    // bot supplied it, it belongs to someone who never wrote to us.
-    ...(flagged || missingSchool ? [] : [sendSubmissionEmail({
-      to: email,
-      replyTo: process.env.CONTACT_NOTIFY_TO,
-      subject: confirmation.subject,
-      html: confirmation.html,
-      text: confirmation.text,
-    })]),
-  ]);
+  });
 
   return NextResponse.json({ ok: true });
 }

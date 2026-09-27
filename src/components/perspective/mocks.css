@@ -1,6 +1,7 @@
-/* ============ PRODUCT MOCKS — film room + shot map ============
-   Both are fixed 1280×720 artboards, drawn at native size and scaled to the
-   band by useScaleToFit (see mock-frame.tsx). Everything inside the artboard
+/* ============ PRODUCT MOCKS — film room + team roster ============
+   Fixed artboards (the film room at 1280×720, the roster at the dashboard's
+   1440×900), drawn at native size and scaled to the band by useScaleToFit
+   (see mock-frame.tsx). Everything inside the artboard
    is therefore in design pixels, copied from the design board — there is no
    responsive work inside, only on the frame. */
 
@@ -123,59 +124,66 @@
 /* Shots still to come in the rally wait dimmed; the live one is lit. */
 .film-list .sh.is-ahead { opacity: .38; }
 
-/* ---------------- Shot map ---------------- */
-.mock-frame.is-shot { background: #86AC91; }
-.shot { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #86AC91;
-  font-family: var(--font-sans); color: #fff; }
-.shot-court { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; }
-.shot-lines i { position: absolute; display: block; background: #fff; }
-.shot-lines i.box { background: transparent; border: 2px solid #fff; }
-.shot-mark { position: absolute; padding: 0; margin: 0; border: 0; cursor: pointer;
-  transform: translate(-50%, -50%); background: none; appearance: none; -webkit-appearance: none; }
-.shot-mark.is-dot { width: 7px; height: 7px; border-radius: 999px; box-shadow: 0 0 0 .5px #0D0D0D; }
-.shot-mark.is-ace { width: 11px; height: 11px; line-height: 0; }
-.shot-mark.is-ace svg { display: block; overflow: visible; }
-/* The page-wide ring would be 2px/3px-offset at 1.6× zoom — louder than the
-   mark it circles. Here the white selection ring already marks the mark, so
-   keyboard focus gets a tight ring of its own. */
-.perspective-page .shot-mark:focus-visible { outline: 1px solid #fff; outline-offset: 2px; border-radius: 999px; }
-.shot-ring { position: absolute; width: 22px; height: 22px; transform: translate(-50%, -50%); border-radius: 999px;
-  box-shadow: 0 0 0 1.5px #fff; pointer-events: none; }
-.shot-readout { position: absolute; display: flex; flex-direction: column; gap: 6px; min-width: 168px; padding: 10px 12px;
-  border-radius: 10px; background: rgba(13,13,13,.86); backdrop-filter: blur(8px); pointer-events: none; }
-.shot-readout .t { font: 500 12px var(--font-sans); color: #fff; }
-.shot-readout .m { font: 400 10px var(--font-mono); color: rgba(255,255,255,.55); }
-.shot-readout .w { display: inline-flex; align-items: center; gap: 5px; font: 500 11px var(--font-sans); color: #60A5FA; }
+/* ---------------- Team roster ----------------
+   The dashboard's Roster page on the `.dh` shell (rail + header from
+   dashboard-home.css). Values are the app's design-system tokens: ink ramp,
+   9px eyebrow-sm column heads, 52px rows, the 26px initials mark. */
+.mock-frame.is-team { background: #fff; }
+/* The roster board is shorter than the Home mock's 900: `.dh` fixes its
+   height, so the board's own height wins here. */
+.tr.dh { height: 876px; }
+.dh-ws .ws.team { background: #0D0D0D; }
+.tr .empty { font-size: 13px; line-height: 1; color: #AAAAAA; }
+.tr .mono { font-family: var(--font-mono); }
+.tr .lnk { font: 400 11px var(--font-sans); color: #3B82F6; white-space: nowrap; }
+.tr .lnk.strong { font-weight: 500; }
 
-.shot-score { position: absolute; left: 18px; top: 14px; width: 236px; display: flex; flex-direction: column; gap: 14px;
-  padding: 14px 15px 12px; border-radius: 12px; background: rgba(13,13,13,.74); backdrop-filter: blur(8px); }
-.shot-score .st { font: 400 11px var(--font-sans); color: rgba(255,255,255,.55); }
-.shot-score .nm { font: 400 13px var(--font-sans); color: rgba(255,255,255,.7); white-space: nowrap; }
-.shot-score .nm.is-win { font-weight: 500; color: #fff; }
-.shot-score .ft { gap: 8px; }
-.shot-score .ct { flex-shrink: 0; white-space: nowrap; font: 400 10px var(--font-mono); font-variant-numeric: tabular-nums; color: rgba(255,255,255,.45); }
+.tr-body { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 20px; padding: 20px 56px 32px; background: #fff; }
+.tr-title { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+.tr-title h1 { margin: 0; font: 300 30px/36px var(--font-sans); letter-spacing: -.6px; color: #0D0D0D; }
+.tr-title .sub { margin-top: 9px; font: 400 12px/1.5 var(--font-sans); color: #525252; }
+.tr-actions { display: flex; align-items: center; gap: 10px; flex: none; }
+.tr-actions .btn { display: inline-flex; height: 36px; align-items: center; padding: 0 16px; border-radius: 6px; border: 1px solid transparent;
+  font: 500 13px var(--font-sans); white-space: nowrap; }
+.tr-actions .ghost { border-color: #E5E5EA; color: #525252; }
+.tr-actions .primary { background: #3B82F6; color: #fff; box-shadow: 0 1px 3px rgba(57,134,243,.25); }
 
-.shot-top { position: absolute; top: 14px; right: 18px; display: flex; align-items: center; gap: 12px; }
-.shot-top .pill { display: inline-flex; height: 26px; align-items: center; gap: 6px; padding: 0 10px; border-radius: 999px;
-  background: rgba(13,13,13,.72); backdrop-filter: blur(6px); font: 500 11px var(--font-sans); color: #fff; }
-.shot-top .pill svg { color: rgba(255,255,255,.7); }
-.shot-top .mono { font-family: var(--font-mono); }
-.shot-top .sq { display: inline-flex; width: 28px; height: 28px; align-items: center; justify-content: center; border-radius: 6px;
-  background: rgba(13,13,13,.72); backdrop-filter: blur(6px); color: rgba(255,255,255,.85); }
+.tr-card { border: 1px solid #F3F3F3; border-radius: 14px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.06); padding: 2px 24px 6px; }
+.tr-card ul { list-style: none; margin: 0; padding: 0; }
+.tr-head, .tr-row { display: flex; align-items: center; gap: 16px; }
+.tr-head { border-bottom: 1px solid #F3F3F3; padding: 14px 0 10px; font: 400 9px var(--font-sans); letter-spacing: 2.5px; text-transform: uppercase; color: #AAAAAA; }
+.tr-head .c-spot { text-align: center; }
+.tr-head .c-last { display: flex; align-items: center; }
+.tr-head .set { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font: 500 11px var(--font-sans); letter-spacing: 0; text-transform: none; color: #3B82F6; }
+.tr-row { margin: 0 -16px; height: 52px; padding: 0 16px; border-radius: 8px; }
+.tr .c-spot { width: 24px; flex: none; text-align: center; }
+.tr-row .c-spot { font: 400 11px var(--font-mono); font-variant-numeric: tabular-nums; color: #888888; }
+.tr-row .c-spot.none { color: #AAAAAA; }
+.tr .c-player { width: 230px; flex: none; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.tr-row .c-player { width: auto; min-width: 230px; max-width: 420px; flex: 0 1 auto; }
+.tr .c-player .av { width: 26px; height: 26px; flex: none; border-radius: 50%; background: #F5F5F5; display: flex; align-items: center; justify-content: center;
+  font: 500 9px var(--font-sans); color: #525252; }
+.tr .c-player .nm { font: 500 13px var(--font-sans); color: #0D0D0D; white-space: nowrap; }
+.tr .c-player .pill { display: inline-flex; height: 20px; align-items: center; padding: 0 8px; border-radius: 9999px; background: #F5F5F5;
+  font: 500 10px var(--font-sans); color: #525252; white-space: nowrap; flex: none; }
+.tr .c-record { width: 56px; flex: none; display: flex; align-items: center; }
+.tr-row .c-record { font: 400 13px var(--font-sans); font-variant-numeric: tabular-nums; color: #0D0D0D; }
+.tr .c-form { width: 80px; flex: none; display: flex; align-items: center; gap: 3px; }
+.tr .c-form i { display: block; width: 2.5px; height: 12px; border-radius: 1px; background: #F3F3F3; }
+.tr .c-form i.is-w { background: #5DB955; }
+.tr .c-form i.is-l { background: #E51837; }
+.tr .c-last { width: 250px; flex: none; display: flex; align-items: center; gap: 10px; }
+.tr .c-last .mk { display: flex; width: 14px; flex: none; align-items: center; justify-content: center; }
+.tr .c-last .vs { font: 400 12px var(--font-sans); color: #525252; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tr .c-last .on { margin-left: auto; flex: none; font: 400 11px/1.4 var(--font-sans); font-variant-numeric: tabular-nums; color: #888888; white-space: nowrap; }
+.tr-bench { padding: 16px 0 8px; font: 400 9px var(--font-sans); letter-spacing: 2.5px; text-transform: uppercase; color: #AAAAAA; }
+.tr-invited { border-top: 1px solid #F3F3F3; padding: 14px 0 6px; font: 400 9px var(--font-sans); letter-spacing: 2.5px; text-transform: uppercase; color: #AAAAAA; }
+.tr-row.is-invite .inv-ring { display: block; width: 26px; height: 26px; flex: none; }
+.tr-row.is-invite .em { font: 400 12px var(--font-sans); color: #888888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tr-row.is-invite .by { margin-left: 16px; font: 400 11px var(--font-sans); color: #888888; white-space: nowrap; }
+.tr-row.is-invite .acts { display: flex; align-items: center; gap: 14px; flex: none; }
+.tr-row.is-invite .rev { font: 400 11px var(--font-sans); color: #888888; }
 
-.shot-bar { position: absolute; left: 20px; right: 20px; bottom: 16px; height: 48px; display: flex; align-items: center; gap: 8px;
-  padding: 0 12px; border-radius: 12px; background: rgba(13,13,13,.72); backdrop-filter: blur(8px); }
-.shot-bar .sel { display: inline-flex; height: 28px; align-items: center; gap: 6px; padding: 0 8px; border-radius: 6px;
-  background: rgba(255,255,255,.1); font: 500 12px var(--font-sans); color: #fff; }
-.shot-bar .sel svg { color: rgba(255,255,255,.7); }
-.shot-bar .legend { display: flex; align-items: center; gap: 12px; padding-right: 4px; }
-.shot-bar .legend > span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: rgba(255,255,255,.7); }
-.shot-bar .legend i { width: 8px; height: 8px; border-radius: 999px; box-shadow: 0 0 0 .75px #0D0D0D; }
-.shot-bar .div { width: 1px; height: 16px; background: rgba(255,255,255,.18); }
-.shot-bar .zb { display: inline-flex; width: 28px; height: 28px; align-items: center; justify-content: center; border-radius: 6px;
-  color: rgba(255,255,255,.85); }
-.shot-bar .zv { width: 38px; text-align: center; font: 400 11px var(--font-mono); color: rgba(255,255,255,.85); }
-
-@media (prefers-reduced-motion: reduce) {
-  .shot-readout, .shot-ring { transition: none; }
-}
+.tr-foot { display: flex; flex-direction: column; gap: 8px; }
+.tr-foot p { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font: 400 11px/1.6 var(--font-sans); color: #71717A; }
+.tr-foot p.dim { color: #888888; }

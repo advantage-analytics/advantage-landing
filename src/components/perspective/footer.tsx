@@ -19,7 +19,7 @@ export function Footer() {
               <h5>Product</h5>
               <Link href="/#dashboard">Dashboard</Link>
               <Link href="/#film">Film room</Link>
-              <Link href="/#shots">Shot map</Link>
+              <Link href="/#team">Team</Link>
               <Link href="/#how">How it works</Link>
               <Link href={EXPORT_GUIDE_HREF}>Export guide</Link>
             </div>
