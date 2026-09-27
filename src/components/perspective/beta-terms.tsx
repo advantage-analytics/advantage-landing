@@ -1,5 +1,6 @@
 import { FindTeamLink, JoinBetaLink } from "./cta-links";
 import { BETA_END_SHORT, PILOT_HOURS } from "@/lib/pilot";
+import { LiveDots } from "./live-dots";
 
 /* The two lanes, routed by who the visitor is. These are not tiers to weigh
    against each other: an individual player is on the free beta, a college
@@ -46,7 +47,7 @@ export function BetaTerms() {
         </div>
         <div className="beta-panel reveal">
           <div className="ac-glow" aria-hidden="true" />
-          <div className="ac-grain" aria-hidden="true" />
+          <LiveDots className="ac-grain" />
           {LANES.map((l) => (
             <div className="beta-lane" key={l.ask}>
               <span className="beta-tag">{l.tag}</span>

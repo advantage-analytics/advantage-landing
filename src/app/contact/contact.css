@@ -34,15 +34,9 @@
     );
 }
 
-/* The site's dot grid, same values as the shared rule in perspective.css
-   (final band, access card, hero). Change both together. */
+/* The site's live dot grid (live-dots.tsx), masked to this card's glow as
+   the other navy surfaces are in perspective.css. */
 .contact-grain {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.03;
-  background-image: radial-gradient(circle, #fff 0.8px, transparent 1.2px);
-  background-size: 6px 6px;
   -webkit-mask-image: radial-gradient(130% 130% at 88% 8%, #000 25%, rgba(0, 0, 0, 0.35) 100%);
   mask-image: radial-gradient(130% 130% at 88% 8%, #000 25%, rgba(0, 0, 0, 0.35) 100%);
 }

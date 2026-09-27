@@ -1,5 +1,6 @@
 import { FindTeamLink, JoinBetaLink } from "./cta-links";
 import { BETA_END_SHORT } from "@/lib/pilot";
+import { LiveDots } from "./live-dots";
 
 /* The page's one dark band: the free window, the closing ask, both lanes
    again, and the two allowances in one line of small print. The eyebrow
@@ -13,7 +14,7 @@ export function FinalBand() {
   return (
     <section className="band final-band" id="start">
       <div className="ac-glow" aria-hidden="true" />
-      <div className="ac-grain" aria-hidden="true" />
+      <LiveDots className="ac-grain" />
       <div className="final-inner reveal">
         <span className="eyebrow">Free through {BETA_END_SHORT}</span>
         <h2>Start with the match you already filmed.</h2>

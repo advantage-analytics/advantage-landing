@@ -8,6 +8,7 @@ import { HONEYPOT_NAME } from "@/lib/honeypot";
 import { links } from "@/lib/links";
 import { INDIVIDUAL_BETA_SHORT } from "@/lib/pilot";
 import { trackCta } from "@/lib/analytics";
+import { LiveDots } from "./live-dots";
 
 /* The way in for coaches, at the foot of /pilot. Programs no longer apply:
    nearly every college team is already in the dashboard, so a coach signs up
@@ -74,7 +75,7 @@ export function RequestAccess() {
       <div className="wrap">
         <div className="access-card reveal">
           <div className="ac-glow" />
-          <div className="ac-grain" aria-hidden="true" />
+          <LiveDots className="ac-grain" />
           <div className="access-inner">
             <div>
               <span className="eyebrow">For coaches</span>

@@ -603,7 +603,10 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    and easing to about a third across the far corner. The hero mesh has no
    single light, so its grid is even. The contact card repeats these values in
    contact.css; change both together. */
-.final-band .ac-grain, .access-card .ac-grain, .beta-panel .ac-grain, .mesh-grain {
+/* The navy surfaces and the home hero draw the grid live (live-dots.tsx), a
+   canvas under these same classes; the static rule is left for /pilot's
+   mesh. The mask below still ties the live grid to each navy glow. */
+.mesh-grain {
   position: absolute; inset: 0; pointer-events: none; opacity: 0.03;
   background-image: radial-gradient(circle, #fff 0.8px, transparent 1.2px); background-size: 6px 6px; }
 .final-band .ac-grain, .access-card .ac-grain, .beta-panel .ac-grain {
@@ -1029,6 +1032,9 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
     linear-gradient(135deg, #5B8DEF, #7BA4F7, #818CF8);
 }
 /* .mesh-grain: the shared dot grid, defined with the final band. */
+/* The live dot grid (live-dots.tsx): the same 6px grid, drawn per dot so
+   waves and the pointer can light it. Over the surface, under its content. */
+.live-dots { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
 /* shared hero typography (verbatim) */
 .h-eyebrow { display:inline-flex; align-items:center; gap:11px; font:var(--fw-medium) 11px/1 var(--font-sans); letter-spacing:2.6px; text-transform:uppercase; color:rgba(255,255,255,.82); }

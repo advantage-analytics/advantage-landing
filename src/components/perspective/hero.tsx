@@ -4,6 +4,7 @@ import { useRef, useSyncExternalStore } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { DashboardHome } from "./dashboard-home";
+import { LiveDots } from "./live-dots";
 import { TrafficLights } from "./traffic-lights";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
 import { links } from "@/lib/links";
@@ -135,7 +136,7 @@ function HeroCCanvas({ dashRotateX }: { dashRotateX: MotionValue<number> | numbe
 function MobileHero() {
   return (
     <div className="heroC-mobile brand-mesh">
-      <div className="mesh-grain" />
+      <LiveDots />
       <div className="mh-inner">
         <span className="h-eyebrow">{HERO_EYEBROW}</span>
         <h1 className="mh-title">Walk on court knowing the pattern.</h1>
@@ -203,7 +204,7 @@ export function PerspectiveHero() {
         ref={outerRef}
         style={{ aspectRatio: `${ART_W} / ${ART_H}`, maxHeight: ART_H * ART_MAX_SCALE }}
       >
-        <div className="mesh-grain" aria-hidden="true" />
+        <LiveDots />
         <div ref={innerRef} className="heroC-fit">
           <HeroCCanvas dashRotateX={reduce ? 32 : dashRotateX} />
         </div>
