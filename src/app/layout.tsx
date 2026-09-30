@@ -89,9 +89,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {children}
         {/* Vercel Web Analytics. Until this landed the funnel was unmeasurable:
             lib/analytics.ts hands every event to whatever tag is on the page,
-            and no tag was — so a coach reaching /send-a-match and a coach
-            completing the form looked identical from here, which is how a
-            silently dropped submission stayed invisible. Cookieless and
+            and no tag was — so a coach reaching a form and a coach
+            completing it looked identical from here, which is how a silently
+            dropped submission stayed invisible. Cookieless and
             no-op outside production, so it costs nothing in dev. */}
         <Analytics />
       </body>

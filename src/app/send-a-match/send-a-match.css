@@ -1,532 +1,149 @@
 /* ============================================================
-   /send-a-match — the cold-email intake page.
+   /send-a-match — the notice left where the cold-email intake
+   used to be. Three groups on the campaign shell's 608px measure:
+   the announcement with its two actions, the pilot's terms and
+   steps, and a note for coaches who already sent a film. Tight
+   intervals inside a group (16–28px), wide ones between (56–64px),
+   so the page reads as an answer followed by its detail.
 
-   One job. It borrows the site's token set and the eyebrow-spine
-   rhythm, but not the site's chrome: no nav, no scroll reveals, no
-   dark bands. A coach lands here from one email with about ninety
-   seconds of patience, so nothing on the page moves, and nothing
-   links away except the upload window.
-
-   Mobile-first. Three content-driven breakpoints, each earning its
-   keep: 420px trims the gutters, 520px puts date and score on one
-   row, 1080px splits the page into a sticky reading rail plus the
-   form. Touch sizing is gated on pointer, not width, since a
-   1024px tablet is touch and a 900px window is not.
+   Writes only `.sm-*`, per campaign.css's namespace convention.
    ============================================================ */
 
-/* Form and diagram tokens. The shell (white background, flex column, header,
-   footer, wrap) lives in components/campaign/campaign.css; what stays here is
-   only what /send-a-match itself consumes.
-
-   These point at the shared design-system values on purpose: the page matches
-   the rest of the site rather than diverging from it. Indirection is kept so
-   any single one can be repointed without hunting through the file.
-
-   Known and accepted: several of these do not clear WCAG AA on white, which is
-   a system-wide property of the tokens, not something this page introduced.
-   Measured contrast against #FFFFFF:
-     --border-field    #EAECF0  1.18:1   (SC 1.4.11 wants 3:1 for controls)
-     --hairline-medium #E5E5EA  1.26:1   (same)
-     --ink-muted       #888888  3.54:1   (SC 1.4.3 wants 4.5:1 for text)
-     --ink-label       #AAAAAA  2.32:1   (same, and it renders at 10px)
-     white on --signal-blue     3.68:1   (same, and it's the primary CTA)
-   Fixing them here alone would make this page look unlike every other page, so
-   it's a sitewide call to make in the design system, not a local patch. */
-.sm-page {
-  --sm-field-line: var(--border-field);
-  --sm-control-line: var(--hairline-medium);
-  --sm-quiet-text: var(--ink-muted);
+/* ---- Masthead ----
+   The shell's head spaces the eyebrow and lede for a plain title; here a
+   status badge leads and the actions follow the lede, so the steps tighten
+   to 16px and the actions take the one larger break inside the group. */
+.sm-head h1 {
+  margin-top: 16px;
+}
+.sm-head .campaign-lede {
+  margin-top: 16px;
 }
 
-/* ---- Desktop: two columns, not one lonely ribbon ----
-   The form must never stretch: a 1400px-wide text input is harder to use, not
-   easier, and the field measure is the whole reason for a narrow column. So the
-   horizontal space buys something else instead — the qualifier moves alongside
-   the form rather than 1600px above it.
-
-   Stacked, the camera diagram sat roughly two screens above "Where was the
-   camera?", the one question it exists to answer, and the first field sat below
-   the fold. Sticky rail fixes both: the diagram is on screen for the whole form,
-   and field one is visible on arrival.
-
-   DOM order is unchanged (hero, camera check, form), so the qualifier still
-   precedes the form for screen readers and for a no-CSS render. */
-.sm-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-}
-
-@media (min-width: 1080px) {
-  /* Widen the shared shell wrap for the two-column split. campaign.css reads
-     this token and never declares it, so there is one declaration site. */
-  .sm-page {
-    --campaign-measure: 1180px;
-  }
-  .sm-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 560px);
-    gap: 80px;
-    align-items: start;
-  }
-  .sm-form {
-    max-width: none;
-  }
-  /* Both columns open on the same baseline, so the two eyebrows read as one
-     rule across the page rather than a stagger. */
-  .sm-rail > .sm-section,
-  .sm-layout > .sm-formcol {
-    margin-top: 0;
-  }
-  .sm-layout {
-    margin-top: 56px;
-  }
-}
-
-/* position: sticky is inert if any ancestor is a scroll container, and
-   globals.css sets `overflow-x: hidden` on html AND body to tame the homepage's
-   scaled 1440px hero canvas. `clip` clips identically without establishing a
-   scroll container, so the rail can actually pin. Scoped with :has() — the same
-   pattern perspective.css already uses for scroll-padding — so every other page
-   keeps precisely the behaviour it has today. */
-html:has(.sm-page),
-body:has(.sm-page) {
-  overflow-x: clip;
-}
-
-/* Pin the rail only once there's room for the whole thing. A sticky element
-   taller than the viewport strands its own lower half, and here that half is the
-   diagram — the one part that has to stay on screen.
-
-   The rail currently measures ~717px (six checklist items plus the diagram), so
-   it needs ~757px including the 40px offset. The 800px floor clears that with
-   room to spare and still covers a 1280x800 laptop. If the checklist grows,
-   re-measure: the threshold has to stay above rail height + top, or the diagram
-   gets clipped while pinned. Below the floor the rail simply scrolls with the
-   page, which is correct rather than broken. */
-@media (min-width: 1080px) and (min-height: 800px) {
-  .sm-rail {
-    position: sticky;
-    top: 40px;
-  }
-}
-
-.sm-delivery {
-  margin: 16px 0 0;
-  font: var(--fw-regular) 13px/1.5 var(--font-sans);
-  color: var(--ink-tertiary);
-}
-
-/* ---- The eyebrow spine — the brand's structural rhythm ----
-   A 10px uppercase label, then a hairline running out to the column edge. It
-   is the only separation mechanism between sections; the whitespace above it
-   does the rest. */
-.sm-section {
-  margin-top: 56px;
-}
-.sm-spine {
-  display: flex;
+/* The page's condition, not a section label, so an outlined pill rather than
+   an eyebrow — and not blue, which the system keeps for "New". */
+.sm-badge {
+  display: inline-flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-.sm-spine::after {
-  content: "";
-  flex: 1 1 auto;
-  height: 1px;
-  background: var(--hairline);
-}
-
-/* ---- Camera check ---- */
-.sm-note {
-  margin: 0;
-  max-width: 560px;
-  font: var(--fw-regular) 13px/1.55 var(--font-sans);
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--hairline-medium);
+  border-radius: var(--r-pill);
+  font: var(--fw-medium) 11px var(--font-sans);
   color: var(--ink-secondary);
 }
-.sm-checks {
-  margin-top: 24px;
-}
 
-.sm-diagram {
-  margin-top: 32px;
-}
-/* Centred in the column as well as inside its own viewBox — left-aligned, the
-   340px drawing sat 76px left of the rail's centre, which stacked on top of the
-   court's offset inside the box and read as shoved into the corner. The drawing
-   itself is styled by court-diagram.css; this owns only its placement here. */
-.sm-diagram .court-diagram {
-  max-width: 340px;
-  margin-inline: auto;
-}
-
-.sm-compress {
-  margin: 20px 0 0;
-  max-width: 560px;
-  font: var(--fw-regular) 12px/1.5 var(--font-sans);
-  color: var(--sm-quiet-text);
-}
-
-/* ---- Form ---- */
-.sm-form {
-  max-width: 560px;
-}
-.sm-field,
-.sm-fieldset {
+.sm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-top: 28px;
 }
-.sm-form > .sm-field:first-of-type {
-  margin-top: 0;
-}
-.sm-fieldset {
-  border: none;
-  padding: 0;
-  min-width: 0;
-}
-.sm-field > label,
-.sm-legend {
-  display: block;
-  padding: 0;
-  margin-bottom: 8px;
-  font: var(--fw-medium) 13px/1.4 var(--font-sans);
-  color: var(--ink);
-}
-/* Required marker. Sits on the error red so it reads as a constraint rather than
-   decoration, and stays unbolded so it never competes with the label itself. */
-.sm-req {
-  color: var(--loss-red);
-  font-weight: var(--fw-regular);
-}
-/* The legend that gives the asterisk its meaning. Without this the glyph is
-   folklore; with it the form states its own contract. */
-.sm-required-note {
-  margin: 0 0 24px;
-  font: var(--fw-regular) 12px/1.5 var(--font-sans);
-  color: var(--sm-quiet-text);
-}
 
-/* Guidance sits between the label and the field: a coach needs to know what
-   "anyone with the link" means before they paste, not after. */
-.sm-hint {
-  margin: -2px 0 10px;
-  font: var(--fw-regular) 12px/1.5 var(--font-sans);
-  color: var(--sm-quiet-text);
-}
-
-/* Hairline-underlined fields, exactly as the dashboard's auth inputs behave:
-   the rule grows 1px -> 2px and turns signal-blue over 300ms, with the padding
-   compensating so the text never shifts. 16px type is deliberate — anything
-   smaller makes iOS Safari zoom on focus. */
-.sm-input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--sm-field-line);
-  border-radius: 0;
-  padding: 8px 0 7px;
-  color: var(--ink);
-  font: var(--fw-regular) 16px/1.4 var(--font-sans);
-  letter-spacing: -0.1px;
-  outline: none;
-  transition: border-color 300ms var(--ease-primary),
-    border-bottom-width 300ms var(--ease-primary),
-    padding-bottom 300ms var(--ease-primary);
-}
-.sm-input::placeholder {
-  color: var(--sm-quiet-text);
-}
-.sm-input:focus {
-  border-bottom-width: 2px;
-  border-bottom-color: var(--signal-blue);
-  padding-bottom: 6px;
-}
-/* An errored field holds a static 1px error rule even while focused, so the
-   blue "you're here" cue can't paper over the red "this is wrong" one. */
-.sm-input.is-error,
-.sm-input.is-error:focus {
-  border-bottom-width: 1px;
-  border-bottom-color: var(--loss-red);
-  padding-bottom: 7px;
-}
-textarea.sm-input {
-  resize: vertical;
-  line-height: 1.55;
-}
-/* Safari renders date inputs at their intrinsic width and vertically off the
-   text baseline unless both are pinned. */
-input[type="date"].sm-input {
-  min-height: 33px;
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-.sm-error {
-  margin: 8px 0 0;
-  font: var(--fw-regular) 12px/1.45 var(--font-sans);
-  color: var(--loss-red);
-}
-
-/* Date + score share a row once there's width for it. */
-.sm-pair {
+/* ---- Terms ----
+   Three columns ruled above and below. Horizontal rules only: the strip is
+   a band of the page, not a card. */
+.sm-terms {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 64px 0 0;
+  padding: 20px 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
 }
-@media (min-width: 520px) {
-  .sm-pair {
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-  }
-}
-
-/* ---- Radios ---- */
-.sm-options {
+.sm-term {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
-.sm-options.is-tight {
-  gap: 0;
+.sm-term dt {
+  font: var(--fw-medium) 10px/1.5 var(--font-sans);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
 }
-.sm-option {
-  display: grid;
-  grid-template-columns: 18px 1fr;
-  align-items: start;
-  gap: 12px;
-  padding: 9px 0;
-  cursor: pointer;
-}
-.sm-radio {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
+.sm-term dd {
   margin: 0;
-  flex: 0 0 auto;
-  border: 1px solid var(--sm-control-line);
-  border-radius: 50%;
-  background: var(--surface);
-  cursor: pointer;
-  transition: border-color 180ms var(--ease-primary),
-    background 180ms var(--ease-primary);
 }
-@media (hover: hover) {
-  .sm-option:hover .sm-radio:not(:checked) {
-    border-color: var(--ink-label);
-  }
-}
-/* Blue rim, white gap, blue dot — the inset shadow carves the ring out of the
-   filled circle, so there's no second element to keep centered. */
-.sm-radio:checked {
-  border-color: var(--signal-blue);
-  background: var(--signal-blue);
-  box-shadow: inset 0 0 0 3px var(--surface);
-}
-/* The global reset strips outlines from every input because underlined text
-   fields signal focus through their rule. A radio has no rule, so it needs the
-   ring back — the element selector out-specifies the reset in either order. */
-.sm-page input.sm-radio:focus-visible {
-  outline: 2px solid var(--signal-blue);
-  outline-offset: 3px;
-  border-radius: 50%;
-}
-.sm-option-label {
-  display: block;
-  font: var(--fw-regular) 14px/1.35 var(--font-sans);
-  color: var(--ink);
-}
-.sm-option-help {
-  display: block;
-  margin-top: 5px;
-  font: var(--fw-regular) 12px/1.5 var(--font-sans);
-  color: var(--sm-quiet-text);
-}
-
-/* ---- Upload panel ----
-   Both routes are open at once, so hierarchy has to come from treatment rather
-   than sequence: the link is a bare field on the page, this is a tonal block
-   underneath it. A coach with a share link never reads past the first line. */
-.sm-panel {
-  margin-top: 24px;
-  padding: 20px;
-  background: var(--surface-subtle);
-  border-radius: var(--r-element);
-}
-.sm-panel p {
-  margin: 14px 0 0;
-  font: var(--fw-regular) 12px/1.55 var(--font-sans);
-  color: var(--ink-secondary);
-}
-.sm-panel .sm-panel-head {
-  margin: 0 0 14px;
-  font: var(--fw-medium) 13px/1.4 var(--font-sans);
-  color: var(--ink);
-}
-
-/* The one thing that tells us a file is waiting in Dropbox — without it a
-   submission with no link reads as an empty one. */
-.sm-checkline {
-  display: grid;
-  grid-template-columns: 16px 1fr;
-  align-items: start;
-  gap: 12px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--hairline-medium);
-  cursor: pointer;
-  font: var(--fw-regular) 13px/1.35 var(--font-sans);
-  color: var(--ink);
-}
-.sm-checkbox {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  flex: 0 0 auto;
-  border: 1px solid var(--sm-control-line);
-  border-radius: 4px;
-  background: var(--surface);
-  cursor: pointer;
-  transition: border-color 180ms var(--ease-primary),
-    background 180ms var(--ease-primary);
-}
-@media (hover: hover) {
-  .sm-checkline:hover .sm-checkbox:not(:checked) {
-    border-color: var(--ink-label);
-  }
-}
-.sm-checkbox:checked {
-  border-color: var(--signal-blue);
-  background: var(--signal-blue)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 4.2L3.6 6.8L9 1.4'/%3E%3C/svg%3E")
-    center / 10px 8px no-repeat;
-}
-/* Same reasoning as the radio: a box has no underline to signal focus with. */
-.sm-page input.sm-checkbox:focus-visible {
-  outline: 2px solid var(--signal-blue);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-/* ---- Submit ---- */
-.sm-submit-row {
-  margin-top: 40px;
-}
-.sm-submit {
-  /* Geometry, colour and states come from .campaign-btn-primary; only the
-     full-bleed-on-mobile behaviour is specific to this form. */
-  width: 100%;
-}
-@media (min-width: 520px) {
-  .sm-submit {
-    width: auto;
-    min-width: 190px;
-  }
-}
-.sm-privacy {
-  margin: 14px 0 0;
-  font: var(--fw-regular) 12px/1.5 var(--font-sans);
-  color: var(--sm-quiet-text);
-}
-
-/* ---- Success ----
-   Replaces the form in place. No navigation, so a mis-click on the back button
-   doesn't cost a coach everything they just typed. */
-.sm-sent {
-  max-width: 560px;
-}
-.sm-sent h2 {
-  margin: 0;
-  font: var(--fw-light) 24px/1.2 var(--font-sans);
+.sm-term-value {
+  font: var(--fw-light) 24px/28px var(--font-sans);
   letter-spacing: -0.4px;
   color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
-/* The heading carries tabindex="-1" only so focus can be moved to it on
-   submit — it is a reading position, not a control, and it is unreachable by
-   tab. The site's global ring targets [tabindex], so it has to be waived here
-   or the confirmation opens inside a blue box nobody navigated to. */
-.sm-page .sm-sent h2:focus,
-.sm-page .sm-sent h2:focus-visible {
-  outline: none;
-}
-.sm-sent p {
-  margin: 16px 0 0;
-  font: var(--fw-regular) 13px/1.65 var(--font-sans);
-  color: var(--ink-secondary);
-}
-.sm-sent strong {
-  font-weight: var(--fw-medium);
-  color: var(--ink);
-}
-.sm-sent .sm-sign {
-  margin-top: 24px;
+.sm-term-sub {
+  font: var(--fw-regular) 12px/1.5 var(--font-sans);
   color: var(--ink-tertiary);
 }
 
-/* The upload handoff. It only appears when a file is still owed, and it sits
-   directly under "Got it." because at that point it is the only outstanding
-   action — the details are already banked. Same tonal panel as the form's
-   fallback block so it reads as the continuation of that choice. */
-.sm-handoff {
-  margin-top: 20px;
-  padding: 20px;
-  background: var(--surface-subtle);
-  border-radius: var(--r-element);
+/* ---- Steps ---- */
+.sm-steps {
+  margin-top: 40px;
 }
-.sm-sent .sm-handoff-head {
-  margin: 0 0 14px;
-  font: var(--fw-medium) 13px/1.4 var(--font-sans);
+.sm-steps ol {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.sm-steps li {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.sm-step-num {
+  flex: 0 0 24px;
+  font: var(--fw-regular) 12px var(--font-mono);
+  color: var(--ink-tertiary);
+}
+.sm-steps li div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sm-steps strong {
+  font: var(--fw-medium) 15px/1.5 var(--font-sans);
   color: var(--ink);
 }
-.sm-sent .sm-handoff p:last-child {
-  margin: 14px 0 0;
-  font: var(--fw-regular) 12px/1.55 var(--font-sans);
+.sm-steps li span:not(.sm-step-num) {
+  font: var(--fw-regular) 14px/1.6 var(--font-sans);
   color: var(--ink-secondary);
+  text-wrap: pretty;
 }
 
-/* ---- Coarse pointers ----
-   Measured on the phone build: radio rows 37px, checkbox row 35px, fields 38px,
-   secondary button 38px. All clear the 24px AA floor and none reach the 44px
-   comfort target, which is the one that matters for a coach filling this in
-   one-handed on a bus. Gated on pointer rather than width, because a 1024px
-   tablet is touch and a 900px window is not — and the fine-pointer layout keeps
-   its tighter rhythm untouched. */
-@media (pointer: coarse) {
-  .sm-option {
-    grid-template-columns: 22px 1fr;
-    padding: 13px 0;
-  }
-  .sm-radio {
-    width: 22px;
-    height: 22px;
-  }
-  .sm-radio:checked {
-    box-shadow: inset 0 0 0 4px var(--surface);
-  }
-  .sm-checkline {
-    grid-template-columns: 20px 1fr;
-    padding-top: 15px;
-    padding-bottom: 13px;
-  }
-  .sm-checkbox {
-    width: 20px;
-    height: 20px;
-  }
-  .sm-input {
-    padding: 12px 0 11px;
-  }
-  .sm-input:focus {
-    padding-bottom: 10px;
-  }
-  .sm-input.is-error,
-  .sm-input.is-error:focus {
-    padding-bottom: 11px;
-  }
+.sm-already {
+  margin-top: 56px;
 }
 
-/* Buttons and links are waived in campaign.css, which owns them now. */
-@media (prefers-reduced-motion: reduce) {
-  .sm-input,
-  .sm-radio,
-  .sm-checkbox {
-    transition: none;
+/* ---- Phone ----
+   Where three columns stop fitting ("COMMITMENT" alone is ~85px at this
+   tracking), the terms become rows: label left, figure over its line right.
+   The actions stack full width with the primary on top, inside thumb reach,
+   rather than splitting into halves that would make the grey button as large
+   as the blue one. */
+@media (max-width: 479px) {
+  .sm-terms {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .sm-term {
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 2px;
+    align-items: baseline;
+  }
+  .sm-term dt {
+    grid-row: span 2;
+  }
+  .sm-term-value {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .sm-actions .campaign-btn {
+    flex: 1 1 100%;
   }
 }

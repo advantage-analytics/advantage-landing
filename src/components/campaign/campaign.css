@@ -2,12 +2,13 @@
    Campaign shell — the frame shared by /send-a-match and
    /export-guide.
 
-   These two are one funnel: a collegiate coach arrives from a cold
-   email or an in-person referral, and the only thing they came to
-   do is send a match. A visitor who arrives via site navigation
-   needs navigation to get back out; a visitor who arrives from an
-   email does not. So this shell carries a wordmark and a footer and
-   nothing else — no nav, no scroll reveals, no dark bands.
+   Both are pages a coach reaches from outside the site: the
+   export guide from the dashboard uploader, the /send-a-match
+   notice from an older cold email. Each has one job. A visitor
+   who arrives via site navigation needs navigation to get back
+   out; a visitor who arrives from an email or the app does not.
+   So this shell carries a wordmark and a footer and nothing
+   else — no nav, no scroll reveals, no dark bands.
 
    ---- Two conventions keep this file decoupled from its routes ----
 
@@ -69,10 +70,10 @@
   align-items: center;
   height: 64px;
 }
-/* Deliberately not a link. The intake form holds a dozen fields of unsaved
-   state with no beforeunload guard, and the wordmark is the most habitually
-   clicked element on any page — a same-tab hop to `/` is unrecoverable data
-   loss. The footer's domain link is the deliberate exit, in a new tab. */
+/* Deliberately not a link. Each page here has one job, and the wordmark is the
+   most habitually clicked element on any page; a same-tab hop to `/` trades
+   that job for the whole site. The footer's domain link is the deliberate
+   exit, in a new tab. */
 .campaign-brand {
   height: 22px;
   width: auto;
@@ -118,17 +119,12 @@
    a blue glow on one and 46px flat on the other, links underlined
    on one and not the other, three separate callout treatments.
    These are the single definitions both routes now use.
-
-   Deliberately NOT unified: the form's field density (13px labels,
-   12px hints) against the guide's 15px/1.7 prose. A twelve-field
-   form set at reading-prose spacing is materially taller and worse
-   to scan; a form and a document are allowed to differ.
    ============================================================ */
 
 /* ---- Buttons ----
    Geometry follows the site's global `.btn` (perspective.css) but at the
-   campaign register's 46px, because the primary control here is a form submit
-   that wants a thumb-sized target. The global's two-layer `--blue-glow` shadow
+   campaign register's 46px, because these pages are mostly opened on a phone
+   from an email and the one action wants a thumb-sized target. The global's two-layer `--blue-glow` shadow
    is dropped on purpose: this page's restraint doesn't want a lit CTA. */
 .campaign-btn {
   display: inline-flex;
@@ -149,10 +145,6 @@
 }
 .campaign-btn:active {
   transform: scale(0.97);
-}
-.campaign-btn:disabled {
-  opacity: 0.6;
-  cursor: default;
 }
 
 .campaign-btn-primary {
@@ -219,8 +211,8 @@
 }
 /* Type size is a per-route token, read here and declared by the route — the
    same one-way convention as --campaign-measure. Structure, icon treatment and
-   the semantic colours are shared; a prose page and a form are allowed to set
-   their own scale. */
+   the semantic colours are shared; each page is allowed to set
+   its own scale. */
 .campaign-item {
   display: flex;
   align-items: flex-start;

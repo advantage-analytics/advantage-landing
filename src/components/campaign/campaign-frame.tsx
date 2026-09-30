@@ -2,16 +2,17 @@ import type { ReactNode } from "react";
 import { CONTACT_EMAIL, SITE_DOMAIN } from "@/lib/links";
 import "./campaign.css";
 
-/* The shell for the campaign funnel: /send-a-match and /export-guide.
+/* The shell for pages a coach reaches from outside the site: /export-guide,
+   linked from the dashboard uploader, and the /send-a-match notice that older
+   cold emails still point at.
 
    Deliberately NOT a client component, unlike the site's PageFrame — both
    routes are static and export `metadata`, and there is no scroll-reveal
    observer to run because campaign pages don't animate on scroll.
 
-   `className` carries the route hook (`sm-page`, `eg-page`). That class is
-   load-bearing on /send-a-match: its custom properties, its `:has()`
-   overflow-clip rule and two focus-ring waivers all key off it. Dropping or
-   misspelling it fails silently and visually only. */
+   `className` carries the route hook (`sm-page`, `eg-page`) that the route's
+   stylesheet keys its custom properties off. Dropping or misspelling it fails
+   silently and visually only. */
 
 export function CampaignFrame({
   className,
@@ -41,9 +42,8 @@ export function CampaignFrame({
       </main>
 
       {/* Every link here opens a new tab on purpose. The legal pages render the
-          full site frame, so a same-tab hop would dump a coach out of the funnel
-          onto a fully navigable site — and on /send-a-match it would discard a
-          part-filled form. */}
+          full site frame, so a same-tab hop would drop a coach out of the page
+          they came for onto a fully navigable site. */}
       <footer className="campaign-footer">
         <div className="campaign-wrap">
           <div className="campaign-foot-row">
@@ -87,8 +87,7 @@ export function CampaignFrame({
 }
 
 /* Mirrors PageHead's shape so the two shells stay legible side by side.
-   `children` renders after the lede, which is how /send-a-match keeps its
-   turnaround line directly under the hero copy. */
+   `children` renders after the lede. */
 export function CampaignHead({
   eyebrow,
   title,

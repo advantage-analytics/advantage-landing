@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CONTACT_EMAIL } from "@/lib/links";
-import { EXPORT_GUIDE_HREF } from "@/lib/match-intake";
+import { EXPORT_GUIDE_HREF } from "@/lib/match-video";
 import { FaqItem } from "./faq-item";
 import { BETA_END_SHORT, PILOT_HOURS, PILOT_PAID_PLANS_BEGIN } from "@/lib/pilot";
 

@@ -4,9 +4,7 @@
 // verbatim. That is not politeness: it is proof the text arrived intact and a
 // chance to notice a typo'd address before our reply bounces into nothing.
 //
-// This deliberately does not offer /send-a-match — that ask belongs to the cold
-// outreach campaign and is reserved for it. The pilot is a fair thing to point
-// at instead, because it's what most people writing in are asking about, and
+// The pilot is the thing to point at, because it's what most people writing in are asking about, and
 // because a coach can turn it on themselves: they sign up with their school
 // email and find their team, with no reply from us on the critical path.
 //

@@ -4,34 +4,42 @@ import {
   CampaignFrame,
   CampaignHead,
 } from "@/components/campaign/campaign-frame";
-import { MAX_UPLOAD_LABEL, MAX_UPLOAD_HOURS } from "@/lib/match-intake";
-import { CONTACT_EMAIL } from "@/lib/links";
+import { CONTACT_EMAIL, links } from "@/lib/links";
+import {
+  VIDEO_FORMATS,
+  VIDEO_MAX_SIZE,
+  VIDEO_MIN_FPS,
+  VIDEO_MIN_RESOLUTION,
+  VIDEO_SIZE_PER_HOUR,
+} from "@/lib/match-video";
 import "./export-guide.css";
 
 export const metadata = {
-  title: "Sending a large match file — Advantage",
+  title: "Getting match video into Advantage — Advantage",
   // Built from the constants, not restated: a stale figure here is the least
   // recoverable kind, since it is what search results and link previews show.
-  description: `The upload window takes files up to ${MAX_UPLOAD_LABEL}, about ${MAX_UPLOAD_HOURS} of video. If yours is bigger, paste a share link instead — there's no size limit on links.`,
+  description: `How to get match video off the camera and into the Advantage dashboard: ${VIDEO_MIN_RESOLUTION} or better, ${VIDEO_MIN_FPS} or higher, ${VIDEO_FORMATS}, under ${VIDEO_MAX_SIZE}.`,
 };
 
-/* This page used to be a compression tutorial: HandBrake presets, an ffmpeg
-   command, a bitrate table. All of it deleted on purpose.
+/* Linked from the dashboard uploader, the home page's How it works and FAQ,
+   and the footer. Whoever is here has a match on a phone, a court system or a
+   drive and wants it in the dashboard, so the sections run in the order they
+   meet the problem: film it right, get the file off the device, check its
+   size, and trim it if it's over.
 
-   The size ceiling is there to stop upload abuse, not because anything downstream
-   needs a small file, so it can sit high enough that virtually no real match
-   trips it. And the coaches reading this are not technical — asking them to
-   install an encoder to send us a video is exactly the resistance the campaign
-   can't afford. Everything below is achievable with software they already have,
-   and the first answer is simply "don't upload it, link it": a share URL has no
-   size limit at all, so the problem disappears rather than being worked around. */
+   The limits come from lib/match-video, which the home page and /pilot read
+   too. There is no link upload and no compression step on purpose: the
+   uploader takes the original file, and the coaches reading this are not
+   technical — every step below uses software they already have. */
 
 const KEEP: ReactNode[] = [
   <>The full court in frame, from behind the baseline</>,
   <>
-    The resolution you shot &mdash; <strong>1080p is plenty</strong>
+    The resolution you shot &mdash; <strong>{VIDEO_MIN_RESOLUTION} or better</strong>
   </>,
-  <>The whole match, changeovers and all</>,
+  <>
+    Complete games &mdash; the whole match, changeovers and all, if it fits
+  </>,
 ];
 
 const SKIP: ReactNode[] = [
@@ -39,69 +47,103 @@ const SKIP: ReactNode[] = [
     Cropping or zooming &mdash; we read the court lines, so we need them in frame
   </>,
   <>Highlight reels &mdash; the patterns live in the full sequence of points</>,
+  <>Doubles &mdash; singles only for now</>,
 ];
 
 export default function Page() {
   return (
     <CampaignFrame className="eg-page">
       <CampaignHead
-        eyebrow="Sending a match"
-        title="If your file is too big to upload."
-        lede={`The upload window takes files up to ${MAX_UPLOAD_LABEL}, which is roughly ${MAX_UPLOAD_HOURS} of phone video. Almost every match fits. If yours doesn't, you don't need to compress anything.`}
+        eyebrow="Export guide"
+        title="Getting match video into Advantage."
+        lede={`Upload the original file from the camera. It needs to be ${VIDEO_MIN_RESOLUTION} or better at ${VIDEO_MIN_FPS} or higher, ${VIDEO_FORMATS}, under ${VIDEO_MAX_SIZE}, and cover complete games of a singles match.`}
       />
 
       <article className="eg-doc">
         <section className="eg-sec">
-          <h2>Check the size first</h2>
+          <h2>Check your settings before you film</h2>
           <p>
-            Most files are already under the line.{" "}
-            <strong>On a Mac</strong>, right-click the file and choose{" "}
-            <strong>Get Info</strong>. <strong>On Windows</strong>,
-            right-click and choose <strong>Properties</strong>. Under{" "}
-            {MAX_UPLOAD_LABEL} and you&rsquo;re done &mdash; go send it.
+            <strong>On an iPhone</strong>, open <strong>Settings</strong>{" "}
+            &rarr; <strong>Camera</strong> &rarr; <strong>Record Video</strong>{" "}
+            and choose {VIDEO_MIN_RESOLUTION} at {VIDEO_MIN_FPS} or higher.
           </p>
           <p>
-            PlaySight and similar court systems export files sized for
-            streaming, so those clear the line comfortably. Phone video runs
-            around 60MB a minute, so an hour is about 3.5GB and even a long
-            three-setter usually lands well inside {MAX_UPLOAD_LABEL}.
+            <strong>On Android</strong>, open the Camera app, switch to video
+            and tap the settings gear. Set the video size or resolution to{" "}
+            {VIDEO_MIN_RESOLUTION} (sometimes labelled FHD) at {VIDEO_MIN_FPS}{" "}
+            or higher. The exact wording varies by phone.
           </p>
           <p className="campaign-note">
-            The ceiling is there to keep the upload window from being abused,
-            not because we need a small file. Bigger is fine by us.
+            4K is fine too. It makes much bigger files, though, so a long match
+            is more likely to go over {VIDEO_MAX_SIZE}.
           </p>
         </section>
 
-        {/* The whole answer, really. A link has no size limit, so the
-            oversized-file problem stops existing rather than being solved. */}
+        {/* The one rule under all four routes: the original file. A share or
+            message copy is re-encoded smaller, sometimes under the floor. */}
         <section className="eg-sec">
-          <h2>Over the line? Send a link instead</h2>
+          <h2>Get the file off the device</h2>
           <p>
-            <strong>There&rsquo;s no size limit on a link.</strong>{" "}
-            If the match is already in Google Drive, Dropbox, iCloud, PlaySight or
-            Hudl, copy the share link and paste it into the form instead of
-            uploading. That&rsquo;s the whole fix, and it takes about ten
-            seconds.
+            Whatever route you take, upload the <strong>original file</strong>,
+            not a copy made for sharing. Messaging apps and email shrink video
+            to send it, and a shrunk copy can fall below{" "}
+            {VIDEO_MIN_RESOLUTION}.
+          </p>
+          <ul className="eg-routes">
+            <li>
+              <strong>iPhone to Mac.</strong> AirDrop it, or in Photos on the
+              Mac choose <strong>File</strong> &rarr; <strong>Export</strong>{" "}
+              &rarr; <strong>Export Unmodified Original</strong>.
+            </li>
+            <li>
+              <strong>Phone to Windows.</strong> Connect with a USB cable and
+              import it with the Photos app. On Android, choose{" "}
+              <strong>File transfer</strong> when the phone asks.
+            </li>
+            <li>
+              <strong>PlaySight or Hudl.</strong> Download the match video from
+              the platform, at the highest quality it offers.
+            </li>
+            <li>
+              <strong>Google Drive or Dropbox.</strong> Download the file to
+              your computer first, then upload that. The download is the
+              original.
+            </li>
+          </ul>
+        </section>
+
+        <section className="eg-sec">
+          <h2>Check the size</h2>
+          <p>
+            <strong>On a Mac</strong>, right-click the file and choose{" "}
+            <strong>Get Info</strong>. <strong>On Windows</strong>, right-click
+            and choose <strong>Properties</strong>. Under {VIDEO_MAX_SIZE}
+            {" "}and it&rsquo;s ready to upload.
           </p>
           <p>
-            One thing to check: set the sharing on it to{" "}
-            <strong>&ldquo;anyone with the link can view&rdquo;</strong>,
-            otherwise it opens for you and nobody else.
+            An hour of {VIDEO_MIN_RESOLUTION} phone video at {VIDEO_MIN_FPS} is about{" "}
+            {VIDEO_SIZE_PER_HOUR}, so most matches fit.
           </p>
         </section>
 
         <section className="eg-sec">
-          <h2>Or send us one set</h2>
+          <h2>Over {VIDEO_MAX_SIZE}? Trim it to complete games</h2>
           <p>
-            If linking isn&rsquo;t an option, send a single set rather than
-            the whole match. Your phone and your laptop can both shorten a
-            video without any extra software &mdash; Photos on iPhone and
-            Mac, Photos on Windows &mdash; and a set is still a full run of
-            points, which is what we read.
+            Cut the video down to a run of complete games, one set for
+            example, and upload that. Photos on iPhone, Mac and Windows can all
+            trim a video, and trimming keeps the resolution. Start and end the
+            clip between games, not partway through one.
+          </p>
+          <p className="campaign-note is-caution">
+            Don&rsquo;t use a compression app. They lower the resolution or
+            frame rate, and the tracking needs both.
           </p>
           <p>
-            We&rsquo;d rather have the whole match, so treat this as the last
-            resort rather than the default.
+            Still over, or can&rsquo;t trim it? Email{" "}
+            <a className="campaign-link" href={`mailto:${CONTACT_EMAIL}`}>
+              {CONTACT_EMAIL}
+            </a>{" "}
+            and we&rsquo;ll sort it out with you.
           </p>
         </section>
 
@@ -137,21 +179,17 @@ export default function Page() {
           </p>
         </section>
 
-        {/* The way back. Most readers arrive from the form in a new tab and
-            can simply close this one, but anyone landing here from the
-            confirmation email needs a route to the form. */}
+        {/* The way back. Most readers arrive from the uploader and can close
+            this tab; anyone landing from the home page or a search needs the
+            door. Signed-out visitors go through sign-in first. */}
         <section className="eg-sec">
-          <h2>Still stuck?</h2>
+          <h2>Ready to upload</h2>
           <p>
-            Send a note to{" "}
-            <a className="campaign-link" href={`mailto:${CONTACT_EMAIL}`}>
-              {CONTACT_EMAIL}
-            </a>{" "}
-            and we&rsquo;ll sort it out with you &mdash; a file we have to
-            wrestle with is our problem, not yours.
+            The uploader is in your dashboard. The breakdown lands there too,
+            and we email you when it&rsquo;s ready.
           </p>
-          <a className="campaign-btn campaign-btn-primary" href="/send-a-match">
-            Back to your match
+          <a className="campaign-btn campaign-btn-primary" href={links.uploadMatch}>
+            Upload a match
           </a>
         </section>
       </article>

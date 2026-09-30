@@ -1,8 +1,6 @@
-/* Shared by /send-a-match and /pilot — both pages ask a coach the same
-   qualifying question before they spend an hour on an upload, so they ask it
-   with the same drawing. The host page supplies the wrapper's width; the
-   component owns the drawing itself, colours included — both hosts render it
-   on the same light ground, so there is nothing to retune.
+/* Rendered on /pilot, which asks a coach the qualifying question before they
+   spend an hour on an upload. The host page supplies the wrapper's width; the
+   component owns the drawing itself, colours included.
 
    The camera-angle diagram: a top-down court in hairline strokes with the two
    camera positions marked. It is the qualifier made visual — a coach reads it

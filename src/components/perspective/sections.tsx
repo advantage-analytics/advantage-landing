@@ -5,7 +5,11 @@ import Link from "next/link";
 import { MatchBreakdown, MB_H, MB_W } from "./match-breakdown";
 import { ProofHead } from "./band-parts";
 import { MockFrame } from "./mock-frame";
-import { EXPORT_GUIDE_HREF } from "@/lib/match-intake";
+import {
+  EXPORT_GUIDE_HREF,
+  VIDEO_MIN_FPS_SHORT,
+  VIDEO_MIN_RESOLUTION,
+} from "@/lib/match-video";
 
 /* The home page's breakdown band and the how-it-works band. This module
    statically imports the real MatchBreakdown board, so anything that only
@@ -54,7 +58,7 @@ const HOW_STEPS: readonly { t: string; p: ReactNode; spec: string }[] = [
   {
     t: "Record the match.",
     p: "From behind the baseline, raised up if you can. Side-on film won’t give a full breakdown.",
-    spec: "1080p · 30fps · MP4",
+    spec: `${VIDEO_MIN_RESOLUTION} · ${VIDEO_MIN_FPS_SHORT} · MP4`,
   },
   {
     t: "Upload the file.",
