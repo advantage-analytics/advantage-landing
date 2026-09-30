@@ -257,7 +257,7 @@ section.band.alt + section.band.alt { border-top: none; }
 .uline { margin-bottom: 22px; }
 .uline label { display:block; font: var(--fw-medium) 10px var(--font-sans); letter-spacing:2px; text-transform:uppercase; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
 /* 16px is deliberate: iOS Safari zooms the whole page when a field smaller
-   than that takes focus, and it is the step .control and .sm-input already use.
+   than that takes focus, and it is the step .control already uses.
    The rule sits at 0.38 white — 3.50:1 on the navy, clearing SC 1.4.11's 3:1
    for a control boundary, where the old 0.22 measured 2.00:1 and vanished in
    daylight. */
@@ -349,10 +349,10 @@ section.band.alt + section.band.alt { border-top: none; }
 }
 
 /* ---- Coarse pointers ----
-   Gated on pointer rather than width, matching the /send-a-match form: a 1024px
+   Gated on pointer rather than width, matching the contact form: a 1024px
    tablet is touch and a 900px window is not, and the fine-pointer rhythm keeps
    its tighter spacing untouched. Fields go from a measured 33px to 46px, which
-   is the row height the intake form already ships. The label steps up because
+   is the row height the contact form already ships. The label steps up because
    10px at 2px tracking is a desktop reading size being asked to survive a phone
    at arm's length with a keyboard covering half the screen. */
 @media (pointer: coarse) {
@@ -937,7 +937,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .site-nav-toggle, .site-nav-sheet { transition: none; }
   /* The focus underline grows 1px -> 2px with the padding compensating over
      300ms. Animated border-width and padding are layout, and on a form that is
-     one of these per field — the same waiver send-a-match.css gives .sm-input. */
+     one of these per field. */
   .uline input, .uline select { transition: none; }
 }
 

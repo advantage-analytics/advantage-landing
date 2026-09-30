@@ -1,119 +1,116 @@
-import { Check } from "lucide-react";
-import {
-  CampaignFrame,
-  CampaignHead,
-} from "@/components/campaign/campaign-frame";
+import { CampaignFrame } from "@/components/campaign/campaign-frame";
+import { CONTACT_EMAIL } from "@/lib/links";
 import {
   EXPORT_GUIDE_HREF,
-  MAX_UPLOAD_HOURS,
-  MAX_UPLOAD_LABEL,
-  TURNAROUND,
-} from "@/lib/match-intake";
-import { CourtDiagram } from "@/components/court-diagram";
-import { FOOTAGE_CHECKLIST } from "@/components/footage-checklist";
-import { MatchForm } from "./match-form";
+  VIDEO_FORMATS,
+  VIDEO_MAX_SIZE,
+  VIDEO_MIN_FPS,
+  VIDEO_MIN_RESOLUTION,
+} from "@/lib/match-video";
+import { PILOT_TERMS } from "@/lib/pilot";
 import "./send-a-match.css";
 
 export const metadata = {
-  title: "Send us a match — Advantage",
+  title: "Match uploads have moved — Advantage",
   description:
-    "Send one match video and we'll send back a full shot-by-shot breakdown — serve placement, return patterns, first-four-shots. Free, no call, no commitment.",
+    "We no longer take matches through this page. Programs upload match video to their own Advantage dashboard instead, free through the fall pilot.",
+  // Kept only for the cold emails already sent; nobody should find it by search.
+  robots: { index: false },
 };
 
-/* The qualifier, stated before a coach spends an hour on an upload we'd have to
-   refuse. Getting this wrong is the worst thing the product could do to a first
-   impression, so it precedes the form: stacked above it on a phone, beside it in
-   the sticky rail on a desktop. The list itself is shared with /pilot, which
-   asks the same question of the same coaches. */
+/* /send-a-match used to be the cold-email intake: a form plus a file upload,
+   answered by hand. Uploads now happen in the dashboard, but those emails are
+   still in inboxes and still get clicked, so the route stays as a notice rather
+   than a redirect — landing on the home page with no word about the link would
+   read as a broken link.
+
+   The page does one thing: say the offer has moved and hand the coach the way
+   in. The actions sit in the masthead, before any detail, because on a phone the
+   detail would otherwise push them below the fold. The terms and steps below
+   are the pilot's own, read from lib/pilot, so this page can't promise
+   something /pilot doesn't. */
+
+// Cost, film and commitment: the three a coach who was promised a free
+// breakdown checks first. Paid plans are /pilot's business.
+const TERMS = PILOT_TERMS.slice(0, 3);
+
+const STEPS: readonly { t: string; p: string }[] = [
+  {
+    t: "Create an account.",
+    p: "Use your school email. It’s how we recognize you as a coach.",
+  },
+  {
+    t: "Find your team.",
+    p: "Search for your school and choose the men’s or women’s team you coach.",
+  },
+  {
+    t: "Upload a match.",
+    p: `${VIDEO_MIN_RESOLUTION}, ${VIDEO_MIN_FPS}, ${VIDEO_FORMATS}, under ${VIDEO_MAX_SIZE}. The breakdown lands in your dashboard.`,
+  },
+];
 
 export default function Page() {
   return (
     <CampaignFrame className="sm-page">
-      {/* The masthead spans the full measure; below it the page splits. One
-          column on a phone, two from 1080px up: the rail holds what a coach
-          reads, the form column holds what they type. Keeping the masthead out
-          of the rail is what lets the rail pin — a sticky element taller than
-          the viewport strands its own lower half, and the diagram is the part
-          that has to stay visible. */}
-      <CampaignHead
-        title="Send us a match."
-        lede={
-          <>
-            We&rsquo;ll send back a full shot-by-shot breakdown &mdash; serve
-            placement, return patterns, first-four-shots, and every stat linked
-            to the clip it came from. Free, no call, no commitment.
-          </>
-        }
-      >
-        <p className="sm-delivery">
-          You&rsquo;ll get a confirmation email today, and your breakdown within{" "}
-          {TURNAROUND}.
+      <section className="campaign-head sm-head">
+        <span className="sm-badge">This offer has closed</span>
+        <h1>Match uploads now happen in Advantage.</h1>
+        <p className="campaign-lede">
+          We&rsquo;re no longer taking matches through this page. Instead, your
+          program uploads video to its own dashboard and gets the same
+          shot-by-shot breakdown there, free for the fall season.
         </p>
-      </CampaignHead>
-
-      <div className="sm-layout">
-        <div className="sm-rail">
-          <section className="sm-section" aria-labelledby="sm-camera">
-            {/* The eyebrow is this section's heading, so it is one: without
-                this the form region offered no outline below <h1>. .eyebrow
-                carries every visual property, so nothing moves. */}
-            <div className="sm-spine">
-              <h2 className="eyebrow" id="sm-camera">
-                Before you send
-              </h2>
-            </div>
-
-            <p className="sm-note">
-              Our tracking reads the court from behind the baseline. Footage
-              shot from the side of the court won&rsquo;t produce a full
-              breakdown yet.
-            </p>
-
-            <ul className="sm-checks campaign-list">
-              {FOOTAGE_CHECKLIST.map((item, i) => (
-                <li className="campaign-item" key={i}>
-                  <Check size={15} strokeWidth={1.75} aria-hidden="true" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="sm-diagram">
-              <CourtDiagram />
-            </div>
-
-            {/* Opens in a new tab on purpose: the form keeps no state, so a
-                same-tab hop to the guide wipes everything a coach has
-                already typed and drops them back on an empty form. */}
-            <p className="sm-compress">
-              Uploads take files up to {MAX_UPLOAD_LABEL}, about{" "}
-              {MAX_UPLOAD_HOURS} of video. Bigger than that? Paste a link
-              instead &mdash; there&rsquo;s no size limit on links.{" "}
-              <a
-                className="campaign-link"
-                href={EXPORT_GUIDE_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                More on large files
-              </a>
-              .
-            </p>
-          </section>
+        <div className="sm-actions">
+          <a className="campaign-btn campaign-btn-primary" href="/pilot">
+            Join the free pilot
+          </a>
+          <a
+            className="campaign-btn campaign-btn-secondary"
+            href={EXPORT_GUIDE_HREF}
+          >
+            Filming guide
+          </a>
         </div>
+      </section>
 
-        <section
-          className="sm-section sm-formcol"
-          aria-labelledby="sm-match"
-        >
-          <div className="sm-spine">
-            <h2 className="eyebrow" id="sm-match">
-              Your match
-            </h2>
+      <dl className="sm-terms">
+        {TERMS.map((term) => (
+          <div className="sm-term" key={term.l}>
+            <dt>{term.l}</dt>
+            <dd className="sm-term-value">{term.v}</dd>
+            <dd className="sm-term-sub">{term.s}</dd>
           </div>
-          <MatchForm />
-        </section>
-      </div>
+        ))}
+      </dl>
+
+      <section className="sm-steps" aria-labelledby="sm-steps-title">
+        <h2 className="eyebrow" id="sm-steps-title">
+          How it works now
+        </h2>
+        <ol>
+          {STEPS.map((step, i) => (
+            <li key={step.t}>
+              <span className="sm-step-num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <strong>{step.t}</strong>
+                <span>{step.p}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* For the coaches who did send a film before the intake closed. It
+          promises no delivery date: we reply to each one by hand. */}
+      <p className="campaign-note sm-already">
+        Already sent us a match through this page? Email{" "}
+        <a className="campaign-link" href={`mailto:${CONTACT_EMAIL}`}>
+          {CONTACT_EMAIL}
+        </a>{" "}
+        and we&rsquo;ll tell you where it stands.
+      </p>
     </CampaignFrame>
   );
 }

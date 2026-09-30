@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { links } from "@/lib/links";
-import { EXPORT_GUIDE_HREF } from "@/lib/match-intake";
+import { EXPORT_GUIDE_HREF } from "@/lib/match-video";
 
 /* Three columns: what the product is, the ways in, and the company. The
    product links carry the section names the page uses. Get started holds both

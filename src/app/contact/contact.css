@@ -340,8 +340,8 @@ select.control:has(option[value=""]:checked) {
   .contact-card.reveal {
     transform: none;
   }
-  /* Same waiver the intake form gives .sm-input: the focus rule animates
-     border-width and padding, which is layout, once per field. */
+  /* The focus rule animates border-width and padding, which is layout, once
+     per field. */
   .control,
   .field > label {
     transition: none;
@@ -410,7 +410,7 @@ select.control:has(option[value=""]:checked) {
 }
 
 /* ---- Coarse pointers ----
-   Pointer-gated like /send-a-match, so a touch laptop gets the bigger targets
+   Pointer-gated rather than width-gated, so a touch laptop gets the bigger targets
    and a narrow desktop window keeps the tighter rhythm. 35.5px fields become
    46px; the 10px label goes up a step to stay readable on a phone. */
 @media (pointer: coarse) {

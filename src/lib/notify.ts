@@ -15,8 +15,8 @@ type SubmissionEmail = {
   // The person who submitted, so replies go straight to them.
   replyTo?: string;
   // Defaults to CONTACT_NOTIFY_TO — the inbox that receives every submission.
-  // Pass an address to send outward instead, e.g. the automatic confirmation
-  // the /send-a-match intake sends back to the coach.
+  // Pass an address to send outward instead, e.g. the confirmation the contact
+  // form sends back to whoever wrote in.
   to?: string;
 };
 

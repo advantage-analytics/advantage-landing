@@ -13,4 +13,7 @@ export const SITE_DOMAIN = "advantage-analytics.com";
 export const links = {
   signIn: `${APP_URL}/login`,
   signUp: `${APP_URL}/sign-up`,
+  // The dashboard's match uploader. Signed-out visitors land on sign-in and
+  // come back here after.
+  uploadMatch: `${APP_URL}/dashboard/matches/new`,
 } as const;

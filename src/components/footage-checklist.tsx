@@ -1,12 +1,18 @@
 import type { ReactNode } from "react";
+import {
+  VIDEO_FORMATS,
+  VIDEO_MAX_SIZE,
+  VIDEO_MIN_FPS,
+  VIDEO_MIN_RESOLUTION,
+} from "@/lib/match-video";
 
 /* What a coach's film has to be for the tracking to read it.
  *
- * Shared by /send-a-match and /pilot, which both invite a coach to upload and
- * both have to answer this before they ask. It lives beside <CourtDiagram />
- * because the two are one unit — the drawing shows where the camera goes, the
- * list says what the file has to be — and because the day doubles ships or the
- * frame-rate floor moves, one edit has to reach both pages.
+ * Rendered on /pilot, which invites a coach to upload and has to answer this
+ * before it asks. It lives beside <CourtDiagram /> because the two are one
+ * unit — the drawing shows where the camera goes, the list says what the file
+ * has to be. The file limits come from lib/match-video, which the uploader and
+ * the export guide read too.
  *
  * Content only: each page keeps its own row markup and check icon, since one
  * renders inside the campaign shell and the other inside the site theme.
@@ -23,7 +29,12 @@ export const FOOTAGE_CHECKLIST: ReactNode[] = [
   <>Far service line visible</>,
   <>Near court outside of baseline visible</>,
   <>
-    <strong>1080p or better, 30fps</strong>
+    <strong>
+      {VIDEO_MIN_RESOLUTION} or better, {VIDEO_MIN_FPS} or higher
+    </strong>
   </>,
-  <>MP4 / H.264 &mdash; most phone and PlaySight exports already are</>,
+  <>
+    {VIDEO_FORMATS}, under {VIDEO_MAX_SIZE}
+    {" "}&mdash; most phone and PlaySight exports already are
+  </>,
 ];
