@@ -53,7 +53,9 @@ export const metadata: Metadata = {
   //   src/app/apple-icon.png      -> <link rel="apple-touch-icon">
   //   src/app/opengraph-image.jpg -> og:image (and the twitter card image)
   // That image is the site-wide card; /pilot overrides it with its own
-  // src/app/pilot/opengraph-image.jpg.
+  // src/app/pilot/opengraph-image.jpg. The card it replaced (the wordmark on
+  // black) is kept in assets/link-previews/, outside src/app and public/ so it
+  // is neither picked up as metadata nor served.
   // Without the apple-icon, "Add to Home Screen" on iOS falls back to a
   // screenshot of the page instead of the logo: Safari ignores rel="icon"
   // there. The file is a 180x180 opaque square (iOS masks it into its own
