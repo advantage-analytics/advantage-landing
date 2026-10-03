@@ -6,7 +6,9 @@
 // of those before deciding, and /pilot promises "four terms, no fine print" —
 // so two versions of the offer is exactly the failure the copy says can't
 // happen.
-// Extending the pilot should be one edit in this file.
+// Extending the pilot should be one edit in this file — plus the two link
+// preview cards (src/app/opengraph-image.jpg and src/app/pilot/opengraph-image.jpg
+// with their .alt.txt), which have the end date baked into the artwork.
 
 export const PILOT_END_DATE = "December 31, 2026";
 export const PILOT_PAID_PLANS_BEGIN = "January 2027";

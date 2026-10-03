@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Check } from "lucide-react";
 import { CourtDiagram } from "@/components/court-diagram";
@@ -19,9 +20,29 @@ import {
 } from "@/lib/pilot";
 import "./pilot.css";
 
-export const metadata = {
-  title: "The Free Fall Season Pilot — Advantage",
-  description: `The fall season, free, on your own footage. Advantage turns the match video your collegiate program already shoots into shot-by-shot analytics — free through ${PILOT_END_DATE}.`,
+const title = "The Free Fall Season Pilot — Advantage";
+const description = `The fall season, free, on your own footage. Advantage turns the match video your collegiate program already shoots into shot-by-shot analytics — free through ${PILOT_END_DATE}.`;
+
+// The link preview is this route's own card: ./opengraph-image.jpg, picked up
+// by the file convention. `openGraph` and `twitter` are restated because Next
+// replaces those objects whole rather than merging them, so without them the
+// pilot image would sit above the home page's title and description.
+export const metadata: Metadata = {
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: "/pilot",
+    siteName: "Advantage",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 /* /pilot — the whole commercial offer on one page, built from the home page's
