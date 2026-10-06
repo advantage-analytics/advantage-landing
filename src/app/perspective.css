@@ -139,13 +139,13 @@ section.band.alt { background: var(--surface); border-top:1px solid var(--hairli
 /* The first band sits directly under the dark hero — the dark/light edge is
    the divider, so the hairline above it would read as a stray gap. Drop it. */
 main > section.band:first-child { border-top: none; }
-/* Two white bands in a row (dashboard, film room, shot map) meet on one
+/* Two white bands in a row (tour, dashboard, team) meet on one
    hairline: the upper band's bottom rule, not a doubled 2px seam. */
 section.band.alt + section.band.alt { border-top: none; }
 /* Tighten the generous desktop rhythm as the viewport narrows — 110px reads as
    dead space on a tablet or phone. */
 @media (max-width: 1023px) { section.band { padding: 88px 0; } }
-/* ============ PROOF BANDS — breakdown, film room, team ============
+/* ============ PROOF BANDS — tour, breakdown, team ============
    One skeleton for the three product bands, the build How it works and the
    beta band use: a full-width head (eyebrow and headline left, the aside
    flush right on the headline's last baseline), then the product board at
@@ -155,6 +155,15 @@ section.band.alt + section.band.alt { border-top: none; }
 .proof-head { display: flex; align-items: last baseline; justify-content: space-between; gap: 24px 48px; }
 .proof-head .band-aside { flex: 0 1 380px; text-align: right; }
 .proof-board { margin-top: 56px; }
+/* The frame every product board sits in, artboard or video. It lives here,
+   not in mocks.css, so a page with a framed video and no artboard has it. */
+.mock-frame { margin-top: 52px; border-radius: 13px; overflow: hidden; background: #fff;
+  border: 1px solid var(--hairline-medium);
+  box-shadow: 0 40px 90px -30px rgba(13,27,62,.3), 0 8px 30px rgba(0,0,0,.06); }
+@media (max-width: 720px) {
+  .mock-frame { margin-top: 32px; border-radius: 10px;
+    box-shadow: 0 24px 50px -24px rgba(13,27,62,.3), 0 6px 18px rgba(0,0,0,.06); }
+}
 .proof-board .mock-frame { margin-top: 0; }
 /* The tallest board is shown through a window; it fades out at the bottom so
    the cut reads as "continues", not as a broken board. */
@@ -183,6 +192,30 @@ section.band.alt + section.band.alt { border-top: none; }
   .proof-cta { margin-top: 20px; }
 }
 
+/* ============ PRODUCT TOUR — the recording, then its five lines ============
+   A proof band whose board is a video rather than an artboard. The still
+   holds the frame's 16:10 height and shows until the video, laid over it,
+   has a frame to draw. The five lines run under it as one row; the one the
+   video is on takes the ink and the blue rule. */
+.tour-frame { position: relative; }
+.tour-still { display: block; width: 100%; height: auto; }
+.tour-video { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tour-toggle { position: absolute; right: 14px; bottom: 14px; width: 36px; height: 36px; padding: 0; display: grid; place-items: center;
+  border-radius: 50%; border: 1px solid var(--hairline-medium); background: rgba(255,255,255,.92); color: var(--ink); cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,.12); transition: background 160ms var(--ease-primary); }
+.tour-toggle:hover { background: #fff; }
+.tour-steps { list-style: none; margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 28px; }
+.tour-step { display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid var(--hairline-medium);
+  font: var(--fw-regular) 15px/1.45 var(--font-sans); color: var(--ink-secondary); text-wrap: balance;
+  transition: color 300ms var(--ease-primary), border-color 300ms var(--ease-primary); }
+.tour-step.is-on { color: var(--ink); border-top-color: var(--signal-blue); }
+@media (max-width: 900px) {
+  .tour-steps { grid-template-columns: 1fr; margin-top: 28px; }
+  .tour-step { flex-direction: row; align-items: baseline; gap: 16px; padding: 14px 0; }
+}
+@media (pointer: coarse) { .tour-toggle { width: 44px; height: 44px; } }
+@media (prefers-reduced-motion: reduce) { .tour-toggle, .tour-step { transition: none; } }
+
 @media (max-width: 720px)  { section.band { padding: 64px 0; } }
 
 /* ============ HOW IT WORKS — head + white panel ============
@@ -201,7 +234,7 @@ section.band.alt + section.band.alt { border-top: none; }
   border: 1px solid var(--hairline-medium); border-radius: var(--r-card); box-shadow: var(--shadow-card); }
 .how-step { grid-row: span 4; display: grid; grid-template-rows: subgrid; row-gap: 0; padding: 44px 40px 40px; }
 .how-step + .how-step { border-left: 1px solid var(--hairline-medium); }
-.how-step .n { font: var(--fw-regular) 11px var(--font-mono); letter-spacing: 1px; color: var(--signal-blue); font-variant-numeric: tabular-nums; }
+.how-step .n, .tour-step .n { font: var(--fw-regular) 11px var(--font-mono); letter-spacing: 1px; color: var(--signal-blue); font-variant-numeric: tabular-nums; }
 .how-step h3 { margin: 28px 0 0; font: var(--fw-regular) 22px/1.2 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); text-wrap: balance; }
 .how-step p { margin: 12px 0 0; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
 .how-step p a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }

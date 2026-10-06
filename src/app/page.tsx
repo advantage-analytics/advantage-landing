@@ -7,14 +7,14 @@ import { SiteNav } from "@/components/perspective/site-nav";
 import { Footer } from "@/components/perspective/footer";
 import { useReveal } from "@/components/perspective/reveal";
 import { DashboardShowcase, HowItWorks } from "@/components/perspective/sections";
-import { FilmRoom } from "@/components/perspective/film-room";
+import { ProductTour } from "@/components/perspective/product-tour";
 import { TeamBand } from "@/components/perspective/team-band";
 import { BetaTerms } from "@/components/perspective/beta-terms";
 import { Faq } from "@/components/perspective/faq";
 import { FinalBand } from "@/components/perspective/final-band";
 
 /* The hero and dashboard artboards are sized by useScaleToFit after mount, so
-   a hash landing (/#film from the nav on another page, or a fresh load) is
+   a hash landing (/#team from the nav on another page, or a fresh load) is
    scrolled against pre-fit layout and can end up off target. Child effects run
    before this one, so by now the artboards hold their final heights — re-anchor
    once, instantly, to the corrected position. (That ordering breaks if an
@@ -41,8 +41,8 @@ export default function Home() {
       <SiteNav />
       <PerspectiveHero />
       <main>
+        <ProductTour alt />
         <DashboardShowcase />
-        <FilmRoom />
         <TeamBand />
         <HowItWorks />
         <BetaTerms />
