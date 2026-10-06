@@ -25,6 +25,19 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  async redirects() {
+    return [
+      // Printed QR codes at events point at /booth. Temporary (307) so the
+      // destination can change later without browsers caching the old one.
+      // Any query string the visitor arrives with is carried through.
+      {
+        source: "/booth",
+        destination: "/?utm_source=booth&utm_medium=qr&utm_campaign=events",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
