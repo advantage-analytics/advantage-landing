@@ -20,7 +20,7 @@ import {
    The hero already shows the dashboard Home in its browser window; this band
    shows what a visitor gets after an upload — the single-match report — so
    the two product shots are two surfaces of the app, not the same one twice.
-   Like the film room and the team board it sits in the plain frame: the hero
+   Like the team board it sits in the plain frame: the hero
    is the one establishing shot with browser chrome, every board after it is
    a closer look at a surface. */
 
@@ -40,8 +40,8 @@ export function DashboardShowcase() {
           role="img"
           aria-label="The Advantage match report for one match: the final score, an Advantage Intelligence insight, serve, return and point statistics head to head, the running points margin, rally lengths, and how each player's points ended."
         >
-          <MockFrame className="is-light" width={MB_W} height={MB_H}>
-            <div inert className="film-inert">
+          <MockFrame width={MB_W} height={MB_H}>
+            <div inert className="mock-inert">
               <MatchBreakdown />
             </div>
           </MockFrame>

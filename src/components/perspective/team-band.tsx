@@ -32,8 +32,8 @@ export function TeamBand() {
           role="img"
           aria-label="The Advantage team workspace Home: this weekend's dual sheet with the lineup and score, the program summary, top movers, the season's court record by court, and the dual match history."
         >
-          <MockFrame className="is-light is-cropped" width={TH_W} height={TH_VIEW}>
-            <div inert className="film-inert">
+          <MockFrame className="is-cropped" width={TH_W} height={TH_VIEW}>
+            <div inert className="mock-inert">
               <TeamHome />
             </div>
           </MockFrame>

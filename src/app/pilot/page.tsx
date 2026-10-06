@@ -9,6 +9,7 @@ import { FindTeamLink, JoinBetaLink } from "@/components/perspective/cta-links";
 import { FaqItem } from "@/components/perspective/faq-item";
 import { LiveDots } from "@/components/perspective/live-dots";
 import { PilotTermsBand } from "@/components/perspective/pilot-terms";
+import { ProductTour } from "@/components/perspective/product-tour";
 import { RequestAccess } from "@/components/perspective/request-access";
 import { CONTACT_EMAIL } from "@/lib/links";
 import {
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
    footer and the contact form, so it has to read as the site a coach was
    already browsing.
 
-   Order is the order the questions arrive in: what does it cost, will my
+   Order is the order the questions arrive in: what does it cost, what do I get, will my
    footage even work, what happens when I sign up, what else, and then the
    way in. */
 
@@ -144,6 +145,9 @@ export default function Page() {
         title="Four terms, no fine print."
         aside="This is the whole offer. Nothing else is asked of your program this season."
       />
+
+      {/* What the terms buy, shown once before the page turns practical. */}
+      <ProductTour />
 
       {/* The qualifier, asked before the ask. A coach who finds out here that
           side-on footage won't work has been saved an hour and a bad first
