@@ -25,11 +25,10 @@ import "./mocks.css";
    the three point-derived charts) follow the settled design frame by frame.
    The real Statistics view has no KPI strip, so neither does this.
 
-   The match is the one the film room plays: Quan v Gomez at Indian Wells,
-   112 points. Every figure here is invented but internally consistent —
-   the head-to-head totals sum to the score, the endings bars to the winner
-   and error counts, the tracker to the final margin — so the two product
-   shots read as one afternoon.
+   The match is Quan v Gomez at Indian Wells, 112 points. Every figure here
+   is invented but internally consistent — the head-to-head totals sum to the
+   score, the endings bars to the winner and error counts, the tracker to the
+   final margin.
 
    Static markup, no state, renders on the server. Callers make it inert. */
 

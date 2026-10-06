@@ -1,137 +1,16 @@
-/* ============ PRODUCT MOCKS — film room + team roster ============
+/* ============ PRODUCT MOCKS — match report + team roster ============
    Fixed artboards (every product board at the dashboard's 1440×944; the roster
    1440×900), drawn at native size and scaled to the band by useScaleToFit
    (see mock-frame.tsx). Everything inside the artboard
    is therefore in design pixels, copied from the design board — there is no
-   responsive work inside, only on the frame. */
+   responsive work inside, only on the frame (.mock-frame, perspective.css). */
 
-.mock-frame { margin-top: 52px; border-radius: 13px; overflow: hidden; background: #0D0D0D;
-  border: 1px solid var(--hairline-medium);
-  box-shadow: 0 40px 90px -30px rgba(13,27,62,.3), 0 8px 30px rgba(0,0,0,.06); }
 .mock-fit { position: relative; width: 100%; overflow: hidden; }
 .mock-art { position: absolute; top: 0; left: 0; transform-origin: top left; }
 .mock-art .flex { flex: 1; }
-@media (max-width: 720px) {
-  .mock-frame { margin-top: 32px; border-radius: 10px;
-    box-shadow: 0 24px 50px -24px rgba(13,27,62,.3), 0 6px 18px rgba(0,0,0,.06); }
-}
-/* The film mock is a picture: nothing inside it reacts to the pointer. */
-.film-inert { pointer-events: none; }
+/* A mock is a picture: nothing inside it reacts to the pointer. */
+.mock-inert { pointer-events: none; }
 
-/* ---------------- Film room ---------------- */
-.film { position: relative; width: 1440px; height: 944px; overflow: hidden; background: #000;
-  font-family: var(--font-sans); color: #fff; }
-/* The 16:9 video sits whole inside the taller frame, letterboxed on the
-   frame's black, so nothing of the court is cropped away. */
-.film-still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; background: #000;
-  /* A touch closer than letterbox-flat: the bars thin to ~22px and a sliver
-     of each sideline goes, but the whole court stays in frame. */
-  transform: scale(1.1); transform-origin: 50% 50%; }
-.film-veil { position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.42) 0%, rgba(0,0,0,.1) 30%, rgba(0,0,0,0) 58%, rgba(13,13,13,.78) 100%); }
-
-.film-score { position: absolute; left: 24px; top: 24px; width: 236px; display: flex; flex-direction: column; gap: 14px;
-  padding: 14px 15px 12px; border-radius: 10px; background: rgba(13,13,13,.74); backdrop-filter: blur(8px); }
-.film-score .hd, .shot-score .hd { display: flex; align-items: baseline; gap: 8px; }
-.film-score .st { font: 500 10px var(--font-sans); letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,.55); }
-.film-score .tm, .shot-score .tm { font: 400 10px var(--font-mono); font-variant-numeric: tabular-nums; color: rgba(255,255,255,.45); }
-.film-score .rows, .shot-score .rows { display: flex; flex-direction: column; gap: 11px; }
-.film-score .row, .shot-score .row { display: flex; align-items: center; gap: 7px; }
-.film-score .nm { font: 500 13px var(--font-sans); color: #fff; white-space: nowrap; }
-.film-score .nm.is-opp { font-weight: 400; color: rgba(255,255,255,.72); }
-.film-score .srv, .shot-score .srv { width: 6px; height: 6px; border-radius: 999px; background: transparent; }
-.film-score .srv.on, .shot-score .srv { background: #3B82F6; }
-.film-score .pts, .shot-score .sets { display: inline-flex; gap: 8px; font: 400 13px var(--font-mono); }
-.film-score .pts b, .shot-score .sets b { font-weight: 400; width: 11px; text-align: right; color: #fff; }
-.film-score .pts b.w2 { width: 22px; }
-.film-score .pts b.dim, .shot-score .sets b.dim { color: rgba(255,255,255,.42); }
-.film-score .ft, .shot-score .ft { display: flex; align-items: center; gap: 9px; padding-top: 9px; border-top: 1px solid rgba(255,255,255,.14); }
-.film-score .av, .shot-score .av { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;
-  flex: 0 0 22px; border-radius: 999px; background: rgba(255,255,255,.14); font: 500 10px var(--font-sans); color: #fff; }
-.film-score .lb, .shot-score .lb { font-size: 11px; color: rgba(255,255,255,.55); white-space: nowrap; }
-
-.film-mini { position: absolute; left: 24px; top: 198px; width: 168px; display: flex; flex-direction: column;
-  align-items: center; gap: 7px; padding: 8px; border-radius: 8px; background: rgba(13,13,13,.8);
-  box-shadow: 0 8px 24px rgba(0,0,0,.3); }
-.film-mini .hd { display: flex; width: 100%; height: 20px; align-items: center; gap: 4px; padding-left: 2px; }
-.film-mini .hd .t { font-size: 10.5px; font-weight: 500; }
-.film-mini .ib { display: inline-flex; width: 20px; height: 20px; align-items: center; justify-content: center; color: rgba(255,255,255,.7); }
-.film-mini .court { position: relative; width: 152px; height: 227px; }
-.film-mini .court i { position: absolute; display: block; }
-.film-mini .c-box { left: 6%; right: 6%; top: 3%; bottom: 3%; border: 1px solid rgba(255,255,255,.34); background: rgba(214,228,249,.07); }
-.film-mini .c-v { top: 3%; bottom: 3%; width: 1px; background: rgba(255,255,255,.24); }
-.film-mini .c-h { left: 17%; right: 17%; height: 1px; background: rgba(255,255,255,.24); }
-.film-mini .c-mid { left: 50%; top: 24.7%; height: 50.6%; width: 1px; background: rgba(255,255,255,.24); }
-.film-mini .c-net { left: 2%; right: 2%; top: 50%; height: 1px; background: rgba(255,255,255,.6); }
-.film-dot { position: absolute; width: 7px; height: 7px; transform: translate(-50%, -50%); border-radius: 999px; transition: opacity 300ms cubic-bezier(.25,.46,.45,.94); }
-.film-mini .ft { display: flex; width: 100%; align-items: center; gap: 8px; padding: 1px 2px 0; }
-.film-mini .lg { display: inline-flex; align-items: center; gap: 4px; font-size: 9.5px; color: rgba(255,255,255,.6); }
-.film-mini .lg i { width: 6px; height: 6px; border-radius: 999px; }
-.film-mini .lg .ring { border: 1px solid rgba(255,255,255,.65); }
-.film-mini .lg .fill { background: rgba(255,255,255,.75); }
-.film-mini .ct { font: 400 9.5px var(--font-mono); color: rgba(255,255,255,.45); white-space: nowrap; }
-.film-mini .lg { white-space: nowrap; }
-
-.film-transport { position: absolute; left: 0; right: 320px; bottom: 0; display: flex; flex-direction: column; gap: 9px; padding: 0 24px 14px; }
-.film-transport .meta { display: flex; align-items: flex-end; gap: 12px; padding-bottom: 1px; }
-.film-transport .ti { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
-.film-transport .ti .a { font-size: 12px; font-weight: 500; white-space: nowrap; }
-.film-transport .ti .b { font-size: 10px; color: rgba(255,255,255,.55); white-space: nowrap; }
-.film-transport .pt { display: flex; align-items: center; gap: 14px; color: rgba(255,255,255,.7); text-shadow: 0 1px 4px rgba(0,0,0,.8); }
-.film-transport .pt .n { font: 400 9px var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; color: rgba(255,255,255,.5); }
-.film-transport .prog { position: relative; display: flex; height: 16px; align-items: center; }
-.film-transport .prog span { position: absolute; height: 3px; border-radius: 999px; background: rgba(255,255,255,.22); }
-.film-transport .prog .cur { overflow: hidden; }
-.film-transport .prog .cur .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: #3B82F6; }
-.film-transport .prog .head { position: absolute; top: 50%; width: 11px; height: 11px; transform: translate(-50%, -50%);
-  border-radius: 999px; background: #fff; }
-.film-transport .ctrl { display: flex; height: 40px; align-items: center; gap: 18px; color: rgba(255,255,255,.85); }
-.film-transport .ctrl .hi { color: #fff; }
-.film-transport .tc { font: 400 11px var(--font-mono); color: rgba(255,255,255,.75); }
-.film-transport .sp { font: 500 11px var(--font-mono); }
-
-.film-list { position: absolute; top: 0; right: 0; bottom: 0; width: 320px; display: flex; flex-direction: column;
-  background: rgba(13,13,13,.88); box-shadow: inset 1px 0 0 rgba(255,255,255,.1), -24px 0 48px -12px rgba(0,0,0,.45); }
-.film-list .hd { display: flex; align-items: center; gap: 8px; padding: 13px 10px 10px; box-shadow: inset 0 -1px 0 rgba(255,255,255,.08); }
-.film-list .flt { display: inline-flex; align-items: center; gap: 8px; height: 28px; padding: 0 8px; color: rgba(255,255,255,.8);
-  font: 500 12px var(--font-sans); }
-.film-list .flt span { color: #fff; }
-.film-list .flt .dim { color: rgba(255,255,255,.45); }
-.film-list .hd .ct { font: 400 10px var(--font-mono); color: rgba(255,255,255,.45); white-space: nowrap; }
-.film-list .hd .ct span { color: rgba(255,255,255,.25); }
-.film-list .ib { display: inline-flex; width: 26px; height: 26px; align-items: center; justify-content: center; color: rgba(255,255,255,.7); }
-.film-list .body { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
-.film-list .gh { display: flex; align-items: center; gap: 8px; padding: 13px 14px 5px; }
-.film-list .gh .h { font: 400 9px var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; color: rgba(255,255,255,.45); }
-.film-list .gh .n { font: 400 10px var(--font-mono); color: rgba(255,255,255,.4); white-space: nowrap; }
-.film-list .pr { position: relative; display: flex; min-height: 52px; align-items: center; gap: 12px; padding: 6px 14px; }
-.film-list .pr.is-playing { background: rgba(255,255,255,.08); }
-.film-list .pr .mk { display: inline-flex; width: 30px; height: 30px; flex: 0 0 30px; align-items: center; justify-content: center;
-  border-radius: 6px; letter-spacing: .3px; font: 500 11px var(--font-sans); }
-.film-list .pr .tx { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
-.film-list .pr .t { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.film-list .pr .d { font-size: 11px; color: rgba(255,255,255,.45); white-space: nowrap; }
-.film-list .pr .sc { font: 400 11px var(--font-mono); color: rgba(255,255,255,.85); }
-.film-list .pr .bar { position: absolute; left: 0; bottom: 0; height: 2px; background: #3B82F6; }
-.film-list .shots { display: flex; flex-direction: column; background: rgba(0,0,0,.28);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), inset 0 -1px 0 rgba(255,255,255,.06); }
-.film-list .sh { position: relative; transition: background 200ms cubic-bezier(.25,.46,.45,.94), opacity 200ms cubic-bezier(.25,.46,.45,.94); display: grid; grid-template-columns: 12px 20px minmax(0,1fr) minmax(0,1fr) auto; column-gap: 8px;
-  align-items: center; height: 34px; padding: 0 14px; }
-.film-list .sh.is-live { background: rgba(255,255,255,.12); }
-.film-list .sh .n { font: 400 10px var(--font-mono); color: rgba(255,255,255,.35); }
-.film-list .sh .mk { display: inline-flex; width: 20px; height: 20px; align-items: center; justify-content: center;
-  border-radius: 6px; font: 500 9px var(--font-sans); }
-.film-list .sh .st { font-size: 11px; font-weight: 500; color: rgba(255,255,255,.72); white-space: nowrap; }
-.film-list .sh.is-live .st { color: #fff; }
-.film-list .sh .pl { font-size: 11px; color: rgba(255,255,255,.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.film-list .sh .rs { text-align: right; font-size: 11px; color: rgba(255,255,255,.5); }
-.film-list .sh .rs.is-err { color: #E5484D; }
-/* Shots still to come in the rally wait dimmed; the live one is lit. */
-.film-list .sh.is-ahead { opacity: .38; }
-
-/* The white boards (match report, Team Home) — the film room keeps the frame's
-   near-black behind its video. */
-.mock-frame.is-light { background: #fff; }
 /* ---------------- Match breakdown ----------------
    The single-match report (Statistics view) inside the dashboard shell —
    `dh` gives it the app rail, header and card surfaces; everything under

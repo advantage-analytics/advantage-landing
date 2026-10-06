@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useSyncExternalStore } from "react";
+import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { DashboardHome } from "./dashboard-home";
@@ -10,6 +10,7 @@ import { useScaleToFit } from "@/lib/use-scale-to-fit";
 import { links } from "@/lib/links";
 import { trackCta } from "@/lib/analytics";
 import { BETA_END_SHORT } from "@/lib/pilot";
+import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
 
 const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
 
@@ -152,24 +153,6 @@ function MobileHero() {
         </div>
       </div>
     </div>
-  );
-}
-
-/* Reads prefers-reduced-motion directly. We avoid framer-motion's
-   useReducedMotion() because it logs a dev-only console warning every time it
-   detects the setting. useSyncExternalStore subscribes to the media query,
-   stays SSR-safe (server snapshot is false), and updates live if the OS
-   preference changes. */
-const RM_QUERY = "(prefers-reduced-motion: reduce)";
-function usePrefersReducedMotion() {
-  return useSyncExternalStore(
-    (onChange) => {
-      const mq = window.matchMedia(RM_QUERY);
-      mq.addEventListener("change", onChange);
-      return () => mq.removeEventListener("change", onChange);
-    },
-    () => window.matchMedia(RM_QUERY).matches,
-    () => false
   );
 }
 
