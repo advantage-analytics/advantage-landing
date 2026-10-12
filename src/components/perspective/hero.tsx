@@ -1,45 +1,61 @@
 "use client";
 
-import { useRef } from "react";
-import { ArrowUpRight } from "lucide-react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import type { CSSProperties } from "react";
+import Image from "next/image";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { DashboardHome } from "./dashboard-home";
-import { LiveDots } from "./live-dots";
-import { TrafficLights } from "./traffic-lights";
-import { useScaleToFit } from "@/lib/use-scale-to-fit";
 import { links } from "@/lib/links";
-import { trackCta } from "@/lib/analytics";
+import { trackCta, trackEvent } from "@/lib/analytics";
 import { BETA_END_SHORT } from "@/lib/pilot";
-import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
+
+/* ===========================================================
+   HERO PHOTO SLOT — PLACEHOLDER
+   elc-court.jpg is the interim image until the real shoot lands
+   (assets/PHOTO_SHOTLIST.md, shot 1). To swap: drop the final file at
+   public/assets/marketing/hero-fence.jpg (or any hero-*.jpg) and change
+   this one import. Then rewrite `alt` to describe the new picture and
+   nudge the two focus points so the subject stays in frame.
+   =========================================================== */
+import heroPhoto from "../../../public/assets/marketing/elc-court.jpg";
+
+const HERO_PHOTO = {
+  src: heroPhoto,
+  alt: "A camera set up high behind a grass tennis court, filming two players mid-rally.",
+  // object-position for the crop: the wide desktop frame keeps the right
+  // half (copy sits on the left); the tall phone frame keeps the camera.
+  focusDesktop: "72% 38%",
+  focusMobile: "70% 30%",
+};
 
 const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
 
+/* Headline options, all outcome-first and readable with zero context
+   (a visitor may land here straight from a creator's link):
+
+     1. "Film your match. See how to win the next one."   ← shipped
+     2. "Let this be your new tennis coach."
+     3. "Your match, explained. From a video on your phone."
+
+   1 ships because it says what you do and what you get in eight plain
+   words. 2 is warmer but promises a coach before the page has shown
+   anything; 3 is clear but has no outcome in it. */
+const HERO_TITLE = ["Film your match.", "See how to win the next one."];
+const HERO_SUB =
+  "Upload a video from your phone. Advantage shows where you won points, where you lost them, and what to work on.";
+
 /* ===========================================================
-   Perspective hero — two compositions, one section.
+   Human hero — one responsive composition.
 
-   • Desktop / tablet (≥768px): a native 1440×860 mesh-gradient
-     artboard with centered copy and the dashboard Home
-     tilted in 3D, scaled to fill the viewport width (HeroCCanvas).
-   • Mobile (<768px): a real flowing layout — full-size headline,
-     subhead, stacked CTAs over the mesh, with a legible slice of
-     the dashboard peeking from the bottom to invite the scroll.
-     The fixed artboard is NOT shrunk to phone width; only the
-     dashboard preview is cropped, so the type stays readable.
-   The two are toggled with CSS so each renders at its true size.
+   A full-bleed photo carries the section; a navy scrim on the copy side
+   keeps the white type and the transparent nav legible. The dashboard is
+   no longer the hero: it is a small floating card over the photo, cropped
+   to the season summary — the person, and their stats.
+
+   • ≥1024px: copy left, card pinned bottom-right over the photo.
+   • <1024px: copy first, then the card in flow, running off the hero's
+     bottom edge to invite the scroll. Both sign-up buttons stay above the
+     fold on a 375×667 phone.
    =========================================================== */
-
-const BrowserBar = () => (
-  <div className="winbar">
-    <TrafficLights className="windots" />
-    <div className="winurl">
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" />
-        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-      </svg>
-      app.advantage-analytics.com
-    </div>
-  </div>
-);
 
 // The two lanes: individuals sign up in the app, and so do coaches, who then
 // find their team there.
@@ -70,129 +86,49 @@ function HeroActions() {
   );
 }
 
-function PHDashWindow({ rotateX }: { rotateX: MotionValue<number> | number }) {
-  const scale = 0.76;
+export function PerspectiveHero() {
   return (
-    <motion.div
-      className="winframe"
-      style={{
-        position: "absolute",
-        transformOrigin: "top left",
-        width: 1440,
-        left: (1440 - 1440 * scale) / 2,
-        top: 0,
-        scale,
-        rotateX,
-        boxShadow: "0 60px 120px -30px rgba(8,17,50,.7)",
-      }}
+    <header
+      className="hh"
+      id="top"
+      style={
+        {
+          "--hh-focus": HERO_PHOTO.focusDesktop,
+          "--hh-focus-mobile": HERO_PHOTO.focusMobile,
+        } as CSSProperties
+      }
     >
-      <BrowserBar />
-      <div inert>
-        <DashboardHome />
-      </div>
-    </motion.div>
-  );
-}
-
-function HeroCCanvas({ dashRotateX }: { dashRotateX: MotionValue<number> | number }) {
-  return (
-    // Transparent: the mesh and grain are painted by .heroC-desktop across the
-    // full viewport width, so they keep going past the artboard once its
-    // scale is capped on wide screens (or a zoomed-out browser).
-    <div className="heroC-canvas">
-      <div
-        style={{
-          position: "relative",
-          zIndex: 5,
-          textAlign: "center",
-          paddingTop: 126,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 22,
-        }}
-      >
-        <span className="h-eyebrow">{HERO_EYEBROW}</span>
-        <h1 className="h-title" style={{ fontSize: 62, maxWidth: 820 }}>
-          Walk on court knowing the pattern.
-        </h1>
-        <p className="h-sub" style={{ maxWidth: 560 }}>
-          Match analytics from the video you already shoot.
-        </p>
-        <div style={{ marginTop: 4 }}>
+      <Image
+        className="hh-photo"
+        src={HERO_PHOTO.src}
+        alt={HERO_PHOTO.alt}
+        fill
+        preload
+        sizes="100vw"
+        placeholder="blur"
+      />
+      <div className="hh-scrim" aria-hidden="true" />
+      <div className="wrap hh-inner">
+        <div className="hh-copy">
+          <span className="h-eyebrow">{HERO_EYEBROW}</span>
+          <h1 className="h-title hh-title">
+            <span>{HERO_TITLE[0]}</span> <span>{HERO_TITLE[1]}</span>
+          </h1>
+          <p className="h-sub hh-sub">{HERO_SUB}</p>
           <HeroActions />
+          <a className="hh-more" href="#how" onClick={() => trackEvent("see_how_it_works_click", { placement: "home-hero" })}>
+            See how it works
+            <ArrowDown size={15} />
+          </a>
         </div>
-      </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 442, bottom: 0, perspective: "2000px", perspectiveOrigin: "50% 0%", zIndex: 3 }}>
-        <PHDashWindow rotateX={dashRotateX} />
-      </div>
-    </div>
-  );
-}
-
-/* Mobile hero — real DOM at real sizes. The dashboard slice is held at a
-   fixed, legible scale (transform on .mh-dash) and cropped by .mh-peek's
-   overflow, so the visible region (sidebar + greeting + KPI strip) stays
-   readable instead of being shrunk to thumbnail size. */
-function MobileHero() {
-  return (
-    <div className="heroC-mobile brand-mesh">
-      <LiveDots />
-      <div className="mh-inner">
-        <span className="h-eyebrow">{HERO_EYEBROW}</span>
-        <h1 className="mh-title">Walk on court knowing the pattern.</h1>
-        <p className="mh-sub">Match analytics from the video you already shoot.</p>
-        <HeroActions />
-      </div>
-      <div className="mh-peek" aria-hidden="true">
-        <div className="mh-window winframe">
-          <BrowserBar />
-          <div className="mh-dash" inert>
+        {/* Decorative: the same dashboard Home the product bands describe,
+            cropped to its season summary. */}
+        <div className="hh-card" aria-hidden="true">
+          <div className="hh-dash" inert>
             <DashboardHome />
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-// Native artboard geometry — the single source for the fit hook AND the
-// pre-hydration height reservation inlined on .heroC-desktop below. Keeping
-// them tied is load-bearing: if the reserved height drifts from the fitted
-// height, anchor jumps to sections below the hero land off-target again.
-const ART_W = 1440;
-const ART_H = 860;
-const ART_MAX_SCALE = 1.15;
-
-export function PerspectiveHero() {
-  // maxScale caps the upscaling on wide monitors (the hook then centers the
-  // 1440 artboard, letting the blue backstop show as side gutters) so the hero
-  // stays proportional to the 1240px content sections instead of ballooning.
-  const { outerRef, innerRef } = useScaleToFit<HTMLDivElement, HTMLDivElement>({
-    width: ART_W,
-    height: ART_H,
-    maxScale: ART_MAX_SCALE,
-  });
-  const heroRef = useRef<HTMLElement>(null);
-  const reduce = usePrefersReducedMotion();
-  // As the hero scrolls away, its tilted dashboard "stands up" (32°→14°),
-  // handing the perspective off to the showcase below, which then lands flat.
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const dashRotateX = useTransform(scrollYProgress, [0, 1], [32, 14]);
-
-  return (
-    <header className="heroC-stage" id="top" ref={heroRef}>
-      <div
-        className="heroC-desktop"
-        ref={outerRef}
-        style={{ aspectRatio: `${ART_W} / ${ART_H}`, maxHeight: ART_H * ART_MAX_SCALE }}
-      >
-        <LiveDots />
-        <div ref={innerRef} className="heroC-fit">
-          <HeroCCanvas dashRotateX={reduce ? 32 : dashRotateX} />
-        </div>
-      </div>
-      <MobileHero />
     </header>
   );
 }

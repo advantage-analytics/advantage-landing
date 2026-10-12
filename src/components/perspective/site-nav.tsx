@@ -10,7 +10,7 @@ import { trackCta } from "@/lib/analytics";
 /* ===========================================================
    Site nav — a sticky header for the whole page.
 
-   It floats transparent over the dark mesh hero at the very top
+   It floats transparent over the dark hero at the very top
    (white logo + links), then solidifies into a frosted bar the
    moment you scroll. That solid background is the point: the hero
    headline scrolls UP behind it and is covered cleanly, instead of

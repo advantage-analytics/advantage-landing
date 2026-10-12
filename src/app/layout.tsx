@@ -19,9 +19,11 @@ const mono = Roboto_Mono({
   display: "swap",
 });
 
-const title = "Advantage — Performance Intelligence for Competitive Tennis";
+// Plain-language and search-shaped: a cold visitor (or a search result) should
+// know what this is from the title alone. No other product is named here.
+const title = "Advantage — Tennis Analytics and Match Analysis From Your Phone";
 const description =
-  "Centralize your Swingvision and ELC match data into pro-grade scouting reports, multi-match trends, and opponent intelligence. Built for the competitive player.";
+  "Film your match on your phone and upload it. Advantage is the tennis coaching app that turns the video into match analysis: where you won points, where you lost them, and what to work on next. Tennis analytics for players and coaches.";
 
 const LOCAL_ORIGIN = "http://localhost:3000";
 

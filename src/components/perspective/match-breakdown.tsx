@@ -148,6 +148,119 @@ function Eyebrow({ children, aside }: { children: ReactNode; aside?: ReactNode }
   );
 }
 
+/* ---------- pieces the home page also shows on their own ----------
+   The insight, the scoreboard, the endings chart and the head-to-head rows
+   are the board's own markup, exported so the "what you'll see" strip and
+   the how-it-works step can show a true crop of this report instead of a
+   redrawn one. Outside the board there is no `.dh` shell around them, so
+   callers wrap them in `.mb-crop` (mocks.css), which restores the three
+   shell utilities they lean on. */
+
+export function MatchInsight() {
+  return (
+    <div className="dh-card dh-pad dh-ai mb-insight">
+      <div className="bd">
+        <span className="lead">Gomez’s second serve decided this one.</span>
+        <span className="body">
+          You won <b>56%</b> of second-serve return points and all <b>3</b> breaks came on it. The long rallies were yours too:{" "}
+          <b>11</b> of <b>18</b> at nine shots or more, so keep extending the point when the first serve misses.
+        </span>
+      </div>
+      <div className="dh-foot">
+        <span className="hd">
+          <span className="mk"><img src="/assets/logos/logo3.svg" alt="" width={9} height={6} /></span>
+          <span className="nm">Advantage Intelligence</span>
+        </span>
+        <div className="flex" />
+        <span className="lnk strong"><ChevronUp size={12} strokeWidth={1.6} />Collapse</span>
+      </div>
+    </div>
+  );
+}
+
+export function MatchScore() {
+  return (
+    <div className="mb-score">
+      <div className="hd">
+        <span className="mb-micro">Final</span>
+        <div className="flex" />
+        <span className="clock">1:42:18</span>
+      </div>
+      <div className="rows">
+        <div className="row">
+          <span className="nm">Rudy Quan</span>
+          <Check size={12} strokeWidth={2} className="win" aria-hidden="true" />
+          <div className="flex" />
+          <span className="sets"><b>6</b><b>3</b><b>6</b></span>
+        </div>
+        <div className="row is-lost">
+          <span className="nm">Federico Gomez</span>
+          <div className="flex" />
+          <span className="sets"><b>4</b><b>6</b><b>3</b></span>
+        </div>
+      </div>
+      <span className="mb-micro tn">BNP Paribas Open · Round of 64</span>
+    </div>
+  );
+}
+
+export function MatchEndings() {
+  return (
+    <section className="dh-card mb-chart">
+      <Eyebrow aside="Own outcomes">How points ended</Eyebrow>
+      <div className="ends">
+        {(["you", "opp"] as const).map((side) => {
+          const total = ENDINGS.reduce((n, e) => n + e[side], 0);
+          return (
+            <div className="end" key={side}>
+              <span className="nm">{side === "you" ? YOU : OPP}</span>
+              <span className="bar">
+                {ENDINGS.map((e, i) => (
+                  <i key={e.key} style={{ width: `${(e[side] / total) * 100}%`, background: VIZ[side][i] }} />
+                ))}
+              </span>
+              <span className="mb-micro tn">{total}</span>
+            </div>
+          );
+        })}
+      </div>
+      <div className="legend">
+        {ENDINGS.map((e, i) => (
+          <span key={e.key}><i style={{ background: VIZ.you[i] }} />{e.key}</span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// The head-to-head card cut down to the named rows, in the order given.
+export function MatchH2HRows({ title, labels }: { title: string; labels: readonly string[] }) {
+  const rows = labels.map((l) => {
+    const row = H2H.flatMap((g) => g.rows).find((r) => r.label === l);
+    if (!row) throw new Error(`MatchH2HRows: no head-to-head row "${l}"`);
+    return row;
+  });
+  return (
+    <section className="dh-card mb-h2h">
+      <div className="dh-sh">
+        <h2>{title}</h2>
+      </div>
+      <div className="cols">
+        <span className="flex" />
+        <span className="col you">{YOU}<Check size={11} strokeWidth={2} aria-hidden="true" /></span>
+        <span className="col">{OPP}</span>
+      </div>
+      {rows.map((r) => (
+        <div className="r" key={r.label}>
+          <span className="l">{r.label}</span>
+          <span className={`v${r.leader === "you" ? " lead" : ""}`}>{r.you}</span>
+          <span className={`v${r.leader === "opp" ? " lead" : ""}`}>{r.opp}</span>
+        </div>
+      ))}
+    </section>
+  );
+}
+
 export function MatchBreakdown() {
   return (
     <div className="dh mb">
@@ -204,27 +317,7 @@ export function MatchBreakdown() {
           {/* The report rail: scoreboard in its final state, the three views,
               and the share action pinned to the bottom. */}
           <aside className="mb-rail">
-            <div className="mb-score">
-              <div className="hd">
-                <span className="mb-micro">Final</span>
-                <div className="flex" />
-                <span className="clock">1:42:18</span>
-              </div>
-              <div className="rows">
-                <div className="row">
-                  <span className="nm">Rudy Quan</span>
-                  <Check size={12} strokeWidth={2} className="win" aria-hidden="true" />
-                  <div className="flex" />
-                  <span className="sets"><b>6</b><b>3</b><b>6</b></span>
-                </div>
-                <div className="row is-lost">
-                  <span className="nm">Federico Gomez</span>
-                  <div className="flex" />
-                  <span className="sets"><b>4</b><b>6</b><b>3</b></span>
-                </div>
-              </div>
-              <span className="mb-micro tn">BNP Paribas Open · Round of 64</span>
-            </div>
+            <MatchScore />
             <div className="mb-views">
               <span className="row on"><span className="slot"><Table2 size={16} strokeWidth={1.5} /></span>Statistics</span>
               <span className="row"><span className="slot"><ScatterChart size={16} strokeWidth={1.5} /></span>Visualizations</span>
@@ -255,23 +348,7 @@ export function MatchBreakdown() {
               </div>
             </div>
 
-            <div className="dh-card dh-pad dh-ai mb-insight">
-              <div className="bd">
-                <span className="lead">Gomez’s second serve decided this one.</span>
-                <span className="body">
-                  You won <b>56%</b> of second-serve return points and all <b>3</b> breaks came on it. The long rallies were yours too:{" "}
-                  <b>11</b> of <b>18</b> at nine shots or more, so keep extending the point when the first serve misses.
-                </span>
-              </div>
-              <div className="dh-foot">
-                <span className="hd">
-                  <span className="mk"><img src="/assets/logos/logo3.svg" alt="" width={9} height={6} /></span>
-                  <span className="nm">Advantage Intelligence</span>
-                </span>
-                <div className="flex" />
-                <span className="lnk strong"><ChevronUp size={12} strokeWidth={1.6} />Collapse</span>
-              </div>
-            </div>
+            <MatchInsight />
 
             <div className="mb-row">
               <section className="dh-card mb-h2h">
@@ -348,30 +425,7 @@ export function MatchBreakdown() {
                   </div>
                 </section>
 
-                <section className="dh-card mb-chart">
-                  <Eyebrow aside="Own outcomes">How points ended</Eyebrow>
-                  <div className="ends">
-                    {(["you", "opp"] as const).map((side) => {
-                      const total = ENDINGS.reduce((n, e) => n + e[side], 0);
-                      return (
-                        <div className="end" key={side}>
-                          <span className="nm">{side === "you" ? YOU : OPP}</span>
-                          <span className="bar">
-                            {ENDINGS.map((e, i) => (
-                              <i key={e.key} style={{ width: `${(e[side] / total) * 100}%`, background: VIZ[side][i] }} />
-                            ))}
-                          </span>
-                          <span className="mb-micro tn">{total}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="legend">
-                    {ENDINGS.map((e, i) => (
-                      <span key={e.key}><i style={{ background: VIZ.you[i] }} />{e.key}</span>
-                    ))}
-                  </div>
-                </section>
+                <MatchEndings />
               </div>
             </div>
           </main>

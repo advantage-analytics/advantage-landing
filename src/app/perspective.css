@@ -78,14 +78,14 @@
    A single, consistent focus-visible ring on every interactive element.
    PRODUCT.md requires visible focus + full keyboard nav. Mouse clicks stay
    ring-free (:focus-visible), keyboard tabbing always shows the blue ring.
-   Dark surfaces (mesh hero, dark CTA card, transparent nav) swap to a white
+   Dark surfaces (photo hero, dark CTA card, transparent nav) swap to a white
    ring so it stays high-contrast over blue/navy. */
 .perspective-page :where(a, button, input, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--signal-blue);
   outline-offset: 3px;
   border-radius: 5px;
 }
-.heroC-canvas :where(a, button):focus-visible,
+.hh :where(a, button):focus-visible,
 .site-nav:not(.is-solid) :where(a, button):focus-visible,
 .access-card :where(a, button):focus-visible,
 .final-band :where(a, button):focus-visible,
@@ -219,23 +219,40 @@ section.band.alt + section.band.alt { border-top: none; }
 @media (max-width: 720px)  { section.band { padding: 64px 0; } }
 
 /* ============ HOW IT WORKS — head + white panel ============
-   After the three boards and before the offer. Same build as the beta band
-   below it (a full-width head, headline left and premise flush right, then
-   one panel split into columns), in white where that one is navy: the pair
-   reads as one system and the navy stays the place a visitor picks a lane.
-   Each step is number, title, sentence, and the fact a coach checks pinned to
-   the column's foot under its own rule. The columns share their rows through
+   Directly under the hero. Same build as the beta band further down (a
+   full-width head, headline left and premise flush right, then one panel
+   split into columns), in white where that one is navy: the pair reads as
+   one system and the navy stays the place a visitor picks a lane.
+   Each step is a picture, number and name, title, sentence, and the fact
+   people ask about pinned to the column's foot under its own rule. The columns share their rows through
    subgrid, so titles, sentences and facts sit level whatever wraps. */
 .how-head { display: flex; align-items: last baseline; justify-content: space-between; gap: 24px 48px; }
 .how-head .band-aside { flex: 0 1 340px; text-align: right; }
 .how-aside-tail { display: inline-block; }
-.how-panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(4, auto);
+.how-panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(5, auto);
   margin: 56px 0 0; padding: 0; list-style: none; background: var(--surface);
   border: 1px solid var(--hairline-medium); border-radius: var(--r-card); box-shadow: var(--shadow-card); }
-.how-step { grid-row: span 4; display: grid; grid-template-rows: subgrid; row-gap: 0; padding: 44px 40px 40px; }
+.how-step { grid-row: span 5; display: grid; grid-template-rows: subgrid; row-gap: 0; padding: 32px 32px 36px; }
 .how-step + .how-step { border-left: 1px solid var(--hairline-medium); }
+/* The step's picture: a quiet gray stage, the same height in every column. */
+.how-vis { display: flex; align-items: center; justify-content: center; height: 176px; margin-bottom: 28px; padding: 20px;
+  border-radius: 10px; background: var(--surface-page); border: 1px solid var(--hairline); overflow: hidden; }
+.how-art { display: block; width: 100%; max-width: 260px; height: auto; }
+.how-file { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 250px; padding: 14px 16px;
+  background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px; box-shadow: var(--shadow-card); }
+.how-file .ic { display: flex; width: 34px; height: 34px; flex: none; align-items: center; justify-content: center;
+  border-radius: 8px; background: var(--signal-blue-soft); color: var(--signal-blue); }
+.how-file .tx { flex: 1; min-width: 0; display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 8px 10px; }
+.how-file .nm { font: var(--fw-medium) 12px/1.3 var(--font-sans); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.how-file .st { font: var(--fw-regular) 11px/1.3 var(--font-sans); color: var(--ink-muted); white-space: nowrap; }
+.how-file .bar { grid-column: 1 / -1; display: block; height: 4px; border-radius: 2px; background: var(--hairline-medium); overflow: hidden; }
+.how-file .bar i { display: block; width: 64%; height: 100%; border-radius: 2px; background: var(--signal-blue); }
+.how-score { width: 100%; max-width: 250px; background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px; box-shadow: var(--shadow-card); }
+.how-score .mb-score { margin: 0; padding: 14px 16px 15px; border-bottom: none; gap: 12px; }
+/* The step shows the result, not the event: the tournament line stays on the full board below. */
+.how-score .mb-score > .mb-micro { display: none; }
 .how-step .n, .tour-step .n { font: var(--fw-regular) 11px var(--font-mono); letter-spacing: 1px; color: var(--signal-blue); font-variant-numeric: tabular-nums; }
-.how-step h3 { margin: 28px 0 0; font: var(--fw-regular) 22px/1.2 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); text-wrap: balance; }
+.how-step h3 { margin: 14px 0 0; font: var(--fw-regular) 22px/1.2 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); text-wrap: balance; }
 .how-step p { margin: 12px 0 0; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
 .how-step p a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
 .how-step .spec { align-self: end; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--hairline);
@@ -246,13 +263,34 @@ section.band.alt + section.band.alt { border-top: none; }
   .how-panel { grid-template-columns: 1fr; grid-template-rows: none; margin-top: 40px; }
   .how-step { grid-row: auto; display: flex; flex-direction: column; padding: 32px 32px 28px; }
   .how-step + .how-step { border-left: none; border-top: 1px solid var(--hairline-medium); }
-  .how-step h3 { margin-top: 18px; }
+  .how-step h3 { margin-top: 12px; }
   .how-step .spec { align-self: stretch; margin-top: 24px; }
+  .how-vis { height: 160px; margin-bottom: 22px; }
 }
 @media (max-width: 640px) {
   .how-aside-tail { display: inline; }
   .how-step { padding: 28px 22px 24px; }
   .how-step h3 { font-size: 20px; }
+}
+
+/* ============ WHAT YOU'LL SEE — three captioned crops ============
+   Pieces of the sample match report (match-breakdown.tsx), each on a gray
+   stage with a plain-words caption under it. The stage holds the crop at
+   the mock's own design pixels; the caption is the page's type. Columns
+   share rows through subgrid so stages and captions sit level. */
+.see-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, auto);
+  gap: 0 24px; margin: 56px 0 0; padding: 0; list-style: none; }
+.see-item { grid-row: span 3; display: grid; grid-template-rows: subgrid; row-gap: 0; min-width: 0; }
+.see-crop { display: flex; align-items: center; min-height: 268px; padding: 22px;
+  border-radius: var(--r-card); background: var(--surface-page); border: 1px solid var(--hairline); }
+.see-crop-in { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.see-item h3 { margin: 24px 0 0; font: var(--fw-regular) 20px/1.25 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); text-wrap: balance; }
+.see-item p { margin: 10px 0 0; max-width: 40ch; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
+@media (max-width: 900px) {
+  .see-grid { grid-template-columns: 1fr; grid-template-rows: none; gap: 40px 0; margin-top: 40px; }
+  .see-item { grid-row: auto; display: block; }
+  .see-crop { min-height: 0; padding: 16px; }
+  .see-item h3 { margin-top: 20px; }
 }
 
 .sec-head { max-width: 720px; }
@@ -554,7 +592,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    and easing to about a third across the far corner. The hero mesh has no
    single light, so its grid is even. The contact card repeats these values in
    contact.css; change both together. */
-/* Every navy surface and both mesh heroes (home, /pilot) draw the grid live
+/* Every navy surface and the /pilot mesh hero draw the grid live
    (live-dots.tsx), a canvas under these same classes. The mask below ties the
    live grid to each navy glow. */
 .final-band .ac-grain, .access-card .ac-grain, .beta-panel .ac-grain {
@@ -664,127 +702,88 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
 }
 
 /* ============================================================
-   PERSPECTIVE HERO (iteration C) — faithful 1440×860 reproduction
-   of heroes.jsx → HeroC, scaled to the viewport width.
-   Mesh gradient · centered copy · real AdvantageDashboard tilted in 3D.
+   HUMAN HERO — a full-bleed photo, plain copy, and the dashboard as a
+   small floating card over the picture (hero.tsx).
+
+   One responsive composition, real DOM at real sizes. The photo fills the
+   section through next/image; --hh-focus / --hh-focus-mobile (set inline
+   from the photo slot in hero.tsx) are its object-position, so a new
+   picture is re-cropped there, not here. The scrim is navy and heaviest
+   under the copy and the nav, lightest over the subject.
    ============================================================ */
-.heroC-stage { position: relative; width: 100%; }
-/* The backstop behind the scaled mesh canvas. It fades to white at the bottom
-   so the sub-pixel sliver the transform leaves under the canvas reads as white
-   (matching the section below), never a blue hairline. */
-/* The pre-hydration height reservation (aspect-ratio + max-height) lives as
-   inline style in hero.tsx, single-sourced with the useScaleToFit constants:
-   the canvas child is absolutely positioned, so without it the hero is 0px
-   tall until the fit runs — and an anchor jump to a section below (e.g.
-   /#access) lands ~900px too high once the hero inflates. */
-/* The mesh is painted here, full width, rather than on the fixed artboard:
-   past the scale cap the artboard centers with gutters beside it, and the
-   gradient has to carry on through them. The melt into the page (::before)
-   is full width for the same reason. */
-.heroC-desktop { position: relative; width: 100%; overflow: hidden;
+.hh { position: relative; overflow: hidden; isolation: isolate; color: #fff; background: #0B1533;
+  display: flex; min-height: clamp(640px, 86vh, 800px); min-height: clamp(640px, 86svh, 800px); }
+.hh-photo { object-fit: cover; object-position: var(--hh-focus, 50% 50%); z-index: -2; }
+.hh-scrim { position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 70% at 10% 15%, #60A5FA 0%, transparent 50%),
-    radial-gradient(ellipse 65% 80% at 85% 10%, #38BDF8 0%, transparent 45%),
-    radial-gradient(ellipse 70% 60% at 40% 50%, #7BA4F7 0%, transparent 50%),
-    radial-gradient(ellipse 60% 70% at 80% 70%, #818CF8 0%, transparent 45%),
-    radial-gradient(ellipse 55% 55% at 50% 35%, #93C5FD 0%, transparent 45%),
-    radial-gradient(ellipse 70% 60% at 15% 80%, #4F8EF7 0%, transparent 45%),
-    radial-gradient(ellipse 50% 50% at 70% 45%, #A78BFA 0%, transparent 40%),
-    linear-gradient(135deg, #5B8DEF, #7BA4F7, #818CF8); }
-/* The artboard's box. useScaleToFit writes the real `left` and `transform:
-   scale()` inline once it has measured; until then (server HTML, a slow
-   hydration after a zoomed-out reload) these hold the artboard centered on
-   the viewport at its native size instead of pinned to the left edge. */
-.heroC-fit { position: absolute; top: 0; left: 50%; transform: translateX(-50%); transform-origin: top left; }
-.heroC-canvas { position: relative; width: 1440px; height: 860px; transform-origin: top left; color: #fff; overflow: hidden; }
-/* Melt the hero's bottom edge into the white section below: the mesh, its
-   gutters and the tilted dashboard dissolve into the page instead of ending
-   on a hard horizontal line. One layer, over the full width and above the
-   artboard — a fade on the artboard alone would double up over its middle
-   and leave a seam at its edges once the gutters appear. Its height is the
-   artboard's 340px of 860, so the curve is the same at every scale; it
-   never intercepts clicks. */
-.heroC-desktop::before {
-  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 39.54%;
-  z-index: 7; pointer-events: none;
-  /* Long, eased fade — gentle at the top so the dashboard stays legible, then
-     ramping to pure white well before the hero's bottom edge. */
-  background: linear-gradient(to bottom,
-    rgba(255, 255, 255, 0)    0%,
-    rgba(255, 255, 255, 0.06) 32%,
-    rgba(255, 255, 255, 0.22) 52%,
-    rgba(255, 255, 255, 0.5)  68%,
-    rgba(255, 255, 255, 0.8)  82%,
-    #fff                      94%);
-}
-/* Pixel-aligned white cap on the NON-scaled container. The canvas above is
-   transform-scaled, so its bottom edge anti-aliases against whatever is behind
-   it and can leave a faint blue row at fractional widths. This cap paints on
-   the device grid and guarantees the last band before the section is pure
-   white — the final guard against any blue hairline at the seam. */
-.heroC-desktop::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 96px;
-  z-index: 8; pointer-events: none;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #fff 62%);
-}
+    linear-gradient(to bottom, rgba(11,21,51,.55) 0%, rgba(11,21,51,0) 22%),
+    linear-gradient(90deg, rgba(11,21,51,.9) 0%, rgba(11,21,51,.74) 38%, rgba(11,21,51,.3) 68%, rgba(11,21,51,.12) 100%); }
+.hh-inner { position: relative; display: flex; align-items: center; padding-top: 112px; padding-bottom: 72px; }
+/* The headline is sized so its longer sentence holds one line inside the
+   copy column, and the column is sized to stop short of the card. */
+.hh-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: 630px; }
+.hh-title { font-size: 48px; line-height: 1.06; text-wrap: balance; }
+.hh-title span { display: block; }
+.hh-sub { max-width: 46ch; color: rgba(255,255,255,.9); font-weight: var(--fw-regular); }
+.hh-copy .h-actions { margin-top: 6px; }
+/* The secondary action: a quiet text link down to How it works, under the
+   two sign-up lanes rather than beside them, so it never competes. */
+.hh-more { display: inline-flex; align-items: center; gap: 7px; min-height: 32px;
+  font: var(--fw-medium) 14px/1 var(--font-sans); letter-spacing: -.1px; color: rgba(255,255,255,.9);
+  text-decoration: underline; text-decoration-color: rgba(255,255,255,.4); text-underline-offset: 5px;
+  transition: color 160ms var(--ease-primary), text-decoration-color 160ms var(--ease-primary); }
+.hh-more:hover { color: #fff; text-decoration-color: #fff; }
 
-/* ---- Mobile hero (<768px): native flowing layout, real type sizes ---- */
-.heroC-mobile { display: none; }
+/* The floating stats card: the dashboard Home at a legible scale, cropped
+   (not reflowed) to its season summary. The 1440 artboard is shifted past
+   its rail and header, then scaled; the card's overflow is the crop. */
+.hh-card { --s: .6; position: absolute; right: 40px; bottom: 64px; width: 500px; height: 304px; overflow: hidden;
+  border-radius: var(--r-card); background: #fff; border: 1px solid rgba(255,255,255,.7);
+  box-shadow: 0 40px 80px -28px rgba(4,10,30,.7), 0 14px 36px -16px rgba(4,10,30,.5); pointer-events: none; }
+.hh-dash { width: 1440px; transform-origin: top left; transform: scale(var(--s)) translate(-98px, -50px); }
+@media (max-width: 1239px) {
+  .hh-copy { max-width: 530px; }
+  .hh-title { font-size: 42px; letter-spacing: -1.2px; }
+  .hh-card { --s: .48; width: 400px; height: 243px; }
+}
+/* Below 1024 the card can no longer sit beside the copy: it drops into the
+   flow under it and runs off the hero's bottom-right, inviting the scroll. */
+@media (max-width: 1023px) {
+  .hh { min-height: 0; }
+  .hh-photo { object-position: var(--hh-focus-mobile, 50% 50%); }
+  .hh-scrim { background:
+    linear-gradient(to bottom, rgba(11,21,51,.72) 0%, rgba(11,21,51,.6) 45%, rgba(11,21,51,.78) 100%); }
+  .hh-inner { flex-direction: column; align-items: flex-start; padding-top: 104px; padding-bottom: 0; }
+  .hh-copy { max-width: 560px; gap: 18px; }
+  .hh-title { font-size: 44px; }
+  .hh-card { --s: .56; position: relative; right: auto; bottom: auto; flex: none; width: 520px; height: 230px; margin-top: 40px;
+    border-bottom: none; border-radius: var(--r-card) var(--r-card) 0 0; }
+}
 @media (max-width: 767px) {
-  .heroC-desktop { display: none; }
-  .heroC-mobile {
-    display: block; position: relative; overflow: hidden; color: #fff;
-    min-height: 88vh; min-height: 88svh;
-  }
+  .hh-inner { padding-top: 92px; }
+  .hh-title { font-size: clamp(33px, 9.6vw, 44px); line-height: 1.04; letter-spacing: -1.1px; }
+  .hh-sub { font-size: 16px; line-height: 1.5; }
+  .hh-copy .h-actions { width: 100%; flex-direction: column; align-items: stretch; gap: 11px; margin-top: 4px; }
+  .hh-copy .hbtn { width: 100%; height: 52px; font-size: 15px; }
+  .hh-card { margin-top: 30px; height: 200px; }
 }
-.mh-inner {
-  position: relative; z-index: 5;
-  padding: 112px 24px 0;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 20px;
-}
-.mh-title {
-  margin: 0; color: #fff; font-weight: var(--fw-light);
-  font-size: clamp(34px, 10.5vw, 46px); line-height: 1.03; letter-spacing: -1.2px;
-  max-width: 12ch; text-wrap: balance;
-}
-.mh-sub {
-  margin: 0; color: rgba(255, 255, 255, .88);
-  font: var(--fw-light) 16px/1.55 var(--font-sans); letter-spacing: -.1px; max-width: 36ch;
-}
-.heroC-mobile .h-actions { width: 100%; flex-direction: column; align-items: stretch; gap: 11px; margin-top: 8px; }
-.heroC-mobile .hbtn { width: 100%; height: 52px; font-size: 15px; }
-
-/* Cropped, legible dashboard slice peeking from the bottom of the hero.
-   The 1440-wide artboard is clipped (not reflowed) to a readable scale; the
-   hero's overflow hides everything below the fold to invite the scroll. */
-.mh-peek { position: relative; margin-top: 38px; height: 290px; perspective: 1400px; perspective-origin: 30% 0; }
-.mh-window {
-  position: absolute; top: 0; left: 24px; width: 940px;
-  transform-origin: top left; transform: scale(.62) rotateX(15deg);
-  box-shadow: 0 50px 90px -30px rgba(8, 17, 50, .62);
-}
-.mh-window .dh { width: 1440px; }
-@media (max-width: 400px) {
-  .mh-window { transform: scale(.56) rotateX(15deg); }
-}
-/* Short landscape phones (narrow enough to still get the mobile hero on their
-   long edge): height, not width, is scarce. Drop the 88svh floor and the tall
-   top padding so the headline and CTAs aren't pushed below the fold, set the
-   actions side by side, and trim the dashboard peek. */
-@media (max-width: 767px) and (orientation: landscape) and (max-height: 560px) {
-  .heroC-mobile { min-height: 0; }
-  .mh-inner { padding: 76px 24px 0; gap: 14px; }
-  .mh-title { font-size: clamp(28px, 6.4vw, 38px); max-width: 22ch; }
-  .mh-sub { font-size: 15px; max-width: 54ch; }
-  .heroC-mobile .h-actions { flex-direction: row; width: auto; }
-  .heroC-mobile .hbtn { width: auto; flex: 1; height: 46px; }
-  .mh-peek { height: 200px; margin-top: 24px; }
+/* Short landscape phones: height is scarce, so the lanes sit side by side
+   and the card is dropped; the copy and both buttons stay above the fold. */
+@media (max-width: 1023px) and (orientation: landscape) and (max-height: 560px) {
+  .hh-inner { padding-top: 76px; padding-bottom: 28px; }
+  .hh-copy { gap: 12px; }
+  .hh-title { font-size: clamp(26px, 5.6vw, 36px); }
+  .hh-title span { display: inline; }
+  .hh-sub { font-size: 15px; max-width: 60ch; }
+  .hh-copy .h-actions { flex-direction: row; width: auto; }
+  .hh-copy .hbtn { width: auto; height: 46px; }
+  .hh-card { display: none; }
 }
 
 /* ============================================================
    Site nav — one fixed header for the whole page.
 
-   Transparent + white logo while it floats over the dark mesh hero;
+   Transparent + white logo while it floats over the dark hero;
    becomes a frosted-glass bar with a hairline + dark logo (.is-solid)
    once the hero scrolls past, keeping it legible over light content.
    The bar trims from a generous 80px at the top to a compact 64px
@@ -1001,10 +1000,3 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
 .hbtn-white:hover { background:#eef2fb; }
 .hbtn-glass { background:rgba(255,255,255,.12); color:#fff; border-color:rgba(255,255,255,.34); backdrop-filter:blur(6px); }
 .hbtn-glass:hover { background:rgba(255,255,255,.2); }
-
-/* window chrome (verbatim) */
-.winframe { background:#fff; border:1px solid rgba(255,255,255,.6); border-radius:14px; overflow:hidden; box-shadow:0 50px 100px -30px rgba(8,17,50,.55), 0 18px 50px -20px rgba(8,17,50,.4); }
-.winbar { height:40px; display:flex; align-items:center; gap:8px; padding:0 15px; background:#F7F8FA; border-bottom:1px solid var(--hairline); }
-.windots { display:flex; gap:7px; }
-.windots i { width:11px; height:11px; border-radius:50%; display:block; }
-.winurl { margin-left:13px; flex:1; max-width:340px; height:23px; border-radius:var(--r-pill); background:#fff; border:1px solid var(--hairline); display:flex; align-items:center; gap:7px; padding:0 12px; font:var(--fw-regular) 11px var(--font-sans); color:var(--ink-muted); }

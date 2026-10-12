@@ -98,6 +98,20 @@
 .mb-chart .end .bar i { display: block; height: 100%; }
 .mb-chart .end .mb-micro { width: 22px; text-align: right; }
 
+/* Pieces of the report shown outside the board (the home page's "what
+   you'll see" strip and how-it-works step). There is no `.dh` shell around
+   them there — it is a fixed 1440×900 artboard — so this restores the shell
+   utilities those pieces lean on, and lets the cards size to their column. */
+.mb-crop { font-family: var(--font-sans); color: #0D0D0D; text-align: left; }
+.mb-crop *, .mb-crop *::before, .mb-crop *::after { box-sizing: border-box; }
+.mb-crop .flex { flex: 1; }
+.mb-crop .tn { font-variant-numeric: tabular-nums; }
+.mb-crop .lnk { font: 400 11px var(--font-sans); color: #3B82F6; white-space: nowrap; }
+.mb-crop .lnk.strong { font-weight: 500; }
+.mb-crop img { display: inline-block; }
+.mb-crop .dh-ai .mk img { width: 9px; height: 6px; max-width: none; filter: brightness(0) invert(1); display: block; }
+.mb-crop .mb-h2h { flex: none; }
+
 /* ---------------- Team Home ----------------
    The program workspace's Home on the `.dh` shell: title row, program summary
    and usage footer are dashboard-home.css's; everything under `th-` is the
