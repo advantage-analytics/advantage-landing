@@ -1,6 +1,5 @@
 "use client";
 
-import type { CSSProperties } from "react";
 import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { DashboardHome } from "./dashboard-home";
@@ -9,22 +8,19 @@ import { trackCta, trackEvent } from "@/lib/analytics";
 import { BETA_END_SHORT } from "@/lib/pilot";
 
 /* ===========================================================
-   HERO PHOTO SLOT — PLACEHOLDER
-   elc-court.jpg is the interim image until the real shoot lands
-   (assets/PHOTO_SHOTLIST.md, shot 1). To swap: drop the final file at
-   public/assets/marketing/hero-fence.jpg (or any hero-*.jpg) and change
-   this one import. Then rewrite `alt` to describe the new picture and
-   nudge the two focus points so the subject stays in frame.
+   HERO PHOTO SLOT
+   A cut-out player on a transparent background (PNG), standing on the
+   hero's own navy-and-blue backdrop. To swap: drop another cut-out at
+   public/assets/marketing/hero-*.png, change this one import, and rewrite
+   `alt` to describe the new picture. The figure is anchored to the hero's
+   bottom edge, so a cut-out that ends mid-body (as this one does at the
+   thigh) never shows its cut.
    =========================================================== */
-import heroPhoto from "../../../public/assets/marketing/elc-court.jpg";
+import heroPhoto from "../../../public/assets/marketing/hero-player.png";
 
 const HERO_PHOTO = {
   src: heroPhoto,
-  alt: "A camera set up high behind a grass tennis court, filming two players mid-rally.",
-  // object-position for the crop: the wide desktop frame keeps the right
-  // half (copy sits on the left); the tall phone frame keeps the camera.
-  focusDesktop: "72% 38%",
-  focusMobile: "70% 30%",
+  alt: "A tennis player in a gold shirt and blue cap pumps a fist between points, racket in hand.",
 };
 
 const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
@@ -46,15 +42,16 @@ const HERO_SUB =
 /* ===========================================================
    Human hero — one responsive composition.
 
-   A full-bleed photo carries the section; a navy scrim on the copy side
-   keeps the white type and the transparent nav legible. The dashboard is
-   no longer the hero: it is a small floating card over the photo, cropped
-   to the season summary — the person, and their stats.
+   A cut-out player stands on a navy backdrop lit blue behind them; the
+   copy sits on the dark side, so the white type and the transparent nav
+   stay legible. The dashboard is no longer the hero: it is a small
+   floating card across the player's lower half — the person, and their
+   stats.
 
-   • ≥1024px: copy left, card pinned bottom-right over the photo.
-   • <1024px: copy first, then the card in flow, running off the hero's
-     bottom edge to invite the scroll. Both sign-up buttons stay above the
-     fold on a 375×667 phone.
+   • ≥1024px: copy left; player and card share a stage on the right.
+   • <1024px: copy first, then the stage in flow, the player looking over
+     the card as it runs off the hero's bottom edge. Both sign-up buttons
+     stay above the fold on a 375×667 phone.
    =========================================================== */
 
 // The two lanes: individuals sign up in the app, and so do coaches, who then
@@ -88,26 +85,7 @@ function HeroActions() {
 
 export function PerspectiveHero() {
   return (
-    <header
-      className="hh"
-      id="top"
-      style={
-        {
-          "--hh-focus": HERO_PHOTO.focusDesktop,
-          "--hh-focus-mobile": HERO_PHOTO.focusMobile,
-        } as CSSProperties
-      }
-    >
-      <Image
-        className="hh-photo"
-        src={HERO_PHOTO.src}
-        alt={HERO_PHOTO.alt}
-        fill
-        preload
-        sizes="100vw"
-        placeholder="blur"
-      />
-      <div className="hh-scrim" aria-hidden="true" />
+    <header className="hh" id="top">
       <div className="wrap hh-inner">
         <div className="hh-copy">
           <span className="h-eyebrow">{HERO_EYEBROW}</span>
@@ -121,11 +99,20 @@ export function PerspectiveHero() {
             <ArrowDown size={15} />
           </a>
         </div>
-        {/* Decorative: the same dashboard Home the product bands describe,
-            cropped to its season summary. */}
-        <div className="hh-card" aria-hidden="true">
-          <div className="hh-dash" inert>
-            <DashboardHome />
+        <div className="hh-stage">
+          <Image
+            className="hh-player"
+            src={HERO_PHOTO.src}
+            alt={HERO_PHOTO.alt}
+            preload
+            sizes="(max-width: 1023px) 240px, 420px"
+          />
+          {/* Decorative: the same dashboard Home the product bands describe,
+              cropped to its season summary. */}
+          <div className="hh-card" aria-hidden="true">
+            <div className="hh-dash" inert>
+              <DashboardHome />
+            </div>
           </div>
         </div>
       </div>

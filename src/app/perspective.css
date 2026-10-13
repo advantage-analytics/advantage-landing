@@ -78,7 +78,7 @@
    A single, consistent focus-visible ring on every interactive element.
    PRODUCT.md requires visible focus + full keyboard nav. Mouse clicks stay
    ring-free (:focus-visible), keyboard tabbing always shows the blue ring.
-   Dark surfaces (photo hero, dark CTA card, transparent nav) swap to a white
+   Dark surfaces (the hero, dark CTA card, transparent nav) swap to a white
    ring so it stays high-contrast over blue/navy. */
 .perspective-page :where(a, button, input, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--signal-blue);
@@ -702,26 +702,24 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
 }
 
 /* ============================================================
-   HUMAN HERO — a full-bleed photo, plain copy, and the dashboard as a
-   small floating card over the picture (hero.tsx).
+   HUMAN HERO — a cut-out player, plain copy, and the dashboard as a
+   small floating card across the player's lower half (hero.tsx).
 
-   One responsive composition, real DOM at real sizes. The photo fills the
-   section through next/image; --hh-focus / --hh-focus-mobile (set inline
-   from the photo slot in hero.tsx) are its object-position, so a new
-   picture is re-cropped there, not here. The scrim is navy and heaviest
-   under the copy and the nav, lightest over the subject.
+   One responsive composition, real DOM at real sizes. The backdrop is the
+   page's navy, lit with the brand blue behind the figure so the cut-out
+   has something to stand against; the copy side stays dark for the white
+   type and the transparent nav.
    ============================================================ */
-.hh { position: relative; overflow: hidden; isolation: isolate; color: #fff; background: #0B1533;
-  display: flex; min-height: clamp(640px, 86vh, 800px); min-height: clamp(640px, 86svh, 800px); }
-.hh-photo { object-fit: cover; object-position: var(--hh-focus, 50% 50%); z-index: -2; }
-.hh-scrim { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+.hh { position: relative; overflow: hidden; isolation: isolate; color: #fff; display: flex;
+  min-height: clamp(640px, 86vh, 800px); min-height: clamp(640px, 86svh, 800px);
   background:
-    linear-gradient(to bottom, rgba(11,21,51,.55) 0%, rgba(11,21,51,0) 22%),
-    linear-gradient(90deg, rgba(11,21,51,.9) 0%, rgba(11,21,51,.74) 38%, rgba(11,21,51,.3) 68%, rgba(11,21,51,.12) 100%); }
+    radial-gradient(ellipse 46% 78% at 80% 62%, rgba(59,130,246,.95) 0%, rgba(37,99,235,.55) 38%, transparent 72%),
+    radial-gradient(ellipse 40% 50% at 100% 0%, rgba(56,189,248,.35) 0%, transparent 70%),
+    #0B1533; }
 .hh-inner { position: relative; display: flex; align-items: center; padding-top: 112px; padding-bottom: 72px; }
 /* The headline is sized so its longer sentence holds one line inside the
-   copy column, and the column is sized to stop short of the card. */
-.hh-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: 630px; }
+   copy column, and the column is sized to stop short of the stage. */
+.hh-copy { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: 630px; }
 .hh-title { font-size: 48px; line-height: 1.06; text-wrap: balance; }
 .hh-title span { display: block; }
 .hh-sub { max-width: 46ch; color: rgba(255,255,255,.9); font-weight: var(--fw-regular); }
@@ -734,29 +732,39 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   transition: color 160ms var(--ease-primary), text-decoration-color 160ms var(--ease-primary); }
 .hh-more:hover { color: #fff; text-decoration-color: #fff; }
 
+/* The stage: the player and the card, one group. It runs the hero's full
+   height on the right so the figure can stand on the bottom edge (the
+   cut-out ends at the thigh; the edge hides the cut) and clear the nav. */
+.hh-stage { position: absolute; top: 0; bottom: 0; right: 40px; width: 460px; pointer-events: none; }
+.hh-player { position: absolute; bottom: 0; left: 50%; translate: -50% 0; height: 87%; width: auto; max-width: none;
+  filter: drop-shadow(0 24px 40px rgba(4,10,30,.45)); }
 /* The floating stats card: the dashboard Home at a legible scale, cropped
    (not reflowed) to its season summary. The 1440 artboard is shifted past
    its rail and header, then scaled; the card's overflow is the crop. */
-.hh-card { --s: .6; position: absolute; right: 40px; bottom: 64px; width: 500px; height: 304px; overflow: hidden;
+.hh-card { --s: .55; position: absolute; left: 0; right: 0; bottom: 56px; height: 262px; overflow: hidden;
   border-radius: var(--r-card); background: #fff; border: 1px solid rgba(255,255,255,.7);
-  box-shadow: 0 40px 80px -28px rgba(4,10,30,.7), 0 14px 36px -16px rgba(4,10,30,.5); pointer-events: none; }
+  box-shadow: 0 40px 80px -28px rgba(4,10,30,.7), 0 14px 36px -16px rgba(4,10,30,.5); }
 .hh-dash { width: 1440px; transform-origin: top left; transform: scale(var(--s)) translate(-98px, -50px); }
 @media (max-width: 1239px) {
   .hh-copy { max-width: 530px; }
   .hh-title { font-size: 42px; letter-spacing: -1.2px; }
-  .hh-card { --s: .48; width: 400px; height: 243px; }
+  .hh-stage { width: 380px; }
+  .hh-card { --s: .46; height: 220px; }
 }
-/* Below 1024 the card can no longer sit beside the copy: it drops into the
-   flow under it and runs off the hero's bottom-right, inviting the scroll. */
+/* Below 1024 the stage can no longer sit beside the copy: it drops into the
+   flow under it. The card runs off the hero's bottom-right, inviting the
+   scroll, and the player looks over its top edge. */
 @media (max-width: 1023px) {
-  .hh { min-height: 0; }
-  .hh-photo { object-position: var(--hh-focus-mobile, 50% 50%); }
-  .hh-scrim { background:
-    linear-gradient(to bottom, rgba(11,21,51,.72) 0%, rgba(11,21,51,.6) 45%, rgba(11,21,51,.78) 100%); }
+  .hh { min-height: 0; background:
+    radial-gradient(ellipse 90% 34% at 80% 82%, rgba(59,130,246,.9) 0%, rgba(37,99,235,.45) 45%, transparent 75%),
+    #0B1533; }
   .hh-inner { flex-direction: column; align-items: flex-start; padding-top: 104px; padding-bottom: 0; }
   .hh-copy { max-width: 560px; gap: 18px; }
   .hh-title { font-size: 44px; }
-  .hh-card { --s: .56; position: relative; right: auto; bottom: auto; flex: none; width: 520px; height: 230px; margin-top: 40px;
+  .hh-stage { position: relative; top: auto; bottom: auto; right: auto; flex: none; align-self: stretch; width: auto;
+    height: 330px; margin-top: 12px; }
+  .hh-player { left: auto; right: -6px; translate: none; height: 100%; }
+  .hh-card { --s: .56; left: 0; right: auto; bottom: 0; width: 520px; height: 190px;
     border-bottom: none; border-radius: var(--r-card) var(--r-card) 0 0; }
 }
 @media (max-width: 767px) {
@@ -765,10 +773,11 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .hh-sub { font-size: 16px; line-height: 1.5; }
   .hh-copy .h-actions { width: 100%; flex-direction: column; align-items: stretch; gap: 11px; margin-top: 4px; }
   .hh-copy .hbtn { width: 100%; height: 52px; font-size: 15px; }
-  .hh-card { margin-top: 30px; height: 200px; }
+  .hh-stage { height: 300px; margin-top: 4px; }
+  .hh-card { height: 170px; }
 }
 /* Short landscape phones: height is scarce, so the lanes sit side by side
-   and the card is dropped; the copy and both buttons stay above the fold. */
+   and the stage is dropped; the copy and both buttons stay above the fold. */
 @media (max-width: 1023px) and (orientation: landscape) and (max-height: 560px) {
   .hh-inner { padding-top: 76px; padding-bottom: 28px; }
   .hh-copy { gap: 12px; }
@@ -777,7 +786,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .hh-sub { font-size: 15px; max-width: 60ch; }
   .hh-copy .h-actions { flex-direction: row; width: auto; }
   .hh-copy .hbtn { width: auto; height: 46px; }
-  .hh-card { display: none; }
+  .hh-stage { display: none; }
 }
 
 /* ============================================================

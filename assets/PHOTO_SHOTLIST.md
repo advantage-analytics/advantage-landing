@@ -1,38 +1,42 @@
 # Photo shot list — landing page
 
-Six shots for the home page, in priority order. Shot 1 is the one the page is
-waiting on: the hero currently runs an interim image (`elc-court.jpg`) in a
-marked placeholder slot at the top of `src/components/perspective/hero.tsx`.
+Six shots for the home page, in priority order. The hero currently runs a
+cut-out of a player (`public/assets/marketing/hero-player.png`) on a navy and
+blue backdrop; the slot is at the top of `src/components/perspective/hero.tsx`.
 
 ## How the hero uses a photo
 
-- The photo fills the whole hero, edge to edge, on every screen size, and is
-  cropped (`object-fit: cover`), never stretched.
-- **Desktop** (roughly 16:9, 1440×780): headline and buttons sit on the **left
-  half** under a dark navy scrim; a dashboard card floats in the **bottom
-  right**. The subject therefore needs to live in the **right-centre**, upper
-  two thirds of the frame.
-- **Mobile** (roughly 9:16, 375×700): the same file is cropped to a tall slice
-  about a third of its width, with copy over the top two thirds and the card
-  at the bottom. The subject must survive that slice.
-- The scrim darkens the picture by about 60–90% on the copy side, so what
-  reads is shape, light and expression, not fine detail.
+- The hero shows **one player cut out of their background**, standing on the
+  page's own backdrop. Whatever is behind them in the photo is thrown away, so
+  the background only has to be easy to cut against (plain, well separated
+  from the player, no one standing behind them).
+- **Desktop**: headline and buttons on the left; the player stands on the
+  right at about 85% of the hero's height, with a dashboard card across their
+  lower half. Face, shoulders and chest are what shows.
+- **Mobile**: copy first, then the player looking over the top of the card at
+  the bottom of the hero. Only head and shoulders show.
+- So: **portrait orientation, waist-up or longer, face and upper body clean
+  and well lit.** A cut-out that ends mid-thigh is fine; the hero's bottom
+  edge hides the cut.
 
 ## For every shot
 
-- Landscape master, **at least 3000 px wide** (the interim is 1024 px and is
-  visibly soft). Shoot a little loose: we crop, we never add.
+- **At least 3000 px on the long side.** Shoot a little loose: we crop, we
+  never add.
 - Real players, real courts, natural light. Smiling, laughing, mid-effort.
   Not posed stock-photo smiles.
 - A mix of ages, genders and levels across the set. Club and public courts
   are as welcome as college facilities.
 - **No visible third-party logos**: no sponsor banners, no scoreboard brands,
-  keep apparel and racket logos small or turned away. (The interim image
-  shows a sponsor's banners, which is one reason to replace it soon.)
+  keep apparel and racket logos small or turned away. (The current hero
+  cut-out shows a school mark and an apparel logo on the shirt and cap.)
 - Signed releases from everyone recognisable.
 - Deliver as sRGB JPEG, named as below, into `public/assets/marketing/`.
 
 ## Shots
+
+The desktop and mobile crop notes below are for using a shot full-frame
+elsewhere on the page. For the hero, the cut-out rules above win.
 
 ### 1. Phone setup on the fence — HERO (`hero-fence.jpg`)
 
@@ -105,9 +109,8 @@ step in How it works.
 
 ## Swapping the hero photo
 
-1. Put the file at `public/assets/marketing/hero-fence.jpg`.
+1. Cut the player out to a transparent PNG and put it at
+   `public/assets/marketing/hero-<name>.png`.
 2. In `src/components/perspective/hero.tsx`, change the one `heroPhoto`
    import to point at it.
-3. Rewrite `HERO_PHOTO.alt` to describe the new picture, and adjust
-   `focusDesktop` / `focusMobile` (CSS `object-position` values) until the
-   subject sits right at 1440 px and 375 px.
+3. Rewrite `HERO_PHOTO.alt` to describe the new picture.

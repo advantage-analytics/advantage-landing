@@ -6,17 +6,19 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
 ## What changed
 
 **Hero** — `src/components/perspective/hero.tsx`, `src/app/perspective.css`
-- The blue mesh + tilted full-size dashboard is replaced by a full-bleed photo
-  under a navy scrim, with copy on the left.
-- The dashboard is now a small floating card over the photo (bottom-right on
-  desktop, peeking off the bottom on phones), cropped to the "Your season"
-  summary of the existing dashboard mock.
+- The blue mesh + tilted full-size dashboard is replaced by a cut-out player
+  (`public/assets/marketing/hero-player.png`, from the photo you supplied) on
+  a navy backdrop lit blue behind them, with copy on the left.
+- The dashboard is now a small floating card across the player's lower half
+  (right side on desktop; on phones the player looks over the card as it runs
+  off the bottom), cropped to the "Your season" summary of the existing mock.
 - One responsive layout replaces the old pair (a scaled 1440 px artboard for
   desktop plus a separate mobile hero).
-- Photo goes through `next/image` (`fill`, preloaded, blur placeholder), with
-  real alt text and separate desktop/mobile focus points.
+- The player goes through `next/image` (preloaded) with real alt text.
 - Kept: the "Free through Dec 31" eyebrow and both sign-up buttons (Join Free
   Beta, Find Your Team). Added: a "See how it works" link to `#how`.
+- The first version used `elc-court.jpg` full-bleed as an interim; that is no
+  longer referenced by the hero.
 
 **How it works** — `src/components/perspective/sections.tsx`
 - Moved directly under the hero and reframed as Capture → Upload → Analyze.
@@ -93,9 +95,12 @@ Run with Playwright against the production build. Screenshots here:
    description and the two H2s instead.
 4. **Three hero actions.** Both sign-up lanes stay as buttons; "See how it
    works" is a text link under them so it doesn't compete.
-5. **Dark photo hero, not light.** The nav is transparent with a white logo at
-   the top of the page, so the hero has to stay dark. A navy scrim does that
-   and keeps white type readable on any future photo.
+5. **Dark hero, not light.** The nav is transparent with a white logo at the
+   top of the page, so the hero has to stay dark. The cut-out stands on navy
+   with a blue glow behind it; the gold shirt carries the contrast.
+5a. **Cut-out made locally** with macOS subject detection, so the photo never
+   left this machine. The edge is clean at page size; a designer's hand-cut
+   would be crisper around the racket strings if you want to polish it.
 6. **Floating card is a crop, not a shrunk window.** The whole dashboard at
    that size is unreadable, so the card shows the season summary at 60% scale
    and drops the browser chrome.
@@ -123,13 +128,12 @@ Run with Playwright against the production build. Screenshots here:
 
 ## What you need to do
 
-1. **Shoot the photos** (`assets/PHOTO_SHOTLIST.md`). Shot 1 is the hero.
-   The interim image is a broadcast camera over a grass court: no people
-   close up, only 1024 px wide (soft on desktop), and it **shows a sponsor's
-   banners ("bett1")**. I'd replace it before influencer traffic arrives.
-2. **Swap the hero photo**: drop `hero-fence.jpg` in
-   `public/assets/marketing/`, change the one `heroPhoto` import in `hero.tsx`,
-   then update `alt` and the two focus points beside it.
+1. **Clear the hero photo for use.** It shows a recognisable player, with a
+   school mark and an apparel logo on the shirt and cap. Confirm you have the
+   player's release and that the marks are fine to show (or have them
+   retouched out) before this takes traffic.
+2. **Shoot the rest** (`assets/PHOTO_SHOTLIST.md`) when you can; swapping the
+   hero is one import line in `hero.tsx` plus the alt text.
 3. **Regenerate `src/app/opengraph-image.jpg`**. Link previews still show
    "Walk on court knowing the pattern."
 4. **Confirm phone upload.** The subhead says "Upload a video from your
