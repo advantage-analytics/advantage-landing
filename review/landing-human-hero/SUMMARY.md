@@ -10,9 +10,10 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
   with a photo beside it (`public/assets/marketing/hero-fist-pump.jpg`, the
   celebrating-player photo you supplied).
 - The photo is on the right and shown whole at its own 4:5 shape, so the
-  player is never cropped. A blurred, stretched copy of it carries the wall
-  and the court out to the left behind the copy, under a navy wash; the
-  photo's edges fade into that, so it has no frame.
+  player is never cropped. A blurred copy of it sits around it as a soft
+  halo that thins out to nothing before it reaches the copy; the photo's
+  edges fade into that on eased ramps, so it melts into the navy the text
+  sits on and has no frame.
 - Under the copy and the photo, the dashboard sits on a computer screen (a
   browser window, full container width) that fades out into the next section.
   On phones it is drawn wider than the viewport so it stays legible.

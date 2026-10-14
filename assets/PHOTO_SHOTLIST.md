@@ -8,13 +8,13 @@ the slot is at the top of `src/components/perspective/hero.tsx`.
 
 - The photo is shown **whole, at its own shape**, on the right of the hero. It
   is never cropped, so the player stays fully in frame, head to shoes.
-- A **blurred, stretched copy of the same photo** runs across the rest of the
-  hero behind the headline, under a navy wash. The photo's own edges are faded
-  into it, so there is no frame. Keep the subject out of the outer ~12% of
+- A **blurred copy of the same photo** sits around it as a soft halo and fades
+  out toward the headline. The photo's own edges are faded into it, so there
+  is no frame. Keep the subject out of the outer ~12% of
   the frame on every side: that is the fade.
 - This works best when the **background is dark and simple** (a windscreen, a
-  wall, an evening sky). A bright or busy background will show through behind
-  the headline.
+  wall, an evening sky). A bright or busy background makes the fade into the navy
+  much more visible.
 - **Desktop**: copy on the left, photo on the right, as tall as the top of
   the hero. **Mobile**: copy first, then the photo, right-aligned.
 - So: **portrait (4:5), full body with room around it, dark plain backdrop.**

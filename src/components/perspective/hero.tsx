@@ -11,8 +11,8 @@ import { BETA_END_SHORT } from "@/lib/pilot";
 /* ===========================================================
    HERO PHOTO SLOT
    A portrait photo (4:5), shown whole, never cropped, on the right of
-   the hero. A blurred, stretched copy of it runs out to the left behind
-   the copy, so the picture has no frame and its background carries on. To swap: drop another
+   the hero. A blurred copy of it sits around it as a soft halo that
+   thins out to nothing toward the copy, so the picture has no frame. To swap: drop another
    photo at public/assets/marketing/hero-*.jpg, change this one import,
    rewrite `alt`, and set `ratio` to the new file's width / height. Keep
    the subject out of the outer ~10% of the frame: that is the fade.
@@ -45,9 +45,9 @@ const HERO_SUB =
    Human hero — one responsive composition, two tiers.
 
    Top: the copy on navy, and beside it the photo, standing on the
-   screen's top edge and shown whole. A blurred copy of it extends its
-   background across the tier under a navy wash, so the player is never
-   cut off and nothing sharp sits behind the type.
+   screen's top edge and shown whole. A blurred copy of it surrounds it
+   and fades out toward the copy, so the player is never cut off and the
+   picture melts into the navy the type sits on.
    Below both: the dashboard on a computer screen, running the container's
    width, fading out into the next section so the hero has no hard bottom
    edge.
@@ -135,8 +135,8 @@ export function PerspectiveHero() {
           </div>
         </div>
         <div className="hh-scene">
-          {/* The same photo again, stretched across the tier and blurred: it
-              carries the wall and the court out to the left, behind the copy. */}
+          {/* The same photo again, stretched and blurred: a soft halo of the
+              wall and the court that fades out before it reaches the copy. */}
           <div className="hh-ext" aria-hidden="true">
             <Image src={HERO_PHOTO.src} alt="" fill sizes="320px" />
           </div>
