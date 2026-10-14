@@ -6,7 +6,7 @@ import { PerspectiveHero } from "@/components/perspective/hero";
 import { SiteNav } from "@/components/perspective/site-nav";
 import { Footer } from "@/components/perspective/footer";
 import { useReveal } from "@/components/perspective/reveal";
-import { DashboardShowcase, HowItWorks, WhatYouSee } from "@/components/perspective/sections";
+import { HowItWorks, WhatYouSee } from "@/components/perspective/sections";
 import { ProductTour } from "@/components/perspective/product-tour";
 import { TeamBand } from "@/components/perspective/team-band";
 import { BetaTerms } from "@/components/perspective/beta-terms";
@@ -44,8 +44,7 @@ export default function Home() {
         {/* First scroll: how it works, then what comes back, in plain words. */}
         <HowItWorks />
         <WhatYouSee />
-        <DashboardShowcase />
-        <ProductTour alt />
+        <ProductTour />
         <TeamBand />
         <BetaTerms />
         <Faq />

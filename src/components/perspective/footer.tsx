@@ -20,7 +20,6 @@ export function Footer() {
             <div className="foot-col">
               <h5>Product</h5>
               <Link href="/#tour">Product tour</Link>
-              <Link href="/#dashboard">Breakdown</Link>
               <Link href="/#team">Team workspace</Link>
               <Link href="/#how">How it works</Link>
               <Link href="/#faq">FAQ</Link>

@@ -64,7 +64,7 @@ const HERO_SUB =
    screen's top edge and shown whole. Its background is extended to the
    left behind the copy and fades into the mesh on one long ramp, so the
    player is never cut off and the picture has no edge on the copy side.
-   Below both: the dashboard on a computer screen, running the container's
+   Below both: the dashboard in a laptop's lid, running the container's
    width, fading out into the next section so the hero has no hard bottom
    edge.
 
@@ -84,19 +84,24 @@ const SCREEN_H = SCREEN_BAR_H + 640;
 function HeroScreen() {
   const { outerRef, innerRef } = useScaleToFit({ width: SCREEN_W, height: SCREEN_H });
   return (
-    // Decorative: the same dashboard Home the product bands describe.
-    <div className="hh-screen" aria-hidden="true">
-      <div ref={outerRef} className="hh-screen-fit" style={{ aspectRatio: `${SCREEN_W} / ${SCREEN_H}` }}>
-        <div ref={innerRef} className="hh-screen-art" style={{ width: SCREEN_W }} inert>
-          <div className="hh-bar" style={{ height: SCREEN_BAR_H }}>
-            <span className="dots">
-              <i style={{ background: "#FF5F57" }} />
-              <i style={{ background: "#FEBC2E" }} />
-              <i style={{ background: "#28C840" }} />
-            </span>
-            <span className="url">app.advantage-analytics.com</span>
+    // Decorative: the same dashboard Home the product bands describe, in a
+    // laptop's lid: a dark bezel with its camera, fading out with the screen.
+    <div className="hh-laptop" aria-hidden="true">
+      <div className="hh-lid">
+        <div className="hh-screen">
+          <div ref={outerRef} className="hh-screen-fit" style={{ aspectRatio: `${SCREEN_W} / ${SCREEN_H}` }}>
+            <div ref={innerRef} className="hh-screen-art" style={{ width: SCREEN_W }} inert>
+              <div className="hh-bar" style={{ height: SCREEN_BAR_H }}>
+                <span className="dots">
+                  <i style={{ background: "#FF5F57" }} />
+                  <i style={{ background: "#FEBC2E" }} />
+                  <i style={{ background: "#28C840" }} />
+                </span>
+                <span className="url">app.advantage-analytics.com</span>
+              </div>
+              <DashboardHome />
+            </div>
           </div>
-          <DashboardHome />
         </div>
       </div>
     </div>
@@ -159,6 +164,10 @@ export function PerspectiveHero() {
             {/* The same photo again, its left edge stretched sideways: the wall
                 and the court, carried on to the left. */}
             <div className="hh-ext" aria-hidden="true" style={{ backgroundImage: `url(${EXT_SRC})` }} />
+            {/* The photo's right edge, softened: a blur that builds toward
+                the edge, tinted toward the mesh, so the picture dissolves
+                into the light instead of stopping at a pale band. */}
+            <div className="hh-fade-r" aria-hidden="true" />
           </div>
           {/* The player-tracking box, as the app draws it on match video:
               outside the photo's fade mask so it stays crisp. Decorative —

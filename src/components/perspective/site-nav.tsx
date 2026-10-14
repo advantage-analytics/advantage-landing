@@ -27,21 +27,21 @@ import { trackCta } from "@/lib/analytics";
    offers.
    =========================================================== */
 
-// Five links, kept short on purpose. Product lands on the first of the three
-// product bands, the tour (the other two follow it on the scroll), How it works on the
+// Five links, kept short on purpose. Product lands on the first of the two
+// product bands, the tour (the team band follows it on the scroll), How it works on the
 // steps. `page: true` is a real route (Pilot, About, Contact) that gets a
 // current-page marker. Contact is in the bar because the pilot is aimed at
 // college programs, and a coach committing a team looks for a person before
 // they sign up; the anchors resolve against LOCAL_ANCHORS below. `spans` lists
 // the section ids an anchor stands for, so Product stays marked through all
-// three product bands, not only the first.
+// both product bands, not only the first.
 const NAV_LINKS: {
   href: string;
   label: string;
   page?: boolean;
   spans?: readonly string[];
 }[] = [
-  { href: "#tour", label: "Product", spans: ["tour", "dashboard", "team"] },
+  { href: "#tour", label: "Product", spans: ["tour", "team"] },
   { href: "#how", label: "How it works", spans: ["how"] },
   { href: "/pilot", label: "Pilot", page: true },
   { href: "/about", label: "About", page: true },
@@ -52,7 +52,7 @@ const NAV_LINKS: {
 // The home page needs no entry — it renders every section the nav links to, by
 // definition. Empty today: the CTA leaves the site for sign-up, and /pilot's
 // own #tour band is deliberately not listed, so Product still leads to the
-// home page's three product bands. Kept as the seam for the next exception.
+// home page's two product bands. Kept as the seam for the next exception.
 const LOCAL_ANCHORS: Record<string, readonly string[]> = {};
 
 /* `subpage` says only one thing: there is no dark hero behind the bar, so it

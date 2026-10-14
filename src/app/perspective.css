@@ -8,6 +8,8 @@
    ============================================================ */
 
 :root {
+  /* The site nav's height over a dark hero; heroes clear it. */
+  --nav-h: 80px;
   /* ---- Primary (the single chromatic voice) ---- */
   --signal-blue:       #3B82F6;
   --signal-blue-deep:  #2563EB;
@@ -286,11 +288,52 @@ section.band.alt + section.band.alt { border-top: none; }
 .see-crop-in { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
 .see-item h3 { margin: 24px 0 0; font: var(--fw-regular) 20px/1.25 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); text-wrap: balance; }
 .see-item p { margin: 10px 0 0; max-width: 40ch; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
+/* Every card fills its tile, so the three read as one row of equal cards
+   (the tiles already share a height through the grid's subgrid rows). Each
+   spends the extra height its own way: the trend line grows, the endings
+   bars (drawn large) sit centred in theirs, and the insight's footer drops
+   to the foot. */
+.see-grid .see-crop { align-items: stretch; }
+.see-grid .see-crop-in > .dh-card { flex: 1; }
+.see-grid .see-trend .tr-wrap { flex: 1; }
+.see-grid .mb-insight { display: flex; flex-direction: column; }
+.see-grid .mb-insight .dh-foot { margin-top: auto; }
+
+/* The trend card: the dashboard KPI at card size. The line is the KPI's
+   own green (the dashboard colours a trend by its direction); the baseline
+   is a recessive hairline; the ends are marked, not labelled, since the
+   headline figure already names today. */
+.see-trend { gap: 12px; padding: 18px 20px 16px; }
+.see-trend .kv { display: flex; align-items: baseline; gap: 10px; }
+.see-trend .kv .v { font: 300 34px/1 var(--font-sans); letter-spacing: -.8px; color: #0D0D0D; }
+.see-trend .kv .ch { font: 500 12px var(--font-sans); }
+/* The line fills its box by position, so the box can grow (flex) without
+   relying on a percentage height resolving. */
+.see-trend .tr { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; }
+.see-trend .tr .base { stroke: #EAECF0; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.see-trend .tr-wrap { position: relative; min-height: 92px; }
+.see-trend .tr-marks { position: absolute; inset: 0; pointer-events: none; }
+.see-trend .tr-marks i { position: absolute; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; box-shadow: 0 0 0 2px #fff; }
+.see-trend .tr-marks .is-start { background: #CCCCCC; }
+.see-trend .ax { display: flex; justify-content: space-between; padding-top: 2px; font: 400 10px var(--font-sans); color: #AAAAAA; }
 @media (max-width: 900px) {
   .see-grid { grid-template-columns: 1fr; grid-template-rows: none; gap: 40px 0; margin-top: 40px; }
   .see-item { grid-row: auto; display: block; }
   .see-crop { min-height: 0; padding: 16px; }
   .see-item h3 { margin-top: 20px; }
+}
+/* The endings legend may wrap, so its nowrap labels can't widen its column
+   past its neighbours' on a narrow three-up row. */
+.see-grid .mb-chart .legend { flex-wrap: wrap; row-gap: 6px; }
+/* Tablet: a single column of three wide cards is a long, sparse stack, and a
+   three-up row is too narrow for the charts. Two up instead: the trend and
+   the endings side by side, level through the subgrid, and the insight —
+   prose, happy wide — across the full width under them. */
+@media (min-width: 600px) and (max-width: 900px) {
+  .see-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; gap: 0 20px; }
+  .see-item { grid-row: span 3; display: grid; grid-template-rows: subgrid; }
+  .see-item:nth-child(3) { grid-column: 1 / -1; margin-top: 40px; }
+  .see-item:nth-child(3) p { max-width: 60ch; }
 }
 
 .sec-head { max-width: 720px; }
@@ -709,8 +752,11 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    with the live dot grid.
    ============================================================ */
 /* --hh-lap: how far the screen laps up over the top tier.
+   --hh-air: the clearance between the photo's floor and the laptop's lid,
+   so the court and the box's corners don't sit pinched on the dark bezel.
+   The tier grows by the same amount, so the photo keeps its size.
    --hh-copy: the copy column's width; the photo starts where it ends. */
-.hh { --hh-lap: 64px; --hh-copy: 630px; --hh-gutter: max(40px, calc((100vw - 1240px) / 2 + 40px));
+.hh { --hh-lap: 64px; --hh-air: 32px; --hh-copy: 630px; --hh-gutter: max(40px, calc((100vw - 1240px) / 2 + 40px));
   position: relative; overflow: hidden; isolation: isolate; color: #fff;
   /* The brand mesh in its deep register: the same layered blue, cyan and
      indigo radials as .brand-mesh, pulled down to navy. Darkest under the
@@ -723,8 +769,8 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
     radial-gradient(ellipse 70% 60% at 8% 12%, rgba(30,58,138,.55) 0%, transparent 70%),
     radial-gradient(ellipse 60% 70% at 20% 88%, rgba(30,64,175,.35) 0%, transparent 70%),
     linear-gradient(135deg, #0A1536 0%, #0C1A45 45%, #111A4E 100%); }
-.hh-inner { position: relative; z-index: 2; display: flex; align-items: center; padding-top: 128px; padding-bottom: 120px;
-  min-height: clamp(600px, 78vh, 760px); min-height: clamp(600px, 78svh, 760px); }
+.hh-inner { position: relative; z-index: 2; display: flex; align-items: center; padding-top: 128px; padding-bottom: calc(120px + var(--hh-air));
+  min-height: calc(clamp(600px, 78vh, 760px) + var(--hh-air)); min-height: calc(clamp(600px, 78svh, 760px) + var(--hh-air)); }
 .hh-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: var(--hh-copy); }
 .hh-title { font-size: 48px; line-height: 1.06; text-wrap: balance; }
 .hh-title span { display: block; }
@@ -757,12 +803,15 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    with its own fade, so the dots (and the glow) thin out as the picture
    comes in and are gone where the photo is. */
 .hh > .live-dots { z-index: 0; }
-.hh-scene { position: absolute; z-index: 0; left: 0; right: 0; top: 76px; bottom: var(--hh-lap); pointer-events: none; }
+/* top: the nav's height plus room for the read-out seated above the box, so
+   the read-out never runs under Sign in / Sign up. */
+.hh-scene { position: absolute; z-index: 0; left: 0; right: 0; top: calc(var(--nav-h) + 16px); bottom: calc(var(--hh-lap) + var(--hh-air)); pointer-events: none; }
 .hh-wide { position: absolute; top: 0; bottom: 0; right: max(0px, calc(var(--hh-gutter) - 80px));
   aspect-ratio: calc(var(--hh-ratio) * 2.8); overflow: hidden;
   --hh-ramp: linear-gradient(to right, transparent 0%, transparent 5%, rgba(0,0,0,.02) 11%, rgba(0,0,0,.06) 18%, rgba(0,0,0,.12) 25%,
     rgba(0,0,0,.2) 32%, rgba(0,0,0,.31) 40%, rgba(0,0,0,.44) 48%, rgba(0,0,0,.6) 56%, rgba(0,0,0,.77) 63%,
-    rgba(0,0,0,.91) 69%, #000 75%, #000 89%, rgba(0,0,0,.78) 92.5%, rgba(0,0,0,.42) 96%, rgba(0,0,0,.12) 98.5%, transparent 100%);
+    rgba(0,0,0,.91) 69%, #000 75%, #000 88%, rgba(0,0,0,.95) 90%, rgba(0,0,0,.84) 92%, rgba(0,0,0,.66) 94%,
+    rgba(0,0,0,.44) 96%, rgba(0,0,0,.22) 97.8%, rgba(0,0,0,.07) 99.2%, transparent 100%);
   --m: var(--hh-ramp),
        linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.2) 4%, rgba(0,0,0,.6) 9%, #000 15%, #000 96%, transparent 100%);
   -webkit-mask-image: var(--m); mask-image: var(--m);
@@ -773,6 +822,21 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    box, so it fades with everything else. */
 .hh-wide::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(to right, rgba(10,21,54,.62) 0%, rgba(10,21,54,.48) 30%, rgba(10,21,54,.24) 50%, rgba(10,21,54,0) 64%); }
+/* The right edge, softened: over the photo's last stretch, past the
+   player, a blur that builds toward the edge (two masked layers, so it
+   ramps instead of stepping) under a wash in the mesh's own lit blue. The
+   pale court meets the backdrop at its brightness before the box's ramp
+   takes it to nothing, so there is no grey band and no edge to find. */
+.hh-fade-r { position: absolute; z-index: 1; top: 0; bottom: 0; right: 0; width: 15%; pointer-events: none;
+  background: linear-gradient(to right, rgba(26,54,140,0) 0%, rgba(26,54,140,.2) 35%, rgba(26,54,140,.62) 70%, rgba(26,54,140,.88) 100%); }
+/* The blurs are siblings, not nested: an element with its own backdrop-filter
+   or mask is the backdrop root for what's inside it, so a nested blur would
+   see only the wash, never the photo. */
+.hh-fade-r::before, .hh-fade-r::after { content: ""; position: absolute; inset: 0; }
+.hh-fade-r::before { -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 45%); mask-image: linear-gradient(to right, transparent 0%, #000 45%); }
+.hh-fade-r::after { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(to right, transparent 35%, #000 85%); mask-image: linear-gradient(to right, transparent 35%, #000 85%); }
 .hh-figure { position: absolute; top: 0; bottom: 0; right: 0; aspect-ratio: var(--hh-ratio); }
 .hh-figure img { object-fit: cover; }
 /* The extension: from the box's left edge to 3% into the figure, painted
@@ -817,10 +881,21 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    bar, scaled to the container by useScaleToFit and cut off partway down.
    It laps up over the top tier, and the hero's ::after melts its lower part
    (and the backdrop beside it) into the next section's page gray. */
+/* The laptop's lid: a near-black bezel with a hairline lit edge and the
+   camera centred in its top border, the display inside it. It runs on down
+   into the hero's bottom fade like the screen it frames, so there is no
+   bottom bezel and no base: the fade covers where it would end. */
 .hh-screen-wrap { position: relative; z-index: 2; margin-top: calc(var(--hh-lap) * -1); }
-.hh-screen { overflow: hidden; background: #fff; border: 1px solid rgba(255,255,255,.6); border-bottom: none;
-  border-radius: 14px 14px 0 0; pointer-events: none;
-  box-shadow: 0 -30px 90px -30px rgba(4,10,30,.75), 0 -10px 40px -18px rgba(4,10,30,.5); }
+.hh-laptop { position: relative; pointer-events: none; }
+.hh-lid { --bz: clamp(8px, 1.5%, 18px); position: relative; padding: var(--bz) var(--bz) 0;
+  background: linear-gradient(to bottom, #15181F, #0B0D12); border-radius: clamp(10px, 1.6vw, 20px) clamp(10px, 1.6vw, 20px) 0 0;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), inset 0 1px 0 rgba(255,255,255,.22),
+    0 -30px 90px -30px rgba(4,10,30,.75), 0 -10px 40px -18px rgba(4,10,30,.5); }
+.hh-lid::before { content: ""; position: absolute; top: 0; left: 50%; width: 5px; height: 5px;
+  /* A margin, not `top`: its % resolves against the width, as the bezel's
+     padding does, so the camera sits centred in the top bezel. */
+  margin: calc(var(--bz) / 2 - 2.5px) 0 0 -2.5px; border-radius: 50%; background: #262A33; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+.hh-screen { overflow: hidden; background: #fff; border-radius: 3px 3px 0 0; }
 .hh-screen-fit { position: relative; width: 100%; overflow: hidden; }
 .hh-screen-art { position: absolute; top: 0; left: 0; transform-origin: top left; }
 .hh-bar { display: flex; align-items: center; gap: 8px; padding: 0 15px; background: #F7F8FA; border-bottom: 1px solid var(--hairline); }
@@ -843,7 +918,8 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    flow under it, right-aligned, and the screen is drawn wider than the
    viewport so it stays legible. */
 @media (max-width: 1023px) {
-  .hh { --hh-lap: 0px; --hh-copy: 560px; }
+  .hh { --hh-lap: 0px; --hh-air: 20px; --hh-copy: 560px; }
+  .hh-screen-wrap { margin-top: var(--hh-air); }
   .hh-inner { flex-direction: column; align-items: flex-start; min-height: 0; padding-top: 104px; padding-bottom: 0; }
   .hh-copy { gap: 18px; }
   .hh-title { font-size: 44px; }
@@ -855,7 +931,8 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .hh-track .hud .l2 { font-size: 9.5px; }
   .hh-figure { position: relative; width: min(78%, 380px); margin-left: auto; }
   .hh-ext { right: calc(min(78%, 380px) * .97); }
-  .hh-screen { width: 150%; border-radius: 12px 12px 0 0; }
+  .hh-fade-r { display: none; }
+  .hh-laptop { width: 150%; }
   .hh::after { height: clamp(150px, 40vw, 300px); }
 }
 @media (max-width: 767px) {
@@ -864,7 +941,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .hh-sub { font-size: 16px; line-height: 1.5; }
   .hh-copy .h-actions { width: 100%; flex-direction: column; align-items: stretch; gap: 11px; margin-top: 4px; }
   .hh-copy .hbtn { width: 100%; height: 52px; font-size: 15px; }
-  .hh-screen { width: 230%; }
+  .hh-laptop { width: 230%; }
 }
 /* Short landscape phones: height is scarce, so the lanes sit side by side
    and the photo is dropped; the copy and both buttons stay above the fold. */
@@ -890,7 +967,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    ============================================================ */
 .site-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  height: 80px;
+  height: var(--nav-h);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 64px;
   background: rgba(255, 255, 255, 0);

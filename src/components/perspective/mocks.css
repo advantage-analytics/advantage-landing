@@ -1,4 +1,4 @@
-/* ============ PRODUCT MOCKS — match report + team roster ============
+/* ============ PRODUCT MOCKS — match report pieces + team roster ============
    Fixed artboards (every product board at the dashboard's 1440×944; the roster
    1440×900), drawn at native size and scaled to the band by useScaleToFit
    (see mock-frame.tsx). Everything inside the artboard
@@ -11,17 +11,11 @@
 /* A mock is a picture: nothing inside it reacts to the pointer. */
 .mock-inert { pointer-events: none; }
 
-/* ---------------- Match breakdown ----------------
-   The single-match report (Statistics view) inside the dashboard shell —
-   `dh` gives it the app rail, header and card surfaces; everything under
-   `mb-` is the report frame the app draws for one match. Design pixels at
-   1440 wide; the band scales the board. */
-.mb.dh { height: 944px; }
+/* ---------------- Match report pieces ----------------
+   Cards from the single-match report, shown on their own (match-breakdown.tsx):
+   everything under `mb-` is the app's own report styling, in design pixels. */
 .mb-micro { font: 400 11px/1.4 var(--font-sans); color: #888888; white-space: nowrap; }
-.mb-frame { flex: 1; min-height: 0; display: flex; align-items: stretch; }
 
-/* report rail */
-.mb-rail { width: 300px; flex: none; display: flex; flex-direction: column; border-right: 1px solid #F3F3F3; background: #fff; }
 .mb-score { margin: 0 12px; display: flex; flex-direction: column; gap: 14px; padding: 18px 13px 20px; border-bottom: 1px solid #F3F3F3; }
 .mb-score .hd { display: flex; align-items: baseline; gap: 8px; }
 .mb-score .clock { font: 500 10px var(--font-mono); font-variant-numeric: tabular-nums; color: #AAAAAA; }
@@ -32,85 +26,41 @@
 .mb-score .sets { display: inline-flex; gap: 8px; font: 400 13px var(--font-mono); font-variant-numeric: tabular-nums; color: #0D0D0D; }
 .mb-score .sets b { font-weight: 400; width: 11px; text-align: right; }
 .mb-score .row.is-lost .nm, .mb-score .row.is-lost .sets { color: #525252; }
-.mb-views { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px 0; }
-.mb-views .row { display: flex; height: 40px; align-items: center; border-radius: 8px; font: 400 13px var(--font-sans); color: #525252; }
-.mb-views .row.on { background: #F5F5F5; color: #0D0D0D; font-weight: 500; }
-.mb-views .slot { display: flex; width: 40px; height: 40px; flex: none; align-items: center; justify-content: center; }
-.mb-rail-foot { padding: 12px; }
-.mb-btn { display: inline-flex; height: 36px; align-items: center; justify-content: center; gap: 7px; padding: 0 14px; border-radius: 6px;
-  border: 1px solid transparent; font: 500 13px var(--font-sans); white-space: nowrap; }
-.mb-btn.ghost { border-color: #E5E5EA; color: #525252; }
-.mb-btn.wide { width: 100%; }
-.mb-ib { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid #E5E5EA; color: #525252; }
-
-/* pane */
-.mb-pane { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; padding: 20px 56px 24px; background: #fff; }
-.mb-title { display: flex; align-items: flex-start; gap: 16px; }
-.mb-title h1 { margin: 0; font: 300 24px/1.2 var(--font-sans); letter-spacing: -.3px; color: #0D0D0D; }
-.mb-title .facts { margin-top: 9px; display: flex; height: 18px; align-items: center; gap: 14px; }
-.mb-title .facts > span { display: inline-flex; align-items: center; gap: 5px; font: 400 12px/1.5 var(--font-sans); color: #525252; white-space: nowrap; }
-.mb-title .facts svg { color: #525252; flex: none; }
-.mb-title .facts img { width: 13px; height: 13px; }
-.mb-title .acts { display: flex; align-items: center; gap: 8px; flex: none; }
 
 .mb-insight .bd .lead { font-weight: 500; font-size: 13px; line-height: 1.5; }
 .mb-insight .dh-foot { align-items: center; }
 .mb-insight .dh-foot .hd { display: inline-flex; align-items: center; gap: 8px; }
-.mb-insight .dh-foot .lnk { display: inline-flex; align-items: center; gap: 4px; }
 
-/* The head-to-head card sets the row's height; the three chart cards share
-   it, each growing its visual, so the two columns end on one line. */
-.mb-row { display: flex; align-items: stretch; gap: 16px; }
-.mb-col { width: 416px; flex: none; display: flex; flex-direction: column; gap: 16px; }
-.mb-col .mb-chart { flex: 1; }
-.mb-chart .track, .mb-chart .bands { flex: 1; min-height: 96px; height: auto; }
 .mb-chart .ends { flex: 1; justify-content: center; }
 
-/* head to head */
-.mb-h2h { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 18px 20px 14px; }
-.mb-h2h .dh-sh { padding-bottom: 14px; }
-.mb-h2h .cols { display: flex; align-items: center; padding-bottom: 11px; border-bottom: 1px solid #F3F3F3; }
-.mb-h2h .col { width: 64px; flex: none; display: inline-flex; align-items: center; justify-content: flex-end; gap: 4px; font: 500 12px var(--font-sans); color: #525252; }
-.mb-h2h .col.you { color: #0D0D0D; }
-.mb-h2h .col.you svg { color: #5DB955; }
-.mb-h2h .grp { display: block; padding: 12px 0 2px; font: 400 9px var(--font-sans); letter-spacing: 2.5px; text-transform: uppercase; color: #AAAAAA; }
-.mb-h2h .r { margin: 0 -8px; display: flex; min-height: 30px; align-items: center; padding: 0 8px; border-radius: 8px; }
-.mb-h2h .r .l { flex: 1; min-width: 0; font: 400 12px var(--font-sans); color: #525252; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mb-h2h .r .v { width: 64px; flex: none; text-align: right; font: 400 12px var(--font-sans); font-variant-numeric: tabular-nums; color: #888888; }
-.mb-h2h .r .v.lead { font-weight: 500; color: #0D0D0D; }
 
 /* charts column */
 .mb-chart { display: flex; flex-direction: column; gap: 12px; padding: 16px 20px 14px; }
-.mb-chart .track { display: block; width: 100%; }
 .mb-chart .legend { display: flex; align-items: center; gap: 14px; font: 400 11px var(--font-sans); color: #525252; }
 .mb-chart .legend > span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 .mb-chart .legend i { display: block; width: 6px; height: 6px; border-radius: 2px; }
-.mb-chart .bands { display: flex; gap: 3px; }
-.mb-chart .band { display: flex; flex-direction: column; overflow: hidden; border-radius: 4px; }
-.mb-chart .band i { display: block; }
-.mb-chart .bandl { display: flex; gap: 3px; }
-.mb-chart .bandl > span { display: inline-flex; align-items: baseline; gap: 5px; overflow: hidden; white-space: nowrap; }
-.mb-chart .bandl b { font: 400 11px var(--font-sans); color: #525252; }
 .mb-chart .ends { display: flex; flex-direction: column; gap: 10px; padding: 2px 0; }
 .mb-chart .end { display: flex; align-items: center; gap: 10px; }
 .mb-chart .end .nm { width: 48px; flex: none; font: 400 12px var(--font-sans); color: #525252; }
 .mb-chart .end .bar { flex: 1; display: flex; height: 10px; gap: 1.5px; overflow: hidden; border-radius: 3px; }
 .mb-chart .end .bar i { display: block; height: 100%; }
 .mb-chart .end .mb-micro { width: 22px; text-align: right; }
+/* The endings chart on a card of its own (MatchEndings large): taller bars
+   and more air, so it carries the weight of its neighbours. */
+.mb-chart.is-lg { gap: 18px; padding: 20px 20px 18px; }
+.mb-chart.is-lg .ends { gap: 16px; }
+.mb-chart.is-lg .end .bar { height: 18px; border-radius: 4px; gap: 2px; }
+.mb-chart.is-lg .end .nm { font-size: 13px; }
 
-/* Pieces of the report shown outside the board (the home page's "what
-   you'll see" strip and how-it-works step). There is no `.dh` shell around
-   them there — it is a fixed 1440×900 artboard — so this restores the shell
-   utilities those pieces lean on, and lets the cards size to their column. */
+/* The pieces sit on the page with no `.dh` shell around them, so this
+   restores the shell utilities they lean on, and lets the cards size to
+   their column. */
 .mb-crop { font-family: var(--font-sans); color: #0D0D0D; text-align: left; }
 .mb-crop *, .mb-crop *::before, .mb-crop *::after { box-sizing: border-box; }
 .mb-crop .flex { flex: 1; }
 .mb-crop .tn { font-variant-numeric: tabular-nums; }
-.mb-crop .lnk { font: 400 11px var(--font-sans); color: #3B82F6; white-space: nowrap; }
-.mb-crop .lnk.strong { font-weight: 500; }
 .mb-crop img { display: inline-block; }
 .mb-crop .dh-ai .mk img { width: 9px; height: 6px; max-width: none; filter: brightness(0) invert(1); display: block; }
-.mb-crop .mb-h2h { flex: none; }
 
 /* ---------------- Team Home ----------------
    The program workspace's Home on the `.dh` shell: title row, program summary
