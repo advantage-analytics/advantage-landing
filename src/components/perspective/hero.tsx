@@ -135,13 +135,18 @@ export function PerspectiveHero() {
           </div>
         </div>
         <div className="hh-scene">
-          {/* The same photo again, stretched and blurred: a soft halo of the
-              wall and the court that fades out before it reaches the copy. */}
-          <div className="hh-ext" aria-hidden="true">
-            <Image src={HERO_PHOTO.src} alt="" fill sizes="320px" />
-          </div>
-          <div className="hh-photo" style={{ aspectRatio: HERO_PHOTO.ratio }}>
-            <Image src={HERO_PHOTO.src} alt={HERO_PHOTO.alt} fill preload sizes="(max-width: 1023px) 80vw, 480px" placeholder="blur" />
+          <div className="hh-figure" style={{ aspectRatio: HERO_PHOTO.ratio }}>
+            {/* The same photo again, blurred: a soft halo of the wall and the
+                court, wider than the picture, that the picture's edges melt
+                into and that itself thins out to nothing. */}
+            <div className="hh-ext" aria-hidden="true">
+              <div className="hh-ext-img">
+                <Image src={HERO_PHOTO.src} alt="" fill sizes="320px" />
+              </div>
+            </div>
+            <div className="hh-photo">
+              <Image src={HERO_PHOTO.src} alt={HERO_PHOTO.alt} fill preload sizes="(max-width: 1023px) 80vw, 480px" placeholder="blur" />
+            </div>
           </div>
         </div>
       </div>
