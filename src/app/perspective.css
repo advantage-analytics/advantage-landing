@@ -705,12 +705,24 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    HUMAN HERO — plain copy beside a photo, then the dashboard on a
    computer screen under both, fading into the next section (hero.tsx).
 
-   One responsive composition, real DOM at real sizes, on the page's navy.
+   One responsive composition, real DOM at real sizes, on the brand mesh
+   with the live dot grid.
    ============================================================ */
 /* --hh-lap: how far the screen laps up over the top tier.
    --hh-copy: the copy column's width; the photo starts where it ends. */
 .hh { --hh-lap: 64px; --hh-copy: 630px; --hh-gutter: max(40px, calc((100vw - 1240px) / 2 + 40px));
-  position: relative; overflow: hidden; isolation: isolate; color: #fff; background: #0B1533; }
+  position: relative; overflow: hidden; isolation: isolate; color: #fff;
+  /* The brand mesh (.brand-mesh, from the dashboard's login page), the
+     backdrop the hero has always had; the live dot grid sits over it. */
+  background:
+    radial-gradient(ellipse 80% 70% at 10% 15%, #60A5FA 0%, transparent 50%),
+    radial-gradient(ellipse 65% 80% at 85% 10%, #38BDF8 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 40% 50%, #7BA4F7 0%, transparent 50%),
+    radial-gradient(ellipse 60% 70% at 80% 70%, #818CF8 0%, transparent 45%),
+    radial-gradient(ellipse 55% 55% at 50% 35%, #93C5FD 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 15% 80%, #4F8EF7 0%, transparent 45%),
+    radial-gradient(ellipse 50% 50% at 70% 45%, #A78BFA 0%, transparent 40%),
+    linear-gradient(135deg, #5B8DEF, #7BA4F7, #818CF8); }
 .hh-inner { position: relative; z-index: 1; display: flex; align-items: center; padding-top: 128px; padding-bottom: 120px;
   min-height: clamp(600px, 78vh, 760px); min-height: clamp(600px, 78svh, 760px); }
 .hh-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: var(--hh-copy); }
@@ -736,7 +748,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    leaves them, sharp, with no seam.
    One mask over the whole box does the fade: a single long eased ramp from
    nothing at the far left to full just before the player, so the extended
-   background thins into the navy across the width of the copy instead of
+   background thins into the mesh across the width of the copy instead of
    over the picture's last few pixels. */
 .hh-top { position: relative; }
 .hh-scene { position: absolute; z-index: 0; left: 0; right: 0; top: 76px; bottom: var(--hh-lap); pointer-events: none; }
@@ -756,6 +768,25 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
 .hh-ext > div { position: absolute; top: 0; bottom: 0; left: 0; width: 3%; overflow: hidden;
   transform-origin: 100% 50%; transform: scaleX(61); }
 .hh-ext > div > img { width: 3333.34% !important; max-width: none; }
+
+/* The player-tracking box: the photo's box again (same place, same shape),
+   unmasked, with a thin outline, heavier corner brackets and a label chip
+   riding its top-left corner, the way the app marks a tracked player. */
+.hh-track { position: absolute; top: 0; bottom: 0; right: max(0px, calc(var(--hh-gutter) - 80px)); aspect-ratio: var(--hh-ratio);
+  z-index: 1; pointer-events: none; }
+.hh-track .box { position: absolute; border: 1px solid rgba(255,255,255,.55); border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(11,21,51,.18); }
+.hh-track .c { position: absolute; width: 16px; height: 16px; border: 0 solid #fff; }
+.hh-track .tl { top: -2px; left: -2px; border-top-width: 2.5px; border-left-width: 2.5px; border-top-left-radius: 5px; }
+.hh-track .tr { top: -2px; right: -2px; border-top-width: 2.5px; border-right-width: 2.5px; border-top-right-radius: 5px; }
+.hh-track .bl { bottom: -2px; left: -2px; border-bottom-width: 2.5px; border-left-width: 2.5px; border-bottom-left-radius: 5px; }
+.hh-track .br { bottom: -2px; right: -2px; border-bottom-width: 2.5px; border-right-width: 2.5px; border-bottom-right-radius: 5px; }
+.hh-track .tag { position: absolute; left: -2px; bottom: calc(100% + 8px); display: inline-flex; align-items: center; gap: 7px;
+  height: 26px; padding: 0 10px 0 9px; border-radius: 6px; white-space: nowrap;
+  background: var(--signal-blue); color: #fff; font: var(--fw-medium) 12px/1 var(--font-sans); letter-spacing: -.05px;
+  box-shadow: 0 6px 18px -6px rgba(11,21,51,.55); }
+.hh-track .dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.28); }
+.hh-track .team { padding-left: 7px; border-left: 1px solid rgba(255,255,255,.4); font-weight: var(--fw-regular); color: rgba(255,255,255,.88); }
 
 /* The computer screen: the dashboard Home's 1440 artboard under a browser
    bar, scaled to the container by useScaleToFit and cut off partway down.
@@ -794,6 +825,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .hh-scene { position: relative; top: auto; bottom: auto; margin-top: 8px; }
   .hh-wide { position: relative; right: auto; aspect-ratio: auto;
     --hh-ramp: linear-gradient(to right, transparent 0%, rgba(0,0,0,.08) 8%, rgba(0,0,0,.3) 18%, rgba(0,0,0,.65) 28%, #000 38%); }
+  .hh-track { right: 0; width: min(78%, 380px); }
   .hh-figure { position: relative; width: min(78%, 380px); margin-left: auto; }
   .hh-ext { width: min(78%, 380px); }
   .hh-screen { width: 150%; border-radius: 12px 12px 0 0; }

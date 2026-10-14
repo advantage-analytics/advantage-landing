@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { DashboardHome } from "./dashboard-home";
+import { LiveDots } from "./live-dots";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
 import { links } from "@/lib/links";
 import { trackCta, trackEvent } from "@/lib/analytics";
@@ -19,13 +20,18 @@ import { BETA_END_SHORT } from "@/lib/pilot";
    import, rewrite `alt`, and set `ratio` to the new file's width / height.
    The left ~3% of the frame is what gets stretched, so it must be plain
    background (a wall, a windscreen, sky) with nothing of the subject in it.
+   `track` places the player-tracking box: redraw it around the new player,
+   or change its label, whenever the photo changes.
    =========================================================== */
 import heroPhoto from "../../../public/assets/marketing/hero-fist-pump.jpg";
 
 const HERO_PHOTO = {
   src: heroPhoto,
-  alt: "A tennis player in a blue shirt and cap shouts and pumps a fist after winning a point.",
+  alt: "Rudy Quan of UCLA shouts and pumps a fist after winning a point.",
   ratio: 4 / 5,
+  // The player-tracking box drawn over the photo, as the app draws one on
+  // match video: its edges as percentages of the photo, and its label.
+  track: { left: 31, top: 6, width: 42, height: 89, label: "Rudy Quan", team: "UCLA" },
 };
 
 const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
@@ -47,9 +53,11 @@ const HERO_SUB =
 /* ===========================================================
    Human hero — one responsive composition, two tiers.
 
-   Top: the copy on navy, and beside it the photo, standing on the
+   The backdrop is the site's brand mesh with the live dot grid over it,
+   as the hero has always had.
+   Top: the copy, and beside it the photo, standing on the
    screen's top edge and shown whole. Its background is extended to the
-   left behind the copy and fades into the navy on one long ramp, so the
+   left behind the copy and fades into the mesh on one long ramp, so the
    player is never cut off and the picture has no edge on the copy side.
    Below both: the dashboard on a computer screen, running the container's
    width, fading out into the next section so the hero has no hard bottom
@@ -122,6 +130,7 @@ function HeroActions() {
 export function PerspectiveHero() {
   return (
     <header className="hh" id="top">
+      <LiveDots />
       <div className="hh-top">
         <div className="wrap hh-inner">
           <div className="hh-copy">
@@ -148,6 +157,27 @@ export function PerspectiveHero() {
               <div>
                 <Image src={HERO_PHOTO.src} alt="" fill sizes="(max-width: 1023px) 80vw, 480px" />
               </div>
+            </div>
+          </div>
+          {/* The player-tracking box, as the app draws it on match video:
+              outside the photo's fade mask so it stays crisp. Decorative —
+              the photo's alt text already names the player. */}
+          <div className="hh-track" aria-hidden="true">
+            <div
+              className="box"
+              style={{
+                left: `${HERO_PHOTO.track.left}%`,
+                top: `${HERO_PHOTO.track.top}%`,
+                width: `${HERO_PHOTO.track.width}%`,
+                height: `${HERO_PHOTO.track.height}%`,
+              }}
+            >
+              <i className="c tl" /><i className="c tr" /><i className="c bl" /><i className="c br" />
+              <span className="tag">
+                <span className="dot" />
+                {HERO_PHOTO.track.label}
+                <span className="team">{HERO_PHOTO.track.team}</span>
+              </span>
             </div>
           </div>
         </div>

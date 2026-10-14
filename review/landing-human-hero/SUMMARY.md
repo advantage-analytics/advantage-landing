@@ -14,6 +14,10 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
   behind the copy (the photo's own left edge, stretched sideways, so the wall
   and court carry on sharp and seamless), and that whole strip fades into the
   navy on one long gradient.
+- The hero backdrop is the original brand mesh gradient with the live dot
+  grid over it, as the old hero had.
+- A player-tracking box is drawn around the player, labelled "Rudy Quan |
+  UCLA", in the style the app uses to mark a tracked player on video.
 - Under the copy and the photo, the dashboard sits on a computer screen (a
   browser window, full container width) that fades out into the next section.
   On phones it is drawn wider than the viewport so it stays legible.
@@ -131,10 +135,13 @@ Run with Playwright against the production build. Screenshots here:
 
 ## What you need to do
 
-1. **Clear the hero photo for use.** It shows a recognisable player, with a
-   school mark and an apparel logo on the kit. Confirm you have the player's
-   release and that the marks are fine to show (or have them retouched out)
-   before this takes traffic.
+1. **Clear the hero photo and the name for use.** The hero now names the
+   player ("Rudy Quan", "UCLA") on a recognisable photo, with a school mark
+   and an apparel logo on the kit. Confirm you have the player's written
+   consent to use their name and likeness in marketing, and that showing the
+   university's name and marks is fine (college athletes' name-and-likeness
+   rights and school trademark rules can both apply). The name and team live
+   in `HERO_PHOTO.track` in `hero.tsx` if they need to change.
 2. **Shoot the rest** (`assets/PHOTO_SHOTLIST.md`) when you can; swapping the
    hero is one import line in `hero.tsx` plus the alt text.
 3. **Regenerate `src/app/opengraph-image.jpg`**. Link previews still show
