@@ -7,11 +7,12 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
 
 **Hero** — `src/components/perspective/hero.tsx`, `src/app/perspective.css`
 - The blue mesh + tilted full-size dashboard is replaced by plain copy on navy
-  with a photo beside it (`public/assets/marketing/hero-coaching.jpg`, the
-  coach-and-player photo you supplied).
-- The photo is pinned to the hero's right edge and shown whole at 4:3, so
-  neither person is cropped. Its left edge dissolves into the navy where it
-  meets the headline; the top and bottom edges fade too.
+  with a photo beside it (`public/assets/marketing/hero-fist-pump.jpg`, the
+  celebrating-player photo you supplied).
+- The photo is on the right and shown whole at its own 4:5 shape, so the
+  player is never cropped. A blurred, stretched copy of it carries the wall
+  and the court out to the left behind the copy, under a navy wash; the
+  photo's edges fade into that, so it has no frame.
 - Under the copy and the photo, the dashboard sits on a computer screen (a
   browser window, full container width) that fades out into the next section.
   On phones it is drawn wider than the viewport so it stays legible.
@@ -21,8 +22,8 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
   alt text.
 - Kept: the "Free through Dec 31" eyebrow and both sign-up buttons (Join Free
   Beta, Find Your Team). Added: a "See how it works" link to `#how`.
-- Earlier passes used `elc-court.jpg` and then a cut-out player; neither is
-  used now and the cut-out file has been removed.
+- Earlier passes used `elc-court.jpg`, a cut-out player, and a coaching
+  photo; none is used now, and the last two files have been removed.
 
 **How it works** — `src/components/perspective/sections.tsx`
 - Moved directly under the hero and reframed as Capture → Upload → Analyze.
@@ -102,8 +103,6 @@ Run with Playwright against the production build. Screenshots here:
 5. **Dark hero, not light.** The nav is transparent with a white logo at the
    top of the page, so the copy side stays navy and the photo gets a navy
    shade along its top for the nav links.
-5a. **Headline wraps to three lines on desktop** so the copy column is narrow
-   enough for the whole photo to fit beside it.
 6. **Floating card is a crop, not a shrunk window.** The whole dashboard at
    that size is unreadable, so the card shows the season summary at 60% scale
    and drops the browser chrome.
@@ -131,9 +130,10 @@ Run with Playwright against the production build. Screenshots here:
 
 ## What you need to do
 
-1. **Clear the hero photo for use.** It shows a recognisable adult and a
-   child. Confirm you hold a licence or release for the photo that covers
-   marketing use, including a guardian's consent for the child.
+1. **Clear the hero photo for use.** It shows a recognisable player, with a
+   school mark and an apparel logo on the kit. Confirm you have the player's
+   release and that the marks are fine to show (or have them retouched out)
+   before this takes traffic.
 2. **Shoot the rest** (`assets/PHOTO_SHOTLIST.md`) when you can; swapping the
    hero is one import line in `hero.tsx` plus the alt text.
 3. **Regenerate `src/app/opengraph-image.jpg`**. Link previews still show

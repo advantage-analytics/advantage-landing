@@ -1,21 +1,24 @@
 # Photo shot list — landing page
 
 Six shots for the home page, in priority order. The hero currently runs
-`public/assets/marketing/hero-coaching.jpg` (a coach and a young player on a
-clay court); the slot is at the top of `src/components/perspective/hero.tsx`.
+`public/assets/marketing/hero-fist-pump.jpg` (a player celebrating a point);
+the slot is at the top of `src/components/perspective/hero.tsx`.
 
 ## How the hero uses a photo
 
-- The photo is shown **whole, at 4:3**, pinned to the hero's right edge. It is
-  never cropped at the sides, so everyone in the frame stays in.
-- Its **left ~15% dissolves into the navy backdrop** where it meets the
-  headline, and a thin strip along the top and bottom fades too. Keep people
-  and anything important out of the left 15% and the top 15%.
-- **Desktop**: copy on the left, photo on the right, up to 900 px wide.
-- **Mobile**: copy first, then the photo at full width with its top edge
-  fading in, then the dashboard screen.
-- So: **landscape 4:3, people in the middle and right of the frame, a quiet
-  left edge.** A bright photo is fine; the nav gets its own shade.
+- The photo is shown **whole, at its own shape**, on the right of the hero. It
+  is never cropped, so the player stays fully in frame, head to shoes.
+- A **blurred, stretched copy of the same photo** runs across the rest of the
+  hero behind the headline, under a navy wash. The photo's own edges are faded
+  into it, so there is no frame. Keep the subject out of the outer ~12% of
+  the frame on every side: that is the fade.
+- This works best when the **background is dark and simple** (a windscreen, a
+  wall, an evening sky). A bright or busy background will show through behind
+  the headline.
+- **Desktop**: copy on the left, photo on the right, as tall as the top of
+  the hero. **Mobile**: copy first, then the photo, right-aligned.
+- So: **portrait (4:5), full body with room around it, dark plain backdrop.**
+  A subject facing left looks toward the headline.
 
 ## For every shot
 
@@ -27,7 +30,8 @@ clay court); the slot is at the top of `src/components/perspective/hero.tsx`.
   are as welcome as college facilities.
 - **No visible third-party logos**: no sponsor banners, no scoreboard brands,
   keep apparel and racket logos small or turned away. (The current hero
-  photo shows small logos on a racket and the coach's shoes.)
+  photo shows a school mark and an apparel logo on the shirt, cap, shorts
+  and shoes.)
 - Signed releases from everyone recognisable.
 - Deliver as sRGB JPEG, named as below, into `public/assets/marketing/`.
 
@@ -107,7 +111,8 @@ step in How it works.
 
 ## Swapping the hero photo
 
-1. Put the photo at `public/assets/marketing/hero-<name>.jpg` (4:3 landscape).
+1. Put the photo at `public/assets/marketing/hero-<name>.jpg`.
 2. In `src/components/perspective/hero.tsx`, change the one `heroPhoto`
    import to point at it.
-3. Rewrite `HERO_PHOTO.alt` to describe the new picture.
+3. Rewrite `HERO_PHOTO.alt` to describe the new picture, and set
+   `HERO_PHOTO.ratio` to the file's width / height.

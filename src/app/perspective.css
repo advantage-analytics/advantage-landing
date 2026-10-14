@@ -709,14 +709,14 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    ============================================================ */
 /* --hh-lap: how far the screen laps up over the top tier.
    --hh-copy: the copy column's width; the photo starts where it ends. */
-.hh { --hh-lap: 64px; --hh-copy: 500px; --hh-gutter: max(40px, calc((100vw - 1240px) / 2 + 40px));
+.hh { --hh-lap: 64px; --hh-copy: 630px; --hh-gutter: max(40px, calc((100vw - 1240px) / 2 + 40px));
   position: relative; overflow: hidden; isolation: isolate; color: #fff; background: #0B1533; }
 .hh-inner { position: relative; z-index: 1; display: flex; align-items: center; padding-top: 128px; padding-bottom: 120px;
-  min-height: clamp(560px, 72vh, 680px); min-height: clamp(560px, 72svh, 680px); }
+  min-height: clamp(600px, 78vh, 760px); min-height: clamp(600px, 78svh, 760px); }
 .hh-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: var(--hh-copy); }
 .hh-title { font-size: 48px; line-height: 1.06; text-wrap: balance; }
 .hh-title span { display: block; }
-.hh-sub { max-width: 42ch; color: rgba(255,255,255,.9); font-weight: var(--fw-regular); }
+.hh-sub { max-width: 46ch; color: rgba(255,255,255,.9); font-weight: var(--fw-regular); }
 .hh-copy .h-actions { margin-top: 6px; }
 /* The secondary action: a quiet text link down to How it works, under the
    two sign-up lanes rather than beside them, so it never competes. */
@@ -726,24 +726,30 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   transition: color 160ms var(--ease-primary), text-decoration-color 160ms var(--ease-primary); }
 .hh-more:hover { color: #fff; text-decoration-color: #fff; }
 
-/* The photo: whole, at its own 4:3, pinned to the hero's right edge and
-   standing on the screen's top edge. It reaches left to just inside the copy
-   column; a mask dissolves that left strip (and a sliver along the bottom,
-   for where it runs past the screen's corner, and the top) into the navy,
-   so the picture has no hard edge anywhere it meets the backdrop. Sized by width, so the people in it are
-   never cropped; only spare ceiling can run off the hero's top. */
+/* The scene: the tier from just under the nav to the screen's top edge.
+   Two layers of the same photo. .hh-ext stretches it across the full width
+   and blurs it (scaled a little sideways so the blur has no soft edge), so the wall and the court run out to the left at the same
+   heights they have in the picture; a navy wash over it keeps the copy side
+   dark. .hh-photo is the picture itself, whole, at its own shape
+   (aspect-ratio is set inline from the photo slot): its height is the
+   scene's and its width follows, so it is never cropped. Its side edges are
+   masked away, so it melts into its own blurred extension. */
 .hh-top { position: relative; }
-.hh-photo { position: absolute; z-index: 0; right: 0; bottom: var(--hh-lap);
-  width: min(calc(100vw - var(--hh-gutter) - var(--hh-copy) + 40px), 900px); aspect-ratio: 4 / 3; pointer-events: none;
-  --m: linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 7%, #000 17%),
-       linear-gradient(to top, transparent 0%, #000 5%),
-       linear-gradient(to bottom, transparent 0%, #000 14%);
+.hh-scene { position: absolute; z-index: 0; left: 0; right: 0; top: 76px; bottom: var(--hh-lap); pointer-events: none; }
+/* The extension fades out at its top (toward the nav) and its bottom (so it
+   has no edge in the gutters beside the screen); the wash rides inside it. */
+.hh-ext { position: absolute; inset: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 93%, transparent 100%); }
+.hh-ext img { object-fit: fill; filter: blur(40px) saturate(.9); scale: 1.16 1; }
+.hh-ext::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(11,21,51,.94) 0%, rgba(11,21,51,.86) 42%, rgba(11,21,51,.45) 62%, rgba(11,21,51,.12) 78%, rgba(11,21,51,.12) 100%); }
+.hh-photo { position: absolute; z-index: 1; top: 0; bottom: 0; right: max(0px, calc(var(--hh-gutter) - 80px));
+  --m: linear-gradient(to right, transparent 0%, #000 16%, #000 86%, transparent 100%),
+       linear-gradient(to bottom, transparent 0%, #000 6%, #000 93%, transparent 100%);
   -webkit-mask-image: var(--m); mask-image: var(--m);
   -webkit-mask-composite: source-in; mask-composite: intersect; }
 .hh-photo img { object-fit: cover; }
-/* The nav's shade: navy down from the top, over the photo only. */
-.hh-photo::after { content: ""; position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(11,21,51,.78) 0%, rgba(11,21,51,.4) 14%, rgba(11,21,51,0) 30%); }
 
 /* The computer screen: the dashboard Home's 1440 artboard under a browser
    bar, scaled to the container by useScaleToFit and cut off partway down.
@@ -768,20 +774,20 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
     rgba(250,250,250,.7) 64%, rgba(250,250,250,.92) 82%, var(--surface-page) 96%); }
 
 @media (max-width: 1239px) {
-  .hh { --hh-copy: 440px; }
+  .hh { --hh-copy: 530px; }
   .hh-title { font-size: 42px; letter-spacing: -1.2px; }
 }
 /* Below 1024 the photo can no longer sit beside the copy: it drops into the
-   flow under it at full width, its top edge dissolving into the navy, and
-   the screen is drawn wider than the viewport so it stays legible. */
+   flow under it, right-aligned, and the screen is drawn wider than the
+   viewport so it stays legible. */
 @media (max-width: 1023px) {
   .hh { --hh-lap: 0px; --hh-copy: 560px; }
   .hh-inner { flex-direction: column; align-items: flex-start; min-height: 0; padding-top: 104px; padding-bottom: 0; }
   .hh-copy { gap: 18px; }
   .hh-title { font-size: 44px; }
-  .hh-photo { position: relative; right: auto; bottom: auto; width: 100%; margin-top: 8px;
-    --m: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.4) 12%, #000 30%); }
-  .hh-photo::after { content: none; }
+  .hh-scene { position: relative; top: auto; bottom: auto; margin-top: 8px; }
+  .hh-ext::after { background: linear-gradient(90deg, rgba(11,21,51,.8) 0%, rgba(11,21,51,.3) 40%, rgba(11,21,51,.1) 100%); }
+  .hh-photo { position: relative; top: auto; right: auto; bottom: auto; width: min(78%, 380px); margin-left: auto; }
   .hh-screen { width: 150%; border-radius: 12px 12px 0 0; }
   .hh::after { height: clamp(150px, 40vw, 300px); }
 }
@@ -803,7 +809,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .hh-sub { font-size: 15px; max-width: 60ch; }
   .hh-copy .h-actions { flex-direction: row; width: auto; }
   .hh-copy .hbtn { width: auto; height: 46px; }
-  .hh-photo { display: none; }
+  .hh-scene { display: none; }
 }
 
 /* ============================================================

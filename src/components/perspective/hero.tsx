@@ -10,18 +10,19 @@ import { BETA_END_SHORT } from "@/lib/pilot";
 
 /* ===========================================================
    HERO PHOTO SLOT
-   A landscape photo, shown whole (never cropped at the sides) against the
-   hero's right edge. Its left edge is faded into the navy backdrop so the
-   copy beside it stays clear. To swap: drop another landscape photo at
-   public/assets/marketing/hero-*.jpg, change this one import, and rewrite
-   `alt`. Keep the people out of the left ~12% of the frame: that strip is
-   the fade.
+   A portrait photo (4:5), shown whole, never cropped, on the right of
+   the hero. A blurred, stretched copy of it runs out to the left behind
+   the copy, so the picture has no frame and its background carries on. To swap: drop another
+   photo at public/assets/marketing/hero-*.jpg, change this one import,
+   rewrite `alt`, and set `ratio` to the new file's width / height. Keep
+   the subject out of the outer ~10% of the frame: that is the fade.
    =========================================================== */
-import heroPhoto from "../../../public/assets/marketing/hero-coaching.jpg";
+import heroPhoto from "../../../public/assets/marketing/hero-fist-pump.jpg";
 
 const HERO_PHOTO = {
   src: heroPhoto,
-  alt: "A coach feeds balls from a basket to a young player on a covered clay court.",
+  alt: "A tennis player in a blue shirt and cap shouts and pumps a fist after winning a point.",
+  ratio: "4 / 5",
 };
 
 const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
@@ -43,11 +44,10 @@ const HERO_SUB =
 /* ===========================================================
    Human hero — one responsive composition, two tiers.
 
-   Top: the copy on navy, and beside it the photo, pinned to the hero's
-   right edge and shown whole. The photo runs left until it meets the copy
-   column and dissolves into the navy there, so nobody in it is cut off and
-   nothing sits behind the type. A shade along its top keeps the
-   transparent nav legible over a bright picture.
+   Top: the copy on navy, and beside it the photo, standing on the
+   screen's top edge and shown whole. A blurred copy of it extends its
+   background across the tier under a navy wash, so the player is never
+   cut off and nothing sharp sits behind the type.
    Below both: the dashboard on a computer screen, running the container's
    width, fading out into the next section so the hero has no hard bottom
    edge.
@@ -134,8 +134,15 @@ export function PerspectiveHero() {
             </a>
           </div>
         </div>
-        <div className="hh-photo">
-          <Image src={HERO_PHOTO.src} alt={HERO_PHOTO.alt} fill preload sizes="(max-width: 1023px) 100vw, 66vw" placeholder="blur" />
+        <div className="hh-scene">
+          {/* The same photo again, stretched across the tier and blurred: it
+              carries the wall and the court out to the left, behind the copy. */}
+          <div className="hh-ext" aria-hidden="true">
+            <Image src={HERO_PHOTO.src} alt="" fill sizes="320px" />
+          </div>
+          <div className="hh-photo" style={{ aspectRatio: HERO_PHOTO.ratio }}>
+            <Image src={HERO_PHOTO.src} alt={HERO_PHOTO.alt} fill preload sizes="(max-width: 1023px) 80vw, 480px" placeholder="blur" />
+          </div>
         </div>
       </div>
       <div className="wrap hh-screen-wrap">

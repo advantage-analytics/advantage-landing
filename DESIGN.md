@@ -4,7 +4,7 @@ Visual system for the Advantage landing page, vendored from the `advantage-dashb
 
 ## Visual Theme
 
-Light, clean, high-clarity — Stripe/Linear tech-minimal. One deliberate dark band (final CTA) for contrast as punctuation. Borders for structure, soft shadows for elevation, generous whitespace. Photography of real players is the hero imagery: a photo pinned to the hero's right edge, its left edge dissolving into the navy backdrop so the white type beside it stays clear; product UI sits under it on a computer screen that fades into the next section, and as the proof further down the page.
+Light, clean, high-clarity — Stripe/Linear tech-minimal. One deliberate dark band (final CTA) for contrast as punctuation. Borders for structure, soft shadows for elevation, generous whitespace. Photography of real players is the hero imagery: a photo on the hero's right, shown whole, with a blurred copy of it carrying its background out behind the copy under a navy wash so the white type stays clear; product UI sits under it on a computer screen that fades into the next section, and as the proof further down the page.
 
 ## Color
 
