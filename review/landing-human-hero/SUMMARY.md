@@ -6,21 +6,23 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
 ## What changed
 
 **Hero** — `src/components/perspective/hero.tsx`, `src/app/perspective.css`
-- The blue mesh + tilted full-size dashboard is replaced by a cut-out player
-  (`public/assets/marketing/hero-player.png`, from the photo you supplied) on
-  a navy backdrop lit blue behind them, with copy on the left.
-- Under the copy and the player, the dashboard sits on a computer screen (a
-  browser window, full container width) that overlaps the top tier and fades
-  out into the next section. On phones it is drawn wider than the viewport so
-  it stays legible and runs off the right edge. This replaced the small
-  floating card from the earlier pass.
+- The blue mesh + tilted full-size dashboard is replaced by plain copy on navy
+  with a photo beside it (`public/assets/marketing/hero-coaching.jpg`, the
+  coach-and-player photo you supplied).
+- The photo is pinned to the hero's right edge and shown whole at 4:3, so
+  neither person is cropped. Its left edge dissolves into the navy where it
+  meets the headline; the top and bottom edges fade too.
+- Under the copy and the photo, the dashboard sits on a computer screen (a
+  browser window, full container width) that fades out into the next section.
+  On phones it is drawn wider than the viewport so it stays legible.
 - One responsive layout replaces the old pair (a scaled 1440 px artboard for
   desktop plus a separate mobile hero).
-- The player goes through `next/image` (preloaded) with real alt text.
+- The photo goes through `next/image` (preloaded, blur placeholder) with real
+  alt text.
 - Kept: the "Free through Dec 31" eyebrow and both sign-up buttons (Join Free
   Beta, Find Your Team). Added: a "See how it works" link to `#how`.
-- The first version used `elc-court.jpg` full-bleed as an interim; that is no
-  longer referenced by the hero.
+- Earlier passes used `elc-court.jpg` and then a cut-out player; neither is
+  used now and the cut-out file has been removed.
 
 **How it works** — `src/components/perspective/sections.tsx`
 - Moved directly under the hero and reframed as Capture → Upload → Analyze.
@@ -98,11 +100,10 @@ Run with Playwright against the production build. Screenshots here:
 4. **Three hero actions.** Both sign-up lanes stay as buttons; "See how it
    works" is a text link under them so it doesn't compete.
 5. **Dark hero, not light.** The nav is transparent with a white logo at the
-   top of the page, so the hero has to stay dark. The cut-out stands on navy
-   with a blue glow behind it; the gold shirt carries the contrast.
-5a. **Cut-out made locally** with macOS subject detection, so the photo never
-   left this machine. The edge is clean at page size; a designer's hand-cut
-   would be crisper around the racket strings if you want to polish it.
+   top of the page, so the copy side stays navy and the photo gets a navy
+   shade along its top for the nav links.
+5a. **Headline wraps to three lines on desktop** so the copy column is narrow
+   enough for the whole photo to fit beside it.
 6. **Floating card is a crop, not a shrunk window.** The whole dashboard at
    that size is unreadable, so the card shows the season summary at 60% scale
    and drops the browser chrome.
@@ -130,10 +131,9 @@ Run with Playwright against the production build. Screenshots here:
 
 ## What you need to do
 
-1. **Clear the hero photo for use.** It shows a recognisable player, with a
-   school mark and an apparel logo on the shirt and cap. Confirm you have the
-   player's release and that the marks are fine to show (or have them
-   retouched out) before this takes traffic.
+1. **Clear the hero photo for use.** It shows a recognisable adult and a
+   child. Confirm you hold a licence or release for the photo that covers
+   marketing use, including a guardian's consent for the child.
 2. **Shoot the rest** (`assets/PHOTO_SHOTLIST.md`) when you can; swapping the
    hero is one import line in `hero.tsx` plus the alt text.
 3. **Regenerate `src/app/opengraph-image.jpg`**. Link previews still show

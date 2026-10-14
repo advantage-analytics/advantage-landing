@@ -10,18 +10,18 @@ import { BETA_END_SHORT } from "@/lib/pilot";
 
 /* ===========================================================
    HERO PHOTO SLOT
-   A cut-out player on a transparent background (PNG), standing on the
-   hero's own navy-and-blue backdrop. To swap: drop another cut-out at
-   public/assets/marketing/hero-*.png, change this one import, and rewrite
-   `alt` to describe the new picture. The figure is anchored to the hero's
-   bottom edge, so a cut-out that ends mid-body (as this one does at the
-   thigh) never shows its cut.
+   A landscape photo, shown whole (never cropped at the sides) against the
+   hero's right edge. Its left edge is faded into the navy backdrop so the
+   copy beside it stays clear. To swap: drop another landscape photo at
+   public/assets/marketing/hero-*.jpg, change this one import, and rewrite
+   `alt`. Keep the people out of the left ~12% of the frame: that strip is
+   the fade.
    =========================================================== */
-import heroPhoto from "../../../public/assets/marketing/hero-player.png";
+import heroPhoto from "../../../public/assets/marketing/hero-coaching.jpg";
 
 const HERO_PHOTO = {
   src: heroPhoto,
-  alt: "A tennis player in a gold shirt and blue cap pumps a fist between points, racket in hand.",
+  alt: "A coach feeds balls from a basket to a young player on a covered clay court.",
 };
 
 const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
@@ -43,17 +43,19 @@ const HERO_SUB =
 /* ===========================================================
    Human hero — one responsive composition, two tiers.
 
-   Top: a cut-out player on a navy backdrop lit blue behind them, the copy
-   on the dark side so the white type and the transparent nav stay legible.
+   Top: the copy on navy, and beside it the photo, pinned to the hero's
+   right edge and shown whole. The photo runs left until it meets the copy
+   column and dissolves into the navy there, so nobody in it is cut off and
+   nothing sits behind the type. A shade along its top keeps the
+   transparent nav legible over a bright picture.
    Below both: the dashboard on a computer screen, running the container's
-   width. The screen overlaps the top tier (the player stands behind its
-   top edge, which hides where the cut-out ends) and fades out into the
-   next section, so the hero has no hard bottom edge.
+   width, fading out into the next section so the hero has no hard bottom
+   edge.
 
-   • ≥1024px: copy left, player right, screen under both.
-   • <1024px: copy, then the player, then the screen, drawn wider than the
-     viewport so it stays legible and runs off the right edge. Both sign-up
-     buttons stay above the fold on a 375×667 phone.
+   • ≥1024px: copy left, photo right, screen under both.
+   • <1024px: copy, then the photo full width, then the screen, drawn wider
+     than the viewport so it stays legible and runs off the right edge. Both
+     sign-up buttons stay above the fold on a 375×667 phone.
    =========================================================== */
 
 // The screen is the dashboard Home's 1440 artboard under a browser bar, cut
@@ -117,27 +119,23 @@ function HeroActions() {
 export function PerspectiveHero() {
   return (
     <header className="hh" id="top">
-      <div className="wrap hh-inner">
-        <div className="hh-copy">
-          <span className="h-eyebrow">{HERO_EYEBROW}</span>
-          <h1 className="h-title hh-title">
-            <span>{HERO_TITLE[0]}</span> <span>{HERO_TITLE[1]}</span>
-          </h1>
-          <p className="h-sub hh-sub">{HERO_SUB}</p>
-          <HeroActions />
-          <a className="hh-more" href="#how" onClick={() => trackEvent("see_how_it_works_click", { placement: "home-hero" })}>
-            See how it works
-            <ArrowDown size={15} />
-          </a>
+      <div className="hh-top">
+        <div className="wrap hh-inner">
+          <div className="hh-copy">
+            <span className="h-eyebrow">{HERO_EYEBROW}</span>
+            <h1 className="h-title hh-title">
+              <span>{HERO_TITLE[0]}</span> <span>{HERO_TITLE[1]}</span>
+            </h1>
+            <p className="h-sub hh-sub">{HERO_SUB}</p>
+            <HeroActions />
+            <a className="hh-more" href="#how" onClick={() => trackEvent("see_how_it_works_click", { placement: "home-hero" })}>
+              See how it works
+              <ArrowDown size={15} />
+            </a>
+          </div>
         </div>
-        <div className="hh-stage">
-          <Image
-            className="hh-player"
-            src={HERO_PHOTO.src}
-            alt={HERO_PHOTO.alt}
-            preload
-            sizes="(max-width: 1023px) 240px, 420px"
-          />
+        <div className="hh-photo">
+          <Image src={HERO_PHOTO.src} alt={HERO_PHOTO.alt} fill preload sizes="(max-width: 1023px) 100vw, 66vw" placeholder="blur" />
         </div>
       </div>
       <div className="wrap hh-screen-wrap">
