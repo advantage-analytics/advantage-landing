@@ -702,21 +702,21 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
 }
 
 /* ============================================================
-   HUMAN HERO — a cut-out player, plain copy, and the dashboard as a
-   small floating card across the player's lower half (hero.tsx).
+   HUMAN HERO — a cut-out player and plain copy, then the dashboard on a
+   computer screen under both, fading into the next section (hero.tsx).
 
    One responsive composition, real DOM at real sizes. The backdrop is the
    page's navy, lit with the brand blue behind the figure so the cut-out
    has something to stand against; the copy side stays dark for the white
    type and the transparent nav.
    ============================================================ */
-.hh { position: relative; overflow: hidden; isolation: isolate; color: #fff; display: flex;
-  min-height: clamp(640px, 86vh, 800px); min-height: clamp(640px, 86svh, 800px);
+.hh { position: relative; overflow: hidden; isolation: isolate; color: #fff;
   background:
-    radial-gradient(ellipse 46% 78% at 80% 62%, rgba(59,130,246,.95) 0%, rgba(37,99,235,.55) 38%, transparent 72%),
-    radial-gradient(ellipse 40% 50% at 100% 0%, rgba(56,189,248,.35) 0%, transparent 70%),
+    radial-gradient(ellipse 46% 60% at 80% 38%, rgba(59,130,246,.95) 0%, rgba(37,99,235,.55) 38%, transparent 72%),
+    radial-gradient(ellipse 40% 36% at 100% 0%, rgba(56,189,248,.35) 0%, transparent 70%),
     #0B1533; }
-.hh-inner { position: relative; display: flex; align-items: center; padding-top: 112px; padding-bottom: 72px; }
+.hh-inner { position: relative; display: flex; align-items: center; padding-top: 128px; padding-bottom: 120px;
+  min-height: clamp(560px, 72vh, 680px); min-height: clamp(560px, 72svh, 680px); }
 /* The headline is sized so its longer sentence holds one line inside the
    copy column, and the column is sized to stop short of the stage. */
 .hh-copy { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: 630px; }
@@ -732,40 +732,56 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   transition: color 160ms var(--ease-primary), text-decoration-color 160ms var(--ease-primary); }
 .hh-more:hover { color: #fff; text-decoration-color: #fff; }
 
-/* The stage: the player and the card, one group. It runs the hero's full
-   height on the right so the figure can stand on the bottom edge (the
-   cut-out ends at the thigh; the edge hides the cut) and clear the nav. */
+/* The player's stage: the top tier's full height on the right. The figure
+   stands on the tier's bottom edge, which the screen below overlaps
+   (--hh-lap), so the cut-out's own bottom edge is always behind the screen. */
+.hh { --hh-lap: 64px; }
 .hh-stage { position: absolute; top: 0; bottom: 0; right: 40px; width: 460px; pointer-events: none; }
-.hh-player { position: absolute; bottom: 0; left: 50%; translate: -50% 0; height: 87%; width: auto; max-width: none;
+.hh-player { position: absolute; bottom: 0; left: 50%; translate: -50% 0; height: 86%; width: auto; max-width: none;
   filter: drop-shadow(0 24px 40px rgba(4,10,30,.45)); }
-/* The floating stats card: the dashboard Home at a legible scale, cropped
-   (not reflowed) to its season summary. The 1440 artboard is shifted past
-   its rail and header, then scaled; the card's overflow is the crop. */
-.hh-card { --s: .55; position: absolute; left: 0; right: 0; bottom: 56px; height: 262px; overflow: hidden;
-  border-radius: var(--r-card); background: #fff; border: 1px solid rgba(255,255,255,.7);
-  box-shadow: 0 40px 80px -28px rgba(4,10,30,.7), 0 14px 36px -16px rgba(4,10,30,.5); }
-.hh-dash { width: 1440px; transform-origin: top left; transform: scale(var(--s)) translate(-98px, -50px); }
+
+/* The computer screen: the dashboard Home's 1440 artboard under a browser
+   bar, scaled to the container by useScaleToFit and cut off partway down.
+   It laps up over the top tier, and the hero's ::after melts its lower part
+   (and the backdrop beside it) into the next section's page gray. */
+.hh-screen-wrap { position: relative; z-index: 2; margin-top: calc(var(--hh-lap) * -1); }
+.hh-screen { overflow: hidden; background: #fff; border: 1px solid rgba(255,255,255,.6); border-bottom: none;
+  border-radius: 14px 14px 0 0; pointer-events: none;
+  box-shadow: 0 -30px 90px -30px rgba(4,10,30,.75), 0 -10px 40px -18px rgba(4,10,30,.5); }
+.hh-screen-fit { position: relative; width: 100%; overflow: hidden; }
+.hh-screen-art { position: absolute; top: 0; left: 0; transform-origin: top left; }
+.hh-bar { display: flex; align-items: center; gap: 8px; padding: 0 15px; background: #F7F8FA; border-bottom: 1px solid var(--hairline); }
+.hh-bar .dots { display: flex; gap: 7px; }
+.hh-bar .dots i { display: block; width: 11px; height: 11px; border-radius: 50%; }
+.hh-bar .url { margin-left: 13px; flex: 1; max-width: 340px; height: 23px; display: flex; align-items: center; padding: 0 12px;
+  border-radius: var(--r-pill); background: #fff; border: 1px solid var(--hairline);
+  font: var(--fw-regular) 11px var(--font-sans); color: var(--ink-muted); }
+.hh::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; pointer-events: none;
+  height: clamp(150px, 24vw, 340px);
+  background: linear-gradient(to bottom,
+    rgba(250,250,250,0) 0%, rgba(250,250,250,.1) 22%, rgba(250,250,250,.36) 44%,
+    rgba(250,250,250,.7) 64%, rgba(250,250,250,.92) 82%, var(--surface-page) 96%); }
+
 @media (max-width: 1239px) {
   .hh-copy { max-width: 530px; }
   .hh-title { font-size: 42px; letter-spacing: -1.2px; }
   .hh-stage { width: 380px; }
-  .hh-card { --s: .46; height: 220px; }
 }
-/* Below 1024 the stage can no longer sit beside the copy: it drops into the
-   flow under it. The card runs off the hero's bottom-right, inviting the
-   scroll, and the player looks over its top edge. */
+/* Below 1024 the player can no longer stand beside the copy: the stage
+   drops into the flow under it, and the screen is drawn wider than the
+   viewport so it stays legible, running off the right edge. */
 @media (max-width: 1023px) {
-  .hh { min-height: 0; background:
-    radial-gradient(ellipse 90% 34% at 80% 82%, rgba(59,130,246,.9) 0%, rgba(37,99,235,.45) 45%, transparent 75%),
+  .hh { --hh-lap: 48px; background:
+    radial-gradient(ellipse 90% 30% at 78% 56%, rgba(59,130,246,.9) 0%, rgba(37,99,235,.45) 45%, transparent 75%),
     #0B1533; }
-  .hh-inner { flex-direction: column; align-items: flex-start; padding-top: 104px; padding-bottom: 0; }
+  .hh-inner { flex-direction: column; align-items: flex-start; min-height: 0; padding-top: 104px; padding-bottom: 0; }
   .hh-copy { max-width: 560px; gap: 18px; }
   .hh-title { font-size: 44px; }
   .hh-stage { position: relative; top: auto; bottom: auto; right: auto; flex: none; align-self: stretch; width: auto;
-    height: 330px; margin-top: 12px; }
-  .hh-player { left: auto; right: -6px; translate: none; height: 100%; }
-  .hh-card { --s: .56; left: 0; right: auto; bottom: 0; width: 520px; height: 190px;
-    border-bottom: none; border-radius: var(--r-card) var(--r-card) 0 0; }
+    height: 320px; margin-top: 8px; }
+  .hh-player { left: auto; right: 4%; translate: none; height: 100%; }
+  .hh-screen { width: 150%; border-radius: 12px 12px 0 0; }
+  .hh::after { height: clamp(150px, 40vw, 300px); }
 }
 @media (max-width: 767px) {
   .hh-inner { padding-top: 92px; }
@@ -773,13 +789,14 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .hh-sub { font-size: 16px; line-height: 1.5; }
   .hh-copy .h-actions { width: 100%; flex-direction: column; align-items: stretch; gap: 11px; margin-top: 4px; }
   .hh-copy .hbtn { width: 100%; height: 52px; font-size: 15px; }
-  .hh-stage { height: 300px; margin-top: 4px; }
-  .hh-card { height: 170px; }
+  .hh-stage { height: 280px; margin-top: 4px; }
+  .hh-screen { width: 230%; }
 }
 /* Short landscape phones: height is scarce, so the lanes sit side by side
-   and the stage is dropped; the copy and both buttons stay above the fold. */
+   and the player is dropped; the copy and both buttons stay above the fold. */
 @media (max-width: 1023px) and (orientation: landscape) and (max-height: 560px) {
-  .hh-inner { padding-top: 76px; padding-bottom: 28px; }
+  .hh { --hh-lap: 0px; }
+  .hh-inner { padding-top: 76px; padding-bottom: 32px; }
   .hh-copy { gap: 12px; }
   .hh-title { font-size: clamp(26px, 5.6vw, 36px); }
   .hh-title span { display: inline; }

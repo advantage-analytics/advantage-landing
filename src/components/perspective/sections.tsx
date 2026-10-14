@@ -26,7 +26,7 @@ import {
    importing it from here would drag the whole 1440px board onto /about,
    /contact, /pilot and the legal routes, none of which render it.
 
-   The hero's floating card is a crop of the dashboard Home; the breakdown
+   The hero's computer screen shows the dashboard Home; the breakdown
    band shows what a visitor gets after an upload — the single-match report —
    so the two product shots are two surfaces of the app, not the same one
    twice. The strip above it is three pieces of that same report, pulled out

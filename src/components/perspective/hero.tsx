@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { DashboardHome } from "./dashboard-home";
+import { useScaleToFit } from "@/lib/use-scale-to-fit";
 import { links } from "@/lib/links";
 import { trackCta, trackEvent } from "@/lib/analytics";
 import { BETA_END_SHORT } from "@/lib/pilot";
@@ -40,19 +41,49 @@ const HERO_SUB =
   "Upload a video from your phone. Advantage shows where you won points, where you lost them, and what to work on.";
 
 /* ===========================================================
-   Human hero — one responsive composition.
+   Human hero — one responsive composition, two tiers.
 
-   A cut-out player stands on a navy backdrop lit blue behind them; the
-   copy sits on the dark side, so the white type and the transparent nav
-   stay legible. The dashboard is no longer the hero: it is a small
-   floating card across the player's lower half — the person, and their
-   stats.
+   Top: a cut-out player on a navy backdrop lit blue behind them, the copy
+   on the dark side so the white type and the transparent nav stay legible.
+   Below both: the dashboard on a computer screen, running the container's
+   width. The screen overlaps the top tier (the player stands behind its
+   top edge, which hides where the cut-out ends) and fades out into the
+   next section, so the hero has no hard bottom edge.
 
-   • ≥1024px: copy left; player and card share a stage on the right.
-   • <1024px: copy first, then the stage in flow, the player looking over
-     the card as it runs off the hero's bottom edge. Both sign-up buttons
-     stay above the fold on a 375×667 phone.
+   • ≥1024px: copy left, player right, screen under both.
+   • <1024px: copy, then the player, then the screen, drawn wider than the
+     viewport so it stays legible and runs off the right edge. Both sign-up
+     buttons stay above the fold on a 375×667 phone.
    =========================================================== */
+
+// The screen is the dashboard Home's 1440 artboard under a browser bar, cut
+// off partway down: the fade covers the cut. The fit hook and the
+// pre-hydration height reservation (aspect-ratio, inline below) share these.
+const SCREEN_W = 1440;
+const SCREEN_BAR_H = 40;
+const SCREEN_H = SCREEN_BAR_H + 640;
+
+function HeroScreen() {
+  const { outerRef, innerRef } = useScaleToFit({ width: SCREEN_W, height: SCREEN_H });
+  return (
+    // Decorative: the same dashboard Home the product bands describe.
+    <div className="hh-screen" aria-hidden="true">
+      <div ref={outerRef} className="hh-screen-fit" style={{ aspectRatio: `${SCREEN_W} / ${SCREEN_H}` }}>
+        <div ref={innerRef} className="hh-screen-art" style={{ width: SCREEN_W }} inert>
+          <div className="hh-bar" style={{ height: SCREEN_BAR_H }}>
+            <span className="dots">
+              <i style={{ background: "#FF5F57" }} />
+              <i style={{ background: "#FEBC2E" }} />
+              <i style={{ background: "#28C840" }} />
+            </span>
+            <span className="url">app.advantage-analytics.com</span>
+          </div>
+          <DashboardHome />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // The two lanes: individuals sign up in the app, and so do coaches, who then
 // find their team there.
@@ -107,14 +138,10 @@ export function PerspectiveHero() {
             preload
             sizes="(max-width: 1023px) 240px, 420px"
           />
-          {/* Decorative: the same dashboard Home the product bands describe,
-              cropped to its season summary. */}
-          <div className="hh-card" aria-hidden="true">
-            <div className="hh-dash" inert>
-              <DashboardHome />
-            </div>
-          </div>
         </div>
+      </div>
+      <div className="wrap hh-screen-wrap">
+        <HeroScreen />
       </div>
     </header>
   );

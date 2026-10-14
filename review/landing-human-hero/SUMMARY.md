@@ -9,9 +9,11 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
 - The blue mesh + tilted full-size dashboard is replaced by a cut-out player
   (`public/assets/marketing/hero-player.png`, from the photo you supplied) on
   a navy backdrop lit blue behind them, with copy on the left.
-- The dashboard is now a small floating card across the player's lower half
-  (right side on desktop; on phones the player looks over the card as it runs
-  off the bottom), cropped to the "Your season" summary of the existing mock.
+- Under the copy and the player, the dashboard sits on a computer screen (a
+  browser window, full container width) that overlaps the top tier and fades
+  out into the next section. On phones it is drawn wider than the viewport so
+  it stays legible and runs off the right edge. This replaced the small
+  floating card from the earlier pass.
 - One responsive layout replaces the old pair (a scaled 1440 px artboard for
   desktop plus a separate mobile hero).
 - The player goes through `next/image` (preloaded) with real alt text.
