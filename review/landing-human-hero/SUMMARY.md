@@ -15,7 +15,11 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
   and court carry on sharp and seamless), and that whole strip fades into the
   navy on one long gradient.
 - The hero backdrop is the original brand mesh gradient pulled down to deep
-  navy blues, with the live dot grid over it as the old hero had.
+  navy blues, with the live dot grid over it as the old hero had. The grid's
+  cursor glow (the soft pool of light that follows the pointer, from the
+  dashboard's shared dot grid) now runs over the photo too, and is set a
+  little stronger in the hero (`<LiveDots glow={2.2} />`; the default, used
+  everywhere else and in the dashboard's copy, is unchanged).
 - A square player-tracking box (no rounded corners) frames the player and
   the racket, with an ID tag seated on its top edge: "Rudy Quan" on the
   deep accent blue and "UCLA" on white, in the style the app uses to mark a

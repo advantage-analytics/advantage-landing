@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { ArrowDown, ArrowUpRight, ScanFace } from "lucide-react";
 import { DashboardHome } from "./dashboard-home";
 import { LiveDots } from "./live-dots";
@@ -34,6 +34,10 @@ const HERO_PHOTO = {
   // racket as well as the player), and its label.
   track: { left: 14, top: 6, width: 59.5, height: 89, label: "Rudy Quan", team: "UCLA" },
 };
+
+// The extension only ever shows the photo's leftmost 3%, stretched, so a
+// small optimized rendition is plenty; it is painted as a background.
+const EXT_SRC = getImageProps({ src: HERO_PHOTO.src, alt: "", width: 640 }).props.src;
 
 const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
 
@@ -131,7 +135,7 @@ function HeroActions() {
 export function PerspectiveHero() {
   return (
     <header className="hh" id="top">
-      <LiveDots />
+      <LiveDots glow={2.2} />
       <div className="hh-top">
         <div className="wrap hh-inner">
           <div className="hh-copy">
@@ -152,13 +156,9 @@ export function PerspectiveHero() {
             <div className="hh-figure">
               <Image src={HERO_PHOTO.src} alt={HERO_PHOTO.alt} fill preload sizes="(max-width: 1023px) 80vw, 480px" placeholder="blur" />
             </div>
-            {/* The same photo again, clipped to its left edge and stretched
-                sideways: the wall and the court, carried on to the left. */}
-            <div className="hh-ext" aria-hidden="true">
-              <div>
-                <Image src={HERO_PHOTO.src} alt="" fill sizes="(max-width: 1023px) 80vw, 480px" />
-              </div>
-            </div>
+            {/* The same photo again, its left edge stretched sideways: the wall
+                and the court, carried on to the left. */}
+            <div className="hh-ext" aria-hidden="true" style={{ backgroundImage: `url(${EXT_SRC})` }} />
           </div>
           {/* The player-tracking box, as the app draws it on match video:
               outside the photo's fade mask so it stays crisp. Decorative —

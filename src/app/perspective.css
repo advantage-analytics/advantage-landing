@@ -723,7 +723,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
     radial-gradient(ellipse 70% 60% at 8% 12%, rgba(30,58,138,.55) 0%, transparent 70%),
     radial-gradient(ellipse 60% 70% at 20% 88%, rgba(30,64,175,.35) 0%, transparent 70%),
     linear-gradient(135deg, #0A1536 0%, #0C1A45 45%, #111A4E 100%); }
-.hh-inner { position: relative; z-index: 1; display: flex; align-items: center; padding-top: 128px; padding-bottom: 120px;
+.hh-inner { position: relative; z-index: 2; display: flex; align-items: center; padding-top: 128px; padding-bottom: 120px;
   min-height: clamp(600px, 78vh, 760px); min-height: clamp(600px, 78svh, 760px); }
 .hh-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: var(--hh-copy); }
 .hh-title { font-size: 48px; line-height: 1.06; text-wrap: balance; }
@@ -751,6 +751,11 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    background thins into the mesh across the width of the copy instead of
    over the picture's last few pixels. */
 .hh-top { position: relative; }
+/* The live dot grid and its cursor glow ride above the photo and its
+   extension (under the copy and the screen), so the glow follows the
+   pointer across the whole hero, picture included, the way it lit the
+   whole mesh before the photo arrived. */
+.hh > .live-dots { z-index: 1; }
 .hh-scene { position: absolute; z-index: 0; left: 0; right: 0; top: 76px; bottom: var(--hh-lap); pointer-events: none; }
 .hh-wide { position: absolute; top: 0; bottom: 0; right: max(0px, calc(var(--hh-gutter) - 80px));
   aspect-ratio: calc(var(--hh-ratio) * 2.8); overflow: hidden;
@@ -768,12 +773,15 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
 .hh-wide::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(to right, rgba(10,21,54,.62) 0%, rgba(10,21,54,.48) 30%, rgba(10,21,54,.24) 50%, rgba(10,21,54,0) 64%); }
 .hh-figure { position: absolute; top: 0; bottom: 0; right: 0; aspect-ratio: var(--hh-ratio); }
-.hh-figure img, .hh-ext img { object-fit: cover; }
-/* The slice: the figure's left 3%, scaled sideways from its right edge. */
-.hh-ext { position: absolute; top: 0; bottom: 0; right: 0; aspect-ratio: var(--hh-ratio); }
-.hh-ext > div { position: absolute; top: 0; bottom: 0; left: 0; width: 3%; overflow: hidden;
-  transform-origin: 100% 50%; transform: scaleX(61); }
-.hh-ext > div > img { width: 3333.34% !important; max-width: none; }
+.hh-figure img { object-fit: cover; }
+/* The extension: from the box's left edge to 3% into the figure, painted
+   with the photo stretched so that its leftmost 3% spans the whole strip
+   (background-size: 1 / 3% = 3333%). Its right edge therefore shows the
+   exact column of the photo it sits on: no seam. A background, not a
+   scaled element, so the stretch is a plain resample with no compositing
+   edge. */
+.hh-ext { position: absolute; top: 0; bottom: 0; left: 0; right: calc(100% / 2.8 * .97);
+  background-repeat: no-repeat; background-position: left top; background-size: 3333.34% 100%; }
 
 /* The player-tracking box: the photo's box again (same place, same shape),
    unmasked, drawn the way the app marks a tracked player on match video:
@@ -837,7 +845,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
     --hh-ramp: linear-gradient(to right, transparent 0%, rgba(0,0,0,.08) 8%, rgba(0,0,0,.3) 18%, rgba(0,0,0,.65) 28%, #000 38%); }
   .hh-track { right: 0; width: min(78%, 380px); }
   .hh-figure { position: relative; width: min(78%, 380px); margin-left: auto; }
-  .hh-ext { width: min(78%, 380px); }
+  .hh-ext { right: calc(min(78%, 380px) * .97); }
   .hh-screen { width: 150%; border-radius: 12px 12px 0 0; }
   .hh::after { height: clamp(150px, 40vw, 300px); }
 }
