@@ -22,9 +22,10 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
   set a little stronger in the hero (`<LiveDots glow={2.2} />`; the default, used
   everywhere else and in the dashboard's copy, is unchanged).
 - A square player-tracking box (no rounded corners) frames the player and
-  the racket. A callout leaves its left edge at head height on an angled
-  hairline leader, turns flat, and carries a mono read-out out to the left:
-  "[ RUDY QUAN ]" over "UCLA · ID 01". The label, team and ID live in
+  the racket. A HUD read-out sits above its top-left corner: two mono lines
+  on a frosted navy plate, "P1 RUDY QUAN" over "TEAM UCLA · TRACKING".
+  (This is the tag-A fork, branch `claude/hero-tag-a`; the angled callout
+  is on `claude/competent-neumann-a64ded`.) The label, team and ID live in
   `HERO_PHOTO.track` in `hero.tsx`.
 - Under the copy and the photo, the dashboard sits on a computer screen (a
   browser window, full container width) that fades out into the next section.

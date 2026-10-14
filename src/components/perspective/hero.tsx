@@ -174,15 +174,19 @@ export function PerspectiveHero() {
               }}
             >
               <i className="c tl" /><i className="c tr" /><i className="c bl" /><i className="c br" />
-              {/* The callout: a leader line leaves the box's top-left corner at
-                  an angle, turns flat, and carries the label out to the left. */}
-              <span className="callout">
-                <i className="leader" />
-                <span className="label">
-                  <span className="nm">[ {HERO_PHOTO.track.label} ]</span>
-                  <span className="meta">
-                    {HERO_PHOTO.track.team} · ID {HERO_PHOTO.track.id}
-                  </span>
+              {/* The read-out: a HUD panel seated above the box's top-left
+                  corner, the way the app labels a tracked player. */}
+              <span className="hud">
+                <span className="l1">
+                  <i className="rec" />
+                  <span className="pid">P{Number(HERO_PHOTO.track.id)}</span>
+                  <span>{HERO_PHOTO.track.label}</span>
+                </span>
+                <span className="l2">
+                  <span>Team</span>
+                  <span className="v">{HERO_PHOTO.track.team}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>Tracking</span>
                 </span>
               </span>
             </div>

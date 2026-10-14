@@ -799,25 +799,19 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
 .hh-track .tr { top: -3px; right: -3px; border-top-width: 3px; border-right-width: 3px; }
 .hh-track .bl { bottom: -3px; left: -3px; border-bottom-width: 3px; border-left-width: 3px; }
 .hh-track .br { bottom: -3px; right: -3px; border-bottom-width: 3px; border-right-width: 3px; }
-/* The callout, anchored on the box's left edge. The leader is a
-   hairline of length --hh-lead hinged at that corner and tipped up-left by
-   --hh-angle; the label's own bottom rule is the flat run, seated exactly
-   on the leader's far end (--hh-lead-x, --hh-lead-y: the leader's run and
-   rise, cos and sin of the angle times its length), so the line reads as
-   one stroke that bends. Mono, uppercase, bracketed: a measurement read-out,
-   not a badge. */
-.hh-track { --hh-lead: 40px; --hh-lead-x: 30.64px; --hh-lead-y: 25.71px; }
-/* Hinged on the box's left edge at head height rather than its corner, so
-   the label sits beside the player, clear of the nav above. */
-.hh-track .callout { position: absolute; left: -1px; top: 15%; width: 0; height: 0; }
-.hh-track .callout::before { content: ""; position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; background: #fff; }
-.hh-track .leader { position: absolute; right: 0; top: 0; width: var(--hh-lead); height: 1px; background: rgba(255,255,255,.8);
-  transform-origin: 100% 50%; transform: rotate(40deg); }
-.hh-track .label { position: absolute; right: var(--hh-lead-x); bottom: var(--hh-lead-y); display: grid; justify-items: end; gap: 6px;
-  padding: 0 2px 7px 14px; border-bottom: 1px solid rgba(255,255,255,.8); white-space: nowrap;
-  font: var(--fw-medium) 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: #fff;
-  text-shadow: 0 1px 10px rgba(6,12,32,.6); }
-.hh-track .label .meta { font-size: 11px; color: #93C5FD; }
+/* The read-out: a HUD panel seated just above the box's top-left corner.
+   Two mono lines on a frosted navy plate with a hairline frame: a square
+   marker and the player ID in light blue, the name; then the team and the
+   tracking state, quieter. A measurement read-out, not a badge. */
+.hh-track .hud { position: absolute; left: -3px; bottom: calc(100% + 8px); display: grid; gap: 5px; padding: 8px 11px 9px;
+  background: rgba(8,16,42,.78); border: 1px solid rgba(255,255,255,.28); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  white-space: nowrap; font: var(--fw-medium) 12px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: #fff;
+  box-shadow: 0 10px 24px -10px rgba(4,10,30,.7); }
+.hh-track .hud .l1 { display: flex; align-items: center; gap: 8px; }
+.hh-track .hud .rec { width: 6px; height: 6px; background: #60A5FA; }
+.hh-track .hud .pid { color: #93C5FD; }
+.hh-track .hud .l2 { display: flex; gap: 8px; font-size: 10.5px; color: rgba(255,255,255,.66); }
+.hh-track .hud .l2 .v { color: #fff; }
 
 /* The computer screen: the dashboard Home's 1440 artboard under a browser
    bar, scaled to the container by useScaleToFit and cut off partway down.
@@ -853,14 +847,14 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
   .hh-inner { flex-direction: column; align-items: flex-start; min-height: 0; padding-top: 104px; padding-bottom: 0; }
   .hh-copy { gap: 18px; }
   .hh-title { font-size: 44px; }
-  .hh-scene { position: relative; top: auto; bottom: auto; margin-top: 8px; }
+  .hh-scene { position: relative; top: auto; bottom: auto; margin-top: 52px; }
   .hh-wide { position: relative; right: auto; aspect-ratio: auto;
     --hh-ramp: linear-gradient(to right, transparent 0%, rgba(0,0,0,.08) 8%, rgba(0,0,0,.3) 18%, rgba(0,0,0,.65) 28%, #000 38%); }
-  .hh-track { right: 0; width: min(70%, 340px); --hh-lead: 26px; --hh-lead-x: 19.92px; --hh-lead-y: 16.71px; }
-  .hh-track .label { font-size: 10.5px; gap: 5px; padding-bottom: 6px; }
-  .hh-track .label .meta { font-size: 9.5px; }
-  .hh-figure { position: relative; width: min(70%, 340px); margin-left: auto; }
-  .hh-ext { right: calc(min(70%, 340px) * .97); }
+  .hh-track { right: 0; width: min(78%, 380px); }
+  .hh-track .hud { font-size: 11px; padding: 7px 9px 8px; }
+  .hh-track .hud .l2 { font-size: 9.5px; }
+  .hh-figure { position: relative; width: min(78%, 380px); margin-left: auto; }
+  .hh-ext { right: calc(min(78%, 380px) * .97); }
   .hh-screen { width: 150%; border-radius: 12px 12px 0 0; }
   .hh::after { height: clamp(150px, 40vw, 300px); }
 }
