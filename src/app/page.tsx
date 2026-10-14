@@ -6,14 +6,14 @@ import { PerspectiveHero } from "@/components/perspective/hero";
 import { SiteNav } from "@/components/perspective/site-nav";
 import { Footer } from "@/components/perspective/footer";
 import { useReveal } from "@/components/perspective/reveal";
-import { DashboardShowcase, HowItWorks } from "@/components/perspective/sections";
+import { HowItWorks, WhatYouSee } from "@/components/perspective/sections";
 import { ProductTour } from "@/components/perspective/product-tour";
 import { TeamBand } from "@/components/perspective/team-band";
 import { BetaTerms } from "@/components/perspective/beta-terms";
 import { Faq } from "@/components/perspective/faq";
 import { FinalBand } from "@/components/perspective/final-band";
 
-/* The hero and dashboard artboards are sized by useScaleToFit after mount, so
+/* The product-board artboards are sized by useScaleToFit after mount, so
    a hash landing (/#team from the nav on another page, or a fresh load) is
    scrolled against pre-fit layout and can end up off target. Child effects run
    before this one, so by now the artboards hold their final heights — re-anchor
@@ -41,10 +41,11 @@ export default function Home() {
       <SiteNav />
       <PerspectiveHero />
       <main>
-        <ProductTour alt />
-        <DashboardShowcase />
-        <TeamBand />
+        {/* First scroll: how it works, then what comes back, in plain words. */}
         <HowItWorks />
+        <WhatYouSee />
+        <ProductTour />
+        <TeamBand />
         <BetaTerms />
         <Faq />
         <FinalBand />

@@ -4,7 +4,7 @@ Visual system for the Advantage landing page, vendored from the `advantage-dashb
 
 ## Visual Theme
 
-Light, clean, high-clarity — Stripe/Linear tech-minimal. One deliberate dark band (final CTA) for contrast as punctuation. Borders for structure, soft shadows for elevation, generous whitespace. The product UI itself is the hero imagery.
+Light, clean, high-clarity — Stripe/Linear tech-minimal. One deliberate dark band (final CTA) for contrast as punctuation. Borders for structure, soft shadows for elevation, generous whitespace. Photography of real players is the hero imagery: a photo on the hero's right, shown whole, its background extended to the left and fading on one long gradient into the brand mesh in its deep navy register (with the live dot grid) the white type sits on, its right edge softened by a building blur under a wash of the mesh's blue, and marked with a square player-tracking box and a mono HUD read-out naming the player, seated above the box's top-left corner. Product UI sits under it in a laptop's lid (a near-black bezel with its camera, no keyboard deck) that fades into the next section, a little clear of the photo's floor, and as the proof further down the page.
 
 ## Color
 
@@ -36,6 +36,8 @@ Strategy: **Restrained.** Tinted-neutral ink ramp + a single accent blue used fo
 
 - shadcn/ui primitives vendored from the dashboard: **Button** (`rounded-md`, `h-9` default, blue `default` variant, 3px focus ring), **Card** (`rounded-xl border shadow-sm`), **Input** (`h-9 rounded-md border`, subtle gray focus ring).
 - `cn()` from `lib/utils.ts` (clsx + tailwind-merge).
+- **Product mocks** are the dashboard's own components at their design pixels, never redrawn: the dashboard Home (hero), the Team Home (team band), and single cards cut from them for "What you'll see" — the 1st serve percentage KPI drawn large as a trend, How points ended, and the Advantage Intelligence insight, three equal cards in grey tiles. App-only controls (Collapse and the like) are left out of the markup.
+- **KPI change figures** are read off their own trend (last minus first, `kpisFromTrends`), never typed separately, so a figure and its line always agree.
 
 ## Motion
 

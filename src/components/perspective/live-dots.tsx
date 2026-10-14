@@ -42,7 +42,10 @@ function seedWaves(): Wave[] {
   });
 }
 
-export function LiveDots({ className = "" }: { className?: string }) {
+// `glow` scales the pointer's pool (CURSOR and RADIUS) for a surface that
+// wants the cursor to read more strongly; 1 is the shared default, the
+// value advantage-dashboard's copy of this file uses.
+export function LiveDots({ className = "", glow = 1 }: { className?: string; glow?: number }) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -104,8 +107,9 @@ export function LiveDots({ className = "" }: { className?: string }) {
       const d = img.data;
       const s = t / 1000;
       const phases = waves.map((v) => s * v.speed + v.phase);
-      const r2 = 2 * RADIUS * RADIUS;
-      const reach2 = 9 * RADIUS * RADIUS;
+      const rad = RADIUS * Math.sqrt(glow);
+      const r2 = 2 * rad * rad;
+      const reach2 = 9 * rad * rad;
       for (let i = 0; i < at.length; i++) {
         let v = 0;
         for (let k = 0; k < WAVES; k++) v += Math.sin(proj[k][i] + phases[k]);
@@ -116,7 +120,7 @@ export function LiveDots({ className = "" }: { className?: string }) {
           const ddx = xs[i] - px;
           const ddy = ys[i] - py;
           const dd = ddx * ddx + ddy * ddy;
-          if (dd < reach2) a += CURSOR * pool * Math.exp(-dd / r2);
+          if (dd < reach2) a += CURSOR * glow * pool * Math.exp(-dd / r2);
         }
         d[at[i]] = a >= 1 ? 255 : (a * 255) | 0;
       }
@@ -194,7 +198,7 @@ export function LiveDots({ className = "" }: { className?: string }) {
       document.documentElement.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("visibilitychange", start);
     };
-  }, []);
+  }, [glow]);
 
   return <canvas ref={ref} className={`live-dots ${className}`.trim()} aria-hidden="true" />;
 }

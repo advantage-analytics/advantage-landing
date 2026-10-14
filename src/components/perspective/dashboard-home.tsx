@@ -36,32 +36,51 @@ export const RAIL_BOTTOM: ReactNode[] = [
   <Fragment key="i7"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M9 3v18" /><path d="m14 9 3 3-3 3" /></Fragment>,
 ];
 
-export function spark(d: number[]) {
-  const w = 80, h = 28, p = 2;
-  const min = Math.min(...d), max = Math.max(...d), r = max - min || 1;
-  const pts = d.map((v, i) => [p + (i / (d.length - 1)) * (w - p * 2), h - p - ((v - min) / r) * (h - p * 2)]);
+// A trend as SVG geometry: the 80×28 sparkline by default; other sizes pass
+// their box, insets and `headroom` (value units added above and below).
+export function spark(
+  d: readonly number[],
+  { w = 80, h = 28, px = 2, py = 2, headroom = 0 }: { w?: number; h?: number; px?: number; py?: number; headroom?: number } = {},
+) {
+  const min = Math.min(...d) - headroom, max = Math.max(...d) + headroom, r = max - min || 1;
+  const pts = d.map((v, i) => [px + (i / (d.length - 1)) * (w - px * 2), h - py - ((v - min) / r) * (h - py * 2)]);
   return {
+    pts,
     line: pts.map((q) => q.join(",")).join(" "),
     area: `M ${pts[0][0]},${h} ` + pts.map((q) => `L ${q[0]},${q[1]}`).join(" ") + ` L ${pts[pts.length - 1][0]},${h} Z`,
   };
 }
 
-const KPIS = (
-  [
-    ["1st serve percentage", "68%", 4.2, [60, 62, 61, 64, 63, 66, 68]],
-    ["1st serve won", "74%", 3.1, [68, 70, 69, 71, 72, 73, 74]],
-    ["2nd serve won", "48%", -5, [56, 54, 53, 52, 50, 49, 48]],
-    ["Break points saved", "61%", 7, [52, 54, 53, 57, 58, 60, 61]],
-    ["Return games won", "38%", 6, [30, 31, 33, 34, 35, 37, 38]],
-  ] as const
-).map(([label, value, ch, d]) => ({
-  label,
-  value,
-  change: Math.abs(ch),
-  up: ch >= 0,
-  color: ch >= 0 ? "#5DB955" : "#E51837",
-  ...spark([...d]),
-}));
+// A KPI strip from [label, value, trend] rows. The change is read off the
+// trend itself (last minus first), so the figure and the line can't
+// disagree; `d` is the raw trend behind each sparkline. Shared with the Team
+// Home's strip.
+export function kpisFromTrends(rows: readonly (readonly [label: string, value: string, d: readonly number[]])[]) {
+  return rows.map(([label, value, d]) => {
+    const ch = Math.round((d[d.length - 1] - d[0]) * 10) / 10;
+    return {
+      label,
+      value,
+      change: Math.abs(ch),
+      up: ch >= 0,
+      color: ch >= 0 ? "#5DB955" : "#E51837",
+      d,
+      ...spark(d),
+    };
+  });
+}
+
+// Exported for the home page's "what you'll see" strip, which draws the
+// first one larger.
+export const KPIS = kpisFromTrends([
+  ["1st serve percentage", "68%", [63.8, 64.6, 64.2, 65.5, 65.1, 66.6, 68]],
+  ["1st serve won", "74%", [68, 70, 69, 71, 72, 73, 74]],
+  ["2nd serve won", "48%", [56, 54, 53, 52, 50, 49, 48]],
+  ["Break points saved", "61%", [52, 54, 53, 57, 58, 60, 61]],
+  ["Return games won", "38%", [30, 31, 33, 34, 35, 37, 38]],
+] as const);
+// Signed, for prose: "+6", "-8".
+const signed = (k: (typeof KPIS)[number]) => `${k.up ? "+" : "-"}${k.change}`;
 
 const MATCHES = [
   { opp: "M. Nakamura", score: "6-4, 7-5", won: true, fs: "68%", w: "24", e: "15" },
@@ -264,7 +283,7 @@ export function DashboardHome() {
                 <div className="bd">
                   <span className="lead">Your serve is winning matches; your second serve is giving points back.</span>
                   <span className="body">
-                    Across <b>12</b> matches, 1st serve won sits at <b>74%</b> (<b>+3.1</b> last 30 days) and 2nd serve won at <b>48%</b> (<b>-5</b>).
+                    Across <b>12</b> matches, 1st serve won sits at <b>{KPIS[1].value}</b> (<b>{signed(KPIS[1])}</b> last 30 days) and 2nd serve won at <b>{KPIS[2].value}</b> (<b>{signed(KPIS[2])}</b>).
                   </span>
                 </div>
                 <div className="dh-foot">

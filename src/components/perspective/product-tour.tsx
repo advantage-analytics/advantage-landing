@@ -156,9 +156,9 @@ function TourPlayer() {
   );
 }
 
-export function ProductTour({ alt = false }: { alt?: boolean }) {
+export function ProductTour() {
   return (
-    <section className={`band${alt ? " alt" : ""} proof-band`} id="tour">
+    <section className="band proof-band" id="tour">
       <div className="wrap">
         <ProofHead
           eyebrow="Product tour"

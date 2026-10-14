@@ -12,11 +12,13 @@ import { PILOT_HOURS } from "@/lib/pilot";
    board does the persuading.
 
    The Team Home is the tallest board on the site (1170 native), so the band
-   shows its top — title, program summary, the dual sheet, the insight and
-   the court record — through a fixed window with the board fading out at
-   the bottom, the way a page continues below the fold. The board itself is
-   `team-home.tsx`. */
-const TH_VIEW = 944;
+   shows its top — title, program summary, the dual sheet and the insight,
+   with the court record going into the fade — through a fixed window, the
+   way a page continues below the fold. Tall enough for the dual sheet whole
+   (it ends at 609) and the court record's rows (from ~540), since the head
+   promises both; no taller, so the coach band stays a short stop. The board
+   itself is `team-home.tsx`. */
+const TH_VIEW = 720;
 
 export function TeamBand() {
   return (

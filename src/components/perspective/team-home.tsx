@@ -1,6 +1,6 @@
 import { Fragment, type ReactNode } from "react";
 import { Calendar, ChevronRight, Flag, MapPin } from "lucide-react";
-import { DH_W, Ico, RAIL_BOTTOM, RAIL_TOP, spark } from "./dashboard-home";
+import { DH_W, Ico, RAIL_BOTTOM, RAIL_TOP, kpisFromTrends } from "./dashboard-home";
 import "./dashboard-home.css";
 import "./mocks.css";
 
@@ -40,22 +40,15 @@ export const TH_H = 1170;
 const GOOD = "#5DB955";
 const BAD = "#E51837";
 
-const KPIS = (
-  [
-    ["Record", "9–2", 2, [5, 5, 6, 7, 7, 8, 9]],
-    ["1st serve percentage", "66%", 3.1, [61, 62, 62, 64, 63, 65, 66]],
-    ["1st serve won", "72%", 2.4, [68, 69, 70, 70, 71, 71, 72]],
-    ["Break points saved", "58%", 6, [50, 52, 51, 54, 55, 57, 58]],
-    ["Return games won", "36%", 4.5, [30, 31, 32, 33, 34, 35, 36]],
-  ] as const
-).map(([label, value, ch, d]) => ({
-  label,
-  value,
-  change: Math.abs(ch),
-  up: ch >= 0,
-  color: ch >= 0 ? GOOD : BAD,
-  ...spark([...d]),
-}));
+// The change shown under each figure is read off its trend (kpisFromTrends):
+// Record's trend is cumulative wins, so its change is the wins added.
+const KPIS = kpisFromTrends([
+  ["Record", "9–2", [5, 5, 6, 7, 7, 8, 9]],
+  ["1st serve percentage", "66%", [61, 62, 62, 64, 63, 65, 66]],
+  ["1st serve won", "72%", [68, 69, 70, 70, 71, 71, 72]],
+  ["Break points saved", "58%", [50, 52, 51, 54, 55, 57, 58]],
+  ["Return games won", "36%", [30, 31, 32, 33, 34, 35, 36]],
+]);
 
 type Form = "w" | "l";
 const LINES = [
