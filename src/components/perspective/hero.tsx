@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { DashboardHome } from "./dashboard-home";
@@ -10,19 +11,21 @@ import { BETA_END_SHORT } from "@/lib/pilot";
 
 /* ===========================================================
    HERO PHOTO SLOT
-   A portrait photo (4:5), shown whole, never cropped, on the right of
-   the hero. A blurred copy of it sits around it as a soft halo that
-   thins out to nothing toward the copy, so the picture has no frame. To swap: drop another
-   photo at public/assets/marketing/hero-*.jpg, change this one import,
-   rewrite `alt`, and set `ratio` to the new file's width / height. Keep
-   the subject out of the outer ~10% of the frame: that is the fade.
+   A portrait photo, shown whole, never cropped, on the right of the hero.
+   Its background is carried out to the left by stretching the picture's
+   own left edge sideways, and that wide strip fades into the navy on one
+   long ramp, so the picture has no frame on the copy side. To swap: drop
+   another photo at public/assets/marketing/hero-*.jpg, change this one
+   import, rewrite `alt`, and set `ratio` to the new file's width / height.
+   The left ~3% of the frame is what gets stretched, so it must be plain
+   background (a wall, a windscreen, sky) with nothing of the subject in it.
    =========================================================== */
 import heroPhoto from "../../../public/assets/marketing/hero-fist-pump.jpg";
 
 const HERO_PHOTO = {
   src: heroPhoto,
   alt: "A tennis player in a blue shirt and cap shouts and pumps a fist after winning a point.",
-  ratio: "4 / 5",
+  ratio: 4 / 5,
 };
 
 const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
@@ -45,9 +48,9 @@ const HERO_SUB =
    Human hero — one responsive composition, two tiers.
 
    Top: the copy on navy, and beside it the photo, standing on the
-   screen's top edge and shown whole. A blurred copy of it surrounds it
-   and fades out toward the copy, so the player is never cut off and the
-   picture melts into the navy the type sits on.
+   screen's top edge and shown whole. Its background is extended to the
+   left behind the copy and fades into the navy on one long ramp, so the
+   player is never cut off and the picture has no edge on the copy side.
    Below both: the dashboard on a computer screen, running the container's
    width, fading out into the next section so the hero has no hard bottom
    edge.
@@ -134,18 +137,17 @@ export function PerspectiveHero() {
             </a>
           </div>
         </div>
-        <div className="hh-scene">
-          <div className="hh-figure" style={{ aspectRatio: HERO_PHOTO.ratio }}>
-            {/* The same photo again, blurred: a soft halo of the wall and the
-                court, wider than the picture, that the picture's edges melt
-                into and that itself thins out to nothing. */}
-            <div className="hh-ext" aria-hidden="true">
-              <div className="hh-ext-img">
-                <Image src={HERO_PHOTO.src} alt="" fill sizes="320px" />
-              </div>
-            </div>
-            <div className="hh-photo">
+        <div className="hh-scene" style={{ "--hh-ratio": HERO_PHOTO.ratio } as CSSProperties}>
+          <div className="hh-wide">
+            <div className="hh-figure">
               <Image src={HERO_PHOTO.src} alt={HERO_PHOTO.alt} fill preload sizes="(max-width: 1023px) 80vw, 480px" placeholder="blur" />
+            </div>
+            {/* The same photo again, clipped to its left edge and stretched
+                sideways: the wall and the court, carried on to the left. */}
+            <div className="hh-ext" aria-hidden="true">
+              <div>
+                <Image src={HERO_PHOTO.src} alt="" fill sizes="(max-width: 1023px) 80vw, 480px" />
+              </div>
             </div>
           </div>
         </div>
