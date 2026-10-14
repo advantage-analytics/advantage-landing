@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from "react";
 import Image, { getImageProps } from "next/image";
-import { ArrowDown, ArrowUpRight, ScanFace } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { DashboardHome } from "./dashboard-home";
 import { LiveDots } from "./live-dots";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
@@ -32,7 +32,7 @@ const HERO_PHOTO = {
   // The player-tracking box drawn over the photo, as the app draws one on
   // match video: its edges as percentages of the photo (it takes in the
   // racket as well as the player), and its label.
-  track: { left: 14, top: 6, width: 59.5, height: 89, label: "Rudy Quan", team: "UCLA" },
+  track: { left: 14, top: 6, width: 59.5, height: 89, label: "Rudy Quan", team: "UCLA", id: "01" },
 };
 
 // The extension only ever shows the photo's leftmost 3%, stretched, so a
@@ -174,12 +174,16 @@ export function PerspectiveHero() {
               }}
             >
               <i className="c tl" /><i className="c tr" /><i className="c bl" /><i className="c br" />
-              <span className="tag">
-                <span className="id">
-                  <ScanFace size={14} strokeWidth={1.75} />
-                  <span className="nm">{HERO_PHOTO.track.label}</span>
+              {/* The callout: a leader line leaves the box's top-left corner at
+                  an angle, turns flat, and carries the label out to the left. */}
+              <span className="callout">
+                <i className="leader" />
+                <span className="label">
+                  <span className="nm">[ {HERO_PHOTO.track.label} ]</span>
+                  <span className="meta">
+                    {HERO_PHOTO.track.team} · ID {HERO_PHOTO.track.id}
+                  </span>
                 </span>
-                <span className="team">{HERO_PHOTO.track.team}</span>
               </span>
             </div>
           </div>

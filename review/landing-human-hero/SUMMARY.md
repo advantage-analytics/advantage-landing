@@ -22,9 +22,10 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
   set a little stronger in the hero (`<LiveDots glow={2.2} />`; the default, used
   everywhere else and in the dashboard's copy, is unchanged).
 - A square player-tracking box (no rounded corners) frames the player and
-  the racket, with an ID tag seated on its top edge: "Rudy Quan" on the
-  deep accent blue and "UCLA" on white, in the style the app uses to mark a
-  tracked player on video.
+  the racket. A callout leaves its left edge at head height on an angled
+  hairline leader, turns flat, and carries a mono read-out out to the left:
+  "[ RUDY QUAN ]" over "UCLA · ID 01". The label, team and ID live in
+  `HERO_PHOTO.track` in `hero.tsx`.
 - Under the copy and the photo, the dashboard sits on a computer screen (a
   browser window, full container width) that fades out into the next section.
   On phones it is drawn wider than the viewport so it stays legible.
