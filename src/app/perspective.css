@@ -751,11 +751,12 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    background thins into the mesh across the width of the copy instead of
    over the picture's last few pixels. */
 .hh-top { position: relative; }
-/* The live dot grid and its cursor glow ride above the photo and its
-   extension (under the copy and the screen), so the glow follows the
-   pointer across the whole hero, picture included, the way it lit the
-   whole mesh before the photo arrived. */
-.hh > .live-dots { z-index: 1; }
+/* The live dot grid and its cursor glow belong to the backdrop, never the
+   picture: the canvas is the hero's first child, so it paints under the
+   scene. The photo hides it outright, and its extension hides it in step
+   with its own fade, so the dots (and the glow) thin out as the picture
+   comes in and are gone where the photo is. */
+.hh > .live-dots { z-index: 0; }
 .hh-scene { position: absolute; z-index: 0; left: 0; right: 0; top: 76px; bottom: var(--hh-lap); pointer-events: none; }
 .hh-wide { position: absolute; top: 0; bottom: 0; right: max(0px, calc(var(--hh-gutter) - 80px));
   aspect-ratio: calc(var(--hh-ratio) * 2.8); overflow: hidden;
