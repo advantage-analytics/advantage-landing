@@ -712,17 +712,17 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
    --hh-copy: the copy column's width; the photo starts where it ends. */
 .hh { --hh-lap: 64px; --hh-copy: 630px; --hh-gutter: max(40px, calc((100vw - 1240px) / 2 + 40px));
   position: relative; overflow: hidden; isolation: isolate; color: #fff;
-  /* The brand mesh (.brand-mesh, from the dashboard's login page), the
-     backdrop the hero has always had; the live dot grid sits over it. */
+  /* The brand mesh in its deep register: the same layered blue, cyan and
+     indigo radials as .brand-mesh, pulled down to navy. Darkest under the
+     copy for the white type, lit brightest behind the photo so its blue
+     wall reads as part of the same light. The live dot grid sits over it. */
   background:
-    radial-gradient(ellipse 80% 70% at 10% 15%, #60A5FA 0%, transparent 50%),
-    radial-gradient(ellipse 65% 80% at 85% 10%, #38BDF8 0%, transparent 45%),
-    radial-gradient(ellipse 70% 60% at 40% 50%, #7BA4F7 0%, transparent 50%),
-    radial-gradient(ellipse 60% 70% at 80% 70%, #818CF8 0%, transparent 45%),
-    radial-gradient(ellipse 55% 55% at 50% 35%, #93C5FD 0%, transparent 45%),
-    radial-gradient(ellipse 70% 60% at 15% 80%, #4F8EF7 0%, transparent 45%),
-    radial-gradient(ellipse 50% 50% at 70% 45%, #A78BFA 0%, transparent 40%),
-    linear-gradient(135deg, #5B8DEF, #7BA4F7, #818CF8); }
+    radial-gradient(ellipse 52% 70% at 80% 40%, rgba(37,99,235,.55) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 55% at 96% 4%, rgba(14,116,144,.45) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 60% at 62% 78%, rgba(67,56,202,.32) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 60% at 8% 12%, rgba(30,58,138,.55) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 70% at 20% 88%, rgba(30,64,175,.35) 0%, transparent 70%),
+    linear-gradient(135deg, #0A1536 0%, #0C1A45 45%, #111A4E 100%); }
 .hh-inner { position: relative; z-index: 1; display: flex; align-items: center; padding-top: 128px; padding-bottom: 120px;
   min-height: clamp(600px, 78vh, 760px); min-height: clamp(600px, 78svh, 760px); }
 .hh-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; max-width: var(--hh-copy); }
@@ -761,6 +761,12 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
        linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.2) 4%, rgba(0,0,0,.6) 9%, #000 15%, #000 96%, transparent 100%);
   -webkit-mask-image: var(--m); mask-image: var(--m);
   -webkit-mask-composite: source-in; mask-composite: intersect; }
+/* A navy wash across the extension only, deepening toward the copy: the
+   pale court it carries out to the left settles into the deep mesh
+   instead of reading as a light band behind the buttons. Masked with the
+   box, so it fades with everything else. */
+.hh-wide::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to right, rgba(10,21,54,.62) 0%, rgba(10,21,54,.48) 30%, rgba(10,21,54,.24) 50%, rgba(10,21,54,0) 64%); }
 .hh-figure { position: absolute; top: 0; bottom: 0; right: 0; aspect-ratio: var(--hh-ratio); }
 .hh-figure img, .hh-ext img { object-fit: cover; }
 /* The slice: the figure's left 3%, scaled sideways from its right edge. */
@@ -770,23 +776,27 @@ section.band.final-band { position: relative; overflow: hidden; padding: 130px 0
 .hh-ext > div > img { width: 3333.34% !important; max-width: none; }
 
 /* The player-tracking box: the photo's box again (same place, same shape),
-   unmasked, with a thin outline, heavier corner brackets and a label chip
-   riding its top-left corner, the way the app marks a tracked player. */
+   unmasked, drawn the way the app marks a tracked player on match video:
+   a square hairline frame, heavier square corner brackets, and an ID tag
+   seated flush on the frame's top edge. No radius anywhere: it is a
+   measurement, not a card. The tag's blue is the deep accent so its white
+   type clears AA. */
 .hh-track { position: absolute; top: 0; bottom: 0; right: max(0px, calc(var(--hh-gutter) - 80px)); aspect-ratio: var(--hh-ratio);
   z-index: 1; pointer-events: none; }
-.hh-track .box { position: absolute; border: 1px solid rgba(255,255,255,.55); border-radius: 4px;
-  box-shadow: 0 0 0 1px rgba(11,21,51,.18); }
-.hh-track .c { position: absolute; width: 16px; height: 16px; border: 0 solid #fff; }
-.hh-track .tl { top: -2px; left: -2px; border-top-width: 2.5px; border-left-width: 2.5px; border-top-left-radius: 5px; }
-.hh-track .tr { top: -2px; right: -2px; border-top-width: 2.5px; border-right-width: 2.5px; border-top-right-radius: 5px; }
-.hh-track .bl { bottom: -2px; left: -2px; border-bottom-width: 2.5px; border-left-width: 2.5px; border-bottom-left-radius: 5px; }
-.hh-track .br { bottom: -2px; right: -2px; border-bottom-width: 2.5px; border-right-width: 2.5px; border-bottom-right-radius: 5px; }
-.hh-track .tag { position: absolute; left: -2px; bottom: calc(100% + 8px); display: inline-flex; align-items: center; gap: 7px;
-  height: 26px; padding: 0 10px 0 9px; border-radius: 6px; white-space: nowrap;
-  background: var(--signal-blue); color: #fff; font: var(--fw-medium) 12px/1 var(--font-sans); letter-spacing: -.05px;
-  box-shadow: 0 6px 18px -6px rgba(11,21,51,.55); }
-.hh-track .dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.28); }
-.hh-track .team { padding-left: 7px; border-left: 1px solid rgba(255,255,255,.4); font-weight: var(--fw-regular); color: rgba(255,255,255,.88); }
+.hh-track .box { position: absolute; border: 1px solid rgba(255,255,255,.62);
+  box-shadow: 0 0 0 1px rgba(10,21,54,.22), inset 0 0 0 1px rgba(10,21,54,.12); }
+.hh-track .c { position: absolute; width: 18px; height: 18px; border: 0 solid #fff; }
+.hh-track .tl { top: -3px; left: -3px; border-top-width: 3px; border-left-width: 3px; }
+.hh-track .tr { top: -3px; right: -3px; border-top-width: 3px; border-right-width: 3px; }
+.hh-track .bl { bottom: -3px; left: -3px; border-bottom-width: 3px; border-left-width: 3px; }
+.hh-track .br { bottom: -3px; right: -3px; border-bottom-width: 3px; border-right-width: 3px; }
+.hh-track .tag { position: absolute; left: -3px; bottom: calc(100% + 3px); display: flex; align-items: stretch; height: 30px;
+  white-space: nowrap; box-shadow: 0 10px 24px -10px rgba(4,10,30,.7); }
+.hh-track .tag .id { display: flex; align-items: center; gap: 8px; padding: 0 12px 0 10px; background: var(--signal-blue-deep); color: #fff; }
+.hh-track .tag .id svg { flex: none; opacity: .9; }
+.hh-track .tag .nm { font: var(--fw-semibold) 13px/1 var(--font-sans); letter-spacing: -.1px; }
+.hh-track .tag .team { display: flex; align-items: center; padding: 0 11px; background: #fff; color: var(--signal-blue-deep);
+  font: var(--fw-semibold) 11px/1 var(--font-sans); letter-spacing: 1.2px; text-transform: uppercase; }
 
 /* The computer screen: the dashboard Home's 1440 artboard under a browser
    bar, scaled to the container by useScaleToFit and cut off partway down.

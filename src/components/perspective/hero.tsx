@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from "react";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight, ScanFace } from "lucide-react";
 import { DashboardHome } from "./dashboard-home";
 import { LiveDots } from "./live-dots";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
@@ -30,8 +30,9 @@ const HERO_PHOTO = {
   alt: "Rudy Quan of UCLA shouts and pumps a fist after winning a point.",
   ratio: 4 / 5,
   // The player-tracking box drawn over the photo, as the app draws one on
-  // match video: its edges as percentages of the photo, and its label.
-  track: { left: 31, top: 6, width: 42, height: 89, label: "Rudy Quan", team: "UCLA" },
+  // match video: its edges as percentages of the photo (it takes in the
+  // racket as well as the player), and its label.
+  track: { left: 14, top: 6, width: 59.5, height: 89, label: "Rudy Quan", team: "UCLA" },
 };
 
 const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
@@ -174,8 +175,10 @@ export function PerspectiveHero() {
             >
               <i className="c tl" /><i className="c tr" /><i className="c bl" /><i className="c br" />
               <span className="tag">
-                <span className="dot" />
-                {HERO_PHOTO.track.label}
+                <span className="id">
+                  <ScanFace size={14} strokeWidth={1.75} />
+                  <span className="nm">{HERO_PHOTO.track.label}</span>
+                </span>
                 <span className="team">{HERO_PHOTO.track.team}</span>
               </span>
             </div>

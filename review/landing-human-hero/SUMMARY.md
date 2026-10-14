@@ -14,10 +14,12 @@ than create `landing-human-hero`). Nothing pushed or deployed; `main` untouched.
   behind the copy (the photo's own left edge, stretched sideways, so the wall
   and court carry on sharp and seamless), and that whole strip fades into the
   navy on one long gradient.
-- The hero backdrop is the original brand mesh gradient with the live dot
-  grid over it, as the old hero had.
-- A player-tracking box is drawn around the player, labelled "Rudy Quan |
-  UCLA", in the style the app uses to mark a tracked player on video.
+- The hero backdrop is the original brand mesh gradient pulled down to deep
+  navy blues, with the live dot grid over it as the old hero had.
+- A square player-tracking box (no rounded corners) frames the player and
+  the racket, with an ID tag seated on its top edge: "Rudy Quan" on the
+  deep accent blue and "UCLA" on white, in the style the app uses to mark a
+  tracked player on video.
 - Under the copy and the photo, the dashboard sits on a computer screen (a
   browser window, full container width) that fades out into the next section.
   On phones it is drawn wider than the viewport so it stays legible.
