@@ -21,9 +21,9 @@ const mono = Roboto_Mono({
 
 // Plain-language and search-shaped: a cold visitor (or a search result) should
 // know what this is from the title alone. No other product is named here.
-const title = "Advantage — Tennis Analytics and Match Analysis From Your Phone";
+const title = "Advantage — Tennis Analytics and Match Analysis From Your Phone or Any Camera";
 const description =
-  "Film your match on your phone and upload it. Advantage is the tennis coaching app that turns the video into match analysis: where you won points, where you lost them, and what to work on next. Tennis analytics for players and coaches.";
+  "Upload a video of your match from your phone or any camera. Advantage is the tennis coaching app that turns the video into match analysis: where you won points, where you lost them, and what to work on next. Tennis analytics for players and coaches.";
 
 const LOCAL_ORIGIN = "http://localhost:3000";
 

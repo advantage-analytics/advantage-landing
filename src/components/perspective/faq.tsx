@@ -30,7 +30,7 @@ const QA: readonly { q: string; a: ReactNode }[] = [
     q: "What video works?",
     a: (
       <>
-        Singles footage shot from behind the baseline, raised up if you can. Side-on film won’t give a full
+        Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline, raised up if you can. Side-on film won’t give a full
         breakdown. The <Link href={EXPORT_GUIDE_HREF}>export guide</Link> shows how to get it off the camera.
       </>
     ),
