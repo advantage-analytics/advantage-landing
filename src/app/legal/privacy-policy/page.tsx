@@ -13,7 +13,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Privacy Policy"
-        meta="Version 1.1 · Last updated September 25, 2026"
+        meta="Version 1.2 · Last updated October 21, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -92,6 +92,19 @@ export default function Page() {
               <p>
                 <strong>Service Providers:</strong> Trusted third-party companies that perform services on
                 our behalf, such as data hosting, analytics, and customer support.
+              </p>
+              <p>
+                <strong>AI Service Providers:</strong> Ask answers and match summaries are written with
+                the help of an AI model from a third-party provider. We send it the statistics needed to
+                answer your question or summarise your match.
+              </p>
+              <p>
+                <strong>Apps You Connect:</strong> If you connect an AI assistant such as Claude to your
+                Advantage account, it can read your match statistics, and those of teams you belong to, on
+                your behalf, and ask questions that use your monthly Ask allowance. It cannot change your
+                data. What that app does with the information is governed by its own privacy policy. You
+                can disconnect it at any time in Settings &rsaquo; Connections in Advantage, or by
+                removing it in the app.
               </p>
               <p>
                 <strong>Legal Authorities:</strong> If required by law, legal process, or to protect the
