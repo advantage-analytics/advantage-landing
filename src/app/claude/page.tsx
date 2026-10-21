@@ -24,7 +24,7 @@ export default function Page() {
       <CampaignHead
         eyebrow="Connect Claude"
         title="Use Advantage in Claude."
-        lede="Connect your own Claude to your Advantage account and ask about your matches in claude.ai, Claude Desktop or Claude Code. It reads your statistics the way Ask does, as you, and cannot change anything."
+        lede="Connect your own Claude to your Advantage account and ask about your matches in claude.ai, Claude Desktop or Claude Code. It works as you: it reads what your account can see, and the only things it can change are a match's details and a new upload draft."
       />
 
       <article className="eg-doc">
@@ -66,22 +66,46 @@ export default function Page() {
           <h2>What Claude can do</h2>
           <ul className="eg-routes">
             <li>
-              <strong>List your matches</strong>, and those of teams you belong
-              to.
-            </li>
-            <li>
-              <strong>Read your statistics</strong> &mdash; serve, return,
-              rallies and patterns &mdash; with read-only queries.
+              <strong>Read your matches</strong> &mdash; yours and those of
+              teams you belong to: a full match report, your record against an
+              opponent, and your statistics (serve, return, rallies and
+              patterns) through read-only queries.
             </li>
             <li>
               <strong>Ask Advantage a question.</strong> Each one uses one of
               your monthly Ask questions and appears in your Ask history, the
               same as asking in the dashboard.
             </li>
+            <li>
+              <strong>Fix a match&rsquo;s details</strong> on a match you
+              created &mdash; opponent, tournament, round, date, match type,
+              surface. Never the score, the format or who played; those stay
+              on the match page.
+            </li>
+            <li>
+              <strong>Start a video upload.</strong> Claude fills in a draft
+              from what you tell it and gives you a link. You pick the file and
+              answer the setup questions in Advantage; nothing is created or
+              charged until you do.
+            </li>
           </ul>
           <p>
             Claude sees only what your account can already see, and it cannot
-            change or delete anything.
+            delete a match or its statistics.
+          </p>
+        </section>
+
+        <section className="eg-sec">
+          <h2>ChatGPT and Cursor</h2>
+          <p>
+            The same address works in other AI apps. In{" "}
+            <strong>ChatGPT</strong>, open <strong>Settings</strong> &rarr;{" "}
+            <strong>Apps &amp; Connectors</strong> &rarr;{" "}
+            <strong>Create</strong>, paste <code>{links.mcp}</code> with OAuth
+            sign-in, then <strong>Connect</strong>. In{" "}
+            <strong>Cursor</strong>, add it as an MCP server named{" "}
+            <code>advantage</code> and sign in from Cursor&rsquo;s MCP
+            settings.
           </p>
         </section>
 

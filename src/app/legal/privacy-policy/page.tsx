@@ -13,7 +13,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Privacy Policy"
-        meta="Version 1.2 · Last updated October 21, 2026"
+        meta="Version 1.3 · Last updated October 21, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -99,12 +99,14 @@ export default function Page() {
                 answer your question or summarise your match.
               </p>
               <p>
-                <strong>Apps You Connect:</strong> If you connect an AI assistant such as Claude to your
-                Advantage account, it can read your match statistics, and those of teams you belong to, on
-                your behalf, and ask questions that use your monthly Ask allowance. It cannot change your
-                data. What that app does with the information is governed by its own privacy policy. You
-                can disconnect it at any time in Settings &rsaquo; Connections in Advantage, or by
-                removing it in the app.
+                <strong>Apps You Connect:</strong> If you connect an AI assistant such as Claude,
+                ChatGPT or Cursor to your Advantage account, it acts on your behalf: it can read your
+                match statistics, and those of teams you belong to, and ask questions that use your
+                monthly Ask allowance. It can also change the details of a match you created (such as
+                the opponent, tournament or date, but never the score) and start a video upload draft
+                that you finish in Advantage. It cannot delete a match or its statistics. What that app does with the
+                information is governed by its own privacy policy. You can disconnect it at any time in
+                Settings &rsaquo; Connections in Advantage, or by removing it in the app.
               </p>
               <p>
                 <strong>Legal Authorities:</strong> If required by law, legal process, or to protect the
