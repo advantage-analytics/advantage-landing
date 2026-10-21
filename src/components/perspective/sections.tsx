@@ -29,11 +29,11 @@ import {
    style (the /pilot court diagram's), never stock illustration. The third is
    not drawn at all: it is the report's real scoreboard. */
 
-// A court seen from above with the phone behind one baseline, its view
+// A court seen from above with a camera behind one baseline, its view
 // taking in the whole court: the filming advice as a picture.
 function CaptureVisual() {
   return (
-    <svg className="how-art" viewBox="0 0 240 132" role="img" aria-label="A phone set up behind the baseline, seeing the whole court.">
+    <svg className="how-art" viewBox="0 0 240 132" role="img" aria-label="A camera set up behind the baseline, seeing the whole court.">
       <path d="M36 66 212 14v104z" fill="var(--signal-blue)" opacity=".09" />
       <g fill="none" stroke="var(--ink-label)" strokeWidth="1">
         <rect x="72" y="22" width="140" height="88" />
@@ -87,7 +87,7 @@ const HOW_STEPS: readonly { k: string; t: string; p: ReactNode; spec: string; vi
   {
     k: "Capture",
     t: "Film your match.",
-    p: "Set your phone behind the baseline, as high up as you can get it. A fence works great. From the side, we can’t see the whole court.",
+    p: "Set your camera behind the baseline, as high up as you can get it. A phone on the fence works great. From the side, we can’t see the whole court.",
     spec: `${VIDEO_MIN_RESOLUTION} · ${VIDEO_MIN_FPS_SHORT} · MP4`,
     vis: <CaptureVisual />,
   },
@@ -96,7 +96,7 @@ const HOW_STEPS: readonly { k: string; t: string; p: ReactNode; spec: string; vi
     t: "Upload the video.",
     p: (
       <>
-        Send it in when you’re off the court. If it’s stuck on a camera, the{" "}
+        Upload from your phone or computer once you’re off the court. If it’s stuck on a camera or a court system, the{" "}
         <Link href={EXPORT_GUIDE_HREF}>export guide</Link> shows how to get it off.
       </>
     ),
@@ -127,7 +127,7 @@ export function HowItWorks() {
             <h2>Upload, analyze, understand your match.</h2>
           </div>
           <p className="band-aside">
-            Tennis match analysis from one phone video.{" "}
+            Tennis match analysis from one video, shot on whatever you have.{" "}
             <span className="how-aside-tail">No new cameras, no tagging.</span>
           </p>
         </div>

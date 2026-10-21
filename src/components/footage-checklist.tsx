@@ -35,6 +35,6 @@ export const FOOTAGE_CHECKLIST: ReactNode[] = [
   </>,
   <>
     {VIDEO_FORMATS}, under {VIDEO_MAX_SIZE}
-    {" "}&mdash; most phone and PlaySight exports already are
+    {" "}&mdash; most phone, GoPro and PlaySight exports already are
   </>,
 ];

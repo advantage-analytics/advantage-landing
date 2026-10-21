@@ -79,7 +79,7 @@ export default function Page() {
           </p>
         </section>
 
-        {/* The one rule under all four routes: the original file. A share or
+        {/* The one rule under every route: the original file. A share or
             message copy is re-encoded smaller, sometimes under the floor. */}
         <section className="eg-sec">
           <h2>Get the file off the device</h2>
@@ -99,6 +99,11 @@ export default function Page() {
               <strong>Phone to Windows.</strong> Connect with a USB cable and
               import it with the Photos app. On Android, choose{" "}
               <strong>File transfer</strong> when the phone asks.
+            </li>
+            <li>
+              <strong>GoPro or another action camera.</strong> Copy the file
+              to your computer from the memory card with a card reader, or
+              over the USB cable.
             </li>
             <li>
               <strong>PlaySight or Hudl.</strong> Download the match video from

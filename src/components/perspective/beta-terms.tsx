@@ -23,7 +23,7 @@ const LANES = [
     tag: "College programs",
     ask: "With a college program?",
     line: "Your program is on the fall pilot. Sign up, then find your team in the dashboard.",
-    points: ["Team roster and shared film", `${PILOT_HOURS} of film a month, shared by the team`, "No hardware, no contract"],
+    points: ["Team roster and shared film", `${PILOT_HOURS} of film a month, shared by the team`, "Use your PlaySight film, no contract"],
     cta: <FindTeamLink className="hbtn hbtn-white" placement="home-beta-card" />,
     note: "Instant with your school email.",
   },

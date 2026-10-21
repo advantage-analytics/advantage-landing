@@ -75,7 +75,7 @@ const STEPS: readonly { t: string; p: ReactNode; spec: string }[] = [
   },
   {
     t: "Send match video.",
-    p: "The breakdown lands in your dashboard: numbers, court maps and film the whole roster can read.",
+    p: "Download it from PlaySight or copy it off any camera, then upload it. The breakdown lands in your dashboard: numbers, court maps and film the whole roster can read.",
     spec: "within 24 h",
   },
 ];
@@ -121,7 +121,7 @@ const PilotMasthead = () => (
     <div className="wrap">
       <span className="h-eyebrow">Fall pilot · College programs</span>
       <h1 className="h-title">The fall season, free, on your own footage.</h1>
-      <p className="h-sub">Match analytics for your whole roster, through {BETA_END_SHORT}.</p>
+      <p className="h-sub">Match analytics for your whole roster from the PlaySight film you already have, through {BETA_END_SHORT}.</p>
       <div className="h-actions">
         <FindTeamLink className="hbtn hbtn-white" placement="pilot-hero" />
         <a className="hbtn hbtn-glass" href="#footage">
@@ -157,7 +157,7 @@ export default function Page() {
           <ProofHead
             eyebrow="Before you upload"
             title="Will your footage work?"
-            aside="Advantage reads the court from behind the baseline. Film shot from the side won’t give a full breakdown."
+            aside="Advantage reads the court from behind the baseline, where most PlaySight courts already film. Film shot from the side won’t give a full breakdown."
           />
           <div className="pv-footage reveal">
             <figure className="pv-angle">

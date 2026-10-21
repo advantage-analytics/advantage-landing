@@ -53,7 +53,7 @@ const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
    anything; 3 is clear but has no outcome in it. */
 const HERO_TITLE = ["Film your match.", "See how to win the next one."];
 const HERO_SUB =
-  "Upload a video from your phone. Advantage shows where you won points, where you lost them, and what to work on.";
+  "Upload a video of your match from your phone or any camera. Advantage shows where you won points, where you lost them, and what to work on.";
 
 /* ===========================================================
    Human hero — one responsive composition, two tiers.
