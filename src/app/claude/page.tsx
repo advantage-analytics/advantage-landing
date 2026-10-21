@@ -79,7 +79,7 @@ export default function Page() {
             <li>
               <strong>Fix a match&rsquo;s details</strong> on a match you
               created &mdash; opponent, tournament, round, date, match type,
-              surface. Never the score, the format or who played; those stay
+              surface, and the opponent&rsquo;s school, hand and backhand. Never the score, the format or who played; those stay
               on the match page.
             </li>
             <li>
