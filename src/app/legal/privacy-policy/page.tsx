@@ -102,7 +102,7 @@ export default function Page() {
                 <strong>Apps You Connect:</strong> If you connect an AI assistant such as Claude,
                 ChatGPT or Cursor to your Advantage account, it acts on your behalf: it can read your
                 match statistics, and those of teams you belong to, and ask questions that use your
-                monthly Ask allowance. It can also change the details of a match you created (such as
+                monthly Ask allowance and are saved to your Ask history. It can also change the details of a match you created (such as
                 the opponent, tournament or date, but never the score) and start a video upload draft
                 that you finish in Advantage. It cannot delete a match or its statistics. What that app does with the
                 information is governed by its own privacy policy. You can disconnect it at any time in

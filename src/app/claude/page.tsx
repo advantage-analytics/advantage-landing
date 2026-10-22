@@ -24,7 +24,7 @@ export default function Page() {
       <CampaignHead
         eyebrow="Connect Claude"
         title="Use Advantage in Claude."
-        lede="Connect your own Claude to your Advantage account and ask about your matches in claude.ai, Claude Desktop or Claude Code. It works as you: it reads what your account can see, and the only things it can change are a match's details and a new upload draft."
+        lede="Connect your own Claude to your Advantage account and ask about your matches in claude.ai, Claude Desktop or Claude Code. It works as you: it reads what your account can see, and the only things it can change are your Ask history, a match's details and a new upload draft."
       />
 
       <article className="eg-doc">
