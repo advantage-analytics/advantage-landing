@@ -41,14 +41,20 @@ export default function Page() {
             <section className="legal-sec">
               <h2>3. User Eligibility</h2>
               <p>
-                You must be at least 18 years old to create or hold an Advantage account. By using the
-                Service, you represent and warrant that you meet this age requirement and have the legal
-                capacity to enter into a binding agreement. A player under 18 uses Advantage through an
-                account that their parent or legal guardian creates and manages under our{" "}
+                You must be at least 18 years old to create or hold an Advantage account, with one
+                exception: a player aged 13 to 17 may hold their own account only to join a high school,
+                club or academy team through that team&apos;s invitation, with their parent or
+                guardian&apos;s permission. Players under 13 cannot hold their own account. Any other
+                player under 18 uses Advantage through an account that their parent or legal guardian
+                creates and manages under our{" "}
                 <Link className="legal-link" href="/legal/guardian-terms">
                   Guardian Terms
                 </Link>
                 .
+              </p>
+              <p>
+                By using the Service, you represent and warrant that you meet these requirements and, if
+                you are 18 or older, that you have the legal capacity to enter into a binding agreement.
               </p>
             </section>
 
@@ -100,8 +106,8 @@ export default function Page() {
                 worldwide, non-exclusive, royalty-free, sublicensable, and transferable license to use,
                 reproduce, modify, distribute, and display the content to provide and improve the Service,
                 including to train and improve the models that analyze match video and write match
-                summaries. We never use video from junior player accounts, or from high school or junior
-                teams, to train models.
+                summaries. We never use video from junior player accounts, from accounts of players under
+                18, or from high school or junior teams to train models.
               </p>
               <p>
                 Advantage reserves the right to remove or refuse any content that violates these Terms, is

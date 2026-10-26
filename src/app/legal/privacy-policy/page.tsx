@@ -104,8 +104,8 @@ export default function Page() {
                 <li>
                   To train and improve the models that analyze match video and write match summaries. Our
                   video analysis provider uses match video of adult players to improve its analysis
-                  models. We never use video from junior player accounts, or from high school or junior
-                  teams, to train models.
+                  models. We never use video from junior player accounts, from accounts of players under
+                  18, or from high school or junior teams to train models.
                 </li>
                 <li>
                   To communicate with you, including sending service-related announcements, updates,
@@ -283,8 +283,14 @@ export default function Page() {
               </p>
               <p>
                 <strong>Your account:</strong> Deleting your account also deletes your Ask history and
-                the usage records for your personal matches. You can&apos;t delete your account while you own a team; hand it to a coach or
-                staff member first with Make owner, under the team&apos;s Members in Settings.
+                the usage records for your personal matches. You can&apos;t delete your account while you
+                own a team; hand it to a coach or staff member first with Make owner, under the
+                team&apos;s Members in Settings.
+              </p>
+              <p>
+                <strong>Ask feedback:</strong> When you rate an Ask answer, we keep a copy of that
+                question and answer with your feedback, even if you later delete the conversation. It is
+                deleted with your account.
               </p>
             </section>
 
@@ -307,18 +313,20 @@ export default function Page() {
             <section className="legal-sec">
               <h2>10. Children&apos;s Privacy</h2>
               <p>
-                Children cannot create their own Advantage account. A player under 18 uses Advantage through
-                an account that their parent or legal guardian creates and manages. We collect information
-                about a junior player only through that account, with the guardian&apos;s consent, as
-                described in our{" "}
+                Children under 13 cannot create their own Advantage account. A player aged 13 to 17 may
+                hold their own account only to join a high school, club or academy team through that
+                team&apos;s invitation. Any other player under 18 uses Advantage through an account that
+                their parent or legal guardian creates and manages. We collect information about a junior
+                player on a guardian-managed account only through that account, with the guardian&apos;s
+                consent, as described in our{" "}
                 <Link className="legal-link" href="/legal/guardian-terms">
                   Guardian Terms
                 </Link>
                 .
               </p>
               <p>
-                We never use video from junior player accounts, or from high school or junior teams, to
-                train models.
+                We never use video from junior player accounts, from accounts of players under 18, or from
+                high school or junior teams to train models.
               </p>
               <p>
                 If we learn that we have collected personal information from a child under 13 without a
