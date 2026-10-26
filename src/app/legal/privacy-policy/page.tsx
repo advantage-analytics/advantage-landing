@@ -13,7 +13,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Privacy Policy"
-        meta="Version 1.3 · Last updated October 21, 2026"
+        meta="Version 1.4 · Last updated October 25, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -44,12 +44,27 @@ export default function Page() {
               <h2>2. Information We Collect</h2>
               <p>When you use Advantage, we collect the following types of information:</p>
               <p>
-                <strong>Personal Information:</strong> This includes your name, email address, username,
-                and any other information you provide when creating an account.
+                <strong>Personal Information:</strong> This includes your name, email address, profile
+                photo, the role you choose (player, coach or parent), your college or team, the answers
+                you give during sign-up, and any other information you provide when creating an account.
+                If you sign in with Google, we receive your name, email address and photo from Google.
               </p>
               <p>
-                <strong>Performance Data:</strong> This includes match statistics, scores, and other
-                tennis-related performance data you submit to the Service.
+                <strong>Match Data:</strong> This includes match statistics, scores, shot and court
+                positions, opponents, the AI match summaries and key moments produced from them, and
+                other tennis-related performance data you submit to the Service.
+              </p>
+              <p>
+                <strong>Match Video:</strong> Video you upload of your matches, and match files you
+                import from other apps such as SwingVision.
+              </p>
+              <p>
+                <strong>Team Data:</strong> If you run a team on Advantage, the players you add to it:
+                their name, class year and playing hand.
+              </p>
+              <p>
+                <strong>Ask History:</strong> The questions you ask Advantage about your matches, and its
+                answers.
               </p>
               <p>
                 <strong>Usage Data:</strong> We collect information about how you interact with the
@@ -61,8 +76,14 @@ export default function Page() {
                 platforms, we may receive information from those services in accordance with your consent.
               </p>
               <p>
-                Please note that Advantage does not collect or store payment or billing information. All
-                payments are processed securely by our trusted third-party payment providers.
+                <strong>Information from Public Sources:</strong> We collect the work email addresses of
+                college tennis coaching staff from their schools&apos; public staff directories. We use
+                them to tell a program about its page on Advantage and to offer it access. Every such
+                email includes a way to object and stop further emails.
+              </p>
+              <p>
+                When you buy analysis hours, our payment provider collects your card details. We never see
+                or store your card number. We keep a record of what you bought and when.
               </p>
               <p>We do not collect health or biometric data.</p>
             </section>
@@ -72,17 +93,35 @@ export default function Page() {
               <p>Advantage uses the information we collect for the following purposes:</p>
               <ul className="legal-list">
                 <li>To provide, operate, and maintain the Service.</li>
-                <li>To process your account registration and manage your subscription plans.</li>
+                <li>To process your account registration and your purchases of analysis hours.</li>
                 <li>To analyze and generate tennis performance reports based on the data you submit.</li>
                 <li>
-                  To communicate with you, including sending service-related announcements, updates, and
-                  support messages.
+                  To analyze uploaded match video and produce statistics, court visualizations, AI match
+                  summaries and key moments.
+                </li>
+                <li>
+                  To train and improve the models that analyze match video and write match summaries. Our
+                  video analysis provider uses match video of adult players to improve its analysis
+                  models. We never use video from junior player accounts, or from high school or junior
+                  teams, to train models.
+                </li>
+                <li>
+                  To communicate with you, including sending service-related announcements, updates,
+                  support messages, usage alerts, and a warning before a video is deleted.
+                </li>
+                <li>
+                  To review the quality of our analysis, which may include a member of our team looking at
+                  a match.
                 </li>
                 <li>To improve and customize the Service and develop new features.</li>
                 <li>To detect, prevent, and address technical issues, fraud, or abuse.</li>
                 <li>To comply with legal obligations.</li>
               </ul>
-              <p>We do not use your personal data for marketing purposes unless you explicitly opt-in.</p>
+              <p>
+                We send marketing emails about Advantage to account holders who opt in, and to college
+                coaching staff at their work addresses as described in Section 2. You can unsubscribe from
+                any marketing email.
+              </p>
             </section>
 
             <section className="legal-sec">
@@ -91,12 +130,29 @@ export default function Page() {
               <p>We may share your information with:</p>
               <p>
                 <strong>Service Providers:</strong> Trusted third-party companies that perform services on
-                our behalf, such as data hosting, analytics, and customer support.
+                our behalf, such as cloud hosting and storage, video analysis, email delivery, payment
+                processing, product analytics, and customer support. Our video analysis provider receives
+                your match video to analyze it on our behalf, and may use video of adult players to
+                improve its analysis models.
               </p>
               <p>
                 <strong>AI Service Providers:</strong> Ask answers and match summaries are written with
                 the help of an AI model from a third-party provider. We send it the statistics needed to
                 answer your question or summarise your match.
+              </p>
+              <p>
+                <strong>Teams You Join:</strong> Matches filed to a team are visible to the team&apos;s
+                members, including its coaches. Your personal matches stay private unless you share one
+                with the team.
+              </p>
+              <p>
+                <strong>Public Match Links:</strong> If you create a link to a match, anyone with the link
+                can see its score and statistics, and its video if you choose to include it. The video can
+                be removed from the link at any time.
+              </p>
+              <p>
+                <strong>Public College Pages:</strong> College programs on Advantage have public pages that
+                show their roster and match results.
               </p>
               <p>
                 <strong>Apps You Connect:</strong> If you connect an AI assistant such as Claude,
@@ -177,7 +233,8 @@ export default function Page() {
               </p>
               <p>
                 <strong>Analytics Cookies:</strong> Help us understand how users interact with the Service
-                to improve functionality.
+                to improve functionality. This includes recordings of how pages are used, with the text
+                you type and the content on screen masked so that we cannot see it.
               </p>
               <p>We do not use cookies for advertising purposes.</p>
               <p>
@@ -211,12 +268,19 @@ export default function Page() {
               <p>When data is no longer needed, we securely delete or anonymize it.</p>
               <p>
                 <strong>Match video:</strong> Uploaded match video is kept for up to one year after it was
-                last viewed, then deleted. You can remove a video sooner at any time.
+                last viewed, then deleted. We email you 30 days before. The statistics from it are kept.
+                You can remove a video sooner at any time. Our video analysis provider can access a video
+                for no more than 14 days.
               </p>
               <p>
                 <strong>Team matches:</strong> Matches you file to a team on Advantage belong to that team
                 and stay with it if you delete your account. Your details as uploader are removed from them.
                 Your personal matches are deleted with your account.
+              </p>
+              <p>
+                <strong>Your account:</strong> Deleting your account also deletes your Ask history and
+                usage records. You can&apos;t delete your account while you own a team; contact us to hand
+                the team over first.
               </p>
             </section>
 
@@ -224,7 +288,7 @@ export default function Page() {
               <h2>9. International Data Transfers</h2>
               <p>
                 Advantage&apos;s servers and service providers may be located in various countries,
-                including the United States.
+                including the United States and Canada.
               </p>
               <p>
                 By using the Service, you acknowledge and consent to the transfer of your information to
@@ -247,6 +311,10 @@ export default function Page() {
                   Guardian Terms
                 </Link>
                 .
+              </p>
+              <p>
+                We never use video from junior player accounts, or from high school or junior teams, to
+                train models.
               </p>
               <p>
                 If we learn that we have collected personal information from a child under 13 without a

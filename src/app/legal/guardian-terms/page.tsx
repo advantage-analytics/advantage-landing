@@ -14,7 +14,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Guardian Terms"
-        meta="Version 1.0 · Last updated September 25, 2026"
+        meta="Version 1.1 · Last updated October 25, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -127,7 +127,8 @@ export default function Page() {
                 <li>
                   Uploaded video is kept for up to one year after it was last
                   viewed. We show a warning in the Service before it expires,
-                  and you can remove a video sooner at any time.
+                  and you can remove a video sooner at any time. The statistics
+                  from it are kept.
                 </li>
               </ul>
             </section>
@@ -155,6 +156,11 @@ export default function Page() {
                   <strong>Clubs and private teams</strong> are visible only to
                   their own members and are never listed in our public school
                   directory.
+                </li>
+                <li>
+                  <strong>Match links.</strong> If you create a link to one of
+                  the Player&apos;s matches, anyone with the link can see it.
+                  Video is included only if you choose.
                 </li>
               </ul>
             </section>
