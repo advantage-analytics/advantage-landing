@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PageFrame, PageHead } from "@/components/perspective/page-frame";
 import "../legal.css";
 
@@ -12,7 +13,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Terms and Conditions"
-        meta="Version 1.0 · Last updated August 13, 2025"
+        meta="Version 2.0 · Last updated October 25, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -29,33 +30,41 @@ export default function Page() {
             <section className="legal-sec">
               <h2>2. Description of Service</h2>
               <p>
-                Advantage is a tennis analytics platform designed to provide players with data-driven
-                insights through analytics tools, algorithms, and personalized reports. Users can create
-                accounts, submit match data, and access reports based on their performance. The Service
-                offers multiple purchase tiers, including a Free Trial, Standard, Pro, Team Half-Season, and
-                Team Full-Season plans, each with corresponding features and match submission limits.
+                Advantage is a tennis analytics platform for players, parents of junior players, coaches
+                and programs. You can upload match video for analysis by Advantage Intelligence, import
+                match files from apps such as SwingVision, and see statistics, court visualizations and AI
+                match summaries. You can ask questions about your matches with Ask, connect AI assistants
+                to your account, and share matches with your team or by link.
               </p>
             </section>
 
             <section className="legal-sec">
               <h2>3. User Eligibility</h2>
               <p>
-                You must be at least 18 years old to use Advantage. By using the Service, you represent and
-                warrant that you meet this age requirement and have the legal capacity to enter into a
-                binding agreement. If you are under 18, you may only use the Service with the involvement and
-                consent of a parent or guardian.
+                You must be at least 18 years old to create or hold an Advantage account. By using the
+                Service, you represent and warrant that you meet this age requirement and have the legal
+                capacity to enter into a binding agreement. A player under 18 uses Advantage through an
+                account that their parent or legal guardian creates and manages under our{" "}
+                <Link className="legal-link" href="/legal/guardian-terms">
+                  Guardian Terms
+                </Link>
+                .
               </p>
             </section>
 
             <section className="legal-sec">
-              <h2>4. Account Creation and Security</h2>
+              <h2>4. Account Creation, Security and Teams</h2>
               <p>
-                To access certain features of the Service, including the Free Trial and paid purchase plans
-                (Standard, Pro, Team Half-Season, and Team Full-Season), you must create an account by
-                providing accurate and complete information. You are responsible for maintaining the
-                confidentiality of your account credentials and for all activities that occur under your
-                account. You agree to notify Advantage immediately if you suspect any unauthorized use of
-                your account.
+                To access certain features of the Service, you must create an account by providing
+                accurate and complete information. You are responsible for maintaining the confidentiality
+                of your account credentials and for all activities that occur under your account. You
+                agree to notify Advantage immediately if you suspect any unauthorized use of your account.
+              </p>
+              <p>
+                If you create or claim a team on Advantage, you are its owner and are responsible for who
+                you invite and what is uploaded to it. You confirm that you have the right to upload video
+                of the players on the team, and that they, or for players under 18 their parents or
+                guardians, have agreed to being filmed and to the analysis of their matches.
               </p>
             </section>
 
@@ -86,10 +95,13 @@ export default function Page() {
             <section className="legal-sec">
               <h2>6. User-Generated Content</h2>
               <p>
-                You retain ownership of the data and content you submit to Advantage, such as match data and
-                personal information. By submitting such content, you grant Advantage a worldwide,
-                non-exclusive, royalty-free, sublicensable, and transferable license to use, reproduce,
-                modify, distribute, and display the content solely to provide and improve the Service.
+                You retain ownership of the data and content you submit to Advantage, such as match video,
+                match data and personal information. By submitting such content, you grant Advantage a
+                worldwide, non-exclusive, royalty-free, sublicensable, and transferable license to use,
+                reproduce, modify, distribute, and display the content to provide and improve the Service,
+                including to train and improve the models that analyze match video and write match
+                summaries. We never use video from junior player accounts, or from high school or junior
+                teams, to train models.
               </p>
               <p>
                 Advantage reserves the right to remove or refuse any content that violates these Terms, is
@@ -102,31 +114,65 @@ export default function Page() {
             </section>
 
             <section className="legal-sec">
-              <h2>7. Payments and Purchases</h2>
+              <h2>7. Sharing and Team Content</h2>
               <p>
-                Advantage offers multiple purchase plans, including a Free Trial, Standard, Pro, Team
-                Half-Season, and Team Full-Season plans. Each plan includes specific features and match
-                submission limits.
+                Matches filed to a team belong to that team and stay with it if you leave the team or
+                delete your account. If you create a public link to a match, anyone with the link can view
+                it, and you are responsible for what you share. Only upload or share video you have the
+                right to share.
               </p>
-              <p>
-                The Free Trial plan is available for new users and provides limited access to the Service.
-                Payment is required for all other purchase plans, which are billed in advance according to
-                the chosen billing cycle.
-              </p>
-              <p>
-                All fees for paid plans are non-refundable except as required by law or at Advantage&apos;s
-                sole discretion. Advantage reserves the right to modify purchase fees or billing methods with
-                prior notice to users.
-              </p>
-              <p>
-                You agree to provide accurate payment information and authorize Advantage to charge your
-                chosen payment method for all fees incurred.
-              </p>
-              <p>Failure to pay may result in suspension or termination of your access to the Service.</p>
             </section>
 
             <section className="legal-sec">
-              <h2>8. Data Usage and Privacy</h2>
+              <h2>8. Connected Apps</h2>
+              <p>
+                You can connect AI assistants such as Claude, ChatGPT or Cursor to your account. A
+                connected app acts on your behalf with the access described in our{" "}
+                <Link className="legal-link" href="/legal/privacy-policy">
+                  Privacy Policy
+                </Link>
+                , and your use of it is governed by its own terms. You can disconnect it at any time in
+                Settings &rsaquo; Connections.
+              </p>
+            </section>
+
+            <section className="legal-sec">
+              <h2>9. Payments and Analysis Hours</h2>
+              <p>
+                Each account includes a monthly allowance of video analysis hours. The allowance depends on
+                the type of account, is shown in the Service, and resets each month.
+              </p>
+              <p>
+                You can buy additional hours in packs. Purchased hours are valid for 12 months from the date
+                of purchase. Prices are shown before you pay, and payments are processed by our payment
+                provider.
+              </p>
+              <p>
+                All sales are final, except where the law requires a refund. If a payment is refunded or
+                reversed, the unused hours from that purchase are removed. Hours used to analyze a match
+                are not returned if the match is later deleted.
+              </p>
+              <p>
+                Plans for programs and teams are arranged with us directly. If you accept pilot terms in
+                the Service, those terms also apply.
+              </p>
+              <p>
+                Advantage reserves the right to modify prices or monthly allowances with prior notice to
+                users. A change does not affect hours you have already bought.
+              </p>
+            </section>
+
+            <section className="legal-sec">
+              <h2>10. Usage Limits</h2>
+              <p>
+                The Service sets limits on use, which are shown in the Service and may change. They
+                currently include 20 Ask questions a month, videos of up to 8 GB recorded at 1080p and 30
+                frames per second or better, and two teams you create per account.
+              </p>
+            </section>
+
+            <section className="legal-sec">
+              <h2>11. Data Usage and Privacy</h2>
               <p>
                 Your privacy is important to us. Advantage collects and processes personal and performance
                 data to provide and improve the Service. By using the Service, you consent to the collection,
@@ -139,7 +185,7 @@ export default function Page() {
             </section>
 
             <section className="legal-sec">
-              <h2>9. Prohibited Conduct</h2>
+              <h2>12. Prohibited Conduct</h2>
               <p>When using Advantage, you agree not to:</p>
               <ul className="legal-list">
                 <li>
@@ -164,11 +210,13 @@ export default function Page() {
             </section>
 
             <section className="legal-sec">
-              <h2>10. Disclaimers and Limitations of Liability</h2>
+              <h2>13. Disclaimers and Limitations of Liability</h2>
               <p>
                 The Service and all content, including analytics and reports, are provided &quot;as is&quot;
                 and &quot;as available&quot; without warranties of any kind, express or implied. Advantage
                 does not guarantee the accuracy, completeness, or reliability of the analytics or reports.
+                Match summaries, key moments and Ask answers are written with the help of AI and may be
+                inaccurate or incomplete.
               </p>
               <p>
                 To the fullest extent permitted by law, Advantage and its affiliates shall not be liable for
@@ -182,7 +230,7 @@ export default function Page() {
             </section>
 
             <section className="legal-sec">
-              <h2>11. Termination and Suspension</h2>
+              <h2>14. Termination and Suspension</h2>
               <p>
                 Advantage reserves the right, at its sole discretion and without prior notice, to suspend or
                 terminate your account and access to the Service, for any reason or no reason, including but
@@ -201,7 +249,7 @@ export default function Page() {
             </section>
 
             <section className="legal-sec">
-              <h2>12. Modifications to Terms</h2>
+              <h2>15. Modifications to Terms</h2>
               <p>
                 Advantage reserves the right to modify or update these Terms at any time. When changes are
                 made, Advantage will post the updated Terms on the Service and update the &quot;Last
@@ -214,7 +262,7 @@ export default function Page() {
             </section>
 
             <section className="legal-sec">
-              <h2>13. Governing Law and Dispute Resolution</h2>
+              <h2>16. Governing Law and Dispute Resolution</h2>
               <p>
                 These Terms shall be governed by and construed in accordance with the laws of the State of
                 California, without regard to its conflict of law principles.
@@ -231,7 +279,7 @@ export default function Page() {
             </section>
 
             <section className="legal-sec">
-              <h2>14. Contact Information</h2>
+              <h2>17. Contact Information</h2>
               <p>If you have any questions about these Terms or the Service, please contact us at:</p>
               <p>
                 Email:{" "}
