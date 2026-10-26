@@ -16,6 +16,9 @@ export const links = {
   // The dashboard's match uploader. Signed-out visitors land on sign-in and
   // come back here after.
   uploadMatch: `${APP_URL}/dashboard/matches/new`,
+  // The dashboard Help page's step-by-step SwingVision export, which the
+  // export guide points to rather than repeating.
+  swingVisionHelp: `${APP_URL}/dashboard/help#swingvision`,
   // The Ask MCP connector's address, pasted into Claude, and the dashboard
   // page that lists connected apps.
   mcp: `${APP_URL}/api/mcp`,
