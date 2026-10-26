@@ -44,10 +44,12 @@ export default function Page() {
               <h2>2. Information We Collect</h2>
               <p>When you use Advantage, we collect the following types of information:</p>
               <p>
-                <strong>Personal Information:</strong> This includes your name, email address, profile
-                photo, the role you choose (player, coach or parent), your college or team, the answers
-                you give during sign-up, and any other information you provide when creating an account.
-                If you sign in with Google, we receive your name, email address and photo from Google.
+                <strong>Personal Information:</strong> This includes your name, email address, the role
+                you choose (player, coach or parent), your college or team, the answers you give during
+                sign-up, and any other information you provide when creating an account. If you sign in
+                with Google, we receive your name, email address and photo from Google. In Settings you
+                can also add a profile photo, date of birth, phone number, country and state, and your
+                playing hand and backhand.
               </p>
               <p>
                 <strong>Match Data:</strong> This includes match statistics, scores, shot and court
@@ -102,8 +104,8 @@ export default function Page() {
                 <li>
                   To train and improve the models that analyze match video and write match summaries. Our
                   video analysis provider uses match video of adult players to improve its analysis
-                  models. We never use video from junior player accounts, or from high school or junior
-                  teams, to train models.
+                  models. We never use video from junior player accounts, from accounts of players under
+                  18, or from high school or junior teams to train models.
                 </li>
                 <li>
                   To communicate with you, including sending service-related announcements, updates,
@@ -118,9 +120,10 @@ export default function Page() {
                 <li>To comply with legal obligations.</li>
               </ul>
               <p>
-                We send marketing emails about Advantage to account holders who opt in, and to college
-                coaching staff at their work addresses as described in Section 2. You can unsubscribe from
-                any marketing email.
+                We send emails that help you get started with Advantage, which you can turn off in
+                Settings. We also send marketing emails about Advantage to people who joined our waitlist,
+                to account holders, and to college coaching staff at their work addresses as described in
+                Section 2. You can unsubscribe from any marketing email.
               </p>
             </section>
 
@@ -137,13 +140,13 @@ export default function Page() {
               </p>
               <p>
                 <strong>AI Service Providers:</strong> Ask answers and match summaries are written with
-                the help of an AI model from a third-party provider. We send it the statistics needed to
-                answer your question or summarise your match.
+                the help of an AI model from a third-party provider. We send it your first name and the
+                statistics needed to answer your question or summarise your match.
               </p>
               <p>
                 <strong>Teams You Join:</strong> Matches filed to a team are visible to the team&apos;s
-                members, including its coaches. Your personal matches stay private unless you share one
-                with the team.
+                members, including its coaches and your teammates. Your personal matches are never
+                visible to your team.
               </p>
               <p>
                 <strong>Public Match Links:</strong> If you create a link to a match, anyone with the link
@@ -151,8 +154,9 @@ export default function Page() {
                 be removed from the link at any time.
               </p>
               <p>
-                <strong>Public College Pages:</strong> College programs on Advantage have public pages that
-                show their roster and match results.
+                <strong>College Programs:</strong> The rosters and match results of college programs on
+                Advantage are visible to other signed-in Advantage users, for scouting. College names can
+                be searched by anyone.
               </p>
               <p>
                 <strong>Apps You Connect:</strong> If you connect an AI assistant such as Claude,
@@ -269,8 +273,8 @@ export default function Page() {
               <p>
                 <strong>Match video:</strong> Uploaded match video is kept for up to one year after it was
                 last viewed, then deleted. We email you 30 days before. The statistics from it are kept.
-                You can remove a video sooner at any time. Our video analysis provider can access a video
-                for no more than 14 days.
+                You can remove a video sooner at any time. Our video analysis provider has no more than
+                14 days to download a video for analysis.
               </p>
               <p>
                 <strong>Team matches:</strong> Matches you file to a team on Advantage belong to that team
@@ -279,8 +283,14 @@ export default function Page() {
               </p>
               <p>
                 <strong>Your account:</strong> Deleting your account also deletes your Ask history and
-                usage records. You can&apos;t delete your account while you own a team; contact us to hand
-                the team over first.
+                the usage records for your personal matches. You can&apos;t delete your account while you
+                own a team; hand it to a coach or staff member first with Make owner, under the
+                team&apos;s Members in Settings.
+              </p>
+              <p>
+                <strong>Ask feedback:</strong> When you rate an Ask answer, we keep a copy of that
+                question and answer with your feedback, even if you later delete the conversation. It is
+                deleted with your account.
               </p>
             </section>
 
@@ -303,18 +313,20 @@ export default function Page() {
             <section className="legal-sec">
               <h2>10. Children&apos;s Privacy</h2>
               <p>
-                Children cannot create their own Advantage account. A player under 18 uses Advantage through
-                an account that their parent or legal guardian creates and manages. We collect information
-                about a junior player only through that account, with the guardian&apos;s consent, as
-                described in our{" "}
+                Children under 13 cannot create their own Advantage account. A player aged 13 to 17 may
+                hold their own account only to join a high school, club or academy team through that
+                team&apos;s invitation. Any other player under 18 uses Advantage through an account that
+                their parent or legal guardian creates and manages. We collect information about a junior
+                player on a guardian-managed account only through that account, with the guardian&apos;s
+                consent, as described in our{" "}
                 <Link className="legal-link" href="/legal/guardian-terms">
                   Guardian Terms
                 </Link>
                 .
               </p>
               <p>
-                We never use video from junior player accounts, or from high school or junior teams, to
-                train models.
+                We never use video from junior player accounts, from accounts of players under 18, or from
+                high school or junior teams to train models.
               </p>
               <p>
                 If we learn that we have collected personal information from a child under 13 without a
