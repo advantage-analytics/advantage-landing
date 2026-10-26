@@ -3,10 +3,11 @@ import { links } from "@/lib/links";
 import { EXPORT_GUIDE_HREF } from "@/lib/match-video";
 
 /* Three columns: what the product is, the ways in, and the company. The
-   product links carry the section names the page uses. Get started holds both
-   lanes side by side (players join the free beta, coaches find their team),
-   plus the pilot and Sign in, so a visitor who scrolled past every CTA still
-   meets the choice once more at the bottom. */
+   product links carry the section names the page uses, then the two reference
+   pages (the export guide and the /mcp connector guide). Get started holds
+   both lanes side by side (players join the free beta, coaches find their
+   team), plus the pilot and Sign in, so a visitor who scrolled past every CTA
+   still meets the choice once more at the bottom. */
 export function Footer() {
   return (
     <footer>
@@ -24,6 +25,7 @@ export function Footer() {
               <Link href="/#how">How it works</Link>
               <Link href="/#faq">FAQ</Link>
               <Link href={EXPORT_GUIDE_HREF}>Export guide</Link>
+              <Link href="/mcp">Use with AI apps</Link>
             </div>
             <div className="foot-col">
               <h5>Get started</h5>

@@ -1,4 +1,4 @@
-import { CampaignFrame } from "@/components/campaign/campaign-frame";
+import { PageFrame } from "@/components/perspective/page-frame";
 import { CONTACT_EMAIL } from "@/lib/links";
 import {
   EXPORT_GUIDE_HREF,
@@ -28,7 +28,12 @@ export const metadata = {
    in. The actions sit in the masthead, before any detail, because on a phone the
    detail would otherwise push them below the fold. The terms and steps below
    are the pilot's own, read from lib/pilot, so this page can't promise
-   something /pilot doesn't. */
+   something /pilot doesn't.
+
+   It renders in the site's PageFrame like every other route, so a coach who
+   lands here from an old email can also find the rest of the site. Once those
+   emails stop getting clicks (after the pilot ends), this becomes a permanent
+   redirect to /pilot in next.config.ts. */
 
 // Cost, film and commitment: the three a coach who was promised a free
 // breakdown checks first. Paid plans are /pilot's business.
@@ -51,66 +56,70 @@ const STEPS: readonly { t: string; p: string }[] = [
 
 export default function Page() {
   return (
-    <CampaignFrame className="sm-page">
-      <section className="campaign-head sm-head">
-        <span className="sm-badge">This offer has closed</span>
-        <h1>Match uploads now happen in Advantage.</h1>
-        <p className="campaign-lede">
-          We&rsquo;re no longer taking matches through this page. Instead, your
-          program uploads video to its own dashboard and gets the same
-          shot-by-shot breakdown there, free for the fall season.
-        </p>
-        <div className="sm-actions">
-          <a className="campaign-btn campaign-btn-primary" href="/pilot">
-            Join the free pilot
-          </a>
-          <a
-            className="campaign-btn campaign-btn-secondary"
-            href={EXPORT_GUIDE_HREF}
-          >
-            Filming guide
-          </a>
+    <PageFrame>
+      <section className="band sm-band">
+        <div className="wrap">
+          <div className="sm-page">
+            <div className="page-head sm-head">
+              <span className="sm-badge">This offer has closed</span>
+              <h1>Match uploads now happen in Advantage.</h1>
+              <p className="lede">
+                We&rsquo;re no longer taking matches through this page.
+                Instead, your program uploads video to its own dashboard and
+                gets the same shot-by-shot breakdown there, free for the fall
+                season.
+              </p>
+              <div className="sm-actions">
+                <a className="btn btn-primary btn-lg" href="/pilot">
+                  Join the free pilot
+                </a>
+                <a className="btn btn-outline btn-lg" href={EXPORT_GUIDE_HREF}>
+                  Filming guide
+                </a>
+              </div>
+            </div>
+
+            <dl className="sm-terms">
+              {TERMS.map((term) => (
+                <div className="sm-term" key={term.l}>
+                  <dt>{term.l}</dt>
+                  <dd className="sm-term-value">{term.v}</dd>
+                  <dd className="sm-term-sub">{term.s}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <section className="sm-steps" aria-labelledby="sm-steps-title">
+              <h2 className="eyebrow" id="sm-steps-title">
+                How it works now
+              </h2>
+              <ol>
+                {STEPS.map((step, i) => (
+                  <li key={step.t}>
+                    <span className="sm-step-num" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <strong>{step.t}</strong>
+                      <span>{step.p}</span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            {/* For the coaches who did send a film before the intake closed.
+                It promises no delivery date: we reply to each one by hand. */}
+            <p className="sm-note">
+              Already sent us a match through this page? Email{" "}
+              <a className="sm-link" href={`mailto:${CONTACT_EMAIL}`}>
+                {CONTACT_EMAIL}
+              </a>{" "}
+              and we&rsquo;ll tell you where it stands.
+            </p>
+          </div>
         </div>
       </section>
-
-      <dl className="sm-terms">
-        {TERMS.map((term) => (
-          <div className="sm-term" key={term.l}>
-            <dt>{term.l}</dt>
-            <dd className="sm-term-value">{term.v}</dd>
-            <dd className="sm-term-sub">{term.s}</dd>
-          </div>
-        ))}
-      </dl>
-
-      <section className="sm-steps" aria-labelledby="sm-steps-title">
-        <h2 className="eyebrow" id="sm-steps-title">
-          How it works now
-        </h2>
-        <ol>
-          {STEPS.map((step, i) => (
-            <li key={step.t}>
-              <span className="sm-step-num" aria-hidden="true">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <strong>{step.t}</strong>
-                <span>{step.p}</span>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* For the coaches who did send a film before the intake closed. It
-          promises no delivery date: we reply to each one by hand. */}
-      <p className="campaign-note sm-already">
-        Already sent us a match through this page? Email{" "}
-        <a className="campaign-link" href={`mailto:${CONTACT_EMAIL}`}>
-          {CONTACT_EMAIL}
-        </a>{" "}
-        and we&rsquo;ll tell you where it stands.
-      </p>
-    </CampaignFrame>
+    </PageFrame>
   );
 }

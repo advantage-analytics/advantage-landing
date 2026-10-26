@@ -4,15 +4,17 @@
    setup workspace (apps, steps, a dark code pane for the apps
    that take a command or config), then plain sections.
 
-   Rendered through the shared DocsFrame (components/docs), which
-   owns the header, footer and 1200px wrap. Colours are the site
+   Rendered inside the site's PageFrame (SiteNav and Footer); the
+   content sits in the site's .wrap. Colours are the site
    tokens from perspective.css; only the code pane declares its
    own. Writes only `.mcp` and `.mcp-*`.
    ============================================================ */
 
-/* The frame (components/docs) owns the shell and the site tokens; these are
-   the code pane's own, scoped to this route. */
+/* The site frame owns the shell and the site tokens; these are the code
+   pane's own, scoped to this route. The bottom padding is the air above the
+   site footer. */
 .mcp {
+  padding-bottom: 110px;
   --code-bg: #0f1012;
   --code-panel: #15161a;
   --code-line: #26272c;
@@ -541,6 +543,12 @@
   }
   .mcp-sec {
     padding-top: 56px;
+  }
+}
+
+@media (max-width: 720px) {
+  .mcp {
+    padding-bottom: 64px;
   }
 }
 
