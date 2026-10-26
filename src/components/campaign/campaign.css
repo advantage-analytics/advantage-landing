@@ -1,10 +1,9 @@
 /* ============================================================
-   Campaign shell — the frame shared by /send-a-match and
-   /export-guide.
+   Campaign shell — the frame for /send-a-match. (/export-guide
+   used it too until it moved to DocsFrame with /mcp.)
 
-   Both are pages a coach reaches from outside the site: the
-   export guide from the dashboard uploader, the /send-a-match
-   notice from an older cold email. Each has one job. A visitor
+   A page a coach reaches from outside the site: the
+   /send-a-match notice from an older cold email. It has one job. A visitor
    who arrives via site navigation needs navigation to get back
    out; a visitor who arrives from an email or the app does not.
    So this shell carries a wordmark and a footer and nothing
@@ -44,10 +43,7 @@
 }
 
 /* One wrap for header, main and footer, so the wordmark always sits in register
-   with the content below it — and, because both funnel routes declare the same
-   measure at the same breakpoint, in register ACROSS the two pages too. Keep
-   them in step: if one route changes when it widens, the logo jumps on click-
-   through. The reading column is held separately by .eg-doc, not by this. */
+   with the content below it. */
 .campaign-wrap {
   width: 100%;
   max-width: var(--campaign-measure, 608px);
@@ -139,8 +135,10 @@
   letter-spacing: -0.1px;
   white-space: nowrap;
   cursor: pointer;
-  transition: background 200ms var(--ease-primary),
-    border-color 180ms var(--ease-primary), color 180ms var(--ease-primary),
+  transition:
+    background 200ms var(--ease-primary),
+    border-color 180ms var(--ease-primary),
+    color 180ms var(--ease-primary),
     transform 200ms var(--ease-primary);
 }
 .campaign-btn:active {
@@ -249,7 +247,6 @@
     transform: none;
   }
 }
-
 
 /* ---- Footer ----
    Out-specifies the site's `.perspective-page footer` band, which would

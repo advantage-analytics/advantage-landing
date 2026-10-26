@@ -1,123 +1,426 @@
 /* ============================================================
    Export guide — getting match video off the camera and into the
-   dashboard uploader. A reference page, not an editorial one:
-   whoever is here is mid-task with a file in hand, so it's built
-   to be scanned and left. Hairline-divided sections on the
-   campaign shell's reading column, in the same voice as the
-   legal pages — light type, mono micro-labels, one blue accent.
+   dashboard uploader. A reference page: whoever is here is
+   mid-task with a file in hand, so it's built to be scanned and
+   left.
+
+   Rendered inside DocsFrame (components/docs), the same shell as
+   /mcp, and set in the same docs type: a light display masthead, a
+   hairline anchor row, light 32px section heads, prose capped at
+   66ch. Writes only `.eg-*`; colours are perspective.css's tokens.
    ============================================================ */
 
-/* The shell's default 608px measure, the same as /send-a-match, so the
-   wordmark and footer sit on one left edge across both campaign pages. At that
-   width the 15px prose runs about 68ch, so no inner column is needed. */
-.eg-page {
-  /* Read by the shared components in campaign.css. */
-  --campaign-item-size: 14.5px;
-  --campaign-item-leading: 1.6;
+/* ---- Masthead ---- */
+.eg-head {
+  padding: 64px 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
-
-/* Separates the article from the masthead at the shell's 56px step. */
-.eg-doc {
-  margin-top: 56px;
-}
-
-/* The prose defaults are wrapped in :where() so they carry ZERO specificity.
-   Without it `.eg-sec > p` (0,1,1) beat `.campaign-note` (0,1,0) and the shared
-   callout rendered --ink-secondary here but --ink-muted everywhere else, with a
-   different line-height and an inherited max-width. A component class must win
-   over a container default; the ladder of element-qualified overrides that used
-   to patch this was both fragile and incomplete. */
-
-/* ---- Section rhythm: hairline-divided, same cadence as .legal-sec ---- */
-.eg-sec + .eg-sec {
-  margin-top: 44px;
-  padding-top: 44px;
-  border-top: 1px solid var(--hairline);
-}
-
-.eg-sec h2 {
-  margin: 0 0 16px;
-  font: var(--fw-regular) clamp(20px, 2vw, 26px) / 1.2 var(--font-sans);
-  letter-spacing: -0.4px;
+.eg-head h1 {
+  margin: 0;
+  max-width: 18ch;
+  font: var(--fw-light) clamp(36px, 5vw, 52px) / 1.06 var(--font-sans);
+  letter-spacing: -0.03em;
   color: var(--ink);
+  text-wrap: balance;
 }
-
-:where(.eg-sec) > p {
-  margin: 0 0 16px;
-  max-width: 68ch;
-  font: var(--fw-regular) 15px / 1.7 var(--font-sans);
+.eg-lede {
+  margin: 0;
+  max-width: 62ch;
+  font: var(--fw-regular) 17px / 1.6 var(--font-sans);
   color: var(--ink-secondary);
   text-wrap: pretty;
 }
 
-:where(.eg-sec) > p:last-child {
-  margin-bottom: 0;
+.eg-eyebrow {
+  display: inline-flex;
+  font: var(--fw-medium) 10px / 1.5 var(--font-sans);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
 }
 
-.eg-sec strong {
+.eg-anchors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+  padding: 14px 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  font: var(--fw-regular) 13px var(--font-sans);
+  color: var(--ink-tertiary);
+}
+.eg-anchors a {
+  transition: color 180ms var(--docs-ease);
+}
+.eg-anchors a:hover {
   color: var(--ink);
-  font-weight: var(--fw-medium);
 }
 
-.eg-sec em {
-  font-style: normal;
+/* ---- Sections ---- */
+.eg-sec {
+  padding-top: 72px;
+  scroll-margin-top: 8px;
+}
+.eg-sec h2 {
+  margin: 0;
+  font: var(--fw-light) 32px / 1.15 var(--font-sans);
+  letter-spacing: -0.8px;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.eg-sec h3 {
+  margin: 0;
+  font: var(--fw-medium) 17px / 24px var(--font-sans);
+  letter-spacing: -0.2px;
+  color: var(--ink);
+}
+.eg-prose {
+  margin: 14px 0 0;
+  max-width: 66ch;
+  font: var(--fw-regular) 15px / 1.7 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+.eg-sec strong {
+  font-weight: var(--fw-medium);
+  color: var(--ink);
+}
+.eg-link {
+  color: var(--signal-blue-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* ---- Notes ----
+   A quiet left rule; the caution weight adds the amber and a tint because it
+   carries a real constraint. */
+.eg-note {
+  margin: 24px 0 0;
+  max-width: 66ch;
+  padding-left: 14px;
+  border-left: 2px solid var(--hairline-medium);
+  font: var(--fw-regular) 13px / 1.6 var(--font-sans);
+  color: var(--ink-tertiary);
+  text-wrap: pretty;
+}
+.eg-note.is-caution {
+  padding: 14px 16px;
+  background: var(--surface-subtle);
+  border-left-color: var(--viz-amber);
+  border-radius: 0 8px 8px 0;
+  color: var(--ink-secondary);
+}
+
+.eg-aside {
+  margin-left: 8px;
+  font: var(--fw-regular) 13px var(--font-sans);
+  color: var(--ink-tertiary);
+}
+
+/* ---- Cameras ---- */
+.eg-cameras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.eg-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--hairline-medium);
+  border-radius: 9999px;
+  font: var(--fw-medium) 13px var(--font-sans);
+  transition: background 180ms var(--docs-ease);
+}
+.eg-chip:hover {
+  background: var(--surface-subtle);
+}
+
+.eg-device {
+  margin-top: 48px;
+  padding-top: 36px;
+  border-top: 1px solid var(--hairline);
+  scroll-margin-top: 8px;
+}
+
+/* ---- iPhone: each step beside the screen it happens on ----
+   The steps' top padding lines the first step up with its row on the
+   screenshot; it drops when the pair stacks. */
+.eg-pair {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 32px 64px;
+  margin-top: 40px;
+}
+.eg-steps {
+  flex: 1 1 360px;
+  min-width: 0;
+  max-width: 520px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.eg-steps-1 {
+  padding-top: 132px;
+}
+.eg-steps-2 {
+  padding-top: 324px;
+}
+.eg-step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.eg-step h4 {
+  margin: 0 0 6px;
+  font: var(--fw-medium) 15px / 24px var(--font-sans);
+  color: var(--ink);
+}
+.eg-step p {
+  margin: 0;
+  font: var(--fw-regular) 14.5px / 1.65 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+.eg-num {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: var(--signal-blue-deep);
+  color: #fff;
+  font: var(--fw-medium) 12px / 24px var(--font-sans);
+  text-align: center;
+}
+.eg-num.is-suggested,
+.eg-pin.is-suggested {
+  background: var(--surface);
+  color: var(--signal-blue-deep);
+  box-shadow: inset 0 0 0 1.5px var(--signal-blue-deep);
+}
+
+.eg-shot {
+  flex: 0 0 344px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.eg-shot .eg-eyebrow {
+  padding-left: 44px;
+}
+.eg-shot-stage {
+  position: relative;
+  padding-left: 44px;
+}
+.eg-pin {
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: var(--signal-blue-deep);
+  color: #fff;
+  font: var(--fw-medium) 11px / 22px var(--font-sans);
+  text-align: center;
+}
+.eg-pin::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  top: 10.5px;
+  width: 43px;
+  height: 1px;
+  background: var(--signal-blue-deep);
+}
+.eg-pin.is-suggested::after {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--signal-blue-deep) 0 2px,
+    transparent 2px 4px
+  );
+}
+
+/* The phone: a drawn frame around a real screenshot, cropped to the rows that
+   matter and faded out below them. */
+.eg-phone-crop {
+  width: 300px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent);
+}
+.eg-phone {
+  position: relative;
+  width: 300px;
+  padding: 9px;
+  border-radius: 52px;
+  background: #0b0b0c;
+  box-shadow:
+    inset 0 0 0 2px #c7c7cc,
+    inset 0 0 0 3.5px #1c1c1e;
+}
+.eg-phone img {
+  display: block;
+  width: 282px;
+  height: auto;
+  border-radius: 43px;
+}
+.eg-island {
+  position: absolute;
+  top: 19px;
+  left: 50%;
+  width: 88px;
+  height: 26px;
+  border-radius: 13px;
+  background: #000;
+  transform: translateX(-50%);
+}
+.eg-ring {
+  position: absolute;
+  left: 21px;
+  width: 258px;
+  height: 43px;
+  border: 2px solid var(--signal-blue-deep);
+  pointer-events: none;
+}
+.eg-ring.is-suggested {
+  border-style: dashed;
+}
+
+/* ---- GoPro settings ---- */
+.eg-specs {
+  margin: 16px 0 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px 28px;
+  font: var(--fw-regular) 14.5px / 1.6 var(--font-sans);
+}
+.eg-specs dt {
+  color: var(--ink-tertiary);
+}
+.eg-specs dd {
+  margin: 0;
   color: var(--ink);
 }
 
 /* ---- Routes off the device ----
-   Four parallel answers, one per source. The bold source name leads each item
-   and does a marker's job, so the list runs flush with the prose. */
+   Parallel answers, one per source. The bold source name leads each item and
+   does a marker's job, so the list runs flush with the prose. */
 .eg-routes {
   list-style: none;
-  margin: 0;
+  margin: 18px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 68ch;
+  max-width: 66ch;
   font: var(--fw-regular) 15px / 1.7 var(--font-sans);
   color: var(--ink-secondary);
 }
 .eg-routes li {
   text-wrap: pretty;
 }
-.eg-routes strong {
-  color: var(--ink);
-  font-weight: var(--fw-medium);
-}
 
-/* Prose that follows a callout needs the gap the callout's own top margin
-   gives it; the prose default only spaces downward. */
-:where(.eg-sec) > .campaign-note + p {
-  margin-top: 16px;
-}
-
-/* ---- Keep / skip columns ---- */
+/* ---- Keep / skip ---- */
 .eg-cols {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 40px;
-  margin-top: 26px;
+  max-width: 720px;
+  margin-top: 28px;
+}
+.eg-list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.eg-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font: var(--fw-regular) 14.5px / 1.6 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+.eg-item svg {
+  flex: 0 0 auto;
+  margin-top: 3px;
+}
+.eg-item.is-keep svg {
+  color: var(--win-green);
+}
+.eg-item.is-skip svg {
+  color: var(--ink-label);
 }
 
-.eg-col .eyebrow {
-  margin-bottom: 16px;
+/* ---- The way back ---- */
+.eg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  margin-top: 24px;
+  padding: 0 24px;
+  border-radius: var(--r-button);
+  background: var(--signal-blue);
+  color: #fff;
+  font: var(--fw-medium) 13px var(--font-sans);
+  letter-spacing: -0.1px;
+  transition:
+    background 200ms var(--docs-ease),
+    transform 200ms var(--docs-ease);
+}
+.eg-btn:hover {
+  background: var(--signal-blue-deep);
+}
+.eg-btn:active {
+  transform: scale(0.97);
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 720px) {
-  .eg-sec + .eg-sec {
-    margin-top: 32px;
-    padding-top: 32px;
+@media (max-width: 900px) {
+  .eg-steps-1,
+  .eg-steps-2 {
+    padding-top: 0;
   }
+}
 
+@media (max-width: 640px) {
+  .eg-head {
+    padding: 40px 0 28px;
+  }
+  .eg-sec {
+    padding-top: 56px;
+  }
   .eg-sec h2 {
-    margin-bottom: 14px;
+    font-size: 26px;
   }
-
-  /* Two short columns become one honest list. */
+  /* The gutter pins need 44px the phone can't spare; the rings still mark
+     the rows. */
+  .eg-shot {
+    flex-basis: 300px;
+  }
+  .eg-shot-stage,
+  .eg-shot .eg-eyebrow {
+    padding-left: 0;
+  }
+  .eg-pin {
+    display: none;
+  }
   .eg-cols {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 30px;
   }
 }

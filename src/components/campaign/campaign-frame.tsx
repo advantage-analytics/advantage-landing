@@ -2,15 +2,15 @@ import type { ReactNode } from "react";
 import { CONTACT_EMAIL, SITE_DOMAIN } from "@/lib/links";
 import "./campaign.css";
 
-/* The shell for pages a coach reaches from outside the site: /export-guide,
-   linked from the dashboard uploader, and the /send-a-match notice that older
-   cold emails still point at.
+/* The shell for the /send-a-match notice that older cold emails still point
+   at. The site's reference pages (/export-guide, /mcp) moved to DocsFrame
+   (components/docs).
 
-   Deliberately NOT a client component, unlike the site's PageFrame — both
-   routes are static and export `metadata`, and there is no scroll-reveal
+   Deliberately NOT a client component, unlike the site's PageFrame — the
+   route is static and exports `metadata`, and there is no scroll-reveal
    observer to run because campaign pages don't animate on scroll.
 
-   `className` carries the route hook (`sm-page`, `eg-page`) that the route's
+   `className` carries the route hook (`sm-page`) that the route's
    stylesheet keys its custom properties off. Dropping or misspelling it fails
    silently and visually only. */
 
