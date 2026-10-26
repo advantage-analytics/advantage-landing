@@ -36,6 +36,14 @@ const nextConfig: NextConfig = {
         destination: "/?utm_source=booth&utm_medium=qr&utm_campaign=events",
         permanent: false,
       },
+      // The connector guide moved from /claude to /mcp when it grew past
+      // Claude. Claude's Connectors Directory listing and older posts still
+      // link the old address.
+      {
+        source: "/claude",
+        destination: "/mcp",
+        permanent: true,
+      },
     ];
   },
 };

@@ -1,0 +1,553 @@
+/* ============================================================
+   MCP guide — connecting an AI app to the dashboard's Ask
+   connector. Laid out the way developer docs read: one framed
+   setup workspace (apps, steps, a dark code pane for the apps
+   that take a command or config), then plain sections.
+
+   Rendered through the shared DocsFrame (components/docs), which
+   owns the header, footer and 1200px wrap. Colours are the site
+   tokens from perspective.css; only the code pane declares its
+   own. Writes only `.mcp` and `.mcp-*`.
+   ============================================================ */
+
+/* The frame (components/docs) owns the shell and the site tokens; these are
+   the code pane's own, scoped to this route. */
+.mcp {
+  --code-bg: #0f1012;
+  --code-panel: #15161a;
+  --code-line: #26272c;
+  --code-ink: #e8e8ec;
+  --code-dim: #9a9aa3;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mcp strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+.mcp code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+}
+
+/* ---- Masthead ---- */
+.mcp-head {
+  padding: 64px 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.mcp-head h1 {
+  margin: 0;
+  max-width: 18ch;
+  font: 300 clamp(36px, 5vw, 52px) / 1.06 var(--font-sans);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.mcp-lede {
+  margin: 0;
+  max-width: 62ch;
+  font: 400 17px / 1.6 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+.mcp-urlbar {
+  margin-top: 10px;
+  max-width: 640px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 10px 10px 10px 16px;
+  border: 1px solid var(--hairline-medium);
+  border-radius: 12px;
+}
+.mcp-urlbar code {
+  flex: 1 1 260px;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.mcp-urlbar .mcp-copy {
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--signal-blue);
+  color: #fff;
+  font-size: 13px;
+}
+.mcp-urlbar .mcp-copy:hover {
+  border-color: transparent;
+  background: var(--signal-blue-deep);
+  color: #fff;
+}
+.mcp-urlbar .mcp-copy:active {
+  transform: scale(0.97);
+}
+
+.mcp-anchors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+  padding: 14px 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  font: 400 13px var(--font-sans);
+  color: var(--ink-tertiary);
+}
+.mcp-anchors a {
+  transition: color 180ms var(--ease);
+}
+.mcp-anchors a:hover {
+  color: var(--ink);
+}
+
+/* ---- Sections ---- */
+.mcp-sec {
+  padding-top: 72px;
+  scroll-margin-top: 8px;
+}
+.mcp-sec h2 {
+  margin: 0;
+  font: 300 32px / 1.15 var(--font-sans);
+  letter-spacing: -0.8px;
+  color: var(--ink);
+}
+.mcp-prose {
+  margin: 14px 0 0;
+  max-width: 66ch;
+  font: 400 15px / 1.7 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+.mcp-link {
+  color: var(--signal-blue-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* ---- Copy button (light by default; the code pane restyles it) ---- */
+.mcp-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--hairline-medium);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink-secondary);
+  font: 500 12px var(--font-sans);
+  cursor: pointer;
+  transition:
+    border-color 180ms var(--ease),
+    color 180ms var(--ease),
+    background 180ms var(--ease),
+    transform 200ms var(--ease);
+}
+.mcp-copy:hover {
+  border-color: var(--signal-blue);
+  color: var(--signal-blue-deep);
+}
+
+/* ---- Code blocks: dark slabs, light chrome ---- */
+.mcp-code {
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--code-bg);
+}
+.mcp-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 6px 6px 14px;
+  border-bottom: 1px solid var(--code-line);
+}
+.mcp-code-label {
+  font: 400 12px / 1 var(--font-mono);
+  color: var(--code-dim);
+}
+.mcp-code .mcp-copy {
+  border-color: #3a3b41;
+  background: transparent;
+  color: var(--code-ink);
+}
+.mcp-code .mcp-copy:hover {
+  border-color: #5a5b63;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+.mcp-code pre {
+  margin: 0;
+  padding: 14px 16px 16px;
+  overflow-x: auto;
+  font: 400 13px / 1.7 var(--font-mono);
+  color: var(--code-ink);
+  scrollbar-color: #3a3b41 transparent;
+}
+.mcp-code code {
+  font-size: inherit;
+}
+.mcp-code .tk-key {
+  color: #93bbfb;
+}
+.mcp-code .tk-str {
+  color: #c9cbd3;
+}
+
+/* ---- Setup workspace ---- */
+.mcp-setup {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  border: 1px solid var(--hairline-medium);
+  border-radius: 16px;
+  overflow: hidden;
+  scroll-margin-top: 24px;
+}
+.mcp-apps {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+  border-right: 1px solid var(--hairline);
+  background: var(--surface-subtle);
+}
+.mcp-app {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 180ms var(--ease),
+    box-shadow 180ms var(--ease);
+}
+.mcp-app:hover {
+  background: rgba(13, 13, 13, 0.04);
+}
+.mcp-app[aria-selected="true"] {
+  background: var(--surface);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 0 0 1px var(--hairline-medium);
+}
+.mcp-app-name {
+  font: 500 14px / 1.3 var(--font-sans);
+  color: var(--ink);
+}
+.mcp-app-kind {
+  font: 400 12px / 1.3 var(--font-sans);
+  color: var(--ink-tertiary);
+}
+.mcp-app[aria-selected="true"] .mcp-app-kind {
+  color: var(--signal-blue-deep);
+}
+
+.mcp-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 400px;
+}
+/* The code pane takes the wider share: a config line carries the full URL,
+   and a code block that scrolls sideways hides the part people paste. */
+.mcp-panel.has-pane {
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.25fr);
+}
+.mcp-panel[hidden] {
+  display: none;
+}
+.mcp-steps-col {
+  padding: 28px 28px 32px;
+  display: flex;
+  flex-direction: column;
+}
+.mcp-panel:not(.has-pane) .mcp-steps-col {
+  max-width: 720px;
+}
+.mcp-steps-col h3 {
+  margin: 0;
+  font: 500 18px / 1.3 var(--font-sans);
+  color: var(--ink);
+}
+.mcp-sub {
+  margin: 6px 0 26px;
+  font: 400 14px / 1.55 var(--font-sans);
+  color: var(--ink-tertiary);
+}
+.mcp-note {
+  margin: 26px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline);
+  font: 400 13px / 1.6 var(--font-sans);
+  color: var(--ink-tertiary);
+}
+
+.mcp-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.mcp-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+/* A rail joins the step numbers, the way a sequence reads in docs. */
+.mcp-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 13.5px;
+  top: 34px;
+  bottom: -16px;
+  width: 1px;
+  background: var(--hairline-medium);
+}
+.mcp-step-n {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  font: 500 12px var(--font-mono);
+  color: var(--signal-blue-deep);
+  background: var(--signal-blue-soft);
+}
+.mcp-step-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 3px;
+}
+.mcp-step-body p {
+  margin: 0;
+  font: 400 15px / 1.6 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+
+.mcp-code-col {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: var(--code-bg);
+}
+.mcp-code-step {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mcp-code-step-n {
+  font: 400 11px / 1 var(--font-mono);
+  letter-spacing: 0.4px;
+  color: var(--code-dim);
+}
+.mcp-code-col .mcp-code {
+  border: 1px solid var(--code-line);
+  background: var(--code-panel);
+}
+.mcp-code-col .mcp-code pre {
+  font-size: 12.5px;
+}
+
+/* ---- Try asking ---- */
+.mcp-prompts {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.mcp-prompts li {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 100%;
+  padding: 12px 18px;
+  border: 1px solid var(--hairline-medium);
+  border-radius: 18px;
+}
+.mcp-prompts li span:first-child {
+  font: 400 15px / 1.45 var(--font-sans);
+  color: var(--ink);
+}
+.mcp-prompts li span:last-child {
+  font: 400 12px var(--font-sans);
+  color: var(--ink-tertiary);
+}
+
+/* ---- Tools: one list, a dot for what each one may do ---- */
+.mcp-tools {
+  margin: 28px 0 0;
+  border-top: 1px solid var(--ink);
+}
+.mcp-tool {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr) minmax(0, 140px);
+  gap: 20px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.mcp-tool dt {
+  font: 400 13px / 1.5 var(--font-mono);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.mcp-tool dd {
+  margin: 0;
+  font: 400 14.5px / 1.55 var(--font-sans);
+  color: var(--ink-secondary);
+}
+.mcp-access {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 13px !important;
+}
+.mcp-access::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--ink-tertiary);
+}
+.mcp-access.is-write {
+  color: var(--signal-blue-deep) !important;
+}
+.mcp-access.is-write::before {
+  border-color: var(--signal-blue);
+  background: var(--signal-blue);
+}
+
+/* ---- Privacy ---- */
+.mcp-privacy {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 48px;
+}
+.mcp-privacy li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mcp-privacy strong {
+  font: 500 15px var(--font-sans);
+}
+.mcp-privacy span {
+  font: 400 14.5px / 1.6 var(--font-sans);
+  color: var(--ink-secondary);
+}
+
+/* ---- Troubleshooting ---- */
+.mcp-faq > div {
+  margin-top: 24px;
+}
+.mcp-faq details {
+  padding: 16px 0;
+  border-top: 1px solid var(--hairline);
+}
+.mcp-faq details:last-of-type {
+  border-bottom: 1px solid var(--hairline);
+}
+.mcp-faq summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  list-style: none;
+  cursor: pointer;
+  font: 500 15px / 1.5 var(--font-sans);
+  color: var(--ink);
+}
+.mcp-faq summary::-webkit-details-marker {
+  display: none;
+}
+.mcp-faq summary svg {
+  flex: 0 0 auto;
+  margin-top: 4px;
+  color: var(--ink-tertiary);
+  transition: transform 240ms var(--ease);
+}
+.mcp-faq details[open] summary svg {
+  transform: rotate(45deg);
+}
+.mcp-faq details p {
+  margin: 10px 0 0;
+  max-width: 64ch;
+  font: 400 15px / 1.65 var(--font-sans);
+  color: var(--ink-secondary);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .mcp-setup {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* Wraps rather than scrolls: a hidden-scrollbar row put VS Code and
+     Other apps off-screen on a phone with nothing saying they were there. */
+  .mcp-apps {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .mcp-app {
+    flex: 0 0 auto;
+  }
+  .mcp-panel,
+  .mcp-panel.has-pane {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .mcp-privacy {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .mcp-head {
+    padding-top: 44px;
+  }
+  .mcp-steps-col {
+    padding: 22px 18px 24px;
+  }
+  .mcp-code-col {
+    padding: 18px 14px;
+  }
+  .mcp-tool {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .mcp-sec {
+    padding-top: 56px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcp *,
+  .mcp *::before,
+  .mcp *::after {
+    transition: none !important;
+  }
+}
