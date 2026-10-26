@@ -153,9 +153,10 @@ export default function Page() {
                   are.
                 </li>
                 <li>
-                  <strong>Clubs and private teams</strong> are visible only to
-                  their own members and are never listed in our public school
-                  directory.
+                  <strong>Clubs and private teams</strong> are never listed in
+                  our public school directory, and their rosters and matches are
+                  visible only to their own members. Other Advantage users can
+                  find a team by its name.
                 </li>
                 <li>
                   <strong>Match links.</strong> If you create a link to one of
