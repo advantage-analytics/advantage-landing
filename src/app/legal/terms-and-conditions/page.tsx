@@ -167,7 +167,8 @@ export default function Page() {
               <p>
                 The Service sets limits on use, which are shown in the Service and may change. They
                 currently include 20 Ask questions a month, videos of up to 8 GB recorded at 1080p and 30
-                frames per second or better, and two teams you create per account.
+                frames per second or better, and two club, high school or academy teams you create per
+                account.
               </p>
             </section>
 
