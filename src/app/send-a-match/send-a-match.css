@@ -1,22 +1,33 @@
 /* ============================================================
    /send-a-match — the notice left where the cold-email intake
-   used to be. Three groups on the campaign shell's 608px measure:
-   the announcement with its two actions, the pilot's terms and
-   steps, and a note for coaches who already sent a film. Tight
+   used to be, in the site's PageFrame. Three groups on a 608px
+   measure: the announcement with its two actions, the pilot's
+   terms and steps, and a note for coaches who already sent a
+   film. Tight
    intervals inside a group (16–28px), wide ones between (56–64px),
    so the page reads as an answer followed by its detail.
 
-   Writes only `.sm-*`, per campaign.css's namespace convention.
+   Writes only `.sm-*`; the masthead is the site's `.page-head` and the
+   buttons are the site's `.btn`.
    ============================================================ */
 
+/* The band's top padding would stack on .page-head's own; the masthead
+   supplies the top air, the band the air above the footer. */
+section.band.sm-band {
+  padding-top: 0;
+}
+.sm-page {
+  max-width: 608px;
+}
+
 /* ---- Masthead ----
-   The shell's head spaces the eyebrow and lede for a plain title; here a
-   status badge leads and the actions follow the lede, so the steps tighten
-   to 16px and the actions take the one larger break inside the group. */
+   .page-head spaces an eyebrow and lede for a plain title; here a status
+   badge leads and the actions follow the lede, so the steps tighten to 16px
+   and the actions take the one larger break inside the group. */
 .sm-head h1 {
   margin-top: 16px;
 }
-.sm-head .campaign-lede {
+.sm-head .lede {
   margin-top: 16px;
 }
 
@@ -114,8 +125,29 @@
   text-wrap: pretty;
 }
 
-.sm-already {
-  margin-top: 56px;
+/* ---- Note ----
+   A quiet left rule with no fill. The link is underlined: colour alone is
+   not a sufficient distinguisher inside a sentence someone is reading. */
+.sm-note {
+  margin: 56px 0 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--hairline-medium);
+  font: var(--fw-regular) 13px/1.6 var(--font-sans);
+  color: var(--ink-muted);
+}
+.sm-link {
+  color: var(--signal-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 180ms var(--ease-primary);
+}
+.sm-link:hover {
+  color: var(--signal-blue-deep);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sm-link {
+    transition: none;
+  }
 }
 
 /* ---- Phone ----
@@ -143,7 +175,7 @@
     font-size: 20px;
     line-height: 24px;
   }
-  .sm-actions .campaign-btn {
+  .sm-actions .btn {
     flex: 1 1 100%;
   }
 }

@@ -4,11 +4,18 @@
    mid-task with a file in hand, so it's built to be scanned and
    left.
 
-   Rendered inside DocsFrame (components/docs), the same shell as
+   Rendered inside the site's PageFrame (SiteNav and Footer), like
    /mcp, and set in the same docs type: a light display masthead, a
    hairline anchor row, light 32px section heads, prose capped at
    66ch. Writes only `.eg-*`; colours are perspective.css's tokens.
    ============================================================ */
+
+/* The route hook, on the content's .wrap. The bottom padding is the air
+   above the site footer. */
+.eg-page {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  padding-bottom: 110px;
+}
 
 /* ---- Masthead ---- */
 .eg-head {
@@ -52,7 +59,7 @@
   color: var(--ink-tertiary);
 }
 .eg-anchors a {
-  transition: color 180ms var(--docs-ease);
+  transition: color 180ms var(--ease);
 }
 .eg-anchors a:hover {
   color: var(--ink);
@@ -135,7 +142,7 @@
   border: 1px solid var(--hairline-medium);
   border-radius: 9999px;
   font: var(--fw-medium) 13px var(--font-sans);
-  transition: background 180ms var(--docs-ease);
+  transition: background 180ms var(--ease);
 }
 .eg-chip:hover {
   background: var(--surface-subtle);
@@ -379,8 +386,8 @@
   font: var(--fw-medium) 13px var(--font-sans);
   letter-spacing: -0.1px;
   transition:
-    background 200ms var(--docs-ease),
-    transform 200ms var(--docs-ease);
+    background 200ms var(--ease),
+    transform 200ms var(--ease);
 }
 .eg-btn:hover {
   background: var(--signal-blue-deep);
@@ -422,5 +429,19 @@
   .eg-cols {
     grid-template-columns: minmax(0, 1fr);
     gap: 30px;
+  }
+}
+
+@media (max-width: 720px) {
+  .eg-page {
+    padding-bottom: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eg-page *,
+  .eg-page *::before,
+  .eg-page *::after {
+    transition: none !important;
   }
 }
