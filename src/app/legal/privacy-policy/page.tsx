@@ -121,8 +121,9 @@ export default function Page() {
               </ul>
               <p>
                 We send emails that help you get started with Advantage, which you can turn off in
-                Settings, and marketing emails to college coaching staff at their work addresses as
-                described in Section 2. You can unsubscribe from any marketing email.
+                Settings. We also send marketing emails about Advantage to people who joined our waitlist,
+                to account holders, and to college coaching staff at their work addresses as described in
+                Section 2. You can unsubscribe from any marketing email.
               </p>
             </section>
 
@@ -282,8 +283,8 @@ export default function Page() {
               </p>
               <p>
                 <strong>Your account:</strong> Deleting your account also deletes your Ask history and
-                the usage records for your personal matches. You can&apos;t delete your account while you own a team; contact us to hand
-                the team over first.
+                the usage records for your personal matches. You can&apos;t delete your account while you own a team; hand it to a coach or
+                staff member first with Make owner, under the team&apos;s Members in Settings.
               </p>
             </section>
 
