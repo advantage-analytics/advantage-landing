@@ -15,6 +15,9 @@ export type App = {
   label: string;
   title: string;
   kind: string;
+  /* Takes a command or a config file, so the steps get the dark code pane
+     beside them. Apps set up in their own settings keep the URL inline. */
+  codePane?: true;
   sub: string;
   steps: Step[];
   note?: ReactNode;
@@ -68,6 +71,7 @@ export const apps: App[] = [
     label: "Claude Code",
     title: "Claude Code",
     kind: "Terminal",
+    codePane: true,
     sub: "Two commands, then a new session.",
     steps: [
       {
@@ -135,6 +139,7 @@ export const apps: App[] = [
     label: "Cursor",
     title: "Cursor",
     kind: "Config file",
+    codePane: true,
     sub: ".cursor/mcp.json for one project, ~/.cursor/mcp.json for all of them.",
     steps: [
       {
@@ -156,6 +161,7 @@ export const apps: App[] = [
     label: "VS Code",
     title: "VS Code",
     kind: "Config file",
+    codePane: true,
     sub: "Copilot Chat, in agent mode.",
     steps: [
       {
@@ -188,6 +194,7 @@ export const apps: App[] = [
     label: "Other apps",
     title: "Any other MCP app",
     kind: "Config file",
+    codePane: true,
     sub: "Windsurf, Codex, Gemini CLI, Zed and others.",
     steps: [
       {

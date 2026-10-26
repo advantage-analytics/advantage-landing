@@ -123,9 +123,9 @@
   text-wrap: pretty;
 }
 .mcp-link {
-  color: var(--signal-blue-deep) !important;
-  text-decoration: underline !important;
-  text-decoration-thickness: 1px !important;
+  color: var(--signal-blue-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
@@ -505,12 +505,13 @@
   .mcp-setup {
     grid-template-columns: minmax(0, 1fr);
   }
+  /* Wraps rather than scrolls: a hidden-scrollbar row put VS Code and
+     Other apps off-screen on a phone with nothing saying they were there. */
   .mcp-apps {
     flex-direction: row;
-    overflow-x: auto;
+    flex-wrap: wrap;
     border-right: 0;
     border-bottom: 1px solid var(--hairline);
-    scrollbar-width: none;
   }
   .mcp-app {
     flex: 0 0 auto;

@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type KeyboardEvent,
@@ -24,7 +25,7 @@ export function CopyButton({
   label?: string;
   className?: string;
 }) {
-  const [copied, setCopied] = useState(false);
+  const [state, setState] = useState<"idle" | "copied" | "failed">("idle");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(
@@ -39,22 +40,31 @@ export function CopyButton({
       type="button"
       className={className}
       onClick={async () => {
+        // In-app browsers and insecure contexts block the clipboard API; say
+        // so rather than leave a stale clipboard to be pasted.
+        let next: "copied" | "failed" = "copied";
         try {
           await navigator.clipboard.writeText(value);
         } catch {
-          return;
+          next = "failed";
         }
-        setCopied(true);
+        setState(next);
         if (timer.current) clearTimeout(timer.current);
-        timer.current = setTimeout(() => setCopied(false), 1600);
+        timer.current = setTimeout(() => setState("idle"), 2400);
       }}
     >
-      {copied ? (
+      {state === "copied" ? (
         <Check size={14} strokeWidth={2} aria-hidden="true" />
       ) : (
         <Copy size={14} strokeWidth={2} aria-hidden="true" />
       )}
-      <span aria-live="polite">{copied ? "Copied" : label}</span>
+      <span aria-live="polite">
+        {state === "copied"
+          ? "Copied"
+          : state === "failed"
+            ? "Couldn’t copy, select it instead"
+            : label}
+      </span>
     </button>
   );
 }
@@ -102,11 +112,6 @@ export function CodeBlock({
   );
 }
 
-/* Apps set up inside their own settings (claude.ai, ChatGPT) have nothing to
-   paste but the URL, so their steps run full width with it inline. Apps that
-   take a command or a config file get the dark code pane beside the steps. */
-const needsCodePane = (app: App) => app.kind !== "In the app";
-
 function Steps({ app, inlineCode }: { app: App; inlineCode: boolean }) {
   return (
     <ol className="mcp-steps">
@@ -138,8 +143,9 @@ export function SetupPicker({ apps }: { apps: App[] }) {
 
   // /mcp#cursor opens on Cursor: Settings › Connections in the dashboard
   // links each app this way. The hash follows the picker after that, so a
-  // copied link opens where the reader was.
-  useEffect(() => {
+  // copied link opens where the reader was. A layout effect, so a deep link
+  // switches before first paint instead of flashing Claude's steps.
+  useLayoutEffect(() => {
     const fromHash = () => {
       const id = window.location.hash.slice(1);
       if (!apps.some((a) => a.id === id)) return;
@@ -200,7 +206,7 @@ export function SetupPicker({ apps }: { apps: App[] }) {
         ))}
       </div>
       {apps.map((app) => {
-        const pane = needsCodePane(app);
+        const pane = Boolean(app.codePane);
         return (
           <div
             key={app.id}
