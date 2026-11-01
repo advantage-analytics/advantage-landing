@@ -10,14 +10,17 @@ import {
   VIDEO_MIN_RESOLUTION,
   VIDEO_SIZE_PER_HOUR,
 } from "@/lib/match-video";
+import { pageMetadata } from "@/lib/metadata";
 import "./export-guide.css";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Getting match video into Advantage — Advantage",
   // Built from the constants, not restated: a stale figure here is the least
   // recoverable kind, since it is what search results and link previews show.
   description: `How to film a match and get the video into the Advantage dashboard: ${VIDEO_MIN_RESOLUTION} or better, ${VIDEO_MIN_FPS} or higher, ${VIDEO_FORMATS}, under ${VIDEO_MAX_SIZE}. Settings for iPhone, Android, GoPro, PlaySight and SwingVision.`,
-};
+  path: "/export-guide",
+  ownCard: true,
+});
 
 /* Linked from the dashboard uploader and its Help page, the home page's How it
    works and FAQ, and the footer. Whoever is here has a match on a phone, a

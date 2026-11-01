@@ -1,13 +1,15 @@
 import { ArrowUpRight } from "lucide-react";
 import { PageFrame } from "@/components/perspective/page-frame";
 import { ContactForm } from "./contact-form";
+import { pageMetadata } from "@/lib/metadata";
 import "./contact.css";
 import { LiveDots } from "@/components/perspective/live-dots";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Contact — Advantage",
   description: "Get in touch with the Advantage team.",
-};
+  path: "/contact",
+});
 
 const EMAIL = "team@advantage-analytics.com";
 

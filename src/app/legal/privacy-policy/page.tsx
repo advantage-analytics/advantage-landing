@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { PageFrame, PageHead } from "@/components/perspective/page-frame";
+import { pageMetadata } from "@/lib/metadata";
 import "../legal.css";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Privacy Policy — Advantage",
   description: "How Advantage collects, uses, and protects your information.",
-};
+  path: "/legal/privacy-policy",
+});
 
 export default function Page() {
   return (
