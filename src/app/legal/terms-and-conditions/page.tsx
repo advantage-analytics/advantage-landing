@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { PageFrame, PageHead } from "@/components/perspective/page-frame";
+import { pageMetadata } from "@/lib/metadata";
 import "../legal.css";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Terms and Conditions — Advantage",
   description: "The terms that govern your use of the Advantage platform and services.",
-};
+  path: "/legal/terms-and-conditions",
+});
 
 export default function Page() {
   return (

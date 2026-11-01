@@ -1,11 +1,14 @@
 import { PageFrame, PageHead } from "@/components/perspective/page-frame";
+import { pageMetadata } from "@/lib/metadata";
 import "./about.css";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "About — Advantage",
   description:
     "Our story and mission: performance intelligence for competitive tennis, built by former collegiate players in Los Angeles, California.",
-};
+  path: "/about",
+  ownCard: true,
+});
 
 // Identity facts for the closing bar — drawn only from the copy.
 const FACTS = [

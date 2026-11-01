@@ -3,13 +3,16 @@ import { PageFrame } from "@/components/perspective/page-frame";
 import { CONTACT_EMAIL, links } from "@/lib/links";
 import { apps, faqs, privacy, prompts, tools, url } from "./content";
 import { CopyButton, SetupPicker } from "./mcp-client";
+import { pageMetadata } from "@/lib/metadata";
 import "./mcp-guide.css";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Use Advantage in your AI app — Advantage",
   description:
     "Connect Claude, ChatGPT, Cursor or any MCP app to your Advantage account and ask about your tennis matches in plain language.",
-};
+  path: "/mcp",
+  ownCard: true,
+});
 
 /* The public instructions for the Ask connector (the dashboard's /api/mcp,
    docs/ask-mcp-connector.md there): the one place each app's setup is

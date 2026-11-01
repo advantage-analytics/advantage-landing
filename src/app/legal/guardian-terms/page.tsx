@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { PageFrame, PageHead } from "@/components/perspective/page-frame";
+import { pageMetadata } from "@/lib/metadata";
 import "../legal.css";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Guardian Terms — Advantage",
   description:
     "The terms a parent or legal guardian agrees to when they create and manage an Advantage account for a junior player.",
-};
+  path: "/legal/guardian-terms",
+});
 
 export default function Page() {
   return (

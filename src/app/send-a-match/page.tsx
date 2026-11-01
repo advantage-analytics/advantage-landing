@@ -8,15 +8,17 @@ import {
   VIDEO_MIN_RESOLUTION,
 } from "@/lib/match-video";
 import { PILOT_TERMS } from "@/lib/pilot";
+import { pageMetadata } from "@/lib/metadata";
 import "./send-a-match.css";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Match uploads have moved — Advantage",
   description:
     "We no longer take matches through this page. Programs upload match video to their own Advantage dashboard instead, free through the fall pilot.",
   // Kept only for the cold emails already sent; nobody should find it by search.
   robots: { index: false },
-};
+  path: "/send-a-match",
+});
 
 /* /send-a-match used to be the cold-email intake: a form plus a file upload,
    answered by hand. Uploads now happen in the dashboard, but those emails are
