@@ -22,9 +22,11 @@ export async function POST(request: Request) {
   // Which form produced the row. Client-supplied, so it is checked against the
   // shared allowlist rather than written through — an arbitrary string from a
   // POST would otherwise land in the Airtable column that triage sorts on.
-  const source = LEAD_SOURCES.includes(body.source as LeadSource)
-    ? (body.source as LeadSource)
-    : "Missing school";
+  // "Walkthrough" is the Cal.com webhook's, so a browser can't claim it.
+  const source =
+    LEAD_SOURCES.includes(body.source as LeadSource) && body.source !== "Walkthrough"
+      ? (body.source as LeadSource)
+      : "Missing school";
 
   // Spam signal, not a spam verdict — the request is recorded either way. The
   // old gate returned { ok: true } and wrote nothing, which meant a browser

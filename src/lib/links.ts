@@ -10,6 +10,12 @@ const APP_URL = (
 export const CONTACT_EMAIL = "team@advantage-analytics.com";
 export const SITE_DOMAIN = "advantage-analytics.com";
 
+// The Cal.com event coaches book from /pilot and /contact, as "user/event".
+// The webhook at /api/cal-booking records each booking in Airtable.
+export const CAL_WALKTHROUGH = (
+  process.env.NEXT_PUBLIC_CAL_WALKTHROUGH ?? "advantage-analytics/pilot-walkthrough"
+).replace(/^\/+|\/+$/g, "");
+
 export const links = {
   signIn: `${APP_URL}/login`,
   signUp: `${APP_URL}/sign-up`,

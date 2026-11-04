@@ -10,5 +10,7 @@
 // "Pilot page" were the retired pilot-application form; they stay on the list
 // so a cached copy of that form still lands as a labelled row rather than a
 // mislabelled one.
-export const LEAD_SOURCES = ["Landing CTA", "Pilot page", "Missing school"] as const;
+// "Walkthrough" is written by the Cal.com webhook (/api/cal-booking), never by
+// a browser form.
+export const LEAD_SOURCES = ["Landing CTA", "Pilot page", "Missing school", "Walkthrough"] as const;
 export type LeadSource = (typeof LEAD_SOURCES)[number];

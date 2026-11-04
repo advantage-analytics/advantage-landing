@@ -10,6 +10,7 @@ import { LiveDots } from "@/components/perspective/live-dots";
 import { PilotTermsBand } from "@/components/perspective/pilot-terms";
 import { ProductTour } from "@/components/perspective/product-tour";
 import { RequestAccess } from "@/components/perspective/request-access";
+import { WalkthroughBand } from "@/components/perspective/walkthrough-band";
 import { CONTACT_EMAIL } from "@/lib/links";
 import { pageMetadata } from "@/lib/metadata";
 import {
@@ -168,7 +169,7 @@ export default function Page() {
           <ProofHead
             eyebrow="What happens next"
             title="From sign-up to the first breakdown."
-            aside="No application and no call. Nearly every college program is already in the dashboard."
+            aside="No application, and a call is optional. Nearly every college program is already in the dashboard."
           />
           <ol className="how-panel is-four reveal" aria-label="Four steps">
             {STEPS.map((s, i) => (
@@ -201,6 +202,8 @@ export default function Page() {
           </p>
         </div>
       </section>
+
+      <WalkthroughBand />
 
       <RequestAccess />
     </PageFrame>

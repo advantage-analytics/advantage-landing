@@ -448,3 +448,19 @@ select.control:has(option[value=""]:checked) {
     font-size: 12px;
   }
 }
+
+/* The booking line under the email: the same direct-line pair, stacked a
+   step closer so the two read as one list of ways in. A <button>, so it
+   needs the link's resets. */
+.contact-book {
+  display: flex;
+  width: fit-content;
+  margin-top: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.contact-book .ce-value svg { color: var(--signal-blue); }

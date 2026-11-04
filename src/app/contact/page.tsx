@@ -4,6 +4,7 @@ import { ContactForm } from "./contact-form";
 import { pageMetadata } from "@/lib/metadata";
 import "./contact.css";
 import { LiveDots } from "@/components/perspective/live-dots";
+import { BookCallLink } from "@/components/perspective/walkthrough-band";
 
 export const metadata = pageMetadata({
   title: "Contact Advantage — Tennis Analytics for Players and Coaches",
@@ -40,6 +41,8 @@ export default function Page() {
                     <ArrowUpRight size={18} strokeWidth={1.6} aria-hidden="true" />
                   </span>
                 </a>
+
+                <BookCallLink />
 
                 <p className="contact-signoff">
                   Built by former collegiate players in Los Angeles.
