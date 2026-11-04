@@ -12,6 +12,10 @@ import { TeamBand } from "@/components/perspective/team-band";
 import { BetaTerms } from "@/components/perspective/beta-terms";
 import { Faq } from "@/components/perspective/faq";
 import { FinalBand } from "@/components/perspective/final-band";
+import { JsonLd } from "@/components/json-ld";
+import { softwareApplicationLd } from "@/lib/structured-data";
+
+const APP_LD = softwareApplicationLd();
 
 /* The product-board artboards are sized by useScaleToFit after mount, so
    a hash landing (/#team from the nav on another page, or a fresh load) is
@@ -38,6 +42,7 @@ export default function Home() {
   useReveal();
   return (
     <div className="perspective-page">
+      <JsonLd data={APP_LD} />
       <SiteNav />
       <PerspectiveHero />
       <main>

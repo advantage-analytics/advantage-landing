@@ -4,6 +4,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Inter, Roboto_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { JsonLd } from "@/components/json-ld";
+import { SITE_URL } from "@/lib/site";
+import { organizationLd, websiteLd } from "@/lib/structured-data";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,28 +28,11 @@ const title = "Advantage — Tennis Analytics and Match Analysis From Your Phone
 const description =
   "Upload a video of your match from your phone or any camera. Advantage is the tennis coaching app that turns the video into match analysis: where you won points, where you lost them, and what to work on next. Tennis analytics for players and coaches.";
 
-const LOCAL_ORIGIN = "http://localhost:3000";
-
-// Resolving this at module scope means a bad value doesn't degrade the metadata,
-// it throws before the layout renders and 500s every route on the site. `??`
-// alone wasn't enough: it guards null/undefined, so an empty string or a
-// scheme-less host (`advantage-analytics.com`) still reached new URL() and blew
-// up. Prepend a scheme when one is missing, and fall back rather than throw.
-function resolveMetadataBase(): URL {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (!raw) return new URL(LOCAL_ORIGIN);
-  try {
-    return new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
-  } catch {
-    console.warn(
-      `[layout] NEXT_PUBLIC_SITE_URL is not a usable URL; falling back to ${LOCAL_ORIGIN}.`,
-    );
-    return new URL(LOCAL_ORIGIN);
-  }
-}
-
 export const metadata: Metadata = {
-  metadataBase: resolveMetadataBase(),
+  metadataBase: SITE_URL,
+  // Each route states its own canonical through pageMetadata(); this one is
+  // the home page's, which can't export metadata (it is a client component).
+  alternates: { canonical: "/" },
   title,
   description,
   // Favicon, home-screen icon and social images come from the app-dir file
@@ -92,6 +78,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body className="min-h-dvh bg-background text-foreground antialiased">
+        {/* Who publishes the site, on every page: what search engines and AI
+            answer engines read to tie the pages to one company. */}
+        <JsonLd data={[organizationLd(), websiteLd()]} />
         {children}
         {/* Vercel Web Analytics. Until this landed the funnel was unmeasurable:
             lib/analytics.ts hands every event to whatever tag is on the page,

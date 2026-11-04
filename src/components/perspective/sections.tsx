@@ -159,7 +159,7 @@ const TREND = KPIS[0];
 const TR = spark(TREND.d, { w: TR_W, h: TR_H, px: 6, py: 10, headroom: 1 });
 // The ends as % of the box, for the HTML dots laid over the line.
 const TR_ENDS = [TR.pts[0], TR.pts[TR.pts.length - 1]].map(([x, y]) => ({ left: `${(x / TR_W) * 100}%`, top: `${(y / TR_H) * 100}%` }));
-function KpiTrend() {
+export function KpiTrend() {
   const k = TREND;
   return (
     <section className="dh-card mb-chart see-trend">
