@@ -26,7 +26,7 @@ export const metadata = pageMetadata({
    a drive and wants it in the dashboard. Filming it (where the camera goes,
    its settings) is the recording guide's job; this page starts from the file.
    Linked from the dashboard's Help page, the home page's How it works and FAQ,
-   the footer, /send-a-match and the recording guide's last section.
+   the footer, the pilot page, /tennis-analytics and the recording guide's last section.
 
    The sections run in the order the reader meets the problem: what the
    uploader checks, getting the original off the device, the size, trimming,

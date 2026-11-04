@@ -39,7 +39,7 @@ const QA: readonly { q: string; a: ReactNode; text?: string }[] = [
         <Link href={EXPORT_GUIDE_HREF}>export guide</Link> how to get it off the camera.
       </>
     ),
-    text: "Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline, raised up if you can. Side-on film won’t give a full breakdown. The export guide shows how to get it off the camera.",
+    text: "Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline, raised up if you can. Side-on film won’t give a full breakdown. The recording guide shows how to set up, and the export guide how to get it off the camera.",
   },
   { q: "How long does a breakdown take?", a: "Within 24 hours. You get an email when it’s ready." },
   {
