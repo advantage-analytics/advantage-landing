@@ -40,7 +40,8 @@ Advantage was built by former collegiate tennis players in Los Angeles, Californ
 - [Tennis analytics, explained](${absoluteUrl("/tennis-analytics")}): what tennis analytics is, which numbers matter, and how to get them from match video
 - [Home](${absoluteUrl("/")}): how Advantage works and what you see after an upload
 - [Pilot program](${absoluteUrl("/pilot")}): the offer for college programs
-- [Export guide](${absoluteUrl("/export-guide")}): how to film a match and get the video off a phone, GoPro or court camera
+- [Recording guide](${absoluteUrl("/recording-guide")}): where to put the camera and which settings to use when filming a match
+- [Export guide](${absoluteUrl("/export-guide")}): how to get the match video off a phone, GoPro or court camera
 - [Use Advantage in your AI app](${absoluteUrl("/mcp")}): connect Claude, ChatGPT or any MCP app to an Advantage account
 - [About](${absoluteUrl("/about")})
 

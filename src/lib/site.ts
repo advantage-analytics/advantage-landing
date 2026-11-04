@@ -34,6 +34,7 @@ export const INDEXED_PATHS = [
   "/",
   "/tennis-analytics",
   "/pilot",
+  "/recording-guide",
   "/export-guide",
   "/mcp",
   "/about",

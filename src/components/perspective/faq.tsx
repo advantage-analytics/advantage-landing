@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { CONTACT_EMAIL } from "@/lib/links";
-import { EXPORT_GUIDE_HREF } from "@/lib/match-video";
+import { EXPORT_GUIDE_HREF, RECORDING_GUIDE_HREF } from "@/lib/match-video";
 import { FaqItem } from "./faq-item";
 import { BETA_END_SHORT, PILOT_HOURS, PILOT_PAID_PLANS_BEGIN } from "@/lib/pilot";
 import { faqPageLd } from "@/lib/structured-data";
@@ -35,7 +35,8 @@ const QA: readonly { q: string; a: ReactNode; text?: string }[] = [
     a: (
       <>
         Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline, raised up if you can. Side-on film won’t give a full
-        breakdown. The <Link href={EXPORT_GUIDE_HREF}>export guide</Link> shows how to get it off the camera.
+        breakdown. The <Link href={RECORDING_GUIDE_HREF}>recording guide</Link> shows how to set up, and the{" "}
+        <Link href={EXPORT_GUIDE_HREF}>export guide</Link> how to get it off the camera.
       </>
     ),
     text: "Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline, raised up if you can. Side-on film won’t give a full breakdown. The export guide shows how to get it off the camera.",

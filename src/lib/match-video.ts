@@ -14,6 +14,10 @@ export const VIDEO_MIN_FPS = "30 fps";
 // The compact form the home page's step spec uses ("1080p · 30fps · MP4").
 export const VIDEO_MIN_FPS_SHORT = "30fps";
 export const VIDEO_FORMATS = "MP4 or MOV";
+// What the uploader asks for when a file won't play or won't shrink. It
+// accepts most phone and camera formats and converts HEVC and 4K to this
+// itself; the export guide names it as the one that works best.
+export const VIDEO_FORMAT_BEST = "MP4 (H.264)";
 export const VIDEO_MAX_SIZE = "8 GB";
 
 // About 60 MB a minute at 1080p30 on a phone, so an hour is ~3.5 GB and a
@@ -21,4 +25,7 @@ export const VIDEO_MAX_SIZE = "8 GB";
 // coach can judge their own file before they try.
 export const VIDEO_SIZE_PER_HOUR = "3.5 GB";
 
+// Before the match: where the camera goes and how it's set.
+export const RECORDING_GUIDE_HREF = "/recording-guide";
+// After it: the file off the device and into the uploader.
 export const EXPORT_GUIDE_HREF = "/export-guide";
