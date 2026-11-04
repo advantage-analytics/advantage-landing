@@ -31,5 +31,5 @@ export const PILOT_TERMS: readonly { l: string; v: string; s: string }[] = [
   { l: "Cost", v: "Free", s: `through ${PILOT_END_DATE}` },
   { l: "Film", v: PILOT_HOURS, s: PILOT_HOURS_SCOPE },
   { l: "Commitment", v: "None", s: "No hardware, no contract" },
-  { l: "Paid plans", v: PILOT_PAID_PLANS_BEGIN, s: "Nothing is charged before then" },
+  { l: "Paid plans", v: PILOT_PAID_PLANS_BEGIN, s: "Plans aren't billed before then" },
 ];

@@ -1,0 +1,145 @@
+/* /design/pricing — the January 2027 plans, in the site's own parts: the
+   page head, a row of three cards on the white surface, a credits strip in
+   the terms strip's data voice, and the FAQ. Blue is the one accent, used
+   for the featured card's edge and its button. */
+
+.pr-preview {
+  margin: 0 auto;
+  max-width: 1240px;
+  padding: 10px 40px;
+  font: var(--fw-medium) 12px/1.5 var(--font-sans);
+  color: var(--ink-secondary);
+  text-align: center;
+  background: var(--signal-blue-soft);
+  border-radius: var(--r-element);
+}
+
+.pr-board { padding: 8px 0 110px; }
+
+.pr-switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin: 8px 0 32px;
+}
+.pr-seg {
+  display: inline-flex;
+  padding: 4px;
+  gap: 4px;
+  border-radius: var(--r-pill);
+  background: var(--surface-subtle);
+  border: 1px solid var(--hairline-medium);
+}
+.pr-seg button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  font: var(--fw-medium) 13px var(--font-sans);
+  color: var(--ink-tertiary);
+  cursor: pointer;
+  transition: background 180ms var(--ease-primary), color 160ms;
+}
+.pr-seg button.is-on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-card); }
+.pr-badge {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: var(--win-tint);
+  color: #2F7A29;
+  font: var(--fw-medium) 11px var(--font-sans);
+}
+
+.pr-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+.pr-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 28px 28px;
+  background: var(--surface);
+  border: 1px solid var(--hairline-medium);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+}
+.pr-card.is-featured { border-color: var(--signal-blue); box-shadow: 0 0 0 1px var(--signal-blue), var(--shadow-card-emphasis); }
+.pr-flag {
+  position: absolute;
+  top: -12px;
+  left: 28px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: var(--signal-blue);
+  color: #fff;
+  font: var(--fw-medium) 10px/1.4 var(--font-sans);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.pr-card h3 { margin: 0; font: var(--fw-medium) 18px/1.2 var(--font-sans); letter-spacing: -0.3px; }
+.pr-for { margin: 8px 0 0; min-height: 2.9em; font: var(--fw-regular) 14px/1.45 var(--font-sans); color: var(--ink-secondary); }
+.pr-price { display: flex; align-items: baseline; gap: 8px; margin: 24px 0 0; }
+.pr-price .v {
+  font: var(--fw-light) clamp(40px, 3.6vw, 52px)/1 var(--font-sans);
+  letter-spacing: -1.5px;
+  font-variant-numeric: tabular-nums;
+}
+.pr-price .u { font: var(--fw-regular) 14px var(--font-sans); color: var(--ink-tertiary); }
+.pr-bill { margin: 8px 0 0; font: var(--fw-regular) 12px/1.5 var(--font-sans); color: var(--ink-muted); }
+.pr-hours {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 24px 0 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--hairline-medium);
+  border-bottom: 1px solid var(--hairline-medium);
+}
+.pr-hours .h { font: var(--fw-medium) 20px/1.2 var(--font-sans); letter-spacing: -0.4px; }
+.pr-hours .n { font: var(--fw-regular) 13px/1.4 var(--font-sans); color: var(--ink-tertiary); }
+.pr-feats { list-style: none; margin: 20px 0 28px; padding: 0; display: grid; gap: 10px; }
+.pr-feats li { display: flex; gap: 10px; font: var(--fw-regular) 14px/1.45 var(--font-sans); color: var(--ink-secondary); }
+.pr-feats svg { flex: none; margin-top: 3px; color: var(--win-green); }
+.pr-cta { margin-top: auto; width: 100%; }
+
+.pr-credits {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: end;
+  margin: 56px 0 0;
+  padding-top: 32px;
+  border-top: 1px solid var(--hairline-medium);
+}
+.pr-credits-head h3 { margin: 12px 0 0; font: var(--fw-regular) clamp(22px, 2.2vw, 28px)/1.2 var(--font-sans); letter-spacing: -0.6px; }
+.pr-credits-head p { margin: 10px 0 0; font: var(--fw-regular) 15px/1.6 var(--font-sans); color: var(--ink-secondary); }
+.pr-packs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; }
+.pr-pack { padding: 0 24px; }
+.pr-pack + .pr-pack { border-left: 1px solid var(--hairline-medium); }
+.pr-pack dt {
+  font: var(--fw-medium) 10px/1.5 var(--font-sans);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+.pr-pack .v { margin: 12px 0 0; font: var(--fw-light) 36px/1 var(--font-sans); letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+.pr-pack .s { margin: 8px 0 0; font: var(--fw-regular) 13px/1.5 var(--font-sans); color: var(--ink-secondary); }
+
+@media (max-width: 960px) {
+  .pr-cards { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; gap: 28px; }
+  .pr-credits { grid-template-columns: 1fr; }
+  .pr-pack:first-child { padding-left: 0; }
+}
+@media (max-width: 720px) {
+  .pr-preview { padding: 10px 22px; border-radius: 0; }
+  .pr-switches { flex-direction: column; align-items: stretch; }
+  .pr-seg { justify-content: stretch; }
+  .pr-seg button { flex: 1; justify-content: center; padding: 0 10px; }
+}
