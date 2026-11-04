@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { links } from "@/lib/links";
-import { EXPORT_GUIDE_HREF } from "@/lib/match-video";
+import { EXPORT_GUIDE_HREF, RECORDING_GUIDE_HREF } from "@/lib/match-video";
 
 /* Three columns: what the product is, the ways in, and the company. The
    product links carry the section names the page uses, then the two reference
@@ -24,6 +24,7 @@ export function Footer() {
               <Link href="/#team">Team workspace</Link>
               <Link href="/#how">How it works</Link>
               <Link href="/#faq">FAQ</Link>
+              <Link href={RECORDING_GUIDE_HREF}>Recording guide</Link>
               <Link href={EXPORT_GUIDE_HREF}>Export guide</Link>
               <Link href="/mcp">Use with AI apps</Link>
             </div>

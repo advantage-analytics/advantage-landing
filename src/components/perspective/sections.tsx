@@ -7,6 +7,7 @@ import { KPIS, spark } from "./dashboard-home";
 import { ProofHead } from "./band-parts";
 import {
   EXPORT_GUIDE_HREF,
+  RECORDING_GUIDE_HREF,
   VIDEO_MIN_FPS_SHORT,
   VIDEO_MIN_RESOLUTION,
 } from "@/lib/match-video";
@@ -82,12 +83,18 @@ function AnalyzeVisual() {
 // Capture → Upload → Analyze. Each step is a picture, a short line, and the
 // one fact people ask about under it: the footage spec, the monthly
 // allowance for each lane, the turnaround. Each fact lives in one place: the
-// camera angle in the first step, the export guide in the second.
+// camera angle and the recording guide in the first step, the export guide in
+// the second.
 const HOW_STEPS: readonly { k: string; t: string; p: ReactNode; spec: string; vis: ReactNode }[] = [
   {
     k: "Capture",
     t: "Film your match.",
-    p: "Set your camera behind the baseline, as high up as you can get it. A phone on the fence works great. From the side, we can’t see the whole court.",
+    p: (
+      <>
+        Set your camera behind the baseline, as high up as you can get it. A phone on the fence works great. From the side, we can’t see the whole court. The{" "}
+        <Link href={RECORDING_GUIDE_HREF}>recording guide</Link> has the setup and settings.
+      </>
+    ),
     spec: `${VIDEO_MIN_RESOLUTION} · ${VIDEO_MIN_FPS_SHORT} · MP4`,
     vis: <CaptureVisual />,
   },

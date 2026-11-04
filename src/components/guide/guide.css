@@ -1,7 +1,8 @@
 /* ============================================================
-   Export guide — getting match video off the camera and into the
-   dashboard uploader. A reference page: whoever is here is
-   mid-task with a file in hand, so it's built to be scanned and
+   Guides — /recording-guide (before the match: where the camera
+   goes and how it's set) and /export-guide (after it: the file off
+   the device and into the dashboard uploader). Reference pages:
+   whoever is here is mid-task, so they're built to be scanned and
    left.
 
    Rendered inside the site's PageFrame (SiteNav and Footer), like
@@ -82,6 +83,10 @@
   font: var(--fw-medium) 17px / 24px var(--font-sans);
   letter-spacing: -0.2px;
   color: var(--ink);
+}
+/* A second head inside a section, after prose or a table. */
+.eg-sec h3.eg-subhead {
+  margin-top: 40px;
 }
 .eg-prose {
   margin: 14px 0 0;
@@ -396,6 +401,138 @@
   transform: scale(0.97);
 }
 
+/* ---- Camera frames ----
+   The dashboard uploader's two frames, side by side, each with its verdict. */
+.eg-frames {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  max-width: 960px;
+  margin-top: 32px;
+}
+.eg-frame {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.eg-frame > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-element);
+}
+.eg-frame figcaption {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font: var(--fw-regular) 14.5px / 1.6 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+.eg-frame figcaption svg {
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+  margin-top: 4px;
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.eg-frame figcaption .is-keep {
+  stroke: var(--win-green);
+}
+.eg-frame figcaption .is-skip {
+  stroke: var(--ink-label);
+}
+
+/* ---- Rules ----
+   Three short, parallel instructions under a hairline each. */
+.eg-rules {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 40px;
+  max-width: 960px;
+  margin-top: 40px;
+}
+.eg-rule {
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline-medium);
+}
+.eg-rule h4 {
+  margin: 0 0 6px;
+  font: var(--fw-medium) 15px / 24px var(--font-sans);
+  color: var(--ink);
+}
+.eg-rule p {
+  margin: 0;
+  font: var(--fw-regular) 14px / 1.6 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+
+/* ---- Tables ----
+   Hairline rows, eyebrow heads; a phone reads each row as a stack. */
+.eg-table {
+  width: 100%;
+  max-width: 960px;
+  margin-top: 24px;
+  border-collapse: collapse;
+  font: var(--fw-regular) 14px / 1.6 var(--font-sans);
+  color: var(--ink-secondary);
+}
+.eg-table th {
+  padding: 0 24px 10px 0;
+  text-align: left;
+  vertical-align: bottom;
+  font: var(--fw-medium) 10px / 1.5 var(--font-sans);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
+  border-bottom: 1px solid var(--hairline-medium);
+}
+.eg-table td {
+  padding: 14px 24px 14px 0;
+  vertical-align: top;
+  border-bottom: 1px solid var(--hairline);
+  text-wrap: pretty;
+}
+.eg-table td:first-child {
+  color: var(--ink);
+}
+.eg-table .is-num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.eg-table .is-quote {
+  font-weight: var(--fw-medium);
+}
+
+/* ---- Hand-off ----
+   The one card on either page: the door to the other guide. */
+.eg-next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  max-width: 960px;
+  margin-top: 32px;
+  padding: 28px 32px;
+  border: 1px solid var(--hairline-medium);
+  border-radius: var(--r-card);
+}
+.eg-next p {
+  margin: 6px 0 0;
+  max-width: 52ch;
+  font: var(--fw-regular) 14px / 1.6 var(--font-sans);
+  color: var(--ink-secondary);
+}
+.eg-next .eg-btn {
+  margin-top: 0;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 900px) {
   .eg-steps-1,
@@ -426,9 +563,27 @@
   .eg-pin {
     display: none;
   }
-  .eg-cols {
+  .eg-cols,
+  .eg-frames,
+  .eg-rules {
     grid-template-columns: minmax(0, 1fr);
     gap: 30px;
+  }
+  .eg-table thead {
+    display: none;
+  }
+  .eg-table tr {
+    display: block;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .eg-table td {
+    display: block;
+    padding: 2px 0;
+    border: 0;
+  }
+  .eg-next {
+    padding: 24px;
   }
 }
 
