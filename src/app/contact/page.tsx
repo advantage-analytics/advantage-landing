@@ -6,8 +6,9 @@ import "./contact.css";
 import { LiveDots } from "@/components/perspective/live-dots";
 
 export const metadata = pageMetadata({
-  title: "Contact — Advantage",
-  description: "Get in touch with the Advantage team.",
+  title: "Contact Advantage — Tennis Analytics for Players and Coaches",
+  description:
+    "Questions about Advantage, the tennis analytics app for players and coaches? Email the team at team@advantage-analytics.com.",
   path: "/contact",
 });
 

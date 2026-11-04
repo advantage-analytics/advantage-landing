@@ -4,6 +4,8 @@ import { CONTACT_EMAIL } from "@/lib/links";
 import { EXPORT_GUIDE_HREF, RECORDING_GUIDE_HREF } from "@/lib/match-video";
 import { FaqItem } from "./faq-item";
 import { BETA_END_SHORT, PILOT_HOURS, PILOT_PAID_PLANS_BEGIN } from "@/lib/pilot";
+import { faqPageLd } from "@/lib/structured-data";
+import { JsonLd } from "@/components/json-ld";
 
 /* The questions that stand between a visitor and an upload, ordered by what
    the visitor decides first (can I join?), then what happens to their film.
@@ -13,7 +15,9 @@ import { BETA_END_SHORT, PILOT_HOURS, PILOT_PAID_PLANS_BEGIN } from "@/lib/pilot
    carry the affordance, and one open answer would push a 720px laptop
    past one screen. */
 
-const QA: readonly { q: string; a: ReactNode }[] = [
+/* `text` is the answer as plain text, for the FAQPage structured data: only
+   needed where `a` holds markup, and it must say what the visible answer says. */
+const QA: readonly { q: string; a: ReactNode; text?: string }[] = [
   {
     q: "Do I need a program to join?",
     a: "No. The free beta is for individual players: sign up, upload a match, get 2 hours of film a month.",
@@ -35,6 +39,7 @@ const QA: readonly { q: string; a: ReactNode }[] = [
         <Link href={EXPORT_GUIDE_HREF}>export guide</Link> how to get it off the camera.
       </>
     ),
+    text: "Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline, raised up if you can. Side-on film won’t give a full breakdown. The export guide shows how to get it off the camera.",
   },
   { q: "How long does a breakdown take?", a: "Within 24 hours. You get an email when it’s ready." },
   {
@@ -43,9 +48,12 @@ const QA: readonly { q: string; a: ReactNode }[] = [
   },
 ];
 
+const FAQ_LD = faqPageLd(QA.map((x) => ({ q: x.q, text: x.text ?? (typeof x.a === "string" ? x.a : "") })));
+
 export function Faq() {
   return (
     <section className="band alt" id="faq">
+      <JsonLd data={FAQ_LD} />
       <div className="wrap faq">
         <div className="faq-intro sec-head reveal">
           <span className="eyebrow">FAQ</span>

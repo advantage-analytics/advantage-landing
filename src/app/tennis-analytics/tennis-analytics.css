@@ -1,0 +1,58 @@
+/* /tennis-analytics — a reading page on the subpage frame. The masthead is
+   PageHead and the FAQ is the home page's (.faq, FaqItem); what is here is the
+   page's own: the short-answer card, the definitions beside the product
+   cards, the three steps, and the two lanes side by side. */
+
+.ta-band { padding: 110px 0 0; }
+.ta-faq-band { padding-bottom: 110px; }
+@media (max-width: 1023px) { .ta-band { padding-top: 88px; } .ta-faq-band { padding-bottom: 88px; } }
+@media (max-width: 720px) { .ta-band { padding-top: 64px; } .ta-faq-band { padding-bottom: 64px; } }
+
+/* The short answer: three facts, each quotable on its own. */
+.ta-short {
+  margin-top: 48px; padding: 28px 32px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px;
+  background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+}
+.ta-short > div { display: flex; flex-direction: column; gap: 8px; }
+.ta-short p { margin: 0; font: var(--fw-regular) 15px/1.55 var(--font-sans); color: var(--ink); text-wrap: pretty; }
+
+/* What it measures: definitions on the left, the real cards on the right. */
+.ta-measures { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; }
+.ta-defs {
+  margin: 0; flex: 999 1 520px; min-width: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); column-gap: 40px;
+}
+.ta-defs > div { padding: 20px 0; border-top: 1px solid var(--hairline-medium); }
+.ta-defs dt { font: var(--fw-medium) 15px/1.4 var(--font-sans); color: var(--ink); }
+.ta-defs dd { margin: 6px 0 0; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
+
+.ta-cards { flex: 1 1 360px; min-width: 0; max-width: 460px; display: flex; flex-direction: column; gap: 16px; }
+.ta-crop > div { display: flex; flex-direction: column; }
+.ta-note { margin: 0; font: var(--fw-regular) 12px/1.5 var(--font-sans); color: var(--ink-tertiary); }
+
+/* Three steps, then the written read the third step returns. */
+.ta-steps {
+  margin: 48px 0 0; padding: 0; list-style: none;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;
+}
+.ta-steps li {
+  display: flex; flex-direction: column; gap: 10px; padding: 24px;
+  background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-card);
+}
+.ta-steps .n { font: var(--fw-regular) 12px var(--font-mono); color: var(--signal-blue); }
+.ta-steps h3 { margin: 0; font: var(--fw-medium) 17px/1.35 var(--font-sans); color: var(--ink); }
+.ta-steps p { margin: 0; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
+.ta-steps a, .ta-lane p a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
+.ta-insight { margin-top: 16px; }
+
+/* Two lanes, equal and unranked: players and programs. */
+.ta-lanes { margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.ta-lane {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 32px;
+  background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+}
+.ta-lane h3 { margin: 0; font: var(--fw-light) 24px/1.2 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); }
+.ta-lane p { margin: 0 0 10px; flex: 1; font: var(--fw-regular) 15px/1.6 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
