@@ -1,0 +1,22 @@
+/* Cal.com booking, shared by the /pilot band and the /contact pop-up. The
+   booker is Cal.com's own card (its border, radius and columns), themed to the
+   site's blue, so the page adds no frame of its own: a second edge around it
+   would read as a card inside a card. */
+.book { position: relative; }
+.book-band { margin-top: 56px; }
+@media (max-width: 1023px) { .book-band { margin-top: 40px; } }
+
+/* Holds the space while the iframe loads, so the page below doesn't jump. */
+.book-embed {
+  width: 100%;
+  min-height: 560px;
+  overflow: auto;
+}
+
+.book-foot {
+  margin: 20px 0 0;
+  font: var(--fw-regular) 13px/1.5 var(--font-sans);
+  color: var(--ink-muted);
+}
+.book-foot a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
+
