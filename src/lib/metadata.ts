@@ -19,6 +19,9 @@ export function pageMetadata({
   return {
     title,
     description,
+    // Resolved against metadataBase (the site origin), so every route names
+    // one URL as its own whichever host or query string it was reached by.
+    alternates: { canonical: path },
     openGraph: {
       title,
       description,

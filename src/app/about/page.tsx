@@ -3,9 +3,9 @@ import { pageMetadata } from "@/lib/metadata";
 import "./about.css";
 
 export const metadata = pageMetadata({
-  title: "About — Advantage",
+  title: "About Advantage — Tennis Analytics Built by Former College Players",
   description:
-    "Our story and mission: performance intelligence for competitive tennis, built by former collegiate players in Los Angeles, California.",
+    "Advantage is a tennis analytics app built by former collegiate players in Los Angeles. Our story, and why match analysis belongs to every player who competes.",
   path: "/about",
   ownCard: true,
 });
