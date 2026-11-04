@@ -350,6 +350,7 @@ section.band.alt + section.band.alt { border-top: none; }
 /* The short statement that sits bottom-right of a band header. */
 .band-aside { margin: 0; max-width: 380px; color: var(--ink-secondary);
   font: var(--fw-regular) 15px/1.6 var(--font-sans); text-wrap: pretty; }
+.band-aside a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
 
 
 /* ============ REQUEST ACCESS ============ */

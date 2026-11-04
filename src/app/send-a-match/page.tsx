@@ -1,7 +1,7 @@
 import { PageFrame } from "@/components/perspective/page-frame";
 import { CONTACT_EMAIL } from "@/lib/links";
 import {
-  EXPORT_GUIDE_HREF,
+  RECORDING_GUIDE_HREF,
   VIDEO_FORMATS,
   VIDEO_MAX_SIZE,
   VIDEO_MIN_FPS,
@@ -75,7 +75,7 @@ export default function Page() {
                 <a className="btn btn-primary btn-lg" href="/pilot">
                   Join the free pilot
                 </a>
-                <a className="btn btn-outline btn-lg" href={EXPORT_GUIDE_HREF}>
+                <a className="btn btn-outline btn-lg" href={RECORDING_GUIDE_HREF}>
                   Filming guide
                 </a>
               </div>

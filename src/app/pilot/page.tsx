@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { Check } from "lucide-react";
 import { CourtDiagram } from "@/components/court-diagram";
 import { FOOTAGE_CHECKLIST } from "@/components/footage-checklist";
@@ -12,6 +13,7 @@ import { ProductTour } from "@/components/perspective/product-tour";
 import { RequestAccess } from "@/components/perspective/request-access";
 import { WalkthroughBand } from "@/components/perspective/walkthrough-band";
 import { CONTACT_EMAIL } from "@/lib/links";
+import { EXPORT_GUIDE_HREF, RECORDING_GUIDE_HREF } from "@/lib/match-video";
 import { pageMetadata } from "@/lib/metadata";
 import {
   BETA_END_SHORT,
@@ -58,7 +60,13 @@ const STEPS: readonly { t: string; p: ReactNode; spec: string }[] = [
   },
   {
     t: "Send match video.",
-    p: "Download it from PlaySight or copy it off any camera, then upload it. The breakdown lands in your dashboard: numbers, court maps and film the whole roster can read.",
+    p: (
+      <>
+        Download it from PlaySight or copy it off any camera, then upload it (the{" "}
+        <Link href={`${EXPORT_GUIDE_HREF}#off-the-device`}>export guide</Link> shows how). The breakdown lands in your
+        dashboard: numbers, court maps and film the whole roster can read.
+      </>
+    ),
     spec: "within 24 h",
   },
 ];
@@ -140,7 +148,13 @@ export default function Page() {
           <ProofHead
             eyebrow="Before you upload"
             title="Will your footage work?"
-            aside="Advantage reads the court from behind the baseline, where most PlaySight courts already film. Film shot from the side won’t give a full breakdown."
+            aside={
+              <>
+                Advantage reads the court from behind the baseline, where most PlaySight courts already film. Film shot
+                from the side won’t give a full breakdown. Filming your own? The{" "}
+                <Link href={`${RECORDING_GUIDE_HREF}#placement`}>recording guide</Link> shows where to put the camera.
+              </>
+            }
           />
           <div className="pv-footage reveal">
             <figure className="pv-angle">

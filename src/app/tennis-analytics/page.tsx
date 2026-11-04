@@ -5,7 +5,7 @@ import { KpiTrend } from "@/components/perspective/sections";
 import { MatchEndings, MatchInsight } from "@/components/perspective/match-breakdown";
 import { JsonLd } from "@/components/json-ld";
 import { links } from "@/lib/links";
-import { EXPORT_GUIDE_HREF } from "@/lib/match-video";
+import { EXPORT_GUIDE_HREF, RECORDING_GUIDE_HREF } from "@/lib/match-video";
 import { pageMetadata } from "@/lib/metadata";
 import { articleLd, faqPageLd } from "@/lib/structured-data";
 import {
@@ -181,7 +181,10 @@ export default function Page() {
             <li>
               <span className="n">01</span>
               <h3>Film from behind the baseline</h3>
-              <p>Clip your phone or any camera to the back fence, raised up if you can, and record the whole singles match.</p>
+              <p>
+                Clip your phone or any camera to the back fence, raised up if you can, and record the whole singles
+                match. The <Link href={RECORDING_GUIDE_HREF}>recording guide</Link> covers placement and settings.
+              </p>
             </li>
             <li>
               <span className="n">02</span>
