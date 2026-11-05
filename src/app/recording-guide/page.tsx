@@ -16,6 +16,7 @@ export const metadata = pageMetadata({
   title: "Filming a match for Advantage — Advantage",
   description: `Where to put the camera and how to set it before you film: behind the back fence, raised, one camera that doesn't move, ${VIDEO_MIN_RESOLUTION} or better at ${VIDEO_MIN_FPS} or higher. Settings for iPhone, Android, GoPro, PlaySight and SwingVision.`,
   path: "/recording-guide",
+  ownCard: true,
 });
 
 /* Before the match. Whoever is here is about to film and wants the camera
