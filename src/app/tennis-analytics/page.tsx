@@ -37,7 +37,7 @@ const DESCRIPTION =
 // as the article's dateModified.
 const UPDATED = { iso: "2026-11-04", label: "November 2026" };
 
-export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
+export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, ownCard: true });
 
 const SHORT = [
   { k: "What it is", v: "Match statistics and patterns, pulled from the points you actually played." },

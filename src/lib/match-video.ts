@@ -5,9 +5,10 @@
 // export guide and the /send-a-match notice all quote these. The uploader
 // enforces the same limits in the dashboard repo, so when they move there,
 // change them here in the same breath: a stale figure is a coach told their
-// file is fine and then refused. The export guide's link preview card
-// (src/app/export-guide/opengraph-image.jpg with its .alt.txt) has these figures
-// baked into the artwork, so it changes with them.
+// file is fine and then refused. The link preview cards for the export guide
+// and the recording guide (opengraph-image.jpg with its .alt.txt in
+// src/app/export-guide/ and src/app/recording-guide/) have these figures baked
+// into the artwork, so they change with them.
 
 export const VIDEO_MIN_RESOLUTION = "1080p";
 export const VIDEO_MIN_FPS = "30 fps";
