@@ -16,7 +16,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Guardian Terms"
-        meta="Version 1.1 · Last updated October 25, 2026"
+        meta="Version 1.2 · Last updated November 7, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -103,7 +103,9 @@ export default function Page() {
               </ul>
               <p>
                 We do not collect the Player&apos;s contact details, and we do
-                not collect health or biometric data. Only collect and upload
+                not collect health or biometric data. Neither we nor our video
+                analysis provider use facial recognition or try to work out who
+                a player is from video. Only collect and upload
                 what is needed for the Player&apos;s tennis analysis.
               </p>
             </section>
@@ -112,19 +114,28 @@ export default function Page() {
               <h2>5. How We Use Match Video</h2>
               <ul className="legal-list">
                 <li>
-                  We use match video of the Player only to produce the
-                  statistics, court visualizations and match reports you see in
-                  the Service.
-                </li>
-                <li>
-                  Video of a Player is never used to train models, and is never
-                  used for advertising or marketing.
+                  We use match video of the Player to produce the statistics,
+                  court visualizations and match reports you see in the
+                  Service.
                 </li>
                 <li>
                   Video is stored with our cloud hosting provider and sent to
-                  our video analysis provider, who processes it on our behalf
-                  and returns the results. These providers may use it only to
-                  deliver the Service to you.
+                  our video analysis provider, who analyzes it on our behalf
+                  and returns the results. The provider stores video in the
+                  United States and analyzes it in Canada.
+                </li>
+                <li>
+                  Our video analysis provider also uses the Player&apos;s video
+                  to train and improve its analysis models. Its models learn
+                  from many matches together and are not used to identify
+                  players. People working for us or for the provider under
+                  confidentiality obligations may look at a match&apos;s video
+                  to check and correct its analysis.
+                </li>
+                <li>
+                  Video of a Player is never used for advertising or marketing,
+                  and the provider does not sell it or give it to anyone else
+                  for their own purposes.
                 </li>
                 <li>
                   Uploaded video is kept for up to one year after it was last
@@ -185,6 +196,11 @@ export default function Page() {
                 we hold about the Player by contacting us at the address below.
                 We may ask you to confirm that you are the account&apos;s
                 guardian before we act.
+              </p>
+              <p>
+                When the Player&apos;s video is deleted at your request, we ask
+                our video analysis provider to delete its copy too. Improvements
+                already made to its models using that video cannot be undone.
               </p>
             </section>
 

@@ -15,7 +15,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Terms and Conditions"
-        meta="Version 2.0 · Last updated October 25, 2026"
+        meta="Version 2.1 · Last updated November 7, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -37,6 +37,11 @@ export default function Page() {
                 match files from apps such as SwingVision, and see statistics, court visualizations and AI
                 match summaries. You can ask questions about your matches with Ask, connect AI assistants
                 to your account, and share matches with your team or by link.
+              </p>
+              <p>
+                Video analysis works on singles matches recorded as one uncut video from a single camera
+                that shows the whole court. Doubles matches are not analyzed. Turnaround times shown in the
+                Service are estimates, not guarantees.
               </p>
             </section>
 
@@ -108,8 +113,19 @@ export default function Page() {
                 worldwide, non-exclusive, royalty-free, sublicensable, and transferable license to use,
                 reproduce, modify, distribute, and display the content to provide and improve the Service,
                 including to train and improve the models that analyze match video and write match
-                summaries. We never use video from junior player accounts, from accounts of players under
-                18, or from high school or junior teams to train models.
+                summaries. This license extends to our video analysis provider, which uses match video it
+                receives, including video of players under 18, to train and improve its analysis models,
+                as described in our{" "}
+                <Link className="legal-link" href="/legal/privacy-policy">
+                  Privacy Policy
+                </Link>
+                .
+              </p>
+              <p>
+                When you upload video, you confirm that you recorded it or have the right to upload it, and
+                that the players in it, or for players under 18 their parents or guardians, have agreed to
+                being filmed and to the uses described in these Terms. Do not upload broadcast, streamed or
+                tournament footage that you do not own.
               </p>
               <p>
                 Advantage reserves the right to remove or refuse any content that violates these Terms, is
@@ -209,6 +225,10 @@ export default function Page() {
                 <li>
                   Scrape, copy, or harvest data or content from the Service without explicit permission.
                 </li>
+                <li>
+                  Use data or outputs from the Service to train machine learning models or to build a
+                  product that competes with the Service.
+                </li>
                 <li>Submit false, misleading, or infringing information or content.</li>
                 <li>
                   Engage in any activity that disrupts or interferes with the normal operation of the
@@ -226,6 +246,12 @@ export default function Page() {
                 does not guarantee the accuracy, completeness, or reliability of the analytics or reports.
                 Match summaries, key moments and Ask answers are written with the help of AI and may be
                 inaccurate or incomplete.
+              </p>
+              <p>
+                Video analysis is automated and is never 100% accurate. It is less accurate on video that
+                has been cut or edited, such as highlight exports from other apps, on video where the camera
+                does not show the whole court, and on recreational play. A match marked as verified has been
+                checked against its video by a person, but may still contain errors.
               </p>
               <p>
                 To the fullest extent permitted by law, Advantage and its affiliates shall not be liable for

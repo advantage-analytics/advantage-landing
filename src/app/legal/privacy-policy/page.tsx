@@ -15,7 +15,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Privacy Policy"
-        meta="Version 1.4 · Last updated October 25, 2026"
+        meta="Version 1.5 · Last updated November 7, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -89,7 +89,11 @@ export default function Page() {
                 When you buy analysis hours, our payment provider collects your card details. We never see
                 or store your card number. We keep a record of what you bought and when.
               </p>
-              <p>We do not collect health or biometric data.</p>
+              <p>
+                We do not collect health or biometric data. Neither we nor our video analysis provider
+                use facial recognition or try to work out who a player is from their video. The analysis
+                tracks where players and the ball are on the court, not who the players are.
+              </p>
             </section>
 
             <section className="legal-sec">
@@ -105,17 +109,18 @@ export default function Page() {
                 </li>
                 <li>
                   To train and improve the models that analyze match video and write match summaries. Our
-                  video analysis provider uses match video of adult players to improve its analysis
-                  models. We never use video from junior player accounts, from accounts of players under
-                  18, or from high school or junior teams to train models.
+                  video analysis provider uses the match video it receives, including video of players
+                  under 18, to train and improve its analysis models. We may also share corrections our
+                  team makes to a match&apos;s points and shots with the provider for the same purpose.
+                  These models learn from many matches together and are not used to identify players.
                 </li>
                 <li>
                   To communicate with you, including sending service-related announcements, updates,
                   support messages, usage alerts, and a warning before a video is deleted.
                 </li>
                 <li>
-                  To review the quality of our analysis, which may include a member of our team looking at
-                  a match.
+                  To review and correct the quality of our analysis, which may include a member of our
+                  team, or of our video analysis provider&apos;s team, looking at a match and its video.
                 </li>
                 <li>To improve and customize the Service and develop new features.</li>
                 <li>To detect, prevent, and address technical issues, fraud, or abuse.</li>
@@ -136,9 +141,15 @@ export default function Page() {
               <p>
                 <strong>Service Providers:</strong> Trusted third-party companies that perform services on
                 our behalf, such as cloud hosting and storage, video analysis, email delivery, payment
-                processing, product analytics, and customer support. Our video analysis provider receives
-                your match video to analyze it on our behalf, and may use video of adult players to
-                improve its analysis models.
+                processing, product analytics, and customer support.
+              </p>
+              <p>
+                <strong>Video Analysis Provider:</strong> Our video analysis provider receives your match
+                video to analyze it on our behalf, and uses it to train and improve its analysis models,
+                as described in Section 3. Only the provider and the service providers and contractors
+                working for it under confidentiality obligations can access the video, including people
+                who check and correct the analysis. The provider does not sell match video or give it to
+                anyone else for their own purposes.
               </p>
               <p>
                 <strong>AI Service Providers:</strong> Ask answers and match summaries are written with
@@ -204,7 +215,8 @@ export default function Page() {
               </p>
               <p>
                 <strong>Deletion:</strong> The right to request deletion of your personal data, subject to
-                certain legal exceptions.
+                certain legal exceptions. When you ask us to delete match video, we also ask our video
+                analysis provider to delete its copy.
               </p>
               <p>
                 <strong>Data Portability:</strong> The right to request a portable copy of your data in a
@@ -276,7 +288,9 @@ export default function Page() {
                 <strong>Match video:</strong> Uploaded match video is kept for up to one year after it was
                 last viewed, then deleted. We email you 30 days before. The statistics from it are kept.
                 You can remove a video sooner at any time. Our video analysis provider has no more than
-                14 days to download a video for analysis.
+                14 days to download a video for analysis. When a video is deleted at your request, we
+                ask the provider to delete its copy too. Improvements already made to its models using
+                that video cannot be undone.
               </p>
               <p>
                 <strong>Team matches:</strong> Matches you file to a team on Advantage belong to that team
@@ -300,7 +314,9 @@ export default function Page() {
               <h2>9. International Data Transfers</h2>
               <p>
                 Advantage&apos;s servers and service providers may be located in various countries,
-                including the United States and Canada.
+                including the United States and Canada. Our video analysis provider stores match video
+                in the United States and analyzes it in Canada, where the video is processed and then
+                deleted rather than stored.
               </p>
               <p>
                 By using the Service, you acknowledge and consent to the transfer of your information to
@@ -327,8 +343,11 @@ export default function Page() {
                 .
               </p>
               <p>
-                We never use video from junior player accounts, from accounts of players under 18, or from
-                high school or junior teams to train models.
+                Match video of players under 18, including video from guardian-managed accounts and from
+                high school, club and academy teams, is analyzed by our video analysis provider and used
+                to train and improve its analysis models, as described in Section 3. It is never used to
+                identify a player, or for advertising or marketing. Whoever uploads video of a player
+                under 18 must have their parent or guardian&apos;s consent to the filming and this use.
               </p>
               <p>
                 If we learn that we have collected personal information from a child under 13 without a
