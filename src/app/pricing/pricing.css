@@ -1,0 +1,61 @@
+/* ============ /pricing (draft) ============
+   Route-local styles. Band heads, buttons, the FAQ and the navy band are the
+   home page's own; the plan panel is How it works' panel (.how-panel) split
+   into plan columns. Columns are divided by the panel's own hairline showing
+   through a 1px grid gap, so the rules follow the columns when they stack. */
+.pr-head { align-items: flex-end; flex-wrap: wrap; }
+.pr-tabs { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--hairline-medium);
+  border-radius: var(--r-pill); background: var(--surface-page); }
+.pr-tabs button, .pr-billing button { height: 38px; padding: 0 18px; border-radius: var(--r-pill);
+  border: 1px solid transparent; background: transparent; color: var(--ink-secondary);
+  font: var(--fw-medium) 13px var(--font-sans); cursor: pointer;
+  transition: background 180ms var(--ease-primary), color 160ms var(--ease-primary); }
+.pr-tabs button:hover, .pr-billing button:hover { color: var(--ink); }
+.pr-tabs button.is-on, .pr-billing button.is-on { background: var(--surface); color: var(--ink);
+  border-color: var(--hairline-medium); box-shadow: var(--shadow-card); }
+
+.pr-sub { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.pr-sub p { margin: 0; max-width: 60ch; color: var(--ink-secondary); font: var(--fw-regular) 15px/1.6 var(--font-sans); }
+.pr-billing { display: inline-flex; gap: 4px; padding: 3px; border: 1px solid var(--hairline-medium);
+  border-radius: var(--r-element); background: var(--surface-page); }
+.pr-billing button { height: 32px; padding: 0 14px; border-radius: var(--r-button); }
+
+.pr-panel { margin: 40px 0 0; padding: 0; list-style: none; display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1px;
+  background: var(--hairline-medium); border: 1px solid var(--hairline-medium);
+  border-radius: var(--r-card); overflow: hidden; box-shadow: var(--shadow-card); }
+.pr-plan { background: var(--surface); padding: 32px 32px 36px; display: flex; flex-direction: column; }
+.pr-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pr-top .n { font: var(--fw-regular) 11px var(--font-mono); letter-spacing: 1px; color: var(--signal-blue); }
+.pr-tag { font: var(--fw-medium) 10px/1.5 var(--font-sans); letter-spacing: 2.5px; text-transform: uppercase; color: var(--signal-blue-deep); }
+.pr-plan h3 { margin: 14px 0 0; font: var(--fw-regular) 22px/1.2 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); }
+.pr-line { margin: 8px 0 0; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); }
+.pr-price { margin: 28px 0 0; display: flex; align-items: baseline; gap: 6px; }
+.pr-fig { font: var(--fw-light) 46px/1 var(--font-sans); letter-spacing: -1px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.pr-per { font: var(--fw-regular) 14px var(--font-sans); color: var(--ink-tertiary); }
+.pr-billed { margin: 8px 0 0; font: var(--fw-regular) 13px/1.5 var(--font-sans); color: var(--ink-tertiary); }
+.pr-spec { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--hairline); display: flex;
+  justify-content: space-between; gap: 12px; font: var(--fw-regular) 11px var(--font-mono);
+  letter-spacing: 0.4px; text-transform: uppercase; color: var(--ink-tertiary); }
+.pr-feats { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.pr-feats li { display: flex; gap: 10px; align-items: flex-start; font: var(--fw-regular) 14px/1.5 var(--font-sans); color: var(--ink-secondary); }
+.pr-feats svg { flex: none; margin-top: 3px; color: var(--signal-blue-deep); }
+.pr-cta { margin-top: auto; width: 100%; }
+.pr-feats + .pr-cta { margin-top: 32px; }
+.pr-plan .pr-cta { margin-top: auto; }
+.pr-plan > .pr-feats { margin-bottom: 32px; }
+
+.pr-terms { margin: 24px 0 0; display: flex; flex-wrap: wrap; gap: 10px 32px;
+  font: var(--fw-regular) 13px/1.6 var(--font-sans); color: var(--ink-secondary); }
+.pr-terms a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
+
+.pr-included { margin-top: 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px;
+  background: var(--hairline-medium); border: 1px solid var(--hairline-medium); border-radius: var(--r-card);
+  overflow: hidden; box-shadow: var(--shadow-card); }
+.pr-inc { background: var(--surface); padding: 28px 28px 32px; }
+.pr-inc h3 { margin: 0; font: var(--fw-regular) 18px/1.3 var(--font-sans); letter-spacing: -0.3px; color: var(--ink); }
+.pr-inc p { margin: 10px 0 0; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); }
+
+@media (max-width: 720px) {
+  .pr-plan { padding: 28px 22px 32px; }
+}
