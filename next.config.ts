@@ -39,6 +39,11 @@ const nextConfig: NextConfig = {
       // The connector guide moved from /claude to /mcp when it grew past
       // Claude. Claude's Connectors Directory listing and older posts still
       // link the old address.
+      // The 2026 pilot page and the match-intake page it replaced. Both are
+      // linked from emails already sent, so they land on the plans.
+      { source: "/pilot", destination: "/pricing", permanent: true },
+      { source: "/pilot/:path*", destination: "/pricing", permanent: true },
+      { source: "/send-a-match", destination: "/pricing", permanent: true },
       {
         source: "/claude",
         destination: "/mcp",

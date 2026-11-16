@@ -1,21 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import Cal, { getCalApi } from "@calcom/embed-react";
+import { getCalApi } from "@calcom/embed-react";
 import { CalendarDays } from "lucide-react";
-import { ProofHead } from "./band-parts";
-import { CAL_WALKTHROUGH, CONTACT_EMAIL } from "@/lib/links";
+import { CAL_WALKTHROUGH } from "@/lib/links";
 import { trackEvent } from "@/lib/analytics";
 import "./booking.css";
 
-/* The pilot walkthrough on Cal.com: inline in a band on /pilot, a pop-up from
-   /contact. Both share one embed namespace, themed once to the site's blue.
+/* The coach walkthrough on Cal.com, a pop-up from /contact, themed to the
+   site's blue.
 
    Where a booking came from travels with it as `metadata[placement]`, which
    Cal.com hands back in the BOOKING_CREATED webhook (/api/cal-booking), so the
    Airtable row says which page booked it. */
 
-const NAMESPACE = "pilot-walkthrough";
+const NAMESPACE = "walkthrough";
 
 function useCalTheme(placement: string) {
   useEffect(() => {
@@ -41,38 +40,6 @@ function useCalTheme(placement: string) {
       cancelled = true;
     };
   }, [placement]);
-}
-
-/* The optional call for coaches, between the FAQ and the way in on /pilot. */
-export function WalkthroughBand() {
-  useCalTheme("pilot-band");
-  return (
-    <section className="band" id="walkthrough">
-      <div className="wrap">
-        <ProofHead
-          eyebrow="Rather talk it through"
-          title="Book a 20-minute walkthrough."
-          aside="Optional, and for coaches. We open the dashboard on a match like yours and answer whatever this page leaves open."
-        />
-        <div className="book book-band reveal">
-          <Cal
-            namespace={NAMESPACE}
-            calLink={CAL_WALKTHROUGH}
-            className="book-embed"
-            config={{
-              layout: "month_view",
-              theme: "light",
-              "metadata[placement]": "pilot-band",
-            }}
-          />
-        </div>
-        <p className="book-foot reveal">
-          Times show in your own time zone. Prefer email?{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-        </p>
-      </div>
-    </section>
-  );
 }
 
 /* /contact's second direct line, under the email: the same look, a button

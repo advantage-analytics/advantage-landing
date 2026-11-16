@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   //   src/app/icon.png            -> <link rel="icon">
   //   src/app/apple-icon.png      -> <link rel="apple-touch-icon">
   //   src/app/opengraph-image.jpg -> og:image (and the twitter card image)
-  // That image is the site-wide card; /pilot, /export-guide, /recording-guide,
+  // That image is the site-wide card; /pricing, /export-guide, /recording-guide,
   // /tennis-analytics, /mcp and /about override it with their own
   // opengraph-image.jpg. An older card (the wordmark on black) is kept in
   // assets/link-previews/, outside src/app and public/ so it is neither picked

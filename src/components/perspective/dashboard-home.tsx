@@ -340,7 +340,7 @@ export function DashboardHome() {
           <div className="dh-usage">
             <Ico size={13} stroke="#888888"><path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" /></Ico>
             <p>
-              <Num>1.4</Num> of <Num>2</Num> hours left this month · free through Dec 31, 2026
+              <Num>3.2</Num> of <Num>5</Num> hours left this month
             </p>
             <span className="rs">Resets Oct 1</span>
             <span className="sep" />

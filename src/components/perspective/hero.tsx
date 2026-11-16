@@ -2,13 +2,13 @@
 
 import type { CSSProperties } from "react";
 import Image, { getImageProps } from "next/image";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { DashboardHome } from "./dashboard-home";
 import { LiveDots } from "./live-dots";
 import { useScaleToFit } from "@/lib/use-scale-to-fit";
-import { links } from "@/lib/links";
-import { trackCta, trackEvent } from "@/lib/analytics";
-import { BETA_END_SHORT } from "@/lib/pilot";
+import { trackEvent } from "@/lib/analytics";
+import { FREE_MATCH_OFFER } from "@/lib/plans";
+import { FreeMatchLink, TalkToUsLink } from "./cta-links";
 
 /* ===========================================================
    HERO PHOTO SLOT
@@ -39,7 +39,9 @@ const HERO_PHOTO = {
 // small optimized rendition is plenty; it is painted as a background.
 const EXT_SRC = getImageProps({ src: HERO_PHOTO.src, alt: "", width: 640 }).props.src;
 
-const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
+// One small line above the headline: what this is, since the headline never
+// says "tennis", and the free offer beside it while there is one.
+const HERO_EYEBROW = FREE_MATCH_OFFER ? "Tennis analysis · First match free" : "Tennis analytics from match video";
 
 /* Headline options, all outcome-first and readable with zero context
    (a visitor may land here straight from a creator's link):
@@ -53,7 +55,7 @@ const HERO_EYEBROW = `Free through ${BETA_END_SHORT}`;
    anything; 3 is clear but has no outcome in it. */
 const HERO_TITLE = ["Film your match.", "See how to win the next one."];
 const HERO_SUB =
-  "Upload a video of your match from your phone or any camera. Advantage shows where you won points, where you lost them, and what to work on.";
+  "Upload a video from your phone or any camera. Advantage Intelligence finds every point, counts the stats and shows what to work on, with the video behind each number.";
 
 /* ===========================================================
    Human hero — one responsive composition, two tiers.
@@ -77,6 +79,10 @@ const HERO_SUB =
 // The screen is the dashboard Home's 1440 artboard under a browser bar, cut
 // off partway down: the fade covers the cut. The fit hook and the
 // pre-hydration height reservation (aspect-ratio, inline below) share these.
+// What the laptop shows: one match's report, which is what the headline
+// promises and what a first upload gives back, or the season view.
+const HERO_SCREEN = "match" as "match" | "season";
+
 const SCREEN_W = 1440;
 const SCREEN_BAR_H = 40;
 const SCREEN_H = SCREEN_BAR_H + 640;
@@ -99,7 +105,15 @@ function HeroScreen() {
                 </span>
                 <span className="url">app.advantage-analytics.com</span>
               </div>
-              <DashboardHome />
+              {HERO_SCREEN === "match" ? (
+                // The match report: for now the product tour's opening frame,
+                // until the match page is ported from the dashboard as a live
+                // board the way the season view was.
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src="/assets/marketing/product-tour-v2-poster-2880.jpg" alt="" width={SCREEN_W} height={900} style={{ display: "block" }} />
+              ) : (
+                <DashboardHome />
+              )}
             </div>
           </div>
         </div>
@@ -108,31 +122,21 @@ function HeroScreen() {
   );
 }
 
-// The two lanes: individuals sign up in the app, and so do coaches, who then
-// find their team there.
+// The two ways in: sign-up for players and coaches, and the sales form for
+// college programs. `hero_cta_clicked` says which one was pressed.
 function HeroActions() {
   return (
     <div className="h-actions">
-      <a
+      <FreeMatchLink
         className="hbtn hbtn-white"
-        href={links.signUp}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => trackCta("join_free_beta", "home-hero")}
-      >
-        Join Free Beta
-        <ArrowUpRight size={16} />
-      </a>
-      <a
+        placement="home-hero"
+        onClick={() => trackEvent("hero_cta_clicked", { button: "free_match" })}
+      />
+      <TalkToUsLink
         className="hbtn hbtn-glass"
-        href={links.signUp}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => trackCta("find_your_team", "home-hero")}
-      >
-        Find Your Team
-        <ArrowUpRight size={16} />
-      </a>
+        placement="home-hero"
+        onClick={() => trackEvent("hero_cta_clicked", { button: "talk_to_us" })}
+      />
     </div>
   );
 }
@@ -140,7 +144,7 @@ function HeroActions() {
 export function PerspectiveHero() {
   return (
     <header className="hh" id="top">
-      <LiveDots glow={2.2} />
+      <LiveDots glow={2.2} energy={1} />
       <div className="hh-top">
         <div className="wrap hh-inner">
           <div className="hh-copy">

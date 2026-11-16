@@ -35,7 +35,7 @@ export const metadata = pageMetadata({
    limit in the browser), so the page says so before it asks anyone to edit a
    file themselves.
 
-   The limits come from lib/match-video, which the home page and /pilot read
+   The limits come from lib/match-video, which the home page reads
    too. The refusal messages are quoted from the dashboard
    (lib/match-video/types.ts ERROR_SPECS and lib/video/trim-plan.ts
    oversizeVideoMessage); when they change there, change them here. The

@@ -4,7 +4,7 @@ import { createAirtableRecord } from "@/lib/airtable";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
 import type { LeadSource } from "@/lib/leads";
 
-/* Cal.com's webhook for the pilot walkthrough (see CAL_WALKTHROUGH in
+/* Cal.com's webhook for the coach walkthrough (see CAL_WALKTHROUGH in
    lib/links). Subscribed to BOOKING_CREATED only: Cal.com already emails the
    host about reschedules and cancellations, so those need no row.
 

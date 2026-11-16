@@ -4,17 +4,12 @@ import { FaqItem } from "@/components/perspective/faq-item";
 import { KpiTrend } from "@/components/perspective/sections";
 import { MatchEndings, MatchInsight } from "@/components/perspective/match-breakdown";
 import { JsonLd } from "@/components/json-ld";
-import { links } from "@/lib/links";
 import { EXPORT_GUIDE_HREF, RECORDING_GUIDE_HREF } from "@/lib/match-video";
 import { pageMetadata } from "@/lib/metadata";
 import { articleLd, faqPageLd } from "@/lib/structured-data";
-import {
-  BETA_END_SHORT,
-  INDIVIDUAL_BETA_SHORT,
-  PILOT_HOURS,
-  PILOT_HOURS_SCOPE,
-  PILOT_PAID_PLANS_BEGIN,
-} from "@/lib/pilot";
+import { PLAN_FAQ } from "@/lib/plan-faq";
+import { COLLEGE_PLANS, FREE_MATCH_LINE, FREE_MATCH_OFFER, usd } from "@/lib/plans";
+import { FreeMatchLink, TalkToUsLink } from "@/components/perspective/cta-links";
 import "./tennis-analytics.css";
 
 /* /tennis-analytics — the page that explains the subject itself, for the
@@ -72,8 +67,6 @@ const MEASURES = [
   },
 ];
 
-const beta = BETA_END_SHORT;
-
 const QA = [
   {
     q: "What is tennis analytics?",
@@ -81,7 +74,7 @@ const QA = [
   },
   {
     q: "Can I get tennis stats from a phone video?",
-    a: "Yes. Film a singles match from behind the baseline on your phone or any camera, upload the file to Advantage, and you get a breakdown within 24 hours.",
+    a: "Yes. Film a singles match from behind the baseline on your phone or any camera, upload the file to Advantage, and you get an email when your breakdown is ready.",
   },
   {
     q: "What stats should a tennis player track?",
@@ -91,13 +84,11 @@ const QA = [
     q: "What video works?",
     a: "Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline. Side-on film won’t give a full breakdown.",
   },
-  {
-    q: "Is it free?",
-    a: `Yes, through ${beta}. Players get 2 hours of film a month; college programs in the pilot get ${PILOT_HOURS} ${PILOT_HOURS_SCOPE}. Paid plans begin in ${PILOT_PAID_PLANS_BEGIN}.`,
-  },
+  PLAN_FAQ.cost,
+  PLAN_FAQ.verified,
   {
     q: "Who can see my film?",
-    a: "Only you. If you’re in the pilot, everyone in your team workspace can see it too.",
+    a: "Only you. If you’re on a team, everyone in your team workspace can see it too.",
   },
 ];
 
@@ -198,7 +189,7 @@ export default function Page() {
               <span className="n">03</span>
               <h3>Read your breakdown</h3>
               <p>
-                Within 24 hours you get an email: where you won points, where you lost them, and what to work on, each
+                You get an email when it’s ready: where you won points, where you lost them, and what to work on, each
                 linked to the moment on video.
               </p>
             </li>
@@ -225,21 +216,17 @@ export default function Page() {
             <div className="ta-lane">
               <span className="eyebrow">Players</span>
               <h3>See your own game in numbers.</h3>
-              <p>Track your serve, your errors and your trends from one match to the next. {INDIVIDUAL_BETA_SHORT}</p>
-              <a className="btn btn-primary btn-lg" href={links.signUp} target="_blank" rel="noopener noreferrer">
-                Join free beta
-              </a>
+              <p>Track your serve, your errors and your trends from one match to the next.{FREE_MATCH_OFFER ? ` ${FREE_MATCH_LINE}` : ""}</p>
+              <FreeMatchLink className="btn btn-primary btn-lg" placement="tennis-analytics" icon={false} />
             </div>
             <div className="ta-lane">
               <span className="eyebrow">Coaches and programs</span>
               <h3>Every dual, every court, one page.</h3>
               <p>
-                College programs join the fall pilot: {PILOT_HOURS} of film {PILOT_HOURS_SCOPE}, free through {beta}. A
-                coach signs up and finds the team. <Link href="/pilot">About the pilot</Link>
+                College plans cover your full roster, from {usd(COLLEGE_PLANS[0].spring.price)} for the spring season.{" "}
+                <Link href="/pricing">See pricing</Link>
               </p>
-              <a className="btn btn-ink btn-lg" href={links.signUp} target="_blank" rel="noopener noreferrer">
-                Find your team
-              </a>
+              <TalkToUsLink className="btn btn-ink btn-lg" placement="tennis-analytics" />
             </div>
           </div>
         </div>

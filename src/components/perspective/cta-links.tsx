@@ -1,63 +1,55 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { links } from "@/lib/links";
 import { trackCta } from "@/lib/analytics";
+import { FREE_MATCH_OFFER, salesHref, signUpHref } from "@/lib/plans";
 
-/* The two launch CTAs as links, with click tracking. A client leaf so the bands
-   that hold them (beta terms, final band, the pilot masthead) can stay server
+/* The site's two ways in, as links with click tracking. A client leaf so the
+   bands that hold them (the final band, the pricing page) can stay server
    components. Styling is the caller's: pass the button class. */
 
-export function JoinBetaLink({
-  className,
-  placement,
-  children = "Join Free Beta",
-  icon = 16,
-}: {
+type Props = {
   className?: string;
   placement: string;
   children?: ReactNode;
   icon?: number | false;
-}) {
+  onClick?: () => void;
+};
+
+// Sign-up in the dashboard. While the free first match is on offer the button
+// says so; without it, the same button is a plain sign-up.
+export function FreeMatchLink({ className, placement, children, icon = 16, onClick }: Props) {
   return (
     <a
       className={className}
-      href={links.signUp}
+      href={signUpHref("free")}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={() => trackCta("join_free_beta", placement)}
+      onClick={() => {
+        trackCta("free_match", placement);
+        onClick?.();
+      }}
     >
-      {children}
+      {children ?? (FREE_MATCH_OFFER ? "Upload a free match" : "Sign up")}
       {icon ? <ArrowUpRight size={icon} aria-hidden="true" /> : null}
     </a>
   );
 }
 
-// The program lane. A coach signs up in the app and finds their team there;
-// nearly every college program is already listed. A school-email match turns
-// the pilot on at once, and anyone else is confirmed by hand.
-export function FindTeamLink({
-  className,
-  placement,
-  children = "Find Your Team",
-  icon = 16,
-}: {
-  className?: string;
-  placement: string;
-  children?: ReactNode;
-  icon?: number | false;
-}) {
+// The sales form on /contact, where college programs ask for a quote.
+export function TalkToUsLink({ className, placement, children = "Talk to us", onClick }: Omit<Props, "icon">) {
   return (
-    <a
+    <Link
       className={className}
-      href={links.signUp}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() => trackCta("find_your_team", placement)}
+      href={salesHref()}
+      onClick={() => {
+        trackCta("talk_to_us", placement);
+        onClick?.();
+      }}
     >
       {children}
-      {icon ? <ArrowUpRight size={icon} aria-hidden="true" /> : null}
-    </a>
+    </Link>
   );
 }

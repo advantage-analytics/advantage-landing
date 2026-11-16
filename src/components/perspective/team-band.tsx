@@ -1,14 +1,14 @@
 import { ProofHead } from "./band-parts";
 import { MockFrame } from "./mock-frame";
-import { FindTeamLink } from "./cta-links";
+import { AskAi } from "./ask-ai";
+import Link from "next/link";
 import { TeamHome, TH_W } from "./team-home";
-import { PILOT_HOURS } from "@/lib/pilot";
 
 /* The team band: the program workspace's Home, the one product shot that
    speaks to a coach rather than a player — this weekend's dual sheet, who is
    moving, the court record and the dual history. On the proof skeleton the
    other product bands use: the head, the board full width below it, and the
-   coach lane's way in as one blue text link under the board, no note: the
+   college plans as one blue text link under the board, no note: the
    board does the persuading.
 
    The Team Home is the tallest board on the site (1170 native), so the band
@@ -20,6 +20,23 @@ import { PILOT_HOURS } from "@/lib/pilot";
    itself is `team-home.tsx`. */
 const TH_VIEW = 720;
 
+/* The board on its own, for a band that supplies its own head. */
+export function TeamBoard() {
+  return (
+    <div
+      className="proof-board reveal"
+      role="img"
+      aria-label="The Advantage team workspace Home: this weekend's dual sheet with the lineup and score, the program summary, top movers, the season's court record by court, and the dual match history."
+    >
+      <MockFrame className="is-cropped" width={TH_W} height={TH_VIEW}>
+        <div inert className="mock-inert">
+          <TeamHome />
+        </div>
+      </MockFrame>
+    </div>
+  );
+}
+
 export function TeamBand() {
   return (
     <section className="band alt proof-band" id="team">
@@ -27,23 +44,14 @@ export function TeamBand() {
         <ProofHead
           eyebrow="Team workspace"
           title="Every dual, every court, one page."
-          aside={`Lineups, every court’s record and who’s trending. ${PILOT_HOURS} of film a month, shared.`}
+          aside="Lineups, every court’s record and who’s trending, for everyone in the team workspace."
         />
-        <div
-          className="proof-board reveal"
-          role="img"
-          aria-label="The Advantage team workspace Home: this weekend's dual sheet with the lineup and score, the program summary, top movers, the season's court record by court, and the dual match history."
-        >
-          <MockFrame className="is-cropped" width={TH_W} height={TH_VIEW}>
-            <div inert className="mock-inert">
-              <TeamHome />
-            </div>
-          </MockFrame>
-        </div>
+        <TeamBoard />
+        <AskAi placement="home-team" prompts={["give our singles record by court", "scout our next opponent"]} />
         <p className="proof-cta reveal">
-          <FindTeamLink className="proof-link" placement="home-team" icon={14}>
-            Find your team
-          </FindTeamLink>
+          <Link className="proof-link" href="/pricing">
+            See college plans
+          </Link>
         </p>
       </div>
     </section>

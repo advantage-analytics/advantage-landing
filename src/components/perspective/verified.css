@@ -1,0 +1,102 @@
+/* ============ Verified by Advantage band ============
+   Head, link and reveal are the site's own. Here: the timeline beside the
+   sample Matches table, the three reasons below, and the dashboard's marks.
+
+   Rhythm: the timeline and table sit as one pair 48px under the head; the
+   reasons follow a wider 64px step as their own group; the link closes on a
+   tight 24px. */
+
+/* ---------- The marks ----------
+   The dashboard's verified badge is blue; inside anything pending, grey. */
+.vf-check { flex: none; color: #0088FF; }
+.is-pending .vf-check { color: var(--ink-label); }
+
+/* The dashboard's compact spinner, sized to the badge's drawn size: the
+   16-unit badge only fills about 14 of its units, so at 14px it draws near
+   12px. The ring keeps a 14px slot (margin) so the words stay on one x. */
+.vf-spin { flex: none; width: 11px; height: 11px; margin: 1.5px; border-radius: 50%;
+  border: 1.25px solid var(--hairline-medium); border-top-color: var(--ink); animation: vf-spin 900ms linear infinite; }
+@keyframes vf-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .vf-spin { animation: none; } }
+
+/* Won or lost: green circle-check, red circle-x. */
+.vf-res { display: inline-flex; }
+.vf-res.is-won { color: var(--win-green); }
+.vf-res.is-lost { color: var(--loss-red); }
+
+/* A status: mark, then the word. */
+.vf-st { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  font: var(--fw-regular) 13px var(--font-sans); color: var(--ink); }
+.vf-st.is-pending { color: var(--ink-tertiary); }
+
+/* ---------- The pair: timeline beside the table ---------- */
+.vf-pair { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px 72px; align-items: stretch; }
+
+/* The timeline stretches to the table's height: each step but the last
+   takes an equal share, so the three marks spread from the table's top to
+   its last row and the line joining them runs the full way. */
+.vf-steps { margin: 0; padding: 18px 0 22px; list-style: none; display: flex; flex-direction: column; }
+.vf-step { position: relative; display: grid; grid-template-columns: 32px minmax(0, 1fr); column-gap: 16px; row-gap: 3px; align-content: start; }
+.vf-step:not(:last-child) { flex: 1 1 0; padding-bottom: 20px; }
+.vf-step:not(:last-child)::after { content: ""; position: absolute; left: 16px; top: 40px; bottom: 8px; width: 1px; background: var(--hairline-medium); }
+.vf-dot { grid-row: span 2; position: relative; z-index: 1; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--surface); border: 1px solid var(--hairline-medium); color: var(--ink-secondary); }
+.vf-dot .vf-spin { width: 13px; height: 13px; margin: 0; border-width: 1.5px; }
+.vf-step strong { padding-top: 5px; font: var(--fw-medium) 15px/1.4 var(--font-sans); color: var(--ink); }
+.vf-step > span:last-child { grid-column: 2; max-width: 34ch; font: var(--fw-regular) 14px/1.5 var(--font-sans); color: var(--ink-secondary); }
+.vf-step.is-pending strong { color: var(--ink-tertiary); }
+.vf-step.is-verified .vf-dot { background: rgba(0, 136, 255, .08); border-color: rgba(0, 136, 255, .28); }
+
+/* The sample Matches table, in the dashboard's columns: Date · Opponent ·
+   Result · Score · Analysis. One label row, no rules between rows (the
+   dashboard's table has none); the sample-data label is a caption below. */
+.vf-table-fig { margin: 0; display: flex; flex-direction: column; }
+.vf-table-fig figcaption { margin-top: 12px; font: var(--fw-regular) 12px/1.5 var(--font-sans); color: var(--ink-tertiary); }
+.vf-table { flex: 1; padding-bottom: 6px; border: 1px solid var(--hairline-medium); border-radius: var(--r-card);
+  background: var(--surface); box-shadow: var(--shadow-card-emphasis); overflow: hidden; }
+.vf-tr { display: grid; grid-template-columns: 52px minmax(0, 1fr) 44px 108px 176px; column-gap: 14px; align-items: center;
+  min-height: 50px; padding: 0 22px; font: var(--fw-regular) 13px/1.3 var(--font-sans); color: var(--ink); }
+.vf-th { min-height: 44px; margin-bottom: 4px; border-bottom: 1px solid var(--hairline-medium);
+  font: var(--fw-regular) 11px var(--font-sans); color: var(--ink-tertiary); }
+.vf-tr .c-d { font-size: 12px; color: var(--ink-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.vf-tr .c-o { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: var(--fw-medium); }
+.vf-tr .c-s { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ---------- The reasons, then the link ---------- */
+.vf-reasons { margin: 64px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--hairline-medium);
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 40px; }
+.vf-reasons li { padding: 20px 0 22px; display: grid; gap: 6px; font: var(--fw-regular) 14px/1.6 var(--font-sans); }
+.vf-reasons strong { font-weight: var(--fw-medium); color: var(--ink); }
+.vf-reasons span { color: var(--ink-secondary); }
+.vf-foot { margin-top: 24px; }
+
+/* ---------- Narrower ----------
+   Below 1180px the date goes. Below 860px everything stacks: the table
+   leads (it is what you will see), the timeline follows as its key, then
+   the reasons. On a phone the score tucks under the opponent. */
+@media (max-width: 1180px) {
+  .vf-tr { grid-template-columns: minmax(0, 1fr) 44px 108px 176px; }
+  .vf-tr .c-d { display: none; }
+}
+@media (max-width: 860px) {
+  .vf-pair { grid-template-columns: 1fr; margin-top: 36px; }
+  .vf-table-fig { order: -1; }
+  .vf-steps { padding: 0; row-gap: 20px; }
+  .vf-step:not(:last-child) { flex: none; padding-bottom: 0; }
+  .vf-step:not(:last-child)::after { bottom: -16px; }
+  .vf-reasons { margin-top: 40px; grid-template-columns: 1fr; }
+  .vf-reasons li { padding: 18px 0; border-bottom: 1px solid var(--hairline-medium); }
+}
+@media (max-width: 560px) {
+  /* A phone: two lines per match. The opponent on top; under it the result
+     mark leading the score, as a line of its own; the status to the right. */
+  .vf-tr { grid-template-columns: 14px minmax(0, 1fr) auto; grid-template-areas: "o o an" "r s an";
+    column-gap: 8px; row-gap: 3px; padding: 10px 16px; }
+  .vf-tr > .c-o { grid-area: o; }
+  .vf-tr > .vf-res { grid-area: r; }
+  .vf-tr > .c-s { grid-area: s; font-size: 12px; color: var(--ink-tertiary); }
+  .vf-tr > :last-child { grid-area: an; }
+  .vf-res svg { width: 13px; height: 13px; }
+  .vf-th { grid-template-areas: "o o an"; padding-top: 0; padding-bottom: 0; }
+  .vf-th > span:nth-child(3), .vf-th > span:nth-child(4) { display: none; }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
@@ -27,11 +27,10 @@ import { trackCta } from "@/lib/analytics";
    offers.
    =========================================================== */
 
-// Five links, kept short on purpose. Product lands on the first of the two
-// product bands, the tour (the team band follows it on the scroll), How it works on the
-// steps. `page: true` is a real route (Pilot, About, Contact) that gets a
-// current-page marker. Contact is in the bar because the pilot is aimed at
-// college programs, and a coach committing a team looks for a person before
+// Six links, kept short on purpose and in the order the home page runs: How
+// it works lands on the steps, Product on the product band (the tour), AI
+// connector on the AI band. `page: true` is a real route (Pricing, About, Contact) that gets a
+// current-page marker. Contact is in the bar because college programs buy through it, and a coach committing a team looks for a person before
 // they sign up; the anchors resolve against LOCAL_ANCHORS below. `spans` lists
 // the section ids an anchor stands for, so Product stays marked through all
 // both product bands, not only the first.
@@ -41,23 +40,23 @@ const NAV_LINKS: {
   page?: boolean;
   spans?: readonly string[];
 }[] = [
-  { href: "#tour", label: "Product", spans: ["tour", "team"] },
   { href: "#how", label: "How it works", spans: ["how"] },
-  { href: "/pilot", label: "Pilot", page: true },
+  { href: "#tour", label: "Product", spans: ["tour", "team"] },
+  { href: "#ai", label: "AI connector", spans: ["ai"] },
+  { href: "/pricing", label: "Pricing", page: true },
   { href: "/about", label: "About", page: true },
   { href: "/contact", label: "Contact", page: true },
 ];
 
 // Section anchors that resolve in place on a route OTHER than the home page.
 // The home page needs no entry — it renders every section the nav links to, by
-// definition. Empty today: the CTA leaves the site for sign-up, and /pilot's
-// own #tour band is deliberately not listed, so Product still leads to the
+// definition. Empty today: the CTA leaves the site for sign-up, and Product leads to the
 // home page's two product bands. Kept as the seam for the next exception.
 const LOCAL_ANCHORS: Record<string, readonly string[]> = {};
 
 /* `subpage` says only one thing: there is no dark hero behind the bar, so it
    wears its solid (frosted, dark-logo) skin from the first paint instead of
-   fading in on scroll. About, Contact and the legal pages pass it; /pilot does
+   fading in on scroll. About, Contact and the legal pages pass it; /pricing does
    not, because it has a mesh hero of its own.
 
    Where the links point is a separate question, and it is answered by the route
@@ -65,8 +64,13 @@ const LOCAL_ANCHORS: Record<string, readonly string[]> = {};
    with "/" so a tap navigates home and then scrolls, instead of hunting for a
    #section that doesn't exist here, and the brand mark goes home rather than to
    the top of the current page. Deriving both from `pathname` is what lets
-   /pilot have a transparent bar AND correctly-rebased anchors — the two used to
+   /pricing have a transparent bar AND correctly-rebased anchors — the two used to
    be welded together under `subpage`. */
+// The nav marker's last place, carried to the next page for a few seconds so
+// the line can slide over from the link it was under (see the marker below).
+const MARK_KEY = "advantage:nav-mark";
+const MARK_CARRY_MS = 4000;
+
 export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
   const [solid, setSolid] = useState(subpage);
   const [open, setOpen] = useState(false);
@@ -162,6 +166,75 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
   // transparent-over-hero state.
   const showSolid = solid || open;
 
+  /* The current-link marker: one underline that slides from link to link as
+     the current section changes, so moving down the page reads as moving
+     along the nav. It is measured from the link marked aria-current.
+
+     It always slides from wherever it last was, so the moves that cross a
+     gap still read as one motion:
+     - between two marked sections (Product, then the Verified band, then AI
+       connector) it stays under the last link, dimmed, until the next one is
+       current, then slides there;
+     - from page to page (Pricing, About, Contact, or Contact then How it
+       works on the home page) it starts under the link it was under on the
+       last page (kept for a few seconds in sessionStorage) and slides over.
+     Only at the top of the home page, over the hero, does it fade out
+     altogether, and the first time it shows on a fresh visit it appears in
+     place. */
+  const centerRef = useRef<HTMLDivElement>(null);
+  const markRef = useRef<HTMLSpanElement>(null);
+  // Where the line was on the page before, if that was moments ago: read
+  // once per mount, and kept until the line has slid on from it.
+  const carriedRef = useRef<{ x: number; w: number } | null | undefined>(undefined);
+  const [mark, setMark] = useState({ x: 0, w: 0, on: false, slide: false });
+  useLayoutEffect(() => {
+    const center = centerRef.current;
+    const el = markRef.current;
+    if (!center || !el) return;
+    if (carriedRef.current === undefined) {
+      carriedRef.current = null;
+      try {
+        const last = JSON.parse(sessionStorage.getItem(MARK_KEY) ?? "null") as { x: number; w: number; t: number } | null;
+        if (last && Date.now() - last.t < MARK_CARRY_MS) carriedRef.current = { x: last.x, w: last.w };
+      } catch {
+        // No storage: the line simply appears in place.
+      }
+    }
+    const carried = carriedRef.current;
+    if (carried) {
+      // Draw it under the last page's link before React moves it, straight
+      // on the element and with transitions off, so the slide starts there
+      // and not from the empty line the page was rendered with.
+      el.style.transition = "none";
+      el.style.width = `${carried.w}px`;
+      el.style.transform = `translateX(${carried.x}px)`;
+      el.style.opacity = "1";
+      void el.offsetWidth;
+      el.style.transition = "";
+    }
+    const place = () => {
+      const cur = center.querySelector<HTMLElement>("a[aria-current]");
+      const from = carriedRef.current;
+      setMark((m) => {
+        if (!cur) return from ? { ...from, on: true, slide: false } : { ...m, on: false, slide: false };
+        const next = { x: cur.offsetLeft, w: cur.offsetWidth };
+        try {
+          sessionStorage.setItem(MARK_KEY, JSON.stringify({ ...next, t: Date.now() }));
+        } catch {
+          // Not kept for the next page; nothing else depends on it.
+        }
+        return { ...next, on: true, slide: from !== null || m.w > 0 };
+      });
+      if (cur) carriedRef.current = null;
+    };
+    place();
+    window.addEventListener("resize", place);
+    document.fonts?.ready.then(place).catch(() => {});
+    return () => window.removeEventListener("resize", place);
+  }, [section, pathname]);
+  // Off a link: dimmed in place between sections, gone over the hero.
+  const markOpacity = mark.on ? 1 : solid && mark.w > 0 ? 0.3 : 0;
+
   return (
     <nav
       className={`site-nav${showSolid ? " is-solid" : ""}${open ? " is-open" : ""}${subpage ? " is-subpage" : ""}`}
@@ -171,7 +244,7 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
         <img className="site-logo site-logo-white" src="/assets/logos/logo-white.svg" alt="Advantage" />
         <img className="site-logo site-logo-dark" src="/assets/logos/logo.svg" alt="" aria-hidden="true" />
       </a>
-      <div className="site-nav-center">
+      <div className="site-nav-center" ref={centerRef}>
         {NAV_LINKS.map((l) => {
           const { href, current } = resolve(l);
           // A route gets <Link> so it navigates client-side; a hash anchor
@@ -186,6 +259,12 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
             </a>
           );
         })}
+        <span
+          ref={markRef}
+          className={`site-nav-mark${mark.slide ? " is-sliding" : ""}`}
+          aria-hidden="true"
+          style={{ width: mark.w, transform: `translateX(${mark.x}px)`, opacity: markOpacity }}
+        />
       </div>
       <div className="site-nav-actions">
         <a

@@ -1,15 +1,15 @@
 import { ArrowUpRight } from "lucide-react";
 import { PageFrame } from "@/components/perspective/page-frame";
-import { ContactForm } from "./contact-form";
+import { ContactForms } from "./contact-form";
 import { pageMetadata } from "@/lib/metadata";
 import "./contact.css";
 import { LiveDots } from "@/components/perspective/live-dots";
 import { BookCallLink } from "@/components/perspective/walkthrough-band";
 
 export const metadata = pageMetadata({
-  title: "Contact Advantage — Tennis Analytics for Players and Coaches",
+  title: "Talk to Advantage: Tennis Analytics for Players, Coaches and College Programs",
   description:
-    "Questions about Advantage, the tennis analytics app for players and coaches? Email the team at team@advantage-analytics.com.",
+    "Ask for a quote for your college program, book a walkthrough, or send the Advantage team a message.",
   path: "/contact",
 });
 
@@ -25,13 +25,13 @@ export default function Page() {
               line; the glass underline form sits on the right. */}
           <div className="contact-card reveal">
             <div className="contact-glow" aria-hidden="true" />
-            <LiveDots className="contact-grain" />
+            <LiveDots className="contact-grain" energy={1} />
             <div className="contact-inner">
               <div className="contact-copy">
-                <h1>Let&rsquo;s talk.</h1>
+                <h1>Talk to us.</h1>
                 <p className="lede">
-                  A person reads every message and replies within two business
-                  days.
+                  College programs: tell us your teams and season and we send
+                  a quote. Anyone else: a person reads every message.
                 </p>
 
                 <a className="contact-email" href={`mailto:${EMAIL}`}>
@@ -49,7 +49,7 @@ export default function Page() {
                 </p>
               </div>
 
-              <ContactForm />
+              <ContactForms />
             </div>
           </div>
         </div>

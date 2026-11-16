@@ -4,29 +4,26 @@
 // verbatim. That is not politeness: it is proof the text arrived intact and a
 // chance to notice a typo'd address before our reply bounces into nothing.
 //
-// The pilot is the thing to point at, because it's what most people writing in are asking about, and
-// because a coach can turn it on themselves: they sign up with their school
-// email and find their team, with no reply from us on the critical path.
-//
-// Everyone else on this list is a coach. Here the sender might be a player or a
-// parent, so the copy stays lane-neutral — no assumption of a program, and the
-// pilot is offered rather than presumed.
+// Pricing is the thing to point at, because it's what most people writing in
+// are asking about. The sender might be a player, a parent or a coach, so the
+// copy assumes no program.
 
 import {
   type EmailContent,
-  SITE_URL,
+  PRICING_URL,
   button,
   emailShell,
   escapeHtml,
   fallbackLink,
+  firstName,
   heading,
   helpBlock,
   note,
   panel,
   paras,
   strong,
+  textFooter,
 } from "./layout";
-import { PILOT_END_DATE } from "../pilot";
 
 export type ContactReceivedInput = {
   name: string;
@@ -39,10 +36,6 @@ export type ContactReceivedInput = {
   phone?: string;
 };
 
-function firstName(name: string): string {
-  return name.trim().split(/\s+/)[0] || "there";
-}
-
 // Paragraph breaks survive as blank lines; single breaks become <br>. Anything
 // less and a message written in short lines arrives as one run-on block.
 function quoteMessage(message: string): string {
@@ -54,7 +47,6 @@ function quoteMessage(message: string): string {
     .join("<br><br>");
 }
 
-const PILOT_URL = `${SITE_URL}/pilot`;
 
 export function contactReceivedEmail(input: ContactReceivedInput): EmailContent {
   const first = escapeHtml(firstName(input.name));
@@ -69,7 +61,7 @@ export function contactReceivedEmail(input: ContactReceivedInput): EmailContent 
     heading("MESSAGE RECEIVED", "We've got your message"),
     paras([
       `Thanks for writing in, ${first}. This went to an inbox a person actually reads, not a ticket queue.`,
-      `We read every message and reply within ${strong("two business days")}. If something changes in the meantime, just reply to this email — it lands in the same place.`,
+      `We read every message and reply within ${strong("two business days")}. If something changes in the meantime, just reply to this email. It lands in the same place.`,
     ]),
 
     panel([
@@ -78,11 +70,11 @@ export function contactReceivedEmail(input: ContactReceivedInput): EmailContent 
     ]),
 
     paras([
-      `If you're asking on behalf of a team, the Free Fall Pilot is probably the answer: free through ${strong(PILOT_END_DATE)}, no hardware, no contract, no cost. It's open now — sign up with your school email, find your team, and it turns on.`,
+      `If you're asking about plans, the pricing page has every plan for players, coaches and college programs.`,
     ]),
 
-    button("See the Free Fall Pilot", PILOT_URL),
-    fallbackLink(PILOT_URL),
+    button("See pricing", PRICING_URL),
+    fallbackLink(PRICING_URL),
     note(
       "You're receiving this because you sent us a message at advantage-analytics.com.",
     ),
@@ -92,7 +84,7 @@ export function contactReceivedEmail(input: ContactReceivedInput): EmailContent 
   return {
     subject: "We've got your message",
     html: emailShell({
-      title: "We've got your message — Advantage",
+      title: "We've got your message | Advantage",
       preheader:
         "Read by a person, not a ticket queue. We'll reply within two business days.",
       body,
@@ -110,7 +102,7 @@ function textVersion(input: ContactReceivedInput, first: string): string {
 
 Thanks for writing in, ${first}. This went to an inbox a person actually reads, not a ticket queue.
 
-We read every message and reply within two business days. If something changes in the meantime, just reply to this email — it lands in the same place.
+We read every message and reply within two business days. If something changes in the meantime, just reply to this email. It lands in the same place.
 
 Your message
 ${input.message.trim() || "(no message)"}
@@ -118,13 +110,11 @@ ${input.message.trim() || "(no message)"}
 Sent as
 ${sentAs}
 
-If you're asking on behalf of a team, the Free Fall Pilot is probably the answer: free through ${PILOT_END_DATE}, no hardware, no contract, no cost. It's open now — sign up with your school email, find your team, and it turns on.
+If you're asking about plans, the pricing page has every plan for players, coaches and college programs.
 
-${PILOT_URL}
+${PRICING_URL}
 
 You're receiving this because you sent us a message at advantage-analytics.com.
 
-Need help? Reach us at team@advantage-analytics.com.
-
-© 2026 Advantage Analytics LLC · advantage-analytics.com`;
+${textFooter()}`;
 }

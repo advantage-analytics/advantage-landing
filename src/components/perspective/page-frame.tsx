@@ -11,7 +11,7 @@ import "./subpage.css";
    reveal-on-scroll observer over the page's `.reveal` elements. About, Contact,
    and the legal pages all render their content as children.
 
-   Pass `hero` for a route that carries its own dark masthead (/pilot): the
+   Pass `hero` for a route that carries its own dark masthead (/pricing): the
    nav then keeps its transparent-over-hero skin, and <main> drops the top
    padding that exists only to clear a solid bar. Without it — the default —
    the bar is solid from first paint and <main> is inset below it. */

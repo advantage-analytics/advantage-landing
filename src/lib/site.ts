@@ -22,18 +22,16 @@ function resolveSiteUrl(): URL {
 
 export const SITE_URL = resolveSiteUrl();
 
-/** An absolute URL on this site for a path like "/pilot". */
+/** An absolute URL on this site for a path like "/pricing". */
 export function absoluteUrl(path: string): string {
   return new URL(path, SITE_URL).toString();
 }
 
 // The pages search engines should index, in the order the sitemap lists them.
-// /send-a-match is left out on purpose: it is noindex, kept only for links in
-// emails already sent.
 export const INDEXED_PATHS = [
   "/",
   "/tennis-analytics",
-  "/pilot",
+  "/pricing",
   "/recording-guide",
   "/export-guide",
   "/mcp",

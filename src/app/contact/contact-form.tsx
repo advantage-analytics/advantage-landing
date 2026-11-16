@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
-import Link from "next/link";
 import { HoneypotField } from "@/components/honeypot-field";
 import { HONEYPOT_NAME } from "@/lib/honeypot";
-import { links } from "@/lib/links";
+import { EMAIL_RE } from "@/lib/validation";
+import { COLLEGE_PLANS } from "@/lib/plans";
+import { FreeMatchLink } from "@/components/perspective/cta-links";
+import { SalesForm } from "./sales-form";
+import { useQueryString } from "@/lib/use-query-string";
 
 const ROLES = ["Player", "Coach", "Parent", "Other"];
 
@@ -30,27 +33,46 @@ function validate(v: Values): Record<string, string> {
   if (!v.name.trim()) e.name = "Tell us your name.";
   if (!v.role) e.role = "Select a role.";
   if (!v.email.trim()) e.email = "Add an email so we can reply.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email.trim()))
+  else if (!EMAIL_RE.test(v.email.trim()))
     e.email = "That email doesn't look right.";
   if (!v.message.trim()) e.message = "Add a short message.";
   return e;
 }
 
-/* Bringing a team is the likelier reason a coach is on this page than a general
-   enquiry, and the pilot is free — so it is offered before the form, not after
-   it. The individual lane stays a footnote under the submit. Module scope: it
-   closes over nothing, and this form re-renders on every keystroke. */
-const TEAM_LEAD = (
-  <p className="form-lead">
-    Bringing your team?{" "}
-    <a href={links.signUp} target="_blank" rel="noopener noreferrer">
-      Sign up and find your team
-    </a>
-    . The <Link href="/pilot">pilot</Link> is free through the fall season.
-  </p>
-);
+/* The page's two forms behind one switch. A college program asks for a quote
+   (SalesForm, which files a lead); everyone else sends a message. A link from
+   /pricing arrives with ?plan=, which opens the college form with that plan
+   and season already chosen. */
+export function ContactForms() {
+  const query = useQueryString();
+  const preset = useMemo(() => {
+    const q = new URLSearchParams(query);
+    const plan = COLLEGE_PLANS.some((p) => p.id === q.get("plan")) ? (q.get("plan") as string) : "";
+    const season = q.get("season") === "full-year" ? "full-year" : "spring";
+    const college = Boolean(plan) || q.has("season") || q.get("for") === "college";
+    return { plan, season, college };
+  }, [query]);
+  // The visitor's own choice wins once they make one; until then the link
+  // they arrived on decides.
+  const [chosen, setChosen] = useState<"college" | "message" | null>(null);
+  const mode = chosen ?? (preset.college ? "college" : "message");
 
-export function ContactForm() {
+  return (
+    <div className="form-panel">
+      <div className="form-modes" role="group" aria-label="What this is about">
+        <button type="button" aria-pressed={mode === "college"} onClick={() => setChosen("college")}>
+          College program
+        </button>
+        <button type="button" aria-pressed={mode === "message"} onClick={() => setChosen("message")}>
+          Something else
+        </button>
+      </div>
+      {mode === "college" ? <SalesForm key={`${preset.plan}-${preset.season}`} preset={preset} /> : <ContactForm />}
+    </div>
+  );
+}
+
+function ContactForm() {
   const [values, setValues] = useState<Values>(EMPTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
@@ -92,8 +114,7 @@ export function ContactForm() {
 
   if (sent) {
     return (
-      <div className="form-panel">
-        {TEAM_LEAD}
+      <>
         <div className="form-sent" role="status" aria-live="polite">
           <div className="chk">
             <Check size={22} strokeWidth={2} aria-hidden="true" />
@@ -104,13 +125,11 @@ export function ContactForm() {
           <p>Thanks. We read every message and reply within two business days.</p>
           <p className="form-foot">
             Individual player?{" "}
-            <a href={links.signUp} target="_blank" rel="noopener noreferrer">
-              Join Free Beta
-            </a>
+            <FreeMatchLink placement="contact-sent" icon={false} />
             .
           </p>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -144,10 +163,9 @@ export function ContactForm() {
   };
 
   return (
-    <div className="form-panel">
-      {TEAM_LEAD}
+    <>
       <form onSubmit={onSubmit} noValidate>
-        {/* Honeypot — hidden from users, ignored by them, filled by bots. It has
+        {/* Honeypot: hidden from users, ignored by them, filled by bots. It has
             to stay hidden from the browser's autofill too; see lib/honeypot. */}
         <HoneypotField valueRef={honeypot} />
         <div className="field">
@@ -258,12 +276,10 @@ export function ContactForm() {
         )}
         <p className="form-foot">
           Individual player?{" "}
-          <a href={links.signUp} target="_blank" rel="noopener noreferrer">
-            Join Free Beta
-          </a>
+          <FreeMatchLink placement="contact-form" icon={false} />
           .
         </p>
       </form>
-    </div>
+    </>
   );
 }

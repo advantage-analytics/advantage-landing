@@ -1,5 +1,6 @@
 import { CONTACT_EMAIL } from "./links";
 import { absoluteUrl } from "./site";
+import { COLLEGE_PLANS, ENTRY_COACH_PLAN, FREE_MATCH_OFFER, OFFERED_COACH_PLANS } from "./plans";
 
 // schema.org objects for the JSON-LD on each page. Every fact here is one the
 // visible pages already state; structured data that says more than the page
@@ -48,9 +49,22 @@ export function softwareApplicationLd() {
     url: absoluteUrl("/"),
     description:
       "Upload a video of your tennis match from your phone or any camera. Advantage turns it into match analysis: where you won points, where you lost them, and what to work on next.",
-    // Free through the beta; the price is the visible pages' "free" and
-    // nothing more.
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    // The plans as the pricing page states them, read from lib/plans: the
+    // range across every plan, and one offer for each plan bought online.
+    offers: {
+      "@type": "AggregateOffer",
+      priceCurrency: "USD",
+      lowPrice: String(FREE_MATCH_OFFER ? 0 : ENTRY_COACH_PLAN.monthly),
+      highPrice: String(Math.max(...COLLEGE_PLANS.map((p) => p.fullYear.price))),
+      url: absoluteUrl("/pricing"),
+      offers: OFFERED_COACH_PLANS.map((p) => ({
+        "@type": "Offer",
+        name: p.name,
+        price: String(p.monthly),
+        priceCurrency: "USD",
+        url: absoluteUrl("/pricing"),
+      })),
+    },
     publisher: { "@id": ORG_ID },
   };
 }

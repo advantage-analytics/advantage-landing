@@ -66,7 +66,7 @@
   font-weight: var(--fw-light);
   letter-spacing: -1.6px;
   line-height: 1;
-  font-size: clamp(40px, 4.6vw, 58px);
+  font-size: clamp(36px, 4.6vw, 48px);
   text-wrap: balance;
 }
 
@@ -259,23 +259,30 @@ select.control:has(option[value=""]:checked) {
   height: 15px;
 }
 
-/* The team lane, above the form. A touch brighter and larger than .form-foot:
-   it is an offer, not a footnote, and it has to survive being read first. */
-.form-lead {
-  margin: 0 0 22px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-  font: var(--fw-regular) 12.5px/1.55 var(--font-sans);
+/* The switch above the form: a college quote, or a message. Glass like the
+   panel it sits in; the pressed side is the solid one. */
+.form-modes {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 24px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--r-pill);
+}
+.form-modes button {
+  flex: 1;
+  height: 36px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
   color: rgba(255, 255, 255, 0.7);
+  font: var(--fw-medium) 13px var(--font-sans);
+  cursor: pointer;
+  transition: background 180ms var(--ease-primary), color 160ms var(--ease-primary);
 }
-.form-lead a {
-  color: #fff;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.form-lead a:hover {
-  color: #dbeafe;
-}
+.form-modes button:hover { color: #fff; }
+.form-modes button[aria-pressed="true"] { background: #fff; color: var(--ink); }
+.form-modes button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 .form-foot {
   margin-top: 16px;
@@ -358,9 +365,6 @@ select.control:has(option[value=""]:checked) {
     gap: 40px;
     padding: 44px 36px;
   }
-  .contact-copy h1 {
-    font-size: 46px;
-  }
 }
 
 @media (max-width: 560px) {
@@ -374,15 +378,8 @@ select.control:has(option[value=""]:checked) {
    a card, and on a 375px phone its 32px padding plus the card's 24px left a
    217px field. Below 640px it hands its width back and the form runs to the
    card's gutters. color-scheme stays: it is what keeps the native select wheel
-   from flashing white against the navy.
-
-   The rule moves with it. On desktop the panel's own edge says "page copy ends,
-   form begins" and .form-lead's bottom rule says "this offer is not one of the
-   fields". Stacked, the panel edge is gone and .form-lead's rule sits below the
-   offer, which leaves the offer reading as one more line of the signoff copy
-   above it. So the separator goes where the boundary actually is — above
-   .form-lead, at the top of the form — and .form-lead's own rule stands down
-   rather than drawing a second hairline 60px under the first. */
+   from flashing white against the navy. Stacked, the panel's edge is gone, so
+   a hairline above the form marks where page copy ends and the form begins. */
 @media (max-width: 640px) {
   .form-panel {
     background: none;
@@ -392,10 +389,6 @@ select.control:has(option[value=""]:checked) {
     border-top: 1px solid rgba(255, 255, 255, 0.16);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-  }
-  .form-lead {
-    padding-bottom: 0;
-    border-bottom: none;
   }
   /* Without the panel's padding the confirmation has no inset of its own. */
   .form-sent {
@@ -440,9 +433,6 @@ select.control:has(option[value=""]:checked) {
   }
   .field-error {
     font-size: 12.5px;
-  }
-  .form-lead {
-    font-size: 13.5px;
   }
   .form-foot {
     font-size: 12px;
