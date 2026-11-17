@@ -51,7 +51,13 @@ export const PLAN_FAQ = {
     q: "What are Priority and Rush?",
     a: `Every match is Standard unless you choose otherwise. Priority moves your match up the line, and Rush moves it to the front. Rush is ${usd(RUSH_PRICE)} a match. Priority is included on Elite and a ${PRIORITY_ADDON_PERCENT}% add-on on Program.`,
   },
-  doubles: { q: "Does doubles work?", a: "Not yet. Doubles is coming. Singles only for now." },
+  // LEGAL REVIEW / CONFIRM: keep in step with Privacy Policy §3 (who sees
+  // match video) and the Guardian Terms.
+  film: {
+    q: "Who can see my film?",
+    a: "You, and everyone in your team workspace if you’re on a team. Anyone you send a match link to can see that match, and an AI app you connect can read your matches. To analyze and check a match, our video analysis provider and people working for us, including contractors under confidentiality, can see it too.",
+  },
+  doubles: { q: "Does doubles work?", a: "Not yet. Doubles can’t be uploaded yet; singles only for now." },
   switching: {
     q: "Can we switch plans?",
     a: "Yes. Email us and we move you up, or down at your next renewal.",

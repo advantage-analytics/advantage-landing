@@ -33,10 +33,7 @@ const QA: readonly { q: string; a: ReactNode; text?: string }[] = [
   },
   PLAN_FAQ.ai,
   PLAN_FAQ.ready,
-  {
-    q: "Who can see my film?",
-    a: "Only you. If you’re on a team, everyone in your team workspace can see it too.",
-  },
+  PLAN_FAQ.film,
 ];
 
 const FAQ_LD = faqPageLd(QA.map((x) => ({ q: x.q, text: x.text ?? (typeof x.a === "string" ? x.a : "") })));

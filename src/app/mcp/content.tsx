@@ -231,13 +231,13 @@ export type Tool = { name: string; desc: string; access: string; write?: true };
    write: it saves the exchange to the player's Ask history. */
 export const tools: Tool[] = [
   {
-    name: "list_workspaces",
-    desc: "Your personal workspace and every team you belong to.",
+    name: "list_matches",
+    desc: "The matches in scope, newest first.",
     access: "Read",
   },
   {
-    name: "list_matches",
-    desc: "The matches in scope, newest first.",
+    name: "list_workspaces",
+    desc: "Your personal workspace and every team you belong to.",
     access: "Read",
   },
   {
@@ -248,6 +248,33 @@ export const tools: Tool[] = [
   {
     name: "opponent_scouting",
     desc: "Your record against an opponent, with recent meetings and trends.",
+    access: "Read",
+  },
+  {
+    name: "search_programs",
+    desc: "Finds a college program, so an opponent’s school can be set correctly.",
+    access: "Read",
+  },
+  {
+    name: "update_match",
+    desc: "Fixes the opponent, their school, hand and backhand, the tournament, round, date, match type or surface on a match you created. Never the score.",
+    access: "Writes",
+    write: true,
+  },
+  {
+    name: "prepare_video_upload",
+    desc: "Saves an upload draft and gives you the link to pick the video and finish.",
+    access: "Writes",
+    write: true,
+  },
+  {
+    name: "open_visualization",
+    desc: "A link to one court chart with filters applied, for a match or a team roster player’s season. Nothing is saved.",
+    access: "Read",
+  },
+  {
+    name: "find_points",
+    desc: "A link that plays the points of a match that fit a filter, a rally length or point numbers.",
     access: "Read",
   },
   {
@@ -264,18 +291,6 @@ export const tools: Tool[] = [
     name: "ask",
     desc: "Advantage answers a whole question. Saved to your Ask history.",
     access: "Uses a question",
-    write: true,
-  },
-  {
-    name: "update_match",
-    desc: "Fixes the opponent, tournament, round, date, match type or surface on a match you created. Never the score.",
-    access: "Writes",
-    write: true,
-  },
-  {
-    name: "prepare_video_upload",
-    desc: "Saves an upload draft and gives you the link to pick the video and finish.",
-    access: "Writes",
     write: true,
   },
 ];

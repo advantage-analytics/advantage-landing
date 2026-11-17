@@ -159,7 +159,7 @@ const HOW_STEPS: readonly { k: string; t: string; p: ReactNode; spec: string; vi
     t: "Upload the video.",
     p: (
       <>
-        Send it from your phone or computer after the match. If the video is on a camera or a court system, the{" "}
+        Send it from a computer or tablet after the match. If the video is on a camera or a court system, the{" "}
         <Link href={EXPORT_GUIDE_HREF}>export guide</Link> shows how to get it off.
       </>
     ),
@@ -295,9 +295,9 @@ const SEE_ITEMS: readonly { t: string; p: string; label: string; crop: ReactNode
   },
   {
     t: "How every point ended",
-    p: "Winners and aces next to unforced errors and double faults, so you know what to tidy up before the next match.",
+    p: "Winners and aces next to errors and double faults, so you know what to tidy up before the next match.",
     label:
-      "From a sample match report: a bar for each player showing how their points ended, in winners, aces, unforced errors and double faults.",
+      "From a sample match report: a bar for each player showing how their points ended, in winners, aces, errors and double faults.",
     crop: <MatchEndings large />,
   },
   {

@@ -59,7 +59,7 @@ const MEASURES = [
   },
   {
     t: "How points ended",
-    d: "Winners and aces against unforced errors and double faults. It tells you whether you won the match or your opponent lost it.",
+    d: "Winners and aces against errors and double faults. It tells you whether you won the match or your opponent lost it.",
   },
   {
     t: "Rally length",
@@ -78,7 +78,7 @@ const QA = [
   },
   {
     q: "What stats should a tennis player track?",
-    a: "Start with first serve percentage, points won behind your first and second serve, and how your points ended: winners and aces against unforced errors and double faults. Then watch how they move across matches.",
+    a: "Start with first serve percentage, points won behind your first and second serve, and how your points ended: winners and aces against errors and double faults. Then watch how they move across matches.",
   },
   {
     q: "What video works?",
@@ -86,10 +86,7 @@ const QA = [
   },
   PLAN_FAQ.cost,
   PLAN_FAQ.verified,
-  {
-    q: "Who can see my film?",
-    a: "Only you. If you’re on a team, everyone in your team workspace can see it too.",
-  },
+  PLAN_FAQ.film,
 ];
 
 const LD = [
@@ -150,7 +147,7 @@ export default function Page() {
               <div
                 className="ta-crop mb-crop"
                 role="img"
-                aria-label="From a sample match report: how each player's points ended, in winners, aces, unforced errors and double faults."
+                aria-label="From a sample match report: how each player's points ended, in winners, aces, errors and double faults."
               >
                 <div inert>
                   <MatchEndings />

@@ -28,7 +28,7 @@ const VIZ = {
 const ENDINGS = [
   { key: "Winners", you: 28, opp: 22 },
   { key: "Aces", you: 7, opp: 4 },
-  { key: "Unforced", you: 19, opp: 27 },
+  { key: "Errors", you: 19, opp: 27 },
   { key: "Double faults", you: 2, opp: 5 },
 ];
 

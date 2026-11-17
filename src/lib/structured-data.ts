@@ -48,7 +48,7 @@ export function softwareApplicationLd() {
     operatingSystem: "Web",
     url: absoluteUrl("/"),
     description:
-      "Upload a video of your tennis match from your phone or any camera. Advantage turns it into match analysis: where you won points, where you lost them, and what to work on next.",
+      "Upload a video of your tennis match, filmed on your phone or any camera. Advantage turns it into match analysis: where you won points, where you lost them, and what to work on next.",
     // The plans as the pricing page states them, read from lib/plans: the
     // range across every plan, and one offer for each plan bought online.
     offers: {

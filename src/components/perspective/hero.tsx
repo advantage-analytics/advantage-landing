@@ -55,7 +55,7 @@ const HERO_EYEBROW = FREE_MATCH_OFFER ? "Tennis analysis · First match free" : 
    anything; 3 is clear but has no outcome in it. */
 const HERO_TITLE = ["Film your match.", "See how to win the next one."];
 const HERO_SUB =
-  "Upload a video from your phone or any camera. Advantage Intelligence finds every point, counts the stats and shows what to work on, with the video behind each number.";
+  "Upload a video filmed on your phone or any camera. Advantage Intelligence finds every point, counts the stats and shows what to work on, with the video behind each number.";
 
 /* ===========================================================
    Human hero — one responsive composition, two tiers.
