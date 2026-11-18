@@ -36,6 +36,7 @@ export function Footer() {
             </div>
             <div className="foot-col">
               <h2 className="foot-h">Guides</h2>
+              <Link href="/guides">All guides</Link>
               <Link href="/tennis-analytics">Tennis analytics</Link>
               <Link href={RECORDING_GUIDE_HREF}>Recording guide</Link>
               <Link href={EXPORT_GUIDE_HREF}>Export guide</Link>

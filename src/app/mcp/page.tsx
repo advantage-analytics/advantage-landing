@@ -1,5 +1,5 @@
-import { Plus } from "lucide-react";
-import { PageFrame } from "@/components/perspective/page-frame";
+import { Plus, ShieldCheck } from "lucide-react";
+import { GuideShell } from "@/components/guide/guide-shell";
 import { CONTACT_EMAIL, links } from "@/lib/links";
 import { apps, faqs, privacy, prompts, tools, url } from "./content";
 import { CopyButton, SetupPicker } from "./mcp-client";
@@ -28,40 +28,37 @@ export const metadata = pageMetadata({
    others are treated the same. */
 
 const sections = [
-  ["setup", "Setup"],
-  ["examples", "Try asking"],
-  ["tools", "Tools"],
-  ["privacy", "Sign-in and privacy"],
-  ["troubleshooting", "Troubleshooting"],
-  ["disconnect", "Disconnect"],
+  { id: "setup", label: "Setup" },
+  { id: "examples", label: "Try asking" },
+  { id: "tools", label: "Tools" },
+  { id: "privacy", label: "Sign-in and privacy" },
+  { id: "troubleshooting", label: "Troubleshooting" },
+  { id: "disconnect", label: "Disconnect" },
 ];
+
+// The tools that change something come first, so the ones to weigh are seen.
+const toolsInOrder = [...tools].sort((a, b) => Number(b.write) - Number(a.write));
+
+// What to know before pressing Allow, shown under the setup steps; the full
+// list is in Sign-in and privacy.
+const beforeAllow = privacy.filter((p) => !p.lead.startsWith("Whole questions"));
 
 export default function Page() {
   const writes = tools.filter((t) => t.write).length;
   return (
-    <PageFrame>
-      <div className="wrap mcp">
-        <section className="mcp-head">
-          <h1>Connect Advantage to your AI app</h1>
-          <p className="mcp-lede">
-            Ask Claude, ChatGPT, Cursor or any app that supports MCP about your
-            matches. It reads what your account can see and changes only your Ask
-            history, a match’s details and a new upload draft.
-          </p>
-          <div className="mcp-urlbar">
-            <code>{url}</code>
-            <CopyButton value={url} label="Copy server URL" />
-          </div>
-        </section>
-
-        <nav className="mcp-anchors" aria-label="On this page">
-          {sections.map(([id, label]) => (
-            <a key={id} href={`#${id}`}>
-              {label}
-            </a>
-          ))}
-        </nav>
-
+    <GuideShell
+      id="mcp"
+      title="Connect Advantage to your AI app."
+      sub="Ask Claude, ChatGPT, Cursor or any app that supports MCP about your matches. It reads what your account can see and changes only your Ask history, a match’s details and a new upload draft."
+      hero={
+        <div className="mcp-urlbar">
+          <code>{url}</code>
+          <CopyButton value={url} label="Copy server URL" />
+        </div>
+      }
+      sections={sections}
+    >
+      <div className="mcp">
         <section className="mcp-sec" id="setup">
           <h2>Setup</h2>
           <p className="mcp-prose">
@@ -69,6 +66,17 @@ export default function Page() {
             to Advantage and choose <strong>Allow</strong>.
           </p>
           <SetupPicker apps={apps} />
+          <p className="mcp-assure">
+            <ShieldCheck size={18} strokeWidth={1.6} aria-hidden="true" />
+            <span>
+              {beforeAllow.map((p) => (
+                <strong key={p.lead}>{p.lead} </strong>
+              ))}
+              <a className="mcp-link" href="#privacy">
+                How sign-in and privacy work
+              </a>
+            </span>
+          </p>
         </section>
 
         <section className="mcp-sec" id="examples">
@@ -88,10 +96,10 @@ export default function Page() {
           <p className="mcp-prose">
             {tools.length} tools, picked by your app. {writes} of them change
             something you can see in Advantage, and most apps ask before using
-            one.
+            one. Those {writes} are listed first.
           </p>
           <dl className="mcp-tools">
-            {tools.map((t) => (
+            {toolsInOrder.map((t) => (
               <div key={t.name} className="mcp-tool">
                 <dt>{t.name}</dt>
                 <dd>{t.desc}</dd>
@@ -147,6 +155,6 @@ export default function Page() {
           </p>
         </section>
       </div>
-    </PageFrame>
+    </GuideShell>
   );
 }

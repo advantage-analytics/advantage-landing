@@ -76,8 +76,16 @@
   font: var(--fw-regular) 13px/1.5 var(--font-sans);
   color: rgba(255, 255, 255, 0.82);
 }
+/* The reading pages' masthead: the same, shorter, with a breadcrumb. */
+.pv-hero.is-compact .wrap { padding-top: 128px; padding-bottom: 72px; gap: 18px; }
+.pv-crumb { display: flex; gap: 8px; font: var(--fw-regular) 12px/1.5 var(--font-sans); color: rgba(255, 255, 255, 0.72); }
+.pv-crumb a { color: rgba(255, 255, 255, 0.72); text-decoration: none; }
+.pv-crumb a:hover { color: #fff; }
+.pv-crumb [aria-current] { color: #fff; }
+.pv-hero .h-sub a { color: #fff; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255, 255, 255, 0.5); }
 @media (max-width: 1023px) {
   .pv-hero .wrap { padding-top: 128px; padding-bottom: 88px; }
+  .pv-hero.is-compact .wrap { padding-top: 112px; padding-bottom: 56px; }
 }
 @media (max-width: 720px) {
   /* A two-line headline breaks only where there is room for it. */

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageFrame } from "@/components/perspective/page-frame";
+import { GuideShell } from "@/components/guide/guide-shell";
 import { CONTACT_EMAIL, links } from "@/lib/links";
 import {
   RECORDING_GUIDE_HREF,
@@ -52,31 +52,18 @@ const SECTIONS = [
 
 export default function Page() {
   return (
-    <PageFrame>
-      <MovedAnchors />
-      <div className="wrap eg-page">
-        <section className="eg-head">
-          <span className="eg-eyebrow">Export guide</span>
-          <h1>Getting match video into Advantage.</h1>
-          <p className="eg-lede">
-            You&rsquo;ve filmed the match. Get the original file off the device
-            and upload it; the uploader checks it and handles the rest. Not
-            filmed yet? Start with the{" "}
-            <Link className="eg-link" href={RECORDING_GUIDE_HREF}>
-              recording guide
-            </Link>
-            .
-          </p>
-        </section>
-
-        <nav className="eg-anchors" aria-label="On this page">
-          {SECTIONS.map((s) => (
-            <a key={s.id} href={`#${s.id}`}>
-              {s.label}
-            </a>
-          ))}
-        </nav>
-
+    <GuideShell
+      id="export"
+      title="Getting match video into Advantage."
+      sub={
+        <>
+          You&rsquo;ve filmed the match. Get the original file off the device and upload it; the uploader checks it
+          and handles the rest. Not filmed yet? Start with the <Link href={RECORDING_GUIDE_HREF}>recording guide</Link>.
+        </>
+      }
+      sections={SECTIONS}
+    >
+      <div className="eg-page">
         <section className="eg-sec" id="checks">
           <h2>What the uploader checks</h2>
           <p className="eg-prose">
@@ -325,7 +312,8 @@ export default function Page() {
             Upload a match
           </a>
         </section>
+      <MovedAnchors />
       </div>
-    </PageFrame>
+    </GuideShell>
   );
 }

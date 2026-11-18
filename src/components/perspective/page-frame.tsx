@@ -44,18 +44,25 @@ export function PageHero({
   sub,
   actions,
   foot,
+  crumb,
+  compact,
 }: {
-  eyebrow: ReactNode;
+  eyebrow?: ReactNode;
   title: ReactNode;
   sub?: ReactNode;
   actions?: ReactNode;
   foot?: ReactNode;
+  // A breadcrumb above the eyebrow (the guides).
+  crumb?: ReactNode;
+  // A shorter masthead for reading pages, so the content starts higher.
+  compact?: boolean;
 }) {
   return (
-    <header className="pv-hero" id="top">
+    <header className={compact ? "pv-hero is-compact" : "pv-hero"} id="top">
       <LiveDots glow={2.2} energy={1} />
       <div className="wrap">
-        <span className="h-eyebrow">{eyebrow}</span>
+        {crumb}
+        {eyebrow ? <span className="h-eyebrow">{eyebrow}</span> : null}
         <h1 className="h-title">{title}</h1>
         {sub ? <p className="h-sub">{sub}</p> : null}
         {actions ? <div className="h-actions">{actions}</div> : null}

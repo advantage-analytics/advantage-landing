@@ -15,8 +15,6 @@
 /* The heads are the site's section heads (.sec-head), left-aligned. */
 .ab-lead { align-self: start; }
 .ab-lead .h-tail, .ab-origin-copy .h-tail { color: var(--ink-muted); }
-/* The mission heading stays in view while its longer story scrolls past. */
-.ab-split:first-child .ab-lead { position: sticky; top: 104px; }
 
 /* Prose starts level with the headline: past the eyebrow (16.5px) and its gap. */
 .ab-prose {
@@ -153,7 +151,6 @@
 
 @media (max-width: 900px) {
   .ab-split { grid-template-columns: minmax(0, 1fr); }
-  .ab-split:first-child .ab-lead { position: static; }
   .ab-prose,
   .ab-rows { padding-top: 0; }
   .ab-why { margin-top: 88px; }

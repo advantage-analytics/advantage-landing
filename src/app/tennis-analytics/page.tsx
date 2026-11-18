@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageFrame, PageHead } from "@/components/perspective/page-frame";
+import { GuideShell } from "@/components/guide/guide-shell";
 import { FaqItem } from "@/components/perspective/faq-item";
 import { KpiTrend } from "@/components/perspective/sections";
 import { MatchEndings, MatchInsight } from "@/components/perspective/match-breakdown";
@@ -30,7 +30,7 @@ const DESCRIPTION =
   "Tennis analytics turns a match into numbers you can act on: first serve percentage, points won on serve, how points ended. What each one means, and how to get them from a video filmed on your phone or any camera.";
 // Bump with any real edit to the copy; it is shown under the title and sent
 // as the article's dateModified.
-const UPDATED = { iso: "2026-11-04", label: "November 2026" };
+const UPDATED = "2026-11-04";
 
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, ownCard: true });
 
@@ -90,21 +90,26 @@ const QA = [
 ];
 
 const LD = [
-  articleLd({ path: PATH, headline: "Tennis analytics, explained", description: DESCRIPTION, dateModified: UPDATED.iso }),
+  articleLd({ path: PATH, headline: "Tennis analytics, explained", description: DESCRIPTION, dateModified: UPDATED }),
   faqPageLd(QA.map((x) => ({ q: x.q, text: x.a }))),
+];
+
+// The rail's sections, in page order.
+const SECTIONS = [
+  { id: "measures", label: "What it measures" },
+  { id: "how", label: "From video to a breakdown" },
+  { id: "who", label: "Who it is for" },
+  { id: "faq", label: "Common questions" },
 ];
 
 export default function Page() {
   return (
-    <PageFrame>
-      <JsonLd data={LD} />
-      <PageHead
-        eyebrow="Guide"
-        title="Tennis analytics, explained."
-        lede="Tennis analytics turns what happens in a match into numbers you can act on: how often your first serve goes in, how your points end, and where you win and lose them. It used to take a team of analysts. Now it takes a video of your match, filmed on your phone or any camera."
-        meta={`Updated ${UPDATED.label}`}
-      />
-
+    <GuideShell
+      id="analytics"
+      title="Tennis analytics, explained."
+      sub="Tennis analytics turns what happens in a match into numbers you can act on: how often your first serve goes in, how your points end, and where you win and lose them. It used to take a team of analysts. Now it takes a video of your match, filmed on your phone or any camera."
+      sections={SECTIONS}
+    >
       <section>
         <div className="wrap">
           <aside className="ta-short reveal" aria-label="The short answer">
@@ -121,7 +126,6 @@ export default function Page() {
       <section className="ta-band" id="measures">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">What it measures</span>
             <h2>The numbers that decide a match.</h2>
             <p>Most matches turn on a handful of things. These are the ones worth tracking, what each means, and why it matters.</p>
           </div>
@@ -162,12 +166,10 @@ export default function Page() {
       <section className="ta-band" id="how">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">From video to a breakdown</span>
             <h2>How to get tennis stats from a match video.</h2>
           </div>
           <ol className="ta-steps reveal">
             <li>
-              <span className="n">01</span>
               <h3>Film from behind the baseline</h3>
               <p>
                 Clip your phone or any camera to the back fence, raised up if you can, and record the whole singles
@@ -175,7 +177,6 @@ export default function Page() {
               </p>
             </li>
             <li>
-              <span className="n">02</span>
               <h3>Upload the file</h3>
               <p>
                 Add the video to your Advantage account. The <Link href={EXPORT_GUIDE_HREF}>export guide</Link> shows how
@@ -183,7 +184,6 @@ export default function Page() {
               </p>
             </li>
             <li>
-              <span className="n">03</span>
               <h3>Read your breakdown</h3>
               <p>
                 You get an email when it’s ready: where you won points, where you lost them, and what to work on, each
@@ -206,7 +206,6 @@ export default function Page() {
       <section className="ta-band" id="who">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">Who it is for</span>
             <h2>For players, and for the coaches who work with them.</h2>
           </div>
           <div className="ta-lanes reveal">
@@ -214,7 +213,7 @@ export default function Page() {
               <span className="eyebrow">Players</span>
               <h3>See your own game in numbers.</h3>
               <p>Track your serve, your errors and your trends from one match to the next.{FREE_MATCH_OFFER ? ` ${FREE_MATCH_LINE}` : ""}</p>
-              <FreeMatchLink className="btn btn-primary btn-lg" placement="tennis-analytics" icon={false} />
+              <FreeMatchLink className="btn btn-primary" placement="tennis-analytics" icon={false} />
             </div>
             <div className="ta-lane">
               <span className="eyebrow">Coaches and programs</span>
@@ -223,16 +222,15 @@ export default function Page() {
                 College plans cover your full roster, from {usd(COLLEGE_PLANS[0].spring.price)} for the spring season.{" "}
                 <Link href="/pricing">See pricing</Link>
               </p>
-              <TalkToUsLink className="btn btn-ink btn-lg" placement="tennis-analytics" />
+              <TalkToUsLink className="btn btn-ink" placement="tennis-analytics" />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="ta-band ta-faq-band" id="faq">
+      <section className="ta-band" id="faq">
         <div className="wrap faq">
           <div className="faq-intro sec-head reveal">
-            <span className="eyebrow">FAQ</span>
             <h2>Common questions.</h2>
           </div>
           <div className="faq-list reveal">
@@ -244,6 +242,7 @@ export default function Page() {
           </div>
         </div>
       </section>
-    </PageFrame>
+      <JsonLd data={LD} />
+    </GuideShell>
   );
 }

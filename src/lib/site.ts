@@ -30,6 +30,7 @@ export function absoluteUrl(path: string): string {
 // The pages search engines should index, in the order the sitemap lists them.
 export const INDEXED_PATHS = [
   "/",
+  "/guides",
   "/tennis-analytics",
   "/pricing",
   "/recording-guide",
