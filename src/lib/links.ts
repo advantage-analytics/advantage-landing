@@ -17,6 +17,8 @@ export const SITE_DOMAIN = "advantage-analytics.com";
 export const CAL_WALKTHROUGH = (
   process.env.NEXT_PUBLIC_CAL_WALKTHROUGH ?? "advantage-analytics/pilot-walkthrough"
 ).replace(/^\/+|\/+$/g, "");
+// The same event as Cal.com's own full booking page.
+export const CAL_WALKTHROUGH_URL = `https://cal.com/${CAL_WALKTHROUGH}`;
 
 export const links = {
   signIn: `${APP_URL}/login`,

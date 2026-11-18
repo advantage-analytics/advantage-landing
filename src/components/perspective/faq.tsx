@@ -18,7 +18,9 @@ import { JsonLd } from "@/components/json-ld";
 
 /* `text` is the answer as plain text, for the FAQPage structured data: only
    needed where `a` holds markup, and it must say what the visible answer says. */
-const QA: readonly { q: string; a: ReactNode; text?: string }[] = [
+type Question = { q: string; a: ReactNode; text?: string };
+
+const QA: readonly Question[] = [
   PLAN_FAQ.cost,
   PLAN_FAQ.verified,
   {
@@ -36,21 +38,41 @@ const QA: readonly { q: string; a: ReactNode; text?: string }[] = [
   PLAN_FAQ.film,
 ];
 
-const FAQ_LD = faqPageLd(QA.map((x) => ({ q: x.q, text: x.text ?? (typeof x.a === "string" ? x.a : "") })));
+const faqLd = (qa: readonly Question[]) =>
+  faqPageLd(qa.map((x) => ({ q: x.q, text: x.text ?? (typeof x.a === "string" ? x.a : "") })));
+const FAQ_LD = faqLd(QA);
 
-export function Faq() {
+/* The home page's FAQ by default. Another page passes its own questions and
+   head (/pricing), and `ld={false}` when it emits the FAQPage data itself. */
+export function Faq({
+  qa = QA,
+  id = "faq",
+  className = "band alt",
+  eyebrow = "FAQ",
+  title = (
+    <>
+      Before <span className="h-tail">you upload.</span>
+    </>
+  ),
+  ld = true,
+}: {
+  qa?: readonly Question[];
+  id?: string;
+  className?: string;
+  eyebrow?: ReactNode;
+  title?: ReactNode;
+  ld?: boolean;
+}) {
   return (
-    <section className="band alt" id="faq">
-      <JsonLd data={FAQ_LD} />
+    <section className={className} id={id}>
+      {ld ? <JsonLd data={qa === QA ? FAQ_LD : faqLd(qa)} /> : null}
       <div className="wrap faq">
         <div className="faq-intro sec-head reveal">
-          <span className="eyebrow">FAQ</span>
-          <h2>
-            Before <span className="h-tail">you upload.</span>
-          </h2>
+          <span className="eyebrow">{eyebrow}</span>
+          <h2>{title}</h2>
         </div>
         <div className="faq-list reveal">
-          {QA.map((x) => (
+          {qa.map((x) => (
             <FaqItem key={x.q} q={x.q}>
               {x.a}
             </FaqItem>

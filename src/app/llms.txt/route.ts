@@ -57,7 +57,7 @@ ${college}
 
 ${VERIFIED} means that after Advantage Intelligence reads the video, a reviewer checks every point: who won it and how it ended.
 
-Advantage was built by former collegiate tennis players in Los Angeles, California.
+Advantage was built in Los Angeles, California, by Cj Gimena, a former collegiate tennis player at Bakersfield College and former UCLA team manager.
 
 ## Pages
 

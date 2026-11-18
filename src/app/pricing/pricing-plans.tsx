@@ -1,53 +1,83 @@
 "use client";
 
-import { Fragment, useEffect, useState, type ReactNode } from "react";
-import { FaqItem } from "@/components/perspective/faq-item";
-import { CONTACT_EMAIL } from "@/lib/links";
+import { Fragment, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
+import { GraduationCap, UserRound } from "lucide-react";
+import { ProofHead } from "@/components/perspective/band-parts";
+import { BookCallButton } from "@/components/perspective/walkthrough-band";
 import { trackEvent } from "@/lib/analytics";
-import { PRICING_QA } from "@/lib/plan-faq";
 import {
   COLLEGE_PLANS,
-  OFFERED_COACH_PLANS,
   EXTRA_HOUR_PRICE,
+  OFFERED_COACH_PLANS,
   PRIORITY_ADDON_PERCENT,
   RUSH_PRICE,
   SECOND_TEAM_DISCOUNT_PERCENT,
   SPRING_SEASON,
   VERIFIED,
   YEARLY_MONTHS_FREE,
-  salesHref,
   signUpHref,
   usd,
 } from "@/lib/plans";
 
-/* The plans, as one comparison table per audience: the plans across the
-   top, what changes between them down the side, both ways to pay as the
-   first two rows (spring and full year for colleges, monthly and yearly for
-   players and coaches) so there is no toggle to miss, and the button at the
-   foot of each column. Every figure is read from lib/plans; this file only
-   decides the rows. The middle plan's column is tinted as the one most
-   people pick. On a narrow screen the table scrolls sideways under a pinned
-   first column. */
+/* The plans on /pricing and the one switch the rest of the page follows:
+   College programs or Players and coaches. The bands after the plans are
+   rendered on the server (page.tsx) and passed in; this island only picks
+   which of them show and sets `data-audience`, which pricing.css reads to
+   keep the bands' grey and white alternating.
 
+   The plans are one comparison table per audience: the plans across the top,
+   what changes between them down the side, both ways to pay as the first two
+   rows (spring and full year for colleges, monthly and yearly for players and
+   coaches), and the button at the foot of each column. Every figure is read
+   from lib/plans; this file only decides the rows. The middle plan is the
+   featured column. On a narrow screen the table scrolls sideways under a
+   pinned first column.
+
+   College columns book the 20-minute walkthrough on Cal.com, carrying the
+   plan with the booking; player and coach columns sign up in the dashboard. */
+
+type Audience = "college" | "individual";
 type Cell = ReactNode | null; // null: "Not included", in the muted ink
 type Row = { label: string; cells: readonly Cell[]; big?: boolean };
 type Section = { title?: string; rows: readonly Row[] };
-type Plan = { id: string; name: string; line: string; cta: string; href: string; external: boolean };
-type Table = { plans: readonly Plan[]; sections: readonly Section[]; featured: number };
+type Plan = { id: string; name: string; line: string; cta: ReactNode };
+type Table = { plans: readonly Plan[]; sections: readonly Section[]; featured: number; ctaNote: string };
 
-const save = <span className="pr-save">{YEARLY_MONTHS_FREE} month free</span>;
 const big = (fig: string, per?: string) => (
   <span>
     <span className="pr-fig">{fig}</span>
     {per ? <span className="pr-per">{per}</span> : null}
   </span>
 );
+const muted = (text: string, key?: string) => (
+  <span className="pr-no" key={key}>
+    {text}
+  </span>
+);
+
+function ctaClass(i: number, featured: number) {
+  return `btn btn-lg ${i === featured ? "btn-primary" : "btn-outline"}`;
+}
 
 function collegeTable(): Table {
   const P = COLLEGE_PLANS;
+  const featured = P.findIndex((p) => p.id === "program");
   return {
-    featured: P.findIndex((p) => p.id === "program"),
-    plans: P.map((p) => ({ id: p.id, name: p.name, line: p.line, cta: "Talk to us", href: salesHref(p.id), external: false })),
+    featured,
+    ctaNote: "A 20-minute call on Zoom",
+    plans: P.map((p, i) => ({
+      id: p.id,
+      name: p.name,
+      line: p.line,
+      cta: (
+        <BookCallButton
+          className={ctaClass(i, featured)}
+          placement="pricing-plan"
+          plan={p.id}
+          onOpen={() => trackEvent("plan_cta_clicked", { plan: p.id, period: "college" })}
+        />
+      ),
+    })),
     sections: [
       {
         rows: [
@@ -58,8 +88,14 @@ function collegeTable(): Table {
       {
         title: "What you get",
         rows: [
-          { label: "Hours of video, spring", cells: P.map((p) => `${p.spring.hours} · about ${p.spring.matches} matches`) },
-          { label: "Hours of video, full year", cells: P.map((p) => `${p.fullYear.hours} · about ${p.fullYear.matches} matches`) },
+          {
+            label: "Match video, spring",
+            cells: P.map((p) => `${p.spring.hours} hours · about ${p.spring.matches} matches`),
+          },
+          {
+            label: "Match video, full year",
+            cells: P.map((p) => `${p.fullYear.hours} hours · about ${p.fullYear.matches} matches`),
+          },
           { label: VERIFIED, cells: P.map(() => "Every match") },
           { label: "Roster", cells: P.map(() => "Your full roster") },
         ],
@@ -68,9 +104,11 @@ function collegeTable(): Table {
         title: "Speed",
         rows: [
           {
-            label: "Rush matches",
+            label: "Rush",
             cells: P.map((p) =>
-              p.rushIncluded ? `${p.rushIncluded} each season, then ${usd(RUSH_PRICE)}` : `${usd(RUSH_PRICE)} each`,
+              p.rushIncluded
+                ? `${p.rushIncluded} included each season, then ${usd(RUSH_PRICE)}`
+                : `${usd(RUSH_PRICE)} a match`,
             ),
           },
           {
@@ -91,31 +129,46 @@ function collegeTable(): Table {
 
 function coachTable(): Table {
   const P = OFFERED_COACH_PLANS;
+  const featured = P.findIndex((p) => p.id === "coach");
   const free = (p: (typeof P)[number]) => p.id === "free";
   return {
-    featured: P.findIndex((p) => p.id === "coach"),
-    plans: P.map((p) => ({
+    featured,
+    ctaNote: "Monthly or yearly at sign-up",
+    plans: P.map((p, i) => ({
       id: p.id,
       name: p.name,
       line: p.line,
-      cta: free(p) ? "Upload a free match" : `Choose ${p.name}`,
-      href: signUpHref(p.id),
-      external: true,
+      cta: (
+        <a
+          className={ctaClass(i, featured)}
+          href={signUpHref(p.id)}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackEvent("plan_cta_clicked", { plan: p.id, period: "individual" })}
+        >
+          {free(p) ? "Upload a free match" : `Choose ${p.name}`}
+        </a>
+      ),
     })),
     sections: [
       {
         rows: [
-          { label: "Billed monthly", big: true, cells: P.map((p) => (free(p) ? big("$0") : big(usd(p.monthly), "a month"))) },
+          {
+            label: "Billed monthly",
+            big: true,
+            cells: P.map((p) => (free(p) ? big("$0") : big(usd(p.monthly), "a month"))),
+          },
           {
             label: "Billed yearly",
             cells: P.map((p) =>
               free(p) ? (
-                <span className="pr-no" key={p.id}>
-                  One match, one time
-                </span>
+                muted("Nothing to pay", p.id)
               ) : (
                 <span key={p.id}>
-                  {usd(p.yearly)} a year{save}
+                  {usd(p.yearly)} a year
+                  <span className="pr-save">
+                    {YEARLY_MONTHS_FREE} month{YEARLY_MONTHS_FREE === 1 ? "" : "s"} free
+                  </span>
                 </span>
               ),
             ),
@@ -125,31 +178,38 @@ function coachTable(): Table {
       {
         title: "What you get",
         rows: [
-          { label: "Hours of video", cells: P.map((p) => (free(p) ? "1 match" : `${p.hours} a month`)) },
-          { label: "About how many matches", cells: P.map((p) => (free(p) ? "1" : `${p.matches} a month`)) },
-          { label: "Advantage Intelligence stats and film", cells: P.map(() => "Included") },
+          {
+            label: "Match video each month",
+            cells: P.map((p) => (free(p) ? "1 match, one time" : `${p.hours} hours · about ${p.matches} matches`)),
+          },
+          { label: "Stats and film", cells: P.map(() => "Included") },
           { label: "Fix any point yourself", cells: P.map(() => "Included") },
           { label: VERIFIED, cells: P.map((p) => (p.verified ? "Every match" : null)) },
-          { label: "Ask, and your AI apps", cells: P.map((p) => (free(p) ? null : "Included")) },
+          { label: "Ask, in Advantage or your AI app", cells: P.map((p) => (free(p) ? null : "Included")) },
         ],
       },
       {
         title: "Speed",
-        rows: [{ label: "Rush matches", cells: P.map((p) => (free(p) ? null : `${usd(RUSH_PRICE)} each`)) }],
+        rows: [{ label: "Rush", cells: P.map((p) => (free(p) ? null : `${usd(RUSH_PRICE)} a match`)) }],
       },
     ],
   };
 }
 
 // Built once: they read only module constants.
-const COLLEGE_TABLE = collegeTable();
-const COACH_TABLE = coachTable();
+const TABLES: Record<Audience, Table> = { college: collegeTable(), individual: coachTable() };
 
-function PlanTable({ table, label, tab }: { table: Table; label: string; tab: string }) {
+function PlanTable({ table, tabId }: { table: Table; tabId: string }) {
   const cols = table.plans.length;
   const tint = (i: number) => (i === table.featured ? "is-featured" : undefined);
   return (
-    <div className="pr-table-wrap reveal" role="region" aria-label={label} tabIndex={0}>
+    <div
+      className="mock-frame pr-table-wrap"
+      id="pr-plans-panel"
+      role="tabpanel"
+      aria-labelledby={tabId}
+      tabIndex={0}
+    >
       <table className="pr-table">
         <thead>
           <tr>
@@ -177,7 +237,7 @@ function PlanTable({ table, label, tab }: { table: Table; label: string; tab: st
                   <th scope="row">{r.label}</th>
                   {r.cells.map((c, i) => (
                     <td className={tint(i)} key={i}>
-                      {c === null ? <span className="pr-no">Not included</span> : c}
+                      {c === null ? muted("Not included") : c}
                     </td>
                   ))}
                 </tr>
@@ -185,17 +245,10 @@ function PlanTable({ table, label, tab }: { table: Table; label: string; tab: st
             </Fragment>
           ))}
           <tr className="pr-ctas">
-            <td />
+            <td className="pr-cta-note">{table.ctaNote}</td>
             {table.plans.map((p, i) => (
               <td className={tint(i)} key={p.id}>
-                <a
-                  className={`btn btn-lg ${i === table.featured ? "btn-primary" : "btn-outline"}`}
-                  href={p.href}
-                  {...(p.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  onClick={() => trackEvent("plan_cta_clicked", { plan: p.id, period: tab })}
-                >
-                  {p.cta}
-                </a>
+                {p.cta}
               </td>
             ))}
           </tr>
@@ -205,73 +258,115 @@ function PlanTable({ table, label, tab }: { table: Table; label: string; tab: st
   );
 }
 
-export function PricingPlans() {
-  const [tab, setTab] = useState<"college" | "individual">("college");
+const AUDIENCES: readonly { id: Audience; label: string; Icon: typeof GraduationCap }[] = [
+  { id: "college", label: "College programs", Icon: GraduationCap },
+  { id: "individual", label: "Players and coaches", Icon: UserRound },
+];
+
+export function PricingBody({
+  pay,
+  after,
+  closeCollege,
+  closeIndividual,
+}: {
+  // The college-only band, under the plans.
+  pay: ReactNode;
+  // What every paid plan returns and the questions, for both audiences.
+  after: ReactNode;
+  closeCollege: ReactNode;
+  closeIndividual: ReactNode;
+}) {
+  const [tab, setTab] = useState<Audience>("college");
   const college = tab === "college";
+  const index = AUDIENCES.findIndex((a) => a.id === tab);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // Arrow keys move along the tabs and select as they go, Home and End jump
+  // to the ends: the keyboard pattern for a tab list, as on the home page.
+  const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    const n = AUDIENCES.length;
+    const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    const next = e.key === "Home" ? 0 : e.key === "End" ? n - 1 : step ? (index + step + n) % n : -1;
+    if (next < 0) return;
+    e.preventDefault();
+    setTab(AUDIENCES[next].id);
+    tabs.current[next]?.focus();
+  };
 
   useEffect(() => {
     trackEvent("pricing_viewed", { tab, period: "table" });
   }, [tab]);
 
   return (
-    <section className="band alt" id="plans">
-      <div className="wrap">
-        <div className="proof-head pr-head reveal">
-          <div className="sec-head">
-            <span className="eyebrow">The plans</span>
-            <h2>{college ? "Priced by the season." : "Priced by the month."}</h2>
+    <div className="pr-body" data-audience={tab}>
+      <section className="band heads-centered" id="plans">
+        <div className="wrap">
+          <ProofHead
+            eyebrow="The plans"
+            title={college ? "Priced by the season." : "Priced by the month."}
+            tail="Charged in hours of video."
+            aside={
+              college
+                ? `Spring runs ${SPRING_SEASON}. Every plan covers your full roster.`
+                : "For players and private coaches. Choose monthly or yearly when you sign up."
+            }
+          />
+
+          <div
+            className="ps-tabs pr-switch"
+            role="tablist"
+            aria-label="Who the plans are for"
+            style={{ "--ps-i": index, "--ps-n": AUDIENCES.length } as CSSProperties}
+            onKeyDown={onKey}
+          >
+            <span className="ps-thumb" aria-hidden="true" />
+            {AUDIENCES.map(({ id, label, Icon }, i) => (
+              <button
+                key={id}
+                ref={(el) => {
+                  tabs.current[i] = el;
+                }}
+                type="button"
+                role="tab"
+                id={`pr-tab-${id}`}
+                aria-selected={tab === id}
+                aria-controls="pr-plans-panel"
+                tabIndex={tab === id ? 0 : -1}
+                className={tab === id ? "is-on" : undefined}
+                onClick={() => setTab(id)}
+              >
+                <Icon size={16} strokeWidth={1.8} aria-hidden="true" />
+                {label}
+              </button>
+            ))}
           </div>
-          <div className="pr-tabs" role="tablist" aria-label="Who the plans are for">
-            <button role="tab" aria-selected={college} className={college ? "is-on" : ""} onClick={() => setTab("college")}>
-              College programs
-            </button>
-            <button role="tab" aria-selected={!college} className={!college ? "is-on" : ""} onClick={() => setTab("individual")}>
-              Players and coaches
-            </button>
-          </div>
+
+          <PlanTable
+            key={tab}
+            table={TABLES[tab]}
+            tabId={`pr-tab-${tab}`}
+          />
+
+          <p className="pr-terms">
+            <span>Extra hours are {usd(EXTRA_HOUR_PRICE)} each, any time.</span>
+            <span>Match counts are an estimate; hours are what you are charged in.</span>
+            {college ? (
+              <>
+                <span>A second team at the same school is {SECOND_TEAM_DISCOUNT_PERCENT}% off.</span>
+                <span>
+                  Rather write? <a href="/contact#write">Send us a message</a> and we reply with a quote.
+                </span>
+              </>
+            ) : (
+              <span>Monthly hours don’t carry over.</span>
+            )}
+          </p>
         </div>
+      </section>
 
-        <p className="pr-intro reveal">
-          {college
-            ? `Spring runs ${SPRING_SEASON}. Every plan covers your full roster and is charged in hours of video.`
-            : "For players and private coaches. Charged in hours of video each month. Choose monthly or yearly when you sign up."}
-        </p>
-
-        {college ? (
-          <PlanTable table={COLLEGE_TABLE} label="College plans compared" tab="college" key="college" />
-        ) : (
-          <PlanTable table={COACH_TABLE} label="Player and coach plans compared" tab="individual" key="individual" />
-        )}
-
-        <p className="pr-terms">
-          <span>Extra hours are {usd(EXTRA_HOUR_PRICE)} each, any time.</span>
-          <span>Match counts are an estimate; hours are what you are charged in.</span>
-          {college ? <span>A second team at the same school is {SECOND_TEAM_DISCOUNT_PERCENT}% off.</span> : null}
-        </p>
-      </div>
-    </section>
-  );
-}
-
-export function PricingFaq() {
-  return (
-    <section className="band alt" id="questions">
-      <div className="wrap faq">
-        <div className="faq-intro sec-head reveal">
-          <span className="eyebrow">Questions</span>
-          <h2>Straight answers.</h2>
-        </div>
-        <div className="faq-list reveal">
-          {PRICING_QA.map((x) => (
-            <FaqItem key={x.q} q={x.q}>
-              {x.a}
-            </FaqItem>
-          ))}
-        </div>
-        <p className="faq-more reveal">
-          Not covered here? <a href={`mailto:${CONTACT_EMAIL}`}>Email us</a>.
-        </p>
-      </div>
-    </section>
+      {college ? pay : null}
+      {after}
+      {college ? closeCollege : closeIndividual}
+    </div>
   );
 }

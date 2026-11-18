@@ -43,7 +43,7 @@ export function trackEvent(name: string, props: EventProps = {}): void {
 
 // The site's two ways in. One event name per lane, with `placement` saying
 // which button on which page. `free_match` is sign-up for the free first
-// match, `talk_to_us` opens the sales form, and `sign_up` is the nav's button.
+// match, `talk_to_us` opens /contact, and `sign_up` is the nav's button.
 export type CtaLane = "free_match" | "talk_to_us" | "sign_up";
 export function trackCta(lane: CtaLane, placement: string): void {
   trackEvent(`${lane}_click`, { placement });

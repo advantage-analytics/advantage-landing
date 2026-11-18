@@ -122,8 +122,8 @@ function HeroScreen() {
   );
 }
 
-// The two ways in: sign-up for players and coaches, and the sales form for
-// college programs. `hero_cta_clicked` says which one was pressed.
+// The two ways in: sign-up for players and coaches, and /contact (the
+// walkthrough calendar and the message form) for college programs. `hero_cta_clicked` says which one was pressed.
 function HeroActions() {
   return (
     <div className="h-actions">

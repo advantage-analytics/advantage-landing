@@ -1,4 +1,5 @@
-// Sent to a coach right after the "Talk to us" form on /contact is filed.
+// Sent to a coach right after their message on /contact is filed as a Sales
+// lead (a head or assistant coach writing through the form).
 //
 // It repeats what they asked for, so a wrong team or season is caught before
 // the quote is written, and says what happens next: a person replies with a

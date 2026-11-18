@@ -65,7 +65,7 @@ const MATCHES: readonly {
 
 /** The dashboard's verified badge. Colour comes from the parent: .vf-check
     is blue, grey inside anything pending. */
-function VerifiedCheck({ size = 16 }: { size?: number }) {
+export function VerifiedCheck({ size = 16 }: { size?: number }) {
   return (
     <svg
       className="vf-check"

@@ -38,7 +38,8 @@ export function FreeMatchLink({ className, placement, children, icon = 16, onCli
   );
 }
 
-// The sales form on /contact, where college programs ask for a quote.
+// /contact, where college programs book a walkthrough or ask for a quote (a
+// coach's message there files a Sales lead).
 export function TalkToUsLink({ className, placement, children = "Talk to us", onClick }: Omit<Props, "icon">) {
   return (
     <Link

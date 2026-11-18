@@ -1,456 +1,89 @@
-/* Contact — a single navy card, distilled to the essentials: headline and
-   email on the left, the glass underline form on the right. Deep gradient
-   with a soft blue glow and fine grain. */
+/* ============ /contact ============
+   The mesh masthead with the person behind it; the walkthrough calendar and
+   the message form as one matched pair of framed cards; the other ways in as
+   the split white card between them. */
 
-.band.contact-band {
-  padding: 64px 0 96px;
-}
+/* The person behind "a person reads every message", under the hero buttons. */
+.ct-byline { display: inline-flex; align-items: center; gap: 12px; margin-top: 6px; text-align: left;
+  font: var(--fw-regular) 13px/1.45 var(--font-sans); color: rgba(255, 255, 255, 0.88); }
+.ct-byline img { width: 40px; height: 40px; flex: none; border-radius: var(--r-pill); object-fit: cover;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3); }
+.ct-byline .who { color: #fff; }
 
-/* ---- The card ---- */
-.contact-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #14224c 0%, #0e1a3e 60%, #0b1228 100%);
-  box-shadow: 0 30px 70px -32px rgba(13, 27, 62, 0.32),
-    0 6px 24px rgba(0, 0, 0, 0.05);
-}
+/* The calendar stands on the page as Cal.com draws it, holding its height
+   while it loads; the message card below sits in the product frame. */
+.ct-cal, .mock-frame.ct-write { max-width: 1000px; margin: 48px auto 0; }
+@media (max-width: 720px) { .ct-cal, .mock-frame.ct-write { margin-top: 32px; } }
+.ct-under { margin: 16px 0 0; text-align: center; font: var(--fw-regular) 13px/1.5 var(--font-sans); color: var(--ink-muted); }
+.ct-under a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
 
-/* Quieter than the home access band on purpose: this is a full page of navy,
-   not one punctuating band, so the glow whispers instead of flaring. */
-.contact-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-      90% 140% at 88% 8%,
-      rgba(59, 130, 246, 0.36) 0%,
-      rgba(59, 130, 246, 0) 50%
-    ),
-    radial-gradient(
-      70% 120% at 100% 100%,
-      rgba(129, 140, 248, 0.22) 0%,
-      rgba(129, 140, 248, 0) 55%
-    );
-}
+/* ---- Other ways in: each column one whole link ---- */
+a.ct-way { display: flex; flex-direction: column; color: var(--ink); text-decoration: none;
+  transition: background 180ms var(--ease-primary); }
+a.ct-way:hover { background: #fcfcfd; }
+a.ct-way:focus-visible { outline: 2px solid var(--signal-blue); outline-offset: -2px; }
+.ct-way > svg { color: var(--signal-blue); }
+.ct-way .mail { color: var(--ink); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.ct-way .go { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 24px;
+  font: var(--fw-medium) 14px var(--font-sans); letter-spacing: -0.1px; color: var(--signal-blue-deep); }
+.ct-way .go svg { flex: none; transition: transform 200ms var(--ease-primary); }
+a.ct-way:hover .go { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(37, 99, 235, 0.4); }
+a.ct-way:hover .go .out { transform: translate(2px, -2px); }
+a.ct-way:hover .go .down { transform: translateY(2px); }
+@media (prefers-reduced-motion: reduce) { .ct-way .go svg { transition: none; } }
 
-/* The site's live dot grid (live-dots.tsx), masked to this card's glow as
-   the other navy surfaces are in perspective.css. */
-.contact-grain {
-  -webkit-mask-image: radial-gradient(130% 130% at 88% 8%, #000 25%, rgba(0, 0, 0, 0.35) 100%);
-  mask-image: radial-gradient(130% 130% at 88% 8%, #000 25%, rgba(0, 0, 0, 0.35) 100%);
-}
+/* ---- The message card: the booker's anatomy ---- */
+.ct-write { display: flex; flex-wrap: wrap; text-align: left; }
+.ct-side { flex: 1 1 300px; min-width: 0; max-width: 360px; padding: 32px 28px;
+  border-right: 1px solid var(--hairline); display: flex; flex-direction: column; gap: 16px; }
+.ct-person { display: inline-flex; align-items: center; gap: 10px; font: var(--fw-regular) 14px var(--font-sans); color: var(--ink-secondary); }
+.ct-person img { width: 32px; height: 32px; flex: none; border-radius: var(--r-pill); object-fit: cover; }
+.ct-title { font: var(--fw-medium) 20px/1.25 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); }
+.ct-facts { margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px;
+  font: var(--fw-regular) 14px/1.4 var(--font-sans); color: var(--ink); }
+.ct-facts li { display: flex; align-items: center; gap: 10px; }
+.ct-facts svg { flex: none; color: var(--ink-muted); }
 
-.contact-inner {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr 0.92fr;
-  gap: 64px;
-  padding: 64px;
-  align-items: start;
-}
+.ct-main { flex: 1 1 520px; min-width: 0; padding: 32px 40px 36px; display: flex; flex-direction: column; gap: 28px; }
+.ct-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; }
+.ct-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.ct-field label { font: var(--fw-medium) 12px var(--font-sans); color: var(--ink-secondary); }
+.ct-field .opt { font-weight: var(--fw-regular); color: var(--ink-muted); }
 
-/* ---- Left: headline + direct line ---- */
-/* Centered against the taller form panel so the freed space reads as air
-   around the copy, not a dead quadrant below it. No-op once the grid
-   collapses to a single column. */
-.contact-copy {
-  color: #fff;
-  align-self: center;
-}
+/* Underline fields: the rule grows to 2px blue on focus, padding keeping the
+   text still, as in the dashboard's sign-in. */
+.ct-control { width: 100%; box-sizing: border-box; padding: 6px 0 8px; border: 0; border-bottom: 1px solid var(--hairline-medium);
+  border-radius: 0; background: transparent; color: var(--ink); font: var(--fw-regular) 15px/1.4 var(--font-sans);
+  outline: none; transition: border-color 300ms var(--ease-primary), padding-bottom 300ms var(--ease-primary); }
+.ct-control::placeholder { color: var(--ink-muted); }
+.ct-control:focus { border-bottom: 2px solid var(--signal-blue); padding-bottom: 7px; }
+.ct-control.is-error, .ct-control.is-error:focus { border-bottom: 1px solid #d92d20; padding-bottom: 8px; }
+textarea.ct-control { min-height: 110px; resize: vertical; line-height: 1.55; }
+select.ct-control { appearance: none; -webkit-appearance: none; padding-right: 22px; cursor: pointer;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23888888' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E") no-repeat right 2px center; }
+/* An unanswered select must not look answered. */
+select.ct-control:has(option[value=""]:checked) { color: var(--ink-muted); }
+select.ct-control option { color: var(--ink); }
+.ct-error { margin: 0; font: var(--fw-regular) 12.5px/1.45 var(--font-sans); color: #b42318; }
 
-.contact-copy h1 {
-  margin: 0;
-  color: #fff;
-  font-weight: var(--fw-light);
-  letter-spacing: -1.6px;
-  line-height: 1;
-  font-size: clamp(36px, 4.6vw, 48px);
-  text-wrap: balance;
-}
+/* The one action: the booker's Confirm size, closing the field column. */
+.ct-send { align-self: flex-start; height: 40px; margin-top: -4px; box-shadow: none; }
+.ct-send:disabled { opacity: 0.7; cursor: progress; }
 
-.contact-copy .lede {
-  margin: 24px 0 0;
-  max-width: 36ch;
-  color: rgba(255, 255, 255, 0.8);
-  font: var(--fw-regular) 16px/1.6 var(--font-sans);
-  text-wrap: pretty;
-}
+/* Sent: the confirmation takes the fields' place, beside the same panel. */
+.ct-sent { justify-content: center; align-items: flex-start; gap: 10px; }
+.ct-sent .chk { display: flex; width: 44px; height: 44px; align-items: center; justify-content: center; margin-bottom: 6px;
+  border-radius: var(--r-pill); background: var(--signal-blue-soft); color: var(--signal-blue-deep); }
+.ct-sent h3 { margin: 0; font: var(--fw-regular) 24px/1.2 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); outline: none; }
+.ct-sent p { margin: 0; font: var(--fw-regular) 15px/1.6 var(--font-sans); color: var(--ink-secondary); }
+.ct-sent .ct-sent-foot { margin-top: 8px; font-size: 14px; }
+.ct-sent-foot a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
 
-/* ---- Primary direct line: the email, as the page's chief affordance ---- */
-.contact-email {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 9px;
-  margin-top: 40px;
-  text-decoration: none;
-  border-radius: 6px;
+@media (max-width: 860px) {
+  .ct-side { max-width: none; border-right: 0; border-bottom: 1px solid var(--hairline); }
 }
-.contact-email .ce-label {
-  font: var(--fw-medium) 10px var(--font-mono);
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-}
-.contact-email .ce-value {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font: var(--fw-regular) clamp(18px, 1.9vw, 22px) var(--font-sans);
-  letter-spacing: -0.4px;
-  color: #fff;
-  transition: color 0.18s var(--ease-primary);
-}
-.contact-email .ce-value svg {
-  flex: 0 0 auto;
-  color: var(--signal-blue);
-  transition: transform 0.25s var(--ease-primary), color 0.18s var(--ease-primary);
-}
-@media (hover: hover) {
-  .contact-email:hover .ce-value {
-    color: #93c5fd;
-  }
-  .contact-email:hover .ce-value svg {
-    transform: translate(2px, -2px);
-    color: #93c5fd;
-  }
-}
-/* Keyboard focus ring is supplied by the global `.contact-card :where(a,button)`
-   rule (white outline, 4px offset) — no local override needed. */
-
-.contact-signoff {
-  margin-top: 36px;
-  max-width: 420px;
-  font: var(--fw-regular) 12px/1.6 var(--font-sans);
-  color: rgba(255, 255, 255, 0.55);
-}
-
-/* ---- Right: glass form panel ---- */
-.form-panel {
-  /* Native select popups and scrollbars render dark rather than flashing white
-     against the navy — the same declaration .access-form carries. */
-  color-scheme: dark;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 16px;
-  padding: 32px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-.field {
-  margin-bottom: 22px;
-}
-.field > label {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  font: var(--fw-medium) 10px var(--font-sans);
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-  margin-bottom: 9px;
-  transition: color 200ms var(--ease-primary);
-}
-.control {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.38);
-  padding: 8px 0 7px;
-  color: #fff;
-  font: var(--fw-regular) 16px/1.4 var(--font-sans);
-  letter-spacing: -0.1px;
-  outline: none;
-  font-variant-numeric: tabular-nums;
-  transition: border-color 300ms var(--ease-primary),
-    border-bottom-width 300ms var(--ease-primary),
-    padding-bottom 300ms var(--ease-primary);
-}
-/* 0.5, not the 0.4 this started at: placeholder text owes the same 4.5:1 as any
-   other text, and 0.4 white on the navy measured 3.74:1. */
-.control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-/* Chrome autofill paints inputs with an opaque light background that wrecks
-   the dark glass panel. Keep the fill text white and postpone the background
-   swap indefinitely (the standard transition-delay counter). */
-.control:-webkit-autofill,
-.control:-webkit-autofill:hover,
-.control:-webkit-autofill:focus {
-  -webkit-text-fill-color: #fff;
-  caret-color: #fff;
-  transition: background-color 9999s ease-out 9999s;
-}
-/* Focus: the rule grows 1px -> 2px and turns signal-blue, animating over 300ms
-   exactly like the dashboard auth fields. Padding compensates so the text never
-   shifts as the underline thickens. */
-.control:focus {
-  border-bottom-width: 2px;
-  border-bottom-color: var(--signal-blue);
-  padding-bottom: 6px;
-}
-/* Errored field stays a static 1px error rule even while focused (no blue grow),
-   matching the dashboard's error underline. */
-.control.is-error,
-.control.is-error:focus {
-  border-bottom-width: 1px;
-  border-bottom-color: #ff5a6a;
-  padding-bottom: 7px;
-}
-
-/* Inline error message — a specific sentence, not a bare red rule. */
-.field-error {
-  margin: 9px 0 0;
-  font: var(--fw-regular) 11.5px/1.45 var(--font-sans);
-  letter-spacing: 0;
-  text-transform: none;
-  color: #ffa7af;
-}
-
-textarea.control {
-  resize: none;
-  line-height: 1.55;
-}
-
-select.control {
-  appearance: none;
-  -webkit-appearance: none;
-  padding-right: 22px;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 2px center;
-}
-select.control option {
-  color: var(--ink);
-}
-/* An unanswered select must not look answered. Without this the "Select"
-   placeholder paints in full white like a chosen value, and on a phone — where
-   the 11px label is the only other cue — that reads as a field already filled.
-   The result is a skipped question and an error at the end of the form. Matches
-   the dimming .uline select already does on the access card. */
-select.control:invalid,
-select.control:has(option[value=""]:checked) {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr;
-}
-@media (min-width: 520px) {
-  .field-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-  }
-}
-
-.form-panel .btn-primary {
-  width: 100%;
-  height: 46px;
-  font-size: 14px;
-  margin-top: 6px;
-}
-.form-panel .btn-primary svg {
-  width: 15px;
-  height: 15px;
-}
-
-/* The switch above the form: a college quote, or a message. Glass like the
-   panel it sits in; the pressed side is the solid one. */
-.form-modes {
-  display: flex;
-  gap: 4px;
-  margin: 0 0 24px;
-  padding: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: var(--r-pill);
-}
-.form-modes button {
-  flex: 1;
-  height: 36px;
-  border: 0;
-  border-radius: var(--r-pill);
-  background: transparent;
-  color: rgba(255, 255, 255, 0.7);
-  font: var(--fw-medium) 13px var(--font-sans);
-  cursor: pointer;
-  transition: background 180ms var(--ease-primary), color 160ms var(--ease-primary);
-}
-.form-modes button:hover { color: #fff; }
-.form-modes button[aria-pressed="true"] { background: #fff; color: var(--ink); }
-.form-modes button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-
-.form-foot {
-  margin-top: 16px;
-  text-align: center;
-  font: var(--fw-regular) 11px/1.5 var(--font-sans);
-  color: rgba(255, 255, 255, 0.5);
-}
-.form-foot a {
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.form-foot a:hover {
-  color: #fff;
-}
-
-/* ---- Success state ---- */
-.form-sent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 40px 12px;
-}
-.form-sent .chk {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(93, 185, 85, 0.18);
-  color: var(--win-green);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-.form-sent h3 {
-  margin: 0;
-  color: #fff;
-  font: var(--fw-light) 24px var(--font-sans);
-  letter-spacing: -0.5px;
-}
-.form-sent p {
-  margin: 12px 0 0;
-  max-width: 32ch;
-  color: rgba(255, 255, 255, 0.7);
-  font: var(--fw-regular) 14px/1.6 var(--font-sans);
-}
-/* The two-lane pointer survives submission; give it clear air below the
-   confirmation copy. */
-.form-sent .form-foot {
-  margin-top: 24px;
-  max-width: none;
-}
-
-/* The global reveal rises 24px; on a page that is one card, half the travel
-   is enough. Guarded for reduced motion since this out-specifies the global
-   .reveal reset. */
-.contact-card.reveal {
-  transform: translateY(12px);
-}
-@media (prefers-reduced-motion: reduce) {
-  .contact-card.reveal {
-    transform: none;
-  }
-  /* The focus rule animates border-width and padding, which is layout, once
-     per field. */
-  .control,
-  .field > label {
-    transition: none;
-  }
-}
-
-/* ---- Responsive ---- */
-@media (max-width: 900px) {
-  .band.contact-band {
-    padding: 40px 0 72px;
-  }
-  .contact-inner {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding: 44px 36px;
-  }
-}
-
-@media (max-width: 560px) {
-  .contact-inner {
-    padding: 36px 24px;
-  }
-}
-
-/* ---- Narrow screens: the panel dissolves ----
-   Same reasoning as the access card. Stacked, the glass panel is a card inside
-   a card, and on a 375px phone its 32px padding plus the card's 24px left a
-   217px field. Below 640px it hands its width back and the form runs to the
-   card's gutters. color-scheme stays: it is what keeps the native select wheel
-   from flashing white against the navy. Stacked, the panel's edge is gone, so
-   a hairline above the form marks where page copy ends and the form begins. */
 @media (max-width: 640px) {
-  .form-panel {
-    background: none;
-    border: none;
-    border-radius: 0;
-    padding: 30px 0 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  /* Without the panel's padding the confirmation has no inset of its own. */
-  .form-sent {
-    padding: 32px 0 8px;
-  }
+  .ct-main { padding: 28px 22px; }
+  .ct-grid { grid-template-columns: minmax(0, 1fr); }
+  .ct-send { align-self: stretch; }
 }
-
-@media (max-width: 400px) {
-  .contact-inner {
-    padding: 32px 20px;
-  }
-}
-
-/* ---- Coarse pointers ----
-   Pointer-gated rather than width-gated, so a touch laptop gets the bigger targets
-   and a narrow desktop window keeps the tighter rhythm. 35.5px fields become
-   46px; the 10px label goes up a step to stay readable on a phone. */
-@media (pointer: coarse) {
-  .field {
-    margin-bottom: 24px;
-  }
-  .field > label {
-    font-size: 11px;
-    letter-spacing: 1.6px;
-  }
-  .control {
-    padding: 12px 0 11px;
-  }
-  .control:focus {
-    padding-bottom: 10px;
-  }
-  .control.is-error,
-  .control.is-error:focus {
-    padding-bottom: 11px;
-  }
-  /* Re-stated: the shorthand above zeroes the chevron's gutter. */
-  select.control {
-    padding-right: 26px;
-  }
-  .form-panel .btn-primary {
-    height: 50px;
-  }
-  .field-error {
-    font-size: 12.5px;
-  }
-  .form-foot {
-    font-size: 12px;
-  }
-}
-
-/* The booking line under the email: the same direct-line pair, stacked a
-   step closer so the two read as one list of ways in. A <button>, so it
-   needs the link's resets. */
-.contact-book {
-  display: flex;
-  width: fit-content;
-  margin-top: 28px;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-.contact-book .ce-value svg { color: var(--signal-blue); }

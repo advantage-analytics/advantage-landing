@@ -22,7 +22,7 @@ export function Footer() {
           <div className="foot-brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/assets/logos/logo.svg" alt="Advantage" />
-            <p>Performance intelligence for competitive tennis. Built by former collegiate players.</p>
+            <p>Performance intelligence for competitive tennis. Built by a former collegiate player.</p>
           </div>
           <nav className="foot-cols" aria-label="Footer">
             <div className="foot-col">

@@ -153,10 +153,6 @@ export const COLLEGE_PLANS: readonly CollegePlan[] = [
   },
 ];
 
-export function allowance(plan: CollegePlan, season: Season): Allowance {
-  return season === "spring" ? plan.spring : plan.fullYear;
-}
-
 /** The "Talk to us" form, with the plan preselected. */
 export function salesHref(plan?: CollegePlan["id"]): string {
   return plan ? `/contact?${new URLSearchParams({ plan })}` : "/contact";
