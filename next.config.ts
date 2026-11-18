@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   // hero stay hidden. Update the IP if your machine's LAN address changes
   // (find it with `ipconfig getifaddr en0`). Production builds don't need this.
   allowedDevOrigins: ["192.168.1.208"],
+  experimental: {
+    agentUpgrade: "security",
+  },
   // The product tour's video and poster are large and change only with a new
   // cut, so they are cached: a day in the browser, a year at the CDN (which a
   // deploy purges). The names carry a version instead of a hash: bump TOUR in
