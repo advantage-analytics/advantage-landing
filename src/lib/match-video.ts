@@ -1,8 +1,8 @@
 // What a match video has to be for the dashboard uploader to take it. The
 // uploader's own address is links.uploadMatch.
 //
-// The home page's How it works spec, the footage checklist on /pilot, the
-// export guide and the /send-a-match notice all quote these. The uploader
+// The home page's How it works spec, the pricing FAQ and the
+// export guide all quote these. The uploader
 // enforces the same limits in the dashboard repo, so when they move there,
 // change them here in the same breath: a stale figure is a coach told their
 // file is fine and then refused. The link preview cards for the export guide

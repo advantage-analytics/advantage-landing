@@ -1,16 +1,22 @@
 // Every form that posts to /api/leads.
 //
 // Shared across the wire on purpose. `Source` is free text in Airtable, so the
-// route validates against this list and falls back to "Landing CTA" for
-// anything else — which means a typo'd or renamed source on the client fails
-// silently, mislabelling the column triage sorts on. Typing both ends against
-// the same union turns that into a compile error instead.
-// "Missing school" is the only live source: a coach whose school isn't listed
-// in the dashboard, from the form at the foot of /pilot. "Landing CTA" and
-// "Pilot page" were the retired pilot-application form; they stay on the list
-// so a cached copy of that form still lands as a labelled row rather than a
-// mislabelled one.
+// route validates against this list and falls back to "Sales" for anything
+// else, which means a typo'd or renamed source on the client fails silently,
+// mislabelling the column triage sorts on. Typing both ends against the same
+// union turns that into a compile error instead.
+//
+// "Sales" is the only live browser source: a message from a coach (head or
+// assistant) through the form on /contact.
+// "Landing CTA", "Pilot page" and "Missing school" belonged to the 2026 pilot.
+// They stay on the list so the old Airtable rows keep a recognised label and a
+// cached copy of an old form still lands as a labelled row.
 // "Walkthrough" is written by the Cal.com webhook (/api/cal-booking), never by
 // a browser form.
-export const LEAD_SOURCES = ["Landing CTA", "Pilot page", "Missing school", "Walkthrough"] as const;
+export const LEAD_SOURCES = ["Sales", "Landing CTA", "Pilot page", "Missing school", "Walkthrough"] as const;
 export type LeadSource = (typeof LEAD_SOURCES)[number];
+
+// The team choices the route accepts (the old college form offered them; the
+// route still validates them for any cached copy of it).
+export const TEAM_CHOICES = ["Men's", "Women's", "Both"] as const;
+export type TeamChoice = (typeof TEAM_CHOICES)[number];

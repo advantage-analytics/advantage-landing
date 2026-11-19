@@ -2,12 +2,17 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { MatchEndings, MatchInsight, MatchScore } from "./match-breakdown";
+import { Check } from "lucide-react";
+import { MatchEndings, MatchInsight } from "./match-breakdown";
+import { CourtFrame } from "@/components/guide/court-frame";
 import { KPIS, spark } from "./dashboard-home";
 import { ProofHead } from "./band-parts";
+import { useQueryString } from "@/lib/use-query-string";
 import {
   EXPORT_GUIDE_HREF,
   RECORDING_GUIDE_HREF,
+  VIDEO_FORMATS,
+  VIDEO_MAX_SIZE,
   VIDEO_MIN_FPS_SHORT,
   VIDEO_MIN_RESOLUTION,
 } from "@/lib/match-video";
@@ -16,7 +21,7 @@ import {
    order the page shows them. This module statically imports pieces of the
    real match report, so anything that only needs the shell (useReveal,
    Footer, RequestAccess) lives in its own module — importing it from here
-   would drag the board's components onto /about, /contact, /pilot and the
+   would drag the board's components onto /about, /contact, /pricing and the
    legal routes, none of which render them.
 
    The hero's laptop shows the dashboard Home; the strip shows what a visitor
@@ -26,73 +31,124 @@ import {
    opening its point on film, which is the stronger proof. */
 
 /* ---------- step visuals ----------
-   One small picture per step, in the page's own hairline-and-blue drawing
-   style (the /pilot court diagram's), never stock illustration. The third is
-   not drawn at all: it is the report's real scoreboard. */
+   One picture per step, each a piece the product already draws, on a white
+   card: the recording guide's camera frame (the uploader's own diagram), the
+   dashboard's upload stepper, and the match report's scoreboard. Markup and
+   measurements follow the dashboard's components (VerticalStep,
+   AnalysisProgressTrack, RailScoreboard); if those are redrawn, redraw these. */
 
-// A court seen from above with a camera behind one baseline, its view
-// taking in the whole court: the filming advice as a picture.
+// What the camera should see: the guide's "works" frame, shown in the
+// viewfinder of a phone that is recording.
 function CaptureVisual() {
   return (
-    <svg className="how-art" viewBox="0 0 240 132" role="img" aria-label="A camera set up behind the baseline, seeing the whole court.">
-      <path d="M36 66 212 14v104z" fill="var(--signal-blue)" opacity=".09" />
-      <g fill="none" stroke="var(--ink-label)" strokeWidth="1">
-        <rect x="72" y="22" width="140" height="88" />
-        <path d="M72 33h140M72 99h140M107 33v66M177 33v66M107 66h70" />
-        <path d="M142 16v100" stroke="var(--ink-muted)" strokeDasharray="2 3" />
-      </g>
-      <rect x="24" y="54" width="13" height="24" rx="3" fill="var(--signal-blue)" />
-      <circle cx="33.5" cy="66" r="1.6" fill="#fff" />
-    </svg>
+    <figure className="how-card how-frame">
+      <div className="phone">
+        <CourtFrame variant="works" />
+        <span className="rec" aria-hidden="true">
+          <i />
+          REC
+        </span>
+      </div>
+    </figure>
   );
 }
 
-// The upload as the visitor will meet it: one video file on its way up.
+// The dashboard's dashed "not started" ring: twelve arcs, drawn not bordered.
+const RING_HALF = ((2 * Math.PI) / 12) * 0.55 * 0.5;
+const RING_DX = 5.9 * Math.sin(RING_HALF);
+const RING_Y = 7 - 5.9 * Math.cos(RING_HALF);
+const RING_DASH = `M ${7 - RING_DX} ${RING_Y} A 5.9 5.9 0 0 1 ${7 + RING_DX} ${RING_Y}`;
+
+// The upload as the visitor will meet it: the stepper the dashboard shows
+// while a video goes up. Saved, uploading, analysis still to come.
 function UploadVisual() {
   return (
-    <div className="how-file" role="img" aria-label="A match video uploading.">
-      <span className="ic">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="m16 13 5.2 3.1a.5.5 0 0 0 .8-.4V8.3a.5.5 0 0 0-.8-.4L16 11" />
-          <rect x="2" y="6" width="14" height="12" rx="2" />
-        </svg>
-      </span>
-      <span className="tx">
-        <span className="nm">my-match.mp4</span>
-        <span className="st">Uploading…</span>
-        <span className="bar"><i /></span>
-      </span>
+    <div className="how-card how-stepper" role="img" aria-label="The upload screen: match saved, video uploading at 64 percent, 1.2 of 1.9 gigabytes, analysis next.">
+      <ol>
+        <li className="is-done">
+          <span className="rail">
+            <span className="mk"><Check size={10} strokeWidth={2.25} aria-hidden="true" /></span>
+          </span>
+          <span className="bd"><span className="lb">Match saved</span></span>
+        </li>
+        <li className="is-now">
+          <span className="rail">
+            <span className="mk" />
+          </span>
+          <span className="bd">
+            <span className="lb">Uploading video<b>64%</b></span>
+            <span className="bar"><i /></span>
+            <span className="by">1.2 GB of 1.9 GB</span>
+          </span>
+        </li>
+        <li className="is-later">
+          <span className="rail">
+            <span className="mk">
+              <svg viewBox="0 0 14 14" aria-hidden="true">
+                <g fill="none" stroke="currentColor" strokeWidth="1.5">
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <path key={i} d={RING_DASH} transform={`rotate(${30 * i} 7 7)`} />
+                  ))}
+                </g>
+              </svg>
+            </span>
+          </span>
+          <span className="bd"><span className="lb">Analysis</span></span>
+        </li>
+      </ol>
     </div>
   );
 }
+
+// The report's scoreboard as it reads once a match is in: the winner checked,
+// each set's winning digit in bold, the points count under it.
+const SCORE_ROWS: readonly { name: string; won: boolean; sets: readonly [number, boolean][] }[] = [
+  { name: "Rudy Quan", won: true, sets: [[6, true], [3, false], [6, true]] },
+  { name: "Federico Gomez", won: false, sets: [[4, false], [6, true], [3, false]] },
+];
 
 function AnalyzeVisual() {
   return (
     <div
-      className="mb-crop how-score"
+      className="how-card how-sb"
       role="img"
-      aria-label="The scoreboard from a sample Advantage match report: a three-set win, 6-4, 3-6, 6-3."
+      aria-label="The scoreboard from a sample Advantage match report: a three-set win, 6-4, 3-6, 6-3, with 187 points tagged."
     >
-      <div inert>
-        <MatchScore />
+      <div className="hd">
+        <span>Final</span>
+        <span className="clock">1:42:18</span>
       </div>
+      <div className="rows">
+        {SCORE_ROWS.map((r) => (
+          <div className={`row${r.won ? "" : " is-lost"}`} key={r.name}>
+            <span className="nm">{r.name}</span>
+            {r.won ? <Check size={12} strokeWidth={2} className="win" aria-hidden="true" /> : null}
+            <span className="sets">
+              {r.sets.map(([g, w], i) => (
+                <b key={i} className={w ? "w" : "l"}>{g}</b>
+              ))}
+            </span>
+          </div>
+        ))}
+      </div>
+      <span className="cap">Match complete · 187 points tagged</span>
     </div>
   );
 }
 
-// Capture → Upload → Analyze. Each step is a picture, a short line, and the
-// one fact people ask about under it: the footage spec, the monthly
-// allowance for each lane, the turnaround. Each fact lives in one place: the
+// Film → Upload → Analyze. Each step is a picture, a short line, and the
+// one fact people ask about under it: the footage spec, the file
+// limits, how you hear back. Each fact lives in one place: the
 // camera angle and the recording guide in the first step, the export guide in
 // the second.
 const HOW_STEPS: readonly { k: string; t: string; p: ReactNode; spec: string; vis: ReactNode }[] = [
   {
-    k: "Capture",
+    k: "Film",
     t: "Film your match.",
     p: (
       <>
-        Set your camera behind the baseline, as high up as you can get it. A phone on the fence works great. From the side, we can’t see the whole court. The{" "}
-        <Link href={RECORDING_GUIDE_HREF}>recording guide</Link> has the setup and settings.
+        Put a phone or camera behind the baseline, as high as you can, so the whole court is in the frame. The{" "}
+        <Link href={RECORDING_GUIDE_HREF}>recording guide</Link> covers setup and settings.
       </>
     ),
     spec: `${VIDEO_MIN_RESOLUTION} · ${VIDEO_MIN_FPS_SHORT} · MP4`,
@@ -103,18 +159,18 @@ const HOW_STEPS: readonly { k: string; t: string; p: ReactNode; spec: string; vi
     t: "Upload the video.",
     p: (
       <>
-        Upload from your phone or computer once you’re off the court. If it’s stuck on a camera or a court system, the{" "}
+        Send it from a computer or tablet after the match. If the video is on a camera or a court system, the{" "}
         <Link href={EXPORT_GUIDE_HREF}>export guide</Link> shows how to get it off.
       </>
     ),
-    spec: "2 h a month for players · 75 h for programs",
+    spec: `${VIDEO_FORMATS} · up to ${VIDEO_MAX_SIZE}`,
     vis: <UploadVisual />,
   },
   {
     k: "Analyze",
-    t: "Understand what happened.",
-    p: "See where you won points, where you lost them, and what to work on, each linked to the moment on video. We email you when it’s ready.",
-    spec: "ready within 24 h",
+    t: "See what decided it.",
+    p: "Where you won points, where you lost them and what to work on, each linked to the moment on video. You get an email when it’s ready.",
+    spec: "Singles matches · doubles coming",
     vis: <AnalyzeVisual />,
   },
 ];
@@ -124,17 +180,41 @@ const HOW_STEPS: readonly { k: string; t: string; p: ReactNode; spec: string; vi
    A full-width head (headline left, premise flush right), then one white
    panel split into three columns — the same build as the beta band further
    down, in white where that one is navy. */
+/* How the three steps are laid out, while the design is being decided:
+   "panel" is three columns in one panel, picture on top; "rows" gives each
+   step a full-width row, words left and picture right; "flow" joins the three
+   pictures into one strip with an arrow between them; "first" puts the words
+   first under a rule and the picture at the foot. ?how= in the address
+   overrides it, for comparing them. Keep one and delete the rest. */
+type HowLayout = "panel" | "rows" | "flow" | "first";
+const HOW_LAYOUT: HowLayout = "flow";
+const isHowLayout = (v: string | null): v is HowLayout => v === "panel" || v === "rows" || v === "flow" || v === "first";
+
+/* How big the three pictures are, while that is being decided: "natural"
+   leaves each card its own height; "equal" makes all three the same box;
+   "grow" steps them up toward the result. ?vis= overrides it. Keep one. */
+type HowVis = "natural" | "equal" | "grow";
+const HOW_VIS: HowVis = "equal";
+const isHowVis = (v: string | null): v is HowVis => v === "natural" || v === "equal" || v === "grow";
+
 export function HowItWorks() {
+  const query = new URLSearchParams(useQueryString());
+  const asked = query.get("how");
+  const layout = isHowLayout(asked) ? asked : HOW_LAYOUT;
+  const askedVis = query.get("vis");
+  const vis = isHowVis(askedVis) ? askedVis : HOW_VIS;
   return (
-    <section className="band how-band" id="how">
+    <section className="band how-band" id="how" data-how={layout} data-vis={vis}>
       <div className="wrap">
         <div className="how-head reveal">
           <div className="sec-head">
             <span className="eyebrow">How it works</span>
-            <h2>Upload, analyze, understand your match.</h2>
+            <h2>
+              Film, upload, <span className="h-tail">see&nbsp;what&nbsp;happened.</span>
+            </h2>
           </div>
           <p className="band-aside">
-            Tennis match analysis from one video, shot on whatever you have.{" "}
+            Tennis match analysis from a single video of your match.{" "}
             <span className="how-aside-tail">No new cameras, no tagging.</span>
           </p>
         </div>
@@ -142,8 +222,9 @@ export function HowItWorks() {
           {HOW_STEPS.map((s, i) => (
             <li className="how-step" key={s.k}>
               <div className="how-vis">{s.vis}</div>
-              <span className="n">
-                0{i + 1} · {s.k}
+              {/* The number alone: the title under it already names the step. */}
+              <span className="n" aria-hidden="true">
+                0{i + 1}
               </span>
               <h3>{s.t}</h3>
               <p>{s.p}</p>
@@ -214,9 +295,9 @@ const SEE_ITEMS: readonly { t: string; p: string; label: string; crop: ReactNode
   },
   {
     t: "How every point ended",
-    p: "Winners and aces next to unforced errors and double faults, so you know what to tidy up before the next match.",
+    p: "Winners and aces next to errors and double faults, so you know what to tidy up before the next match.",
     label:
-      "From a sample match report: a bar for each player showing how their points ended, in winners, aces, unforced errors and double faults.",
+      "From a sample match report: a bar for each player showing how their points ended, in winners, aces, errors and double faults.",
     crop: <MatchEndings large />,
   },
   {

@@ -32,27 +32,6 @@
 }
 
 /* ---- Masthead ---- */
-.mcp-head {
-  padding: 64px 0 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-.mcp-head h1 {
-  margin: 0;
-  max-width: 18ch;
-  font: 300 clamp(36px, 5vw, 52px) / 1.06 var(--font-sans);
-  letter-spacing: -0.03em;
-  color: var(--ink);
-  text-wrap: balance;
-}
-.mcp-lede {
-  margin: 0;
-  max-width: 62ch;
-  font: 400 17px / 1.6 var(--font-sans);
-  color: var(--ink-secondary);
-  text-wrap: pretty;
-}
 .mcp-urlbar {
   margin-top: 10px;
   max-width: 640px;
@@ -89,36 +68,20 @@
   transform: scale(0.97);
 }
 
-.mcp-anchors {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 22px;
-  padding: 14px 0;
-  border-top: 1px solid var(--hairline);
-  border-bottom: 1px solid var(--hairline);
-  font: 400 13px var(--font-sans);
-  color: var(--ink-tertiary);
-}
-.mcp-anchors a {
-  transition: color 180ms var(--ease);
-}
-.mcp-anchors a:hover {
-  color: var(--ink);
-}
 
 /* ---- Sections ---- */
 .mcp-sec {
-  padding-top: 72px;
+  padding-top: 80px;
   scroll-margin-top: 8px;
 }
 .mcp-sec h2 {
   margin: 0;
-  font: 300 32px / 1.15 var(--font-sans);
-  letter-spacing: -0.8px;
+  font: 300 28px / 1.2 var(--font-sans);
+  letter-spacing: -0.5px;
   color: var(--ink);
 }
 .mcp-prose {
-  margin: 14px 0 0;
+  margin: 12px 0 0;
   max-width: 66ch;
   font: 400 15px / 1.7 var(--font-sans);
   color: var(--ink-secondary);
@@ -418,27 +381,13 @@
   font: 400 14.5px / 1.55 var(--font-sans);
   color: var(--ink-secondary);
 }
+/* Read or Writes as a word; writes in blue. */
 .mcp-access {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   white-space: nowrap;
   font-size: 13px !important;
 }
-.mcp-access::before {
-  content: "";
-  flex: 0 0 auto;
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  border: 1.5px solid var(--ink-tertiary);
-}
 .mcp-access.is-write {
   color: var(--signal-blue-deep) !important;
-}
-.mcp-access.is-write::before {
-  border-color: var(--signal-blue);
-  background: var(--signal-blue);
 }
 
 /* ---- Privacy ---- */
@@ -528,9 +477,6 @@
   }
 }
 @media (max-width: 640px) {
-  .mcp-head {
-    padding-top: 44px;
-  }
   .mcp-steps-col {
     padding: 22px 18px 24px;
   }
@@ -559,3 +505,29 @@
     transition: none !important;
   }
 }
+
+/* ---- In the guide template ---- */
+/* The server URL rides in the navy masthead, so its bar wears the glass. */
+.pv-hero .mcp-urlbar {
+  margin-top: 4px;
+  width: min(100%, 620px);
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.1);
+  text-align: left;
+}
+.pv-hero .mcp-urlbar code { color: #fff; font: var(--fw-regular) 13px/1.4 var(--font-mono); }
+.pv-hero .mcp-urlbar .mcp-copy { background: #fff; color: #13234c; }
+.pv-hero .mcp-urlbar .mcp-copy:hover { background: #eef2fb; }
+
+/* What to know before pressing Allow, under the setup steps. */
+.mcp-assure {
+  margin: 16px 0 0;
+  display: flex;
+  gap: 12px;
+  max-width: 66ch;
+  font: var(--fw-regular) 14px/1.55 var(--font-sans);
+  color: var(--ink);
+}
+.mcp-assure svg { flex: none; margin-top: 1px; color: var(--signal-blue); }
+.mcp-assure strong { font-weight: var(--fw-medium); }
+.mcp-assure a { white-space: nowrap; }

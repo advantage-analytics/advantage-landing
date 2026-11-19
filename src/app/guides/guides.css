@@ -1,0 +1,53 @@
+/* ============ /guides ============
+   Task-first: one 680px column, each guide a whole-row link named by what
+   you want to do. The first match's heading says the order; rows carry no markers. */
+
+.gi-list {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 64px 22px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+/* A group's label reads above its rows: full ink, a step over the guide names. */
+.gi-label { margin: 0 0 16px; font: var(--fw-medium) 14px/1.4 var(--font-sans); letter-spacing: -0.1px; color: var(--ink); }
+
+
+.gi-rows { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.gi-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  gap: 20px;
+  align-items: center;
+  padding: 22px 24px;
+  border: 1px solid var(--hairline-medium);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 160ms var(--ease-primary);
+}
+.gi-row:hover { border-color: #93c5fd; }
+.gi-row:focus-visible { outline: 2px solid var(--signal-blue); outline-offset: 2px; }
+
+.gi-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+/* The task carries the row, at the site's card-title size and weight. */
+.gi-task { font: var(--fw-regular) 20px/1.25 var(--font-sans); letter-spacing: -0.3px; text-wrap: balance; }
+.gi-when { max-width: 52ch; font: var(--fw-regular) 15px/1.55 var(--font-sans); color: var(--ink-secondary); text-wrap: pretty; }
+/* The guide's own name: small, but at a contrast that still reads (#71717a, 4.8:1). */
+.gi-name { margin-top: 2px; font: var(--fw-regular) 13px/1.4 var(--font-sans); color: var(--ink-tertiary); }
+.gi-arrow { color: var(--ink-label); transition: transform 200ms var(--ease-primary), color 200ms var(--ease-primary); }
+.gi-row:hover .gi-arrow { color: var(--signal-blue-deep); transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) { .gi-arrow { transition: none; } }
+
+.gi-foot { margin: 0; font: var(--fw-regular) 15px/1.6 var(--font-sans); color: var(--ink-secondary); }
+.gi-foot a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); overflow-wrap: anywhere; }
+
+@media (max-width: 640px) {
+  .gi-list { padding-top: 40px; gap: 40px; }
+  .gi-row { padding: 18px; gap: 14px; }
+  .gi-task { font-size: 18px; }
+  .gi-when { font-size: 14.5px; }
+}

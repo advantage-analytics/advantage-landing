@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import { createAirtableRecord } from "@/lib/airtable";
 import { honeypotTripped } from "@/lib/honeypot";
+import { EMAIL_RE } from "@/lib/validation";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
 import { contactReceivedEmail } from "@/lib/emails";
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>;

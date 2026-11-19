@@ -1,0 +1,98 @@
+/* ============ The guide template (guide-shell.tsx) ============
+   A calm reading page in /guides' voice: the "On this page" rail beside a
+   760px column, no eyebrows, counters or caps, few boxes, the other guides as
+   a plain list at the foot. Each guide's own sections keep their route styles
+   (guide.css, mcp-guide.css, tennis-analytics.css); this file places them.
+
+   One spacing ladder for every guide: 80px between sections (56px on a
+   phone), 40px before a sub-section, 12px from a heading to its text, 28px
+   from text to a figure, list or table. Section headings are 28px. */
+
+.guide-body {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 760px);
+  gap: 64px;
+  align-items: start;
+  padding-top: 56px;
+  padding-bottom: 96px;
+}
+
+/* ---- The rail ---- */
+.guide-rail { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 24px; }
+.guide-rail-label {
+  display: block;
+  font: var(--fw-medium) 13px/1.4 var(--font-sans);
+  color: var(--ink);
+}
+.guide-rail nav .guide-rail-label { padding: 0 10px 8px; }
+.guide-rail ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+.guide-rail ol a {
+  display: flex;
+  padding: 6px 10px;
+  border-radius: var(--r-element);
+  font: var(--fw-regular) 14px/1.4 var(--font-sans);
+  color: var(--ink-tertiary);
+  text-decoration: none;
+  transition: background 160ms var(--ease-primary), color 160ms var(--ease-primary);
+}
+.guide-rail ol a:hover { background: var(--surface-subtle); color: var(--ink); }
+.guide-rail ol a[aria-current] { background: var(--surface-subtle); color: var(--ink); }
+
+/* ---- The column: each guide's sections, in its own styles ---- */
+.guide-main { min-width: 0; }
+/* The first section starts at the column's top, level with the rail. */
+/* (A guide's own wrapper, .eg-page or .mcp, may sit between.) */
+.guide-main > :first-child,
+.guide-main > :first-child > :first-child,
+.guide-main > :first-child > .wrap > :first-child { margin-top: 0; padding-top: 0; }
+
+/* Tennis analytics' bands, which are full-width elsewhere, sit in the column. */
+.guide-main .ta-band { background: none; border: 0; }
+.guide-main .ta-band > .wrap { max-width: none; padding: 0; }
+.guide-main .faq { display: block; }
+.guide-main .faq-intro { align-items: flex-start; }
+.guide-main .faq-list { margin-top: 32px; }
+.guide-main .faq-more { padding-top: 20px; }
+/* Tennis analytics' section heads at the guides' heading size. */
+.guide-main .sec-head h2 { font-size: 28px; line-height: 1.2; letter-spacing: -0.5px; }
+.guide-main .sec-head p { margin-top: 12px; }
+
+/* ---- The foot: the other guides and the way to a person ---- */
+.guide-more { border-top: 1px solid var(--hairline); background: var(--surface-page); }
+.guide-more .wrap { padding-top: 48px; padding-bottom: 56px; }
+.guide-more-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.guide-more-head a { font: var(--fw-medium) 13px var(--font-sans); color: var(--signal-blue-deep); text-decoration: none; }
+.guide-more-head a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.guide-more ul { margin: 16px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 32px; }
+.guide-more li a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 0;
+  border-top: 1px solid var(--hairline-medium);
+  color: var(--ink);
+  text-decoration: none;
+}
+.guide-more li .k { font: var(--fw-regular) 13px/1.4 var(--font-sans); color: var(--ink-tertiary); }
+.guide-more li .v { font: var(--fw-regular) 16px/1.4 var(--font-sans); }
+.guide-more li a:hover .v { color: var(--signal-blue-deep); }
+.guide-more-foot { margin: 28px 0 0; font: var(--fw-regular) 14px/1.6 var(--font-sans); color: var(--ink-secondary); }
+.guide-more-foot a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
+
+@media (max-width: 1023px) {
+  .guide-body { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 40px; padding-bottom: 72px; }
+  .guide-rail { position: static; }
+  .guide-more ul { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* The recording guide's iPhone steps sit beside the screenshot they happen
+   on (guide.css .eg-pair): in the 760px column the pair needs a tighter gap
+   and step column to stay side by side, and once it has to stack, the
+   padding that lines each step up with its row on the screen drops, or it
+   would leave a gap above the phone. */
+.guide-main .eg-pair { gap: 32px 40px; }
+.guide-main .eg-steps { flex-basis: 300px; }
+@media (max-width: 1080px) {
+  .guide-main .eg-steps-1,
+  .guide-main .eg-steps-2 { padding-top: 0; }
+}

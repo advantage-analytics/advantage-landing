@@ -1,109 +1,160 @@
-/* ============================================================
-   About page — full-width editorial. The story fills the whole
-   column; the team photo sits at the top right at its natural
-   aspect (uncropped) and the prose wraps around it. A full-width
-   mono spec bar closes the page. Light type, hairlines, one blue
-   accent, mono micro-labels — the site's native voice.
-   ============================================================ */
+/* ============ /about ============
+   One statement-left form for the three story bands (the mission, why it
+   exists, who it is for): eyebrow and two-tone headline on the left, the
+   prose or the rows on the right, both starting level. Then the founder in a
+   navy band, the UCLA photo as the proof, and the navy close. */
 
-/* Generous space separates the masthead from the story. */
-.about-band {
-  padding-top: clamp(56px, 6vw, 88px);
+.ab-split {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: 32px 96px;
+  align-items: start;
 }
+.ab-why { margin-top: 120px; }
 
-/* The article fills the full container width; text reflows around the inset. */
-.about-article {
-  width: 100%;
-}
+/* The heads are the site's section heads (.sec-head), left-aligned. */
+.ab-lead { align-self: start; }
+.ab-lead .h-tail, .ab-origin-copy .h-tail { color: var(--ink-muted); }
 
-/* ---- The inset photo: floated top-right, shown whole (not cropped) ---- */
-.about-inset {
-  float: right;
-  width: min(46%, 500px);
-  margin: 2px 0 28px 48px;
-}
-.about-inset img {
-  display: block;
-  width: 100%;
-  height: auto; /* natural aspect — the photo is never cropped */
-  border-radius: var(--r-card);
-  background: var(--hairline-medium);
-}
-/* Caption sits beneath the image so nothing overlays the photo. */
-.about-inset-cap {
+/* Prose starts level with the headline: past the eyebrow (16.5px) and its gap. */
+.ab-prose {
   display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-top: 12px;
-  font: var(--fw-medium) 9px var(--font-mono);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--ink-muted);
+  flex-direction: column;
+  gap: 22px;
+  max-width: 60ch;
+  padding-top: 36px;
 }
-
-/* ---- The story ---- */
-/* Wider full-width measure earns more leading so the long lines stay readable. */
-.about-article p {
-  margin: 0 0 24px;
-  font: var(--fw-regular) 16px/1.85 var(--font-sans);
+.ab-prose p {
+  margin: 0;
+  font: var(--fw-regular) 17px/1.7 var(--font-sans);
   color: var(--ink-secondary);
   text-wrap: pretty;
 }
-.about-article p:last-child {
-  margin-bottom: 0;
-}
-
-/* ---- Closing spec bar: full-width horizontal mono key/value cells ---- */
-.about-facts-bar {
-  clear: both;
-  display: flex;
-  flex-wrap: wrap;
-  margin: clamp(52px, 6vw, 80px) 0 0;
-  padding-top: 30px;
-  border-top: 1px solid var(--hairline);
-  list-style: none;
-}
-.about-fact-cell {
-  padding: 0 32px;
-  border-left: 1px solid var(--hairline);
-}
-.about-fact-cell:first-child {
-  padding-left: 0;
-  border-left: none;
-}
-.about-fact-cell .k {
-  display: block;
-  font: var(--fw-medium) 10px var(--font-mono);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--ink-label);
-}
-.about-fact-cell .v {
-  display: block;
-  margin-top: 10px;
-  font: var(--fw-regular) 16px var(--font-sans);
+.ab-prose .ab-lede {
+  margin-bottom: 6px;
+  font: var(--fw-light) 20px/1.55 var(--font-sans);
+  letter-spacing: -0.2px;
   color: var(--ink);
 }
 
-/* ---- Responsive ---- */
-@media (max-width: 640px) {
-  /* The inset un-floats into a full-width block above the prose. */
-  .about-inset {
-    float: none;
-    width: 100%;
-    margin: 0 0 24px;
-  }
-  .about-facts-bar {
-    flex-direction: column;
-    gap: 0;
-  }
-  .about-fact-cell {
-    padding: 16px 0;
-    border-left: none;
-    border-top: 1px solid var(--hairline);
-  }
-  .about-fact-cell:first-child {
-    padding-top: 0;
-    border-top: none;
-  }
+/* Built for: the audiences as rows, hairlines between them only. */
+.ab-rows {
+  margin: 0;
+  padding: 36px 0 0;
+  list-style: none;
+}
+.ab-row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 200px) minmax(0, 1fr);
+  gap: 6px 20px;
+  align-items: start;
+  padding: 28px 0;
+}
+.ab-row:first-child { padding-top: 0; }
+.ab-row:last-child { padding-bottom: 0; }
+.ab-row + .ab-row { border-top: 1px solid var(--hairline-medium); }
+.ab-row svg { margin-top: 2px; color: var(--signal-blue); }
+.ab-row h3 {
+  margin: 0;
+  font: var(--fw-regular) 20px/1.25 var(--font-sans);
+  letter-spacing: -0.4px;
+  color: var(--ink);
+}
+.ab-row p {
+  margin: 0;
+  padding-top: 2px;
+  max-width: 44ch;
+  font: var(--fw-regular) 16px/1.6 var(--font-sans);
+  color: var(--ink-secondary);
+  text-wrap: pretty;
+}
+
+/* The founder: portrait beside the quote, on the closing band's navy
+   (.navy-surface in perspective.css). */
+.ab-founder { position: relative; overflow: hidden; color: #fff; }
+.ab-founder-inner {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 56px;
+  padding-top: clamp(80px, 12vh, 120px);
+  padding-bottom: clamp(80px, 12vh, 120px);
+}
+.ab-portrait {
+  flex: 0 1 240px;
+  min-width: 0;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--r-card);
+  box-shadow: 0 30px 80px rgba(5, 10, 30, 0.5);
+}
+.ab-quote {
+  flex: 1 1 520px;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.ab-quote blockquote {
+  margin: 0;
+  font-weight: var(--fw-light);
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: #fff;
+  text-wrap: balance;
+}
+.ab-quote figcaption { display: flex; flex-direction: column; gap: 4px; }
+.ab-quote .who { font: var(--fw-medium) 16px/1.4 var(--font-sans); color: #fff; }
+.ab-quote .bio { font: var(--fw-regular) 14px/1.5 var(--font-sans); color: rgba(214, 226, 255, 0.85); }
+
+/* Where it started: the story beside the photo that proves it. */
+.ab-origin {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 48px 80px;
+}
+.ab-origin-copy { flex: 1 1 400px; min-width: 0; max-width: 480px; }
+.ab-origin-copy.sec-head p { font-size: 17px; line-height: 1.65; }
+.ab-photo {
+  flex: 1 1 520px;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ab-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 13px;
+  border: 1px solid var(--hairline-medium);
+  box-shadow: 0 24px 60px -24px rgba(13, 27, 62, 0.28);
+}
+.ab-photo figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font: var(--fw-regular) 13px/1.5 var(--font-sans);
+  color: var(--ink-muted);
+}
+.ab-photo .score { font-weight: var(--fw-medium); color: var(--ink-secondary); }
+
+@media (max-width: 900px) {
+  .ab-split { grid-template-columns: minmax(0, 1fr); }
+  .ab-prose,
+  .ab-rows { padding-top: 0; }
+  .ab-why { margin-top: 88px; }
+  .ab-row { grid-template-columns: 22px minmax(0, 1fr); }
+  .ab-row p { grid-column: 2; }
+  .ab-founder-inner { gap: 40px; }
 }

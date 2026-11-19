@@ -1,0 +1,94 @@
+/* The roster tour (roster-tour.tsx): the cursor, highlights and tooltips laid
+   over the roster board's table card. Every position is in the board's own
+   1440-wide coordinates; the frame scales the whole board, so these scale
+   with it. The play button is the Statistics tour's (.tour-toggle). */
+.rt-frame { position: relative; }
+.tr-card { position: relative; }
+.rt-layer { position: absolute; inset: 0; pointer-events: none; }
+
+/* The dragged row, lifted off the table while it moves. */
+.tr-row.rt-lifted { position: relative; z-index: 2; background: #fff; border-radius: 8px;
+  box-shadow: 0 10px 28px -10px rgba(15, 23, 42, .28), 0 0 0 1px rgba(15, 23, 42, .06); }
+
+.rt-col, .rt-row { position: absolute; display: block; border-radius: 8px; }
+.rt-col { background: rgba(59, 130, 246, .08); box-shadow: inset 0 0 0 1px rgba(59, 130, 246, .22); }
+.rt-row { left: 12px; right: 12px; background: rgba(15, 23, 42, .035); }
+.rt-row.is-ready { background: rgba(93, 185, 85, .1); }
+
+/* The form readout, as the dashboard's FormStrip draws it: a dark card with
+   no arrow, seated just above the hovered bar. Score in 12px medium white,
+   then the date and event and the opponent in 11px at 64% white. */
+.rt-read { position: absolute; z-index: 3; display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  padding: 10px 12px; translate: -50% -100%; transform-origin: 50% 100%; border-radius: 12px;
+  background: #0D0D0D; color: #fff; white-space: nowrap; box-shadow: 0 8px 24px -8px rgba(0, 0, 0, .35); }
+.rt-read .sc { font: 500 12px/1.4 var(--font-sans); font-variant-numeric: tabular-nums; }
+.rt-read .ln { font: 400 11px/1.4 var(--font-sans); color: rgba(255, 255, 255, .64); }
+
+/* The hovered strip: the bar under the pointer grows from 12px to 16px and
+   its siblings fade to 40%, as in the dashboard. */
+.tr-row.rt-fh .th-ticks i { opacity: .4; transition: opacity 120ms ease, height 120ms ease; }
+.tr-row.rt-fh-0 .th-ticks i:nth-child(1), .tr-row.rt-fh-1 .th-ticks i:nth-child(2),
+.tr-row.rt-fh-2 .th-ticks i:nth-child(3), .tr-row.rt-fh-3 .th-ticks i:nth-child(4),
+.tr-row.rt-fh-4 .th-ticks i:nth-child(5) { opacity: 1; height: 16px; }
+
+/* The board's top layer: the cursor and the loop's fade, over the drawer. */
+.dh.th { position: relative; }
+.rt-top { position: absolute; inset: 0; z-index: 8; pointer-events: none; }
+
+/* The player drawer (player-drawer.tsx in the dashboard): 340px on the
+   right, a 44px header that lines up with the page header's rule, the body
+   at 22px insets, and one button at the foot. */
+.rd { position: absolute; z-index: 6; top: 0; right: 0; bottom: 0; width: 340px; display: flex; flex-direction: column;
+  background: #fff; border-left: 1px solid #F3F3F3; box-shadow: -16px 0 40px -24px rgba(15, 23, 42, .22);
+  font-family: var(--font-sans); color: #0D0D0D; }
+.rd-head { height: 44px; flex: none; display: flex; align-items: center; gap: 6px; padding: 0 20px; border-bottom: 1px solid #F3F3F3; }
+.rd-ib { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 6px; color: #525252; }
+.rd-who { margin-left: 4px; display: inline-flex; align-items: baseline; gap: 6px; font-size: 12px; color: #71717A; white-space: nowrap; }
+.rd-who .n { font: 400 11px var(--font-mono); color: #AAAAAA; }
+.rd-head .flex { flex: 1; }
+.rd-sep { width: 1px; height: 14px; margin: 0 2px; background: #E5E5EA; }
+.rd-body { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 24px; padding: 24px 22px 22px; overflow: hidden; }
+.rd-top { display: flex; align-items: flex-start; gap: 12px; }
+.rd-av { width: 40px; height: 40px; flex: none; display: grid; place-items: center; border-radius: 50%;
+  background: #F2F2F2; color: #888888; font: 300 13px var(--font-sans); }
+.rd-name { font: 400 16px/22px var(--font-sans); color: #0D0D0D; }
+.rd-facts { margin-top: 3px; font: 400 12px/18px var(--font-sans); color: #71717A; }
+.rd-dl { margin: 16px 0 0; display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; row-gap: 6px;
+  font: 400 12px/18px var(--font-sans); }
+.rd-dl dt { color: #71717A; }
+.rd-dl dd { margin: 0; min-height: 28px; display: flex; align-items: center; gap: 8px; color: #0D0D0D; }
+.rd-dl .rec { font-variant-numeric: tabular-nums; }
+.rd-stat { display: flex; flex-direction: column; gap: 12px; }
+.rd-measures { margin: 0 -8px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; }
+.rd-m { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; padding: 8px 8px 7px; border-radius: 8px; }
+.rd-m .l { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; color: #71717A; }
+.rd-m .v { font-size: 14px; font-variant-numeric: tabular-nums; color: #525252; }
+.rd-m.on { background: #F5F5F5; }
+.rd-m.on .l { color: #525252; }
+.rd-m.on .v { color: #0D0D0D; }
+.rd-chart-head { padding-top: 4px; display: flex; align-items: baseline; justify-content: space-between; font-size: 12px; color: #71717A; }
+.rd-chart-head .up { font-size: 11px; font-weight: 500; color: #5DB955; font-variant-numeric: tabular-nums; }
+.rd-spark { display: block; }
+.rd-recent { display: flex; flex-direction: column; gap: 2px; }
+.rd-recent-head { display: flex; align-items: center; padding-bottom: 8px; }
+.rd-recent-head .eb { flex: 1; font: 400 9px var(--font-sans); letter-spacing: 1.5px; text-transform: uppercase; color: #AAAAAA; }
+.rd-recent-head .all { font-size: 11px; font-weight: 500; color: #3B82F6; }
+.rd-match { margin: 0 -8px; height: 36px; padding: 0 8px; display: grid; align-items: center; gap: 10px;
+  grid-template-columns: 14px minmax(0, 1fr) minmax(72px, max-content) 40px 12px; border-radius: 8px; transition: background 150ms ease; }
+.rd-match.is-hover { background: #FAFAFA; }
+.rd-match .op { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #0D0D0D; }
+.rd-match .sc { text-align: right; white-space: nowrap; font-size: 11px; color: #71717A; font-variant-numeric: tabular-nums; }
+.rd-match .dt { text-align: right; font: 400 10px var(--font-mono); color: #AAAAAA; }
+.rd-match .ch { color: #CCCCCC; }
+.rd-res.is-won { color: #5DB955; }
+.rd-res.is-lost { color: #E51837; }
+.rd-foot { flex: none; padding: 16px 22px; }
+.rd-btn { display: flex; align-items: center; justify-content: center; height: 36px; border-radius: 8px;
+  background: #3B82F6; color: #fff; font: 500 13px var(--font-sans); }
+
+.rt-cursor { position: absolute; z-index: 1; top: 0; left: 0; margin: -3px 0 0 -5px; transition: scale 120ms ease;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .25)); }
+.rt-cursor svg { display: block; }
+.rt-cursor.is-down { scale: .88; }
+
+.rt-fade { position: absolute; inset: -40px; z-index: 2; display: block; background: #fff; }

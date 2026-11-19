@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Check, X } from "lucide-react";
-import { PageFrame } from "@/components/perspective/page-frame";
+import { GuideShell } from "@/components/guide/guide-shell";
 import { FramePair, PhoneShot, Step } from "@/components/guide/guide-parts";
 import {
   EXPORT_GUIDE_HREF,
@@ -47,14 +47,6 @@ const SECTIONS = [
   { id: "after", label: "After the match" },
 ];
 
-const CAMERAS = [
-  { id: "iphone", label: "iPhone" },
-  { id: "android", label: "Android" },
-  { id: "gopro", label: "GoPro" },
-  { id: "playsight", label: "PlaySight and court cameras" },
-  { id: "swingvision", label: "SwingVision" },
-];
-
 const KEEP: ReactNode[] = [
   <>Every court line, both sidelines included</>,
   <>The far service line, clear of the net</>,
@@ -69,26 +61,12 @@ const SKIP: ReactNode[] = [
 
 export default function Page() {
   return (
-    <PageFrame>
-      <div className="wrap eg-page">
-        <section className="eg-head">
-          <span className="eg-eyebrow">Recording guide</span>
-          <h1>Filming a match Advantage can read.</h1>
-          <p className="eg-lede">
-            One camera behind the back fence, raised, held still, recording the
-            whole match. Set it up before the first serve and the file is ready
-            to upload when you walk off court.
-          </p>
-        </section>
-
-        <nav className="eg-anchors" aria-label="On this page">
-          {SECTIONS.map((s) => (
-            <a key={s.id} href={`#${s.id}`}>
-              {s.label}
-            </a>
-          ))}
-        </nav>
-
+    <GuideShell
+      id="recording"
+      sub="One camera behind the back fence, raised, held still, recording the whole match. Set it up before the first serve and the file is ready to upload when you walk off court."
+      sections={SECTIONS}
+    >
+      <div className="eg-page">
         <section className="eg-sec" id="placement">
           <h2>Put the camera behind the back fence</h2>
           <p className="eg-prose">
@@ -159,13 +137,6 @@ export default function Page() {
             Find your camera below. Whatever you film on, you&rsquo;re after{" "}
             {VIDEO_MIN_RESOLUTION} or better at {VIDEO_MIN_FPS} or higher.
           </p>
-          <nav className="eg-cameras" aria-label="Cameras">
-            {CAMERAS.map((c) => (
-              <a key={c.id} className="eg-chip" href={`#${c.id}`}>
-                {c.label}
-              </a>
-            ))}
-          </nav>
 
           <div className="eg-device" id="iphone">
             <h3>iPhone</h3>
@@ -328,6 +299,6 @@ export default function Page() {
           </div>
         </section>
       </div>
-    </PageFrame>
+    </GuideShell>
   );
 }

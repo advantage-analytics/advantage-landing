@@ -16,16 +16,6 @@
    everything under `mb-` is the app's own report styling, in design pixels. */
 .mb-micro { font: 400 11px/1.4 var(--font-sans); color: #888888; white-space: nowrap; }
 
-.mb-score { margin: 0 12px; display: flex; flex-direction: column; gap: 14px; padding: 18px 13px 20px; border-bottom: 1px solid #F3F3F3; }
-.mb-score .hd { display: flex; align-items: baseline; gap: 8px; }
-.mb-score .clock { font: 500 10px var(--font-mono); font-variant-numeric: tabular-nums; color: #AAAAAA; }
-.mb-score .rows { display: flex; flex-direction: column; gap: 11px; }
-.mb-score .row { display: flex; align-items: center; gap: 7px; min-width: 0; }
-.mb-score .nm { font: 500 13px var(--font-sans); color: #0D0D0D; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mb-score .win { color: #3B82F6; flex: none; }
-.mb-score .sets { display: inline-flex; gap: 8px; font: 400 13px var(--font-mono); font-variant-numeric: tabular-nums; color: #0D0D0D; }
-.mb-score .sets b { font-weight: 400; width: 11px; text-align: right; }
-.mb-score .row.is-lost .nm, .mb-score .row.is-lost .sets { color: #525252; }
 
 .mb-insight .bd .lead { font-weight: 500; font-size: 13px; line-height: 1.5; }
 .mb-insight .dh-foot { align-items: center; }
@@ -151,3 +141,41 @@
 .th-history .sc i { font-style: normal; color: #CCCCCC; }
 .th-history .frm { display: inline-flex; align-items: center; gap: 8px; }
 .th-history .frm .k { font: 400 9px var(--font-sans); letter-spacing: 2.5px; text-transform: uppercase; color: #AAAAAA; }
+
+/* ---- Team roster board (team-roster.tsx) ----
+   The dashboard's roster table (roster-table.tsx there), at its own sizes:
+   a 52px row, a 26px avatar, five columns of which only Last match flexes. */
+.tr-ghost { display: inline-flex; height: 36px; align-items: center; padding: 0 16px; border: 1px solid #EAECF0; border-radius: 6px;
+  background: #fff; font: 500 13px var(--font-sans); color: #0D0D0D; }
+.tr-card { margin-top: 20px; padding: 6px 24px 14px; }
+.tr-row { display: flex; align-items: center; gap: 16px; height: 52px; }
+.tr-list { list-style: none; margin: 0; padding: 0; }
+.tr-list .tr-row { border-top: 1px solid #F3F3F3; }
+.tr-head { height: 40px; font: 500 10px var(--font-sans); letter-spacing: 1.5px; text-transform: uppercase; color: #888888; }
+.tr-spot { width: 24px; flex: none; text-align: center; font: 400 11px var(--font-mono); color: #888888; font-variant-numeric: tabular-nums; }
+.tr-head .tr-spot { font: inherit; }
+.tr-player { width: 340px; flex: none; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.tr-av { width: 26px; height: 26px; flex: none; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;
+  background: #F5F5F5; font: 500 9px var(--font-sans); letter-spacing: .2px; color: #525252; }
+.tr-player .nm { font: 500 13px var(--font-sans); color: #0D0D0D; white-space: nowrap; }
+.tr-managed { display: inline-flex; margin-left: -2px; }
+.tr-record { width: 72px; flex: none; font: 400 13px var(--font-sans); color: #0D0D0D; }
+.tr-form { width: 96px; flex: none; display: flex; align-items: center; }
+.tr-last { flex: 1; min-width: 196px; display: flex; align-items: center; gap: 10px; }
+.tr-mark { width: 14px; flex: none; display: flex; align-items: center; justify-content: center; }
+.tr-mark .dot { display: block; width: 5px; height: 5px; border-radius: 50%; background: #CCCCCC; }
+.tr-last .them { width: 180px; flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font: 400 12px var(--font-sans); color: #525252; }
+.tr-last .when { font: 400 11px var(--font-sans); color: #888888; white-space: nowrap; }
+.tr-status { display: inline-flex; align-items: center; gap: 8px; font: 400 11px/1 var(--font-sans); color: #6B6B6B; white-space: nowrap; }
+.tr-status.is-now { color: #0D0D0D; }
+.tr-status .step { display: block; width: 10px; height: 10px; flex: none; border-radius: 50%; border: 1.5px solid #CCCCCC; }
+.tr-status.is-now .step { border-color: rgba(59,130,246,.25); border-top-color: #3B82F6; }
+.tr-head .tr-record, .tr-head .tr-last { font: inherit; color: inherit; }
+.tr-set { margin-left: auto; font: 500 11px var(--font-sans); letter-spacing: 0; text-transform: none; color: #3B82F6; }
+.tr-div { display: flex; align-items: center; gap: 8px; padding: 18px 0 8px; border-top: 1px solid #F3F3F3;
+  font: 500 10px var(--font-sans); letter-spacing: 1.5px; text-transform: uppercase; color: #888888; }
+.tr-div .n { font: 400 11px var(--font-sans); letter-spacing: 0; color: #AAAAAA; }
+.tr-foot { margin: 14px 0 0; font: 400 12px/1.5 var(--font-sans); color: #888888; }
+.tr-foot + .tr-foot { margin-top: 4px; }
+.tr-foot .lnk { font-size: 12px; }

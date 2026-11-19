@@ -16,7 +16,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Guardian Terms"
-        meta="Version 1.2 · Last updated November 7, 2026"
+        meta="Version 1.3 · Last updated November 17, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -119,7 +119,7 @@ export default function Page() {
                   Service.
                 </li>
                 <li>
-                  Video is stored with our cloud hosting provider and sent to
+                  Video is stored with our cloud hosting providers and sent to
                   our video analysis provider, who analyzes it on our behalf
                   and returns the results. The provider stores video in the
                   United States and analyzes it in Canada.
@@ -149,8 +149,8 @@ export default function Page() {
             <section className="legal-sec">
               <h2>6. Who Can See the Player&apos;s Matches</h2>
               <p>
-                Match video and match data of a Player are never shown outside
-                the people you share them with:
+                Match video and match data of a Player are seen only by the
+                people below:
               </p>
               <ul className="legal-list">
                 <li>
@@ -175,6 +175,13 @@ export default function Page() {
                   <strong>Match links.</strong> If you create a link to one of
                   the Player&apos;s matches, anyone with the link can see it.
                   Video is included only if you choose.
+                </li>
+                <li>
+                  <strong>People working for us.</strong> Advantage staff, and
+                  contractors working for us under confidentiality obligations,
+                  may look at a match and its video to check and correct its
+                  analysis, as Section 5 describes. So may the video analysis
+                  provider&apos;s team.
                 </li>
               </ul>
             </section>

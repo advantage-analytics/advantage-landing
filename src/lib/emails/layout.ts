@@ -23,6 +23,8 @@ import { escapeHtml } from "../notify";
 
 // Canonical origin for links and images. www, not the apex — see above.
 const SITE = "https://www.advantage-analytics.com";
+// The year at send time, so the footer never needs a yearly edit.
+const YEAR = new Date().getFullYear();
 
 const FONT =
   "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
@@ -131,7 +133,7 @@ ${body}
 
           <tr>
             <td align="center" style="padding:24px 40px 8px 40px;">
-              <p class="ink4" style="margin:0; font-family:${FONT}; font-size:11px; line-height:17px; color:#AAAAAA;">&copy; 2026 Advantage Analytics LLC &middot; advantage-analytics.com</p>
+              <p class="ink4" style="margin:0; font-family:${FONT}; font-size:11px; line-height:17px; color:#AAAAAA;">&copy; ${YEAR} Advantage Analytics LLC &middot; advantage-analytics.com</p>
             </td>
           </tr>
 
@@ -274,6 +276,20 @@ export function helpBlock(): string {
 /* ---------------------------------------------------------------- utils -- */
 
 export const SITE_URL = SITE;
+export const PRICING_URL = `${SITE}/pricing`;
+
+/** "Thanks, Ana": the first word of a name, or "there". */
+export function firstName(name: string): string {
+  return name.trim().split(/\s+/)[0] || "there";
+}
+
+/** The plain-text version's closing lines, matching helpBlock() and the
+    HTML footer. */
+export function textFooter(): string {
+  return `Need help? Reach us at team@advantage-analytics.com.
+
+© ${YEAR} Advantage Analytics LLC · advantage-analytics.com`;
+}
 
 export function strong(text: string): string {
   return `<strong class="ink" style="color:#0D0D0D; font-weight:600;">${text}</strong>`;

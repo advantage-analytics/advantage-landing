@@ -7,17 +7,24 @@ import type { ReactNode } from "react";
 export function ProofHead({
   eyebrow,
   title,
+  tail,
   aside,
 }: {
   eyebrow?: ReactNode;
   title: ReactNode;
+  // The second half of the headline, set in the muted tone where the page
+  // uses two-tone heads.
+  tail?: ReactNode;
   aside?: ReactNode;
 }) {
   return (
     <div className="proof-head reveal">
       <div className="sec-head">
         {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
-        <h2>{title}</h2>
+        <h2>
+          {title}
+          {tail ? <> <span className="h-tail">{tail}</span></> : null}
+        </h2>
       </div>
       {aside ? <p className="band-aside">{aside}</p> : null}
     </div>

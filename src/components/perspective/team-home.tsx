@@ -22,7 +22,7 @@ import "./mocks.css";
 // The team rail, in the dashboard's TEAM_NAV order: Team Home, Schedule,
 // Matches, Roster, Opponents, Statistics, Ask. Home, Matches, Statistics and
 // Ask share their glyphs with the personal rail.
-const TEAM_RAIL: ReactNode[] = [
+export const TEAM_RAIL: ReactNode[] = [
   RAIL_TOP[0],
   <Fragment key="cal"><path d="M8 2v4" /><path d="M16 2v4" /><rect width="18" height="18" x="3" y="4" rx="2" /><path d="M3 10h18" /></Fragment>,
   RAIL_TOP[1],
@@ -32,10 +32,6 @@ const TEAM_RAIL: ReactNode[] = [
   RAIL_TOP[4],
 ];
 
-// The page grows to its content in the app; a fixed board cannot, so it is
-// cut where the usage footer's bottom padding ends (measured at 1440 wide),
-// the way the match report board is.
-export const TH_H = 1170;
 
 const GOOD = "#5DB955";
 const BAD = "#E51837";
@@ -50,7 +46,7 @@ const KPIS = kpisFromTrends([
   ["Return games won", "36%", [30, 31, 32, 33, 34, 35, 36]],
 ]);
 
-type Form = "w" | "l";
+export type Form = "w" | "l";
 const LINES = [
   { slot: "S1", won: true, us: "Elena Vargas", them: "A. Novak", score: ["6-3", "6-4"], note: "" },
   { slot: "S3", won: true, us: "Maya Chen", them: "S. Patel", score: ["6-2", "6-3"], note: "Report ready" },
@@ -99,16 +95,16 @@ const HISTORY = [
 ];
 const SEASON_FORM: readonly Form[] = ["w", "w", "l", "w", "w", "w", "w", "l", "w", "w", "w"];
 
-const Num = ({ children }: { children: ReactNode }) => <span className="tn">{children}</span>;
+export const Num = ({ children }: { children: ReactNode }) => <span className="tn">{children}</span>;
 
-const Mark = ({ won, size = 14 }: { won: boolean; size?: number }) => (
+export const Mark = ({ won, size = 14 }: { won: boolean; size?: number }) => (
   <Ico size={size} stroke={won ? GOOD : BAD}>
     <circle cx="12" cy="12" r="10" />
     {won ? <path d="m9 12 2 2 4-4" /> : <><path d="m15 9-6 6" /><path d="m9 9 6 6" /></>}
   </Ico>
 );
 
-const Ticks = ({ form }: { form: readonly (Form | "-")[] }) => (
+export const Ticks = ({ form }: { form: readonly (Form | "-")[] }) => (
   <span className="th-ticks">
     {form.map((f, i) => (
       <i key={i} className={f === "w" ? "is-w" : f === "l" ? "is-l" : ""} />
@@ -369,9 +365,9 @@ export function TeamHome() {
           <div className="dh-usage">
             <Ico size={13} stroke="#888888"><path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" /></Ico>
             <p>
-              <Num>31</Num> of <Num>75</Num> hours left this month · <Num>3</Num> dual weekends left · free through Dec 31, 2026
+              <Num>131</Num> of <Num>200</Num> hours left this season · <Num>3</Num> dual weekends left
             </p>
-            <span className="rs">Resets Oct 1</span>
+            <span className="rs">Spring season</span>
             <span className="sep" />
             <span className="lnk strong">Usage</span>
           </div>

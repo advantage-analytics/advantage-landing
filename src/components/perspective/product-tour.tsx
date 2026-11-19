@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 import { ProofHead } from "./band-parts";
+import { AskAi } from "./ask-ai";
 import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
 
 /* Product tour — a 16.8 s screen recording of the real dashboard: a match's
@@ -29,7 +30,8 @@ const TOUR = "/assets/marketing/product-tour-v2";
 const HD_MEDIA = "(min-width: 900px) and (min-resolution: 1.5dppx)";
 
 /** Each line, and the second of the file at which the video reaches it. */
-const STEPS: readonly { at: number; line: string }[] = [
+export type TourStep = { at: number; line: string };
+const STEPS: readonly TourStep[] = [
   { at: 0, line: "See every stat from the match." },
   { at: 2.6, line: "Click a stat to watch its points." },
   { at: 4.3, line: "Watch only those points." },
@@ -37,32 +39,56 @@ const STEPS: readonly { at: number; line: string }[] = [
   { at: 6.6, line: "Follow every point, shot by shot." },
 ];
 
+/* A cut the player can show: the files' shared path (the player adds
+   "-2880" for the high-density size and ".webm" or ".mp4"; the posters are
+   "-poster.jpg" and "-poster-2880.jpg"), the lines under it with their
+   times, and what the video shows, for screen readers. The Statistics tour
+   is the default; the Visualizations tab passes its own once that cut
+   exists (product-showcase.tsx, VIZ_TOUR). */
+export type TourCut = { base: string; steps: readonly TourStep[]; label: string; stepsLabel: string };
+export const STATS_TOUR: TourCut = {
+  base: TOUR,
+  steps: STEPS,
+  label: "Product tour: from a match statistic to the points behind it, played shot by shot",
+  stepsLabel: "What the tour shows",
+};
+
 /** Plays the video, choosing its file (size and codec) on the first call. */
-function start(v: HTMLVideoElement) {
+function start(v: HTMLVideoElement, base: string) {
   if (!v.getAttribute("src")) {
     const size = window.matchMedia(HD_MEDIA).matches ? "-2880" : "";
     const type = v.canPlayType('video/webm; codecs="vp9"') ? "webm" : "mp4";
-    v.src = `${TOUR}${size}.${type}`;
+    v.src = `${base}${size}.${type}`;
   }
   v.play().catch(() => {});
 }
 
-function TourPlayer() {
+/* `active` is false while the player sits in a tab that is not showing: it
+   stays laid out (so the band keeps its height) but must not play. */
+export function TourPlayer({ active = true, cut = STATS_TOUR }: { active?: boolean; cut?: TourCut } = {}) {
+  const { base, steps } = cut;
   const reduce = usePrefersReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   // Whether the video should be running when it is on screen: on by default,
   // off under reduced motion, and the button's to change either way.
   const wantPlay = useRef(true);
+  const activeRef = useRef(active);
+  const syncRef = useRef<() => void>(() => {});
   const [playing, setPlaying] = useState(false);
   // -1 until the video has played: no line is singled out on a still.
   const [step, setStep] = useState(-1);
+  // A player in a hidden tab (the home page's product switcher) holds back its
+  // still until the tab is first opened: loading="lazy" alone still fetches an
+  // image that is only visibility: hidden.
+  const [seen, setSeen] = useState(active);
+  if (active && !seen) setSeen(true);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     wantPlay.current = !reduce;
 
-    const onTime = () => setStep(STEPS.filter((s) => s.at <= v.currentTime).length - 1);
+    const onTime = () => setStep(steps.filter((s) => s.at <= v.currentTime).length - 1);
     const onPlaying = () => setPlaying(true);
     const onPause = () => setPlaying(false);
     v.addEventListener("timeupdate", onTime);
@@ -73,7 +99,7 @@ function TourPlayer() {
     // it, so visibility is handled here as well as the scroll position.
     let inView = false;
     const sync = () => {
-      if (inView && document.visibilityState === "visible" && wantPlay.current) start(v);
+      if (inView && document.visibilityState === "visible" && wantPlay.current && activeRef.current) start(v, base);
       else v.pause();
     };
     const io = new IntersectionObserver(
@@ -83,6 +109,7 @@ function TourPlayer() {
       },
       { threshold: 0.25 },
     );
+    syncRef.current = sync;
     io.observe(v);
     document.addEventListener("visibilitychange", sync);
     return () => {
@@ -93,13 +120,18 @@ function TourPlayer() {
       v.removeEventListener("pause", onPause);
       v.pause();
     };
-  }, [reduce]);
+  }, [reduce, base, steps]);
+
+  useEffect(() => {
+    activeRef.current = active;
+    syncRef.current();
+  }, [active]);
 
   const toggle = () => {
     const v = videoRef.current;
     if (!v) return;
     wantPlay.current = v.paused;
-    if (v.paused) start(v);
+    if (v.paused) start(v, base);
     else v.pause();
   };
 
@@ -107,18 +139,20 @@ function TourPlayer() {
     <>
       <div className="proof-board reveal">
         <div className="mock-frame tour-frame reveal">
-          <picture>
-            <source media={HD_MEDIA} srcSet={`${TOUR}-poster-2880.jpg`} />
-            <img
-              className="tour-still"
-              src={`${TOUR}-poster.jpg`}
-              alt=""
-              width={1920}
-              height={1200}
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
+          {seen ? (
+            <picture>
+              <source media={HD_MEDIA} srcSet={`${base}-poster-2880.jpg`} />
+              <img
+                className="tour-still"
+                src={`${base}-poster.jpg`}
+                alt=""
+                width={1920}
+                height={1200}
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+          ) : null}
           <video
             ref={videoRef}
             className="tour-video"
@@ -126,7 +160,7 @@ function TourPlayer() {
             loop
             playsInline
             preload="none"
-            aria-label="Product tour: from a match statistic to the points behind it, played shot by shot"
+            aria-label={cut.label}
           />
           <button
             type="button"
@@ -142,8 +176,8 @@ function TourPlayer() {
           </button>
         </div>
       </div>
-      <ol className="tour-steps reveal" aria-label="What the tour shows">
-        {STEPS.map((s, i) => (
+      <ol className="tour-steps reveal" aria-label={cut.stepsLabel}>
+        {steps.map((s, i) => (
           <li className={`tour-step${i === step ? " is-on" : ""}`} key={s.line}>
             <span className="n" aria-hidden="true">
               0{i + 1}
@@ -166,6 +200,14 @@ export function ProductTour() {
           aside="Pick any number and the film jumps to that point, every shot and where it landed."
         />
         <TourPlayer />
+        <p className="tour-note reveal">
+          <strong>Condensed film.</strong> Changeovers and the time between points are cut out, so you watch only the
+          tennis.
+        </p>
+        <AskAi
+          placement="home-tour"
+          prompts={["summarise my last match", "find where I lose second-serve points", "show my first serve over five matches"]}
+        />
       </div>
     </section>
   );

@@ -15,7 +15,7 @@ export default function Page() {
       <PageHead
         eyebrow="Legal"
         title="Privacy Policy"
-        meta="Version 1.5 · Last updated November 7, 2026"
+        meta="Version 1.6 · Last updated November 17, 2026"
       />
       <section className="band">
         <div className="wrap">
@@ -71,6 +71,10 @@ export default function Page() {
                 answers.
               </p>
               <p>
+                <strong>Messages and Feedback:</strong> Messages you send us in the Service and any
+                feedback you give about the product.
+              </p>
+              <p>
                 <strong>Usage Data:</strong> We collect information about how you interact with the
                 Service, such as IP addresses, device type, browser information, pages visited, and
                 timestamps.
@@ -120,7 +124,8 @@ export default function Page() {
                 </li>
                 <li>
                   To review and correct the quality of our analysis, which may include a member of our
-                  team, or of our video analysis provider&apos;s team, looking at a match and its video.
+                  team, contractors working for us under confidentiality obligations, or our video
+                  analysis provider&apos;s team looking at a match and its video.
                 </li>
                 <li>To improve and customize the Service and develop new features.</li>
                 <li>To detect, prevent, and address technical issues, fraud, or abuse.</li>
@@ -153,7 +158,7 @@ export default function Page() {
               </p>
               <p>
                 <strong>AI Service Providers:</strong> Ask answers and match summaries are written with
-                the help of an AI model from a third-party provider. We send it your first name and the
+                the help of an AI model from a third-party provider. We send it your name and the
                 statistics needed to answer your question or summarise your match.
               </p>
               <p>

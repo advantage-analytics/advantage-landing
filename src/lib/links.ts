@@ -8,13 +8,16 @@ const APP_URL = (
 // retyped in half a dozen files; a stale address here is invisible until a
 // coach's submission has already failed.
 export const CONTACT_EMAIL = "team@advantage-analytics.com";
-export const SITE_DOMAIN = "advantage-analytics.com";
 
-// The Cal.com event coaches book from /pilot and /contact, as "user/event".
+// The Cal.com event coaches book from /contact, as "user/event". The slug is
+// the event's own on Cal.com (it predates the paid plans); rename it there and
+// set NEXT_PUBLIC_CAL_WALKTHROUGH to change it.
 // The webhook at /api/cal-booking records each booking in Airtable.
 export const CAL_WALKTHROUGH = (
   process.env.NEXT_PUBLIC_CAL_WALKTHROUGH ?? "advantage-analytics/pilot-walkthrough"
 ).replace(/^\/+|\/+$/g, "");
+// The same event as Cal.com's own full booking page.
+export const CAL_WALKTHROUGH_URL = `https://cal.com/${CAL_WALKTHROUGH}`;
 
 export const links = {
   signIn: `${APP_URL}/login`,

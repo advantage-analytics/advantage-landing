@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Check } from "lucide-react";
 import "./dashboard-home.css";
 import "./mocks.css";
 
@@ -28,7 +27,7 @@ const VIZ = {
 const ENDINGS = [
   { key: "Winners", you: 28, opp: 22 },
   { key: "Aces", you: 7, opp: 4 },
-  { key: "Unforced", you: 19, opp: 27 },
+  { key: "Errors", you: 19, opp: 27 },
   { key: "Double faults", you: 2, opp: 5 },
 ];
 
@@ -64,32 +63,6 @@ export function MatchInsight() {
           <span className="nm">Advantage Intelligence</span>
         </span>
       </div>
-    </div>
-  );
-}
-
-export function MatchScore() {
-  return (
-    <div className="mb-score">
-      <div className="hd">
-        <span className="mb-micro">Final</span>
-        <div className="flex" />
-        <span className="clock">1:42:18</span>
-      </div>
-      <div className="rows">
-        <div className="row">
-          <span className="nm">Rudy Quan</span>
-          <Check size={12} strokeWidth={2} className="win" aria-hidden="true" />
-          <div className="flex" />
-          <span className="sets"><b>6</b><b>3</b><b>6</b></span>
-        </div>
-        <div className="row is-lost">
-          <span className="nm">Federico Gomez</span>
-          <div className="flex" />
-          <span className="sets"><b>4</b><b>6</b><b>3</b></span>
-        </div>
-      </div>
-      <span className="mb-micro tn">BNP Paribas Open · Round of 64</span>
     </div>
   );
 }

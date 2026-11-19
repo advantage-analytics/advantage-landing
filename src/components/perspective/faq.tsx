@@ -3,12 +3,13 @@ import Link from "next/link";
 import { CONTACT_EMAIL } from "@/lib/links";
 import { EXPORT_GUIDE_HREF, RECORDING_GUIDE_HREF } from "@/lib/match-video";
 import { FaqItem } from "./faq-item";
-import { BETA_END_SHORT, PILOT_HOURS, PILOT_PAID_PLANS_BEGIN } from "@/lib/pilot";
+import { PLAN_FAQ } from "@/lib/plan-faq";
 import { faqPageLd } from "@/lib/structured-data";
 import { JsonLd } from "@/components/json-ld";
 
 /* The questions that stand between a visitor and an upload, ordered by what
-   the visitor decides first (can I join?), then what happens to their film.
+   the visitor decides first (what does it cost?), then what happens to their film.
+   The shared answers come from lib/plan-faq, so /pricing says the same.
    Collapsed so the whole band fits one screen, phones included; native
    <details> keeps it keyboard-operable and find-in-page searchable, and
    working before hydration; FaqItem only adds the open/close motion. Every row starts closed: the plus marks
@@ -17,50 +18,61 @@ import { JsonLd } from "@/components/json-ld";
 
 /* `text` is the answer as plain text, for the FAQPage structured data: only
    needed where `a` holds markup, and it must say what the visible answer says. */
-const QA: readonly { q: string; a: ReactNode; text?: string }[] = [
+type Question = { q: string; a: ReactNode; text?: string };
+
+const QA: readonly Question[] = [
+  PLAN_FAQ.cost,
+  PLAN_FAQ.verified,
   {
-    q: "Do I need a program to join?",
-    a: "No. The free beta is for individual players: sign up, upload a match, get 2 hours of film a month.",
-  },
-  {
-    q: "Who is the fall pilot for?",
-    a: `College programs. A coach signs up and finds the team, and the program gets ${PILOT_HOURS} of film a month.`,
-  },
-  {
-    q: `What happens after ${BETA_END_SHORT}?`,
-    a: `Paid plans begin in ${PILOT_PAID_PLANS_BEGIN}. Until then, everything is free.`,
-  },
-  {
-    q: "What video works?",
+    q: PLAN_FAQ.video.q,
     a: (
       <>
-        Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline, raised up if you can. Side-on film won’t give a full
-        breakdown. The <Link href={RECORDING_GUIDE_HREF}>recording guide</Link> shows how to set up, and the{" "}
+        {PLAN_FAQ.video.a} The <Link href={RECORDING_GUIDE_HREF}>recording guide</Link> shows how to set up, and the{" "}
         <Link href={EXPORT_GUIDE_HREF}>export guide</Link> how to get it off the camera.
       </>
     ),
-    text: "Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline, raised up if you can. Side-on film won’t give a full breakdown. The recording guide shows how to set up, and the export guide how to get it off the camera.",
+    text: `${PLAN_FAQ.video.a} The recording guide shows how to set up, and the export guide how to get it off the camera.`,
   },
-  { q: "How long does a breakdown take?", a: "Within 24 hours. You get an email when it’s ready." },
-  {
-    q: "Who can see my film?",
-    a: "Only you. If you’re in the pilot, everyone in your team workspace can see it too.",
-  },
+  PLAN_FAQ.ai,
+  PLAN_FAQ.ready,
+  PLAN_FAQ.film,
 ];
 
-const FAQ_LD = faqPageLd(QA.map((x) => ({ q: x.q, text: x.text ?? (typeof x.a === "string" ? x.a : "") })));
+const faqLd = (qa: readonly Question[]) =>
+  faqPageLd(qa.map((x) => ({ q: x.q, text: x.text ?? (typeof x.a === "string" ? x.a : "") })));
+const FAQ_LD = faqLd(QA);
 
-export function Faq() {
+/* The home page's FAQ by default. Another page passes its own questions and
+   head (/pricing), and `ld={false}` when it emits the FAQPage data itself. */
+export function Faq({
+  qa = QA,
+  id = "faq",
+  className = "band alt",
+  eyebrow = "FAQ",
+  title = (
+    <>
+      Before <span className="h-tail">you upload.</span>
+    </>
+  ),
+  ld = true,
+}: {
+  qa?: readonly Question[];
+  id?: string;
+  className?: string;
+  eyebrow?: ReactNode;
+  title?: ReactNode;
+  ld?: boolean;
+}) {
   return (
-    <section className="band alt" id="faq">
-      <JsonLd data={FAQ_LD} />
+    <section className={className} id={id}>
+      {ld ? <JsonLd data={qa === QA ? FAQ_LD : faqLd(qa)} /> : null}
       <div className="wrap faq">
         <div className="faq-intro sec-head reveal">
-          <span className="eyebrow">FAQ</span>
-          <h2>Before you upload.</h2>
+          <span className="eyebrow">{eyebrow}</span>
+          <h2>{title}</h2>
         </div>
         <div className="faq-list reveal">
-          {QA.map((x) => (
+          {qa.map((x) => (
             <FaqItem key={x.q} q={x.q}>
               {x.a}
             </FaqItem>

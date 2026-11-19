@@ -4,7 +4,7 @@ import { createAirtableRecord } from "@/lib/airtable";
 import { sendSubmissionEmail, escapeHtml } from "@/lib/notify";
 import type { LeadSource } from "@/lib/leads";
 
-/* Cal.com's webhook for the pilot walkthrough (see CAL_WALKTHROUGH in
+/* Cal.com's webhook for the coach walkthrough (see CAL_WALKTHROUGH in
    lib/links). Subscribed to BOOKING_CREATED only: Cal.com already emails the
    host about reschedules and cancellations, so those need no row.
 
@@ -95,6 +95,8 @@ export async function POST(request: Request) {
   const school = answer(p.responses, "school");
   const notes = answer(p.responses, "notes");
   const placement = typeof p.metadata?.placement === "string" ? p.metadata.placement : "";
+  // The plan column a coach booked from on /pricing, when they did.
+  const plan = typeof p.metadata?.plan === "string" ? p.metadata.plan : "";
   const slot = when(p.startTime);
 
   if (!email) {
@@ -126,6 +128,7 @@ export async function POST(request: Request) {
 <p><strong>School and team:</strong> ${escapeHtml(school) || "-"}</p>
 <p><strong>Look at first:</strong> ${escapeHtml(notes) || "-"}</p>
 <p><strong>Booked from:</strong> ${escapeHtml(placement) || "-"}</p>
+<p><strong>Plan looked at:</strong> ${escapeHtml(plan) || "-"}</p>
 <p><strong>Call link:</strong> ${escapeHtml(p.location ?? "") || "in the calendar invite"}</p>`,
   });
 

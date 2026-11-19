@@ -1,0 +1,77 @@
+/* ============ /pricing ============
+   Route-local styles. The masthead, centred heads, the segmented switch, the
+   product frame, the split card, the FAQ and the navy band are the site's
+   own; this file draws the plan table inside the frame, sets the two cards'
+   columns, and keeps the bands alternating for each audience. */
+
+/* The switch sits centred under the head, two segments wide. */
+.pr-switch { width: min(100%, 440px); }
+
+/* Grey and white alternate down the page. Without the college band, the two
+   bands after the plans swap so the rhythm holds. */
+.pr-body[data-audience="individual"] #included { background: var(--surface); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+.pr-body[data-audience="individual"] #questions { background: transparent; border-top: 0; border-bottom: 0; }
+
+/* The comparison table, in the product frame (.mock-frame): the plans across
+   the top, the rows down the side. It scrolls sideways on a narrow screen,
+   with the row labels pinned on the left. */
+.mock-frame.pr-table-wrap { margin-top: 40px; overflow-x: auto; overscroll-behavior-x: contain; }
+.pr-table-wrap:focus-visible { outline: 2px solid var(--signal-blue); outline-offset: 2px; }
+.pr-table { width: 100%; min-width: 820px; table-layout: fixed; border-collapse: separate; border-spacing: 0;
+  font: var(--fw-regular) 14px/1.5 var(--font-sans); color: var(--ink); }
+.pr-table th, .pr-table td { padding: 15px 24px; text-align: left; vertical-align: baseline; border-top: 1px solid var(--hairline); }
+.pr-table td { font-variant-numeric: tabular-nums; }
+.pr-table tbody th[scope="row"] { width: 28%; font-weight: var(--fw-regular); color: var(--ink-secondary); }
+/* The row labels stay in view while the plans scroll under them. */
+.pr-table :is(thead td, tbody th[scope="row"], .pr-ctas td:first-child) { position: sticky; left: 0; z-index: 1; background: var(--surface); }
+/* The featured plan: a faint blue column with a blue rule across its head. */
+.pr-table .is-featured { background: rgba(59, 130, 246, .045); }
+.pr-table thead th.is-featured { box-shadow: inset 0 2px 0 var(--signal-blue); }
+
+.pr-table thead td.pr-corner { width: 28%; }
+.pr-table thead :is(th, td) { padding-top: 30px; padding-bottom: 22px; border-top: 0; }
+.pr-name { display: block; font: var(--fw-regular) 20px/1.25 var(--font-sans); letter-spacing: -0.4px; color: var(--ink); }
+.pr-line { display: block; margin-top: 4px; font: var(--fw-regular) 13px/1.5 var(--font-sans); color: var(--ink-muted); }
+
+.pr-table .is-price :is(th, td) { padding-top: 24px; padding-bottom: 24px; vertical-align: middle; }
+.pr-fig { font: var(--fw-light) 32px/1 var(--font-sans); letter-spacing: -0.6px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.pr-per { margin-left: 6px; font: var(--fw-regular) 13px var(--font-sans); color: var(--ink-muted); }
+.pr-save { display: inline-flex; align-items: center; height: 20px; margin-left: 8px; padding: 0 8px; border-radius: var(--r-pill);
+  background: var(--signal-blue-soft); color: var(--signal-blue-deep); font: var(--fw-medium) 11px var(--font-sans);
+  vertical-align: 2px; white-space: nowrap; }
+.pr-no { color: var(--ink-label); }
+
+/* A section name in the table: plain ink, a step above the rows. */
+.pr-sec th { padding-top: 30px; padding-bottom: 10px; font: var(--fw-medium) 13px var(--font-sans); color: var(--ink); }
+.pr-ctas td { padding-top: 24px; padding-bottom: 28px; vertical-align: middle; }
+.pr-ctas .btn { white-space: nowrap; }
+.pr-cta-note { font-size: 13px; color: var(--ink-muted); }
+
+.pr-terms { margin: 28px 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; text-align: center;
+  font: var(--fw-regular) 13px/1.6 var(--font-sans); color: var(--ink-muted); }
+.pr-terms a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
+
+/* How colleges pay: four steps, numbered in the mono blue. */
+.pr-pay { --cols: 4; }
+.pr-pay .n { display: block; margin-bottom: 14px; font: var(--fw-regular) 11px var(--font-mono); letter-spacing: 1px; color: var(--signal-blue); }
+
+/* What comes back: six facts, a step smaller than the panel's default. */
+.sub-panel.pr-included > * { padding: 28px 28px 30px; }
+.pr-inc-icon { display: flex; height: 22px; align-items: center; margin-bottom: 16px; color: var(--signal-blue); }
+.sub-panel.pr-included h3 { font-size: 17px; line-height: 1.3; letter-spacing: -0.2px; }
+.sub-panel.pr-included p { margin-top: 8px; font-size: 14px; }
+
+@media (max-width: 1023px) {
+  .pr-pay, .pr-included { --cols: 2; }
+}
+/* A phone: a narrower label column and tighter cells, so the first plan and
+   part of the next show at once and the table plainly scrolls sideways. */
+@media (max-width: 720px) {
+  .pr-table { min-width: 640px; font-size: 13px; }
+  .pr-table thead td.pr-corner, .pr-table tbody th[scope="row"] { width: 132px; }
+  .pr-table th, .pr-table td { padding: 14px 14px; }
+  .pr-name { font-size: 19px; }
+  .pr-fig { font-size: 30px; }
+  .pr-save { display: flex; width: fit-content; margin: 6px 0 0; }
+  .pr-ctas .btn { padding: 0 14px; }
+}

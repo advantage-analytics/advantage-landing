@@ -1,20 +1,15 @@
 import Link from "next/link";
-import { PageFrame, PageHead } from "@/components/perspective/page-frame";
+import { GuideShell } from "@/components/guide/guide-shell";
 import { FaqItem } from "@/components/perspective/faq-item";
 import { KpiTrend } from "@/components/perspective/sections";
 import { MatchEndings, MatchInsight } from "@/components/perspective/match-breakdown";
 import { JsonLd } from "@/components/json-ld";
-import { links } from "@/lib/links";
 import { EXPORT_GUIDE_HREF, RECORDING_GUIDE_HREF } from "@/lib/match-video";
 import { pageMetadata } from "@/lib/metadata";
 import { articleLd, faqPageLd } from "@/lib/structured-data";
-import {
-  BETA_END_SHORT,
-  INDIVIDUAL_BETA_SHORT,
-  PILOT_HOURS,
-  PILOT_HOURS_SCOPE,
-  PILOT_PAID_PLANS_BEGIN,
-} from "@/lib/pilot";
+import { PLAN_FAQ } from "@/lib/plan-faq";
+import { COLLEGE_PLANS, FREE_MATCH_LINE, FREE_MATCH_OFFER, usd } from "@/lib/plans";
+import { FreeMatchLink, TalkToUsLink } from "@/components/perspective/cta-links";
 import "./tennis-analytics.css";
 
 /* /tennis-analytics — the page that explains the subject itself, for the
@@ -35,7 +30,7 @@ const DESCRIPTION =
   "Tennis analytics turns a match into numbers you can act on: first serve percentage, points won on serve, how points ended. What each one means, and how to get them from a video filmed on your phone or any camera.";
 // Bump with any real edit to the copy; it is shown under the title and sent
 // as the article's dateModified.
-const UPDATED = { iso: "2026-11-04", label: "November 2026" };
+const UPDATED = "2026-11-04";
 
 export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, ownCard: true });
 
@@ -64,15 +59,13 @@ const MEASURES = [
   },
   {
     t: "How points ended",
-    d: "Winners and aces against unforced errors and double faults. It tells you whether you won the match or your opponent lost it.",
+    d: "Winners and aces against errors and double faults. It tells you whether you won the match or your opponent lost it.",
   },
   {
     t: "Rally length",
     d: "Who wins the short points and who wins the long ones. It shows which kind of match to play.",
   },
 ];
-
-const beta = BETA_END_SHORT;
 
 const QA = [
   {
@@ -81,48 +74,47 @@ const QA = [
   },
   {
     q: "Can I get tennis stats from a phone video?",
-    a: "Yes. Film a singles match from behind the baseline on your phone or any camera, upload the file to Advantage, and you get a breakdown within 24 hours.",
+    a: "Yes. Film a singles match from behind the baseline on your phone or any camera, upload the file to Advantage, and you get an email when your breakdown is ready.",
   },
   {
     q: "What stats should a tennis player track?",
-    a: "Start with first serve percentage, points won behind your first and second serve, and how your points ended: winners and aces against unforced errors and double faults. Then watch how they move across matches.",
+    a: "Start with first serve percentage, points won behind your first and second serve, and how your points ended: winners and aces against errors and double faults. Then watch how they move across matches.",
   },
   {
     q: "What video works?",
     a: "Video from a phone, a GoPro or court cameras like PlaySight, as long as it’s singles shot from behind the baseline. Side-on film won’t give a full breakdown.",
   },
-  {
-    q: "Is it free?",
-    a: `Yes, through ${beta}. Players get 2 hours of film a month; college programs in the pilot get ${PILOT_HOURS} ${PILOT_HOURS_SCOPE}. Paid plans begin in ${PILOT_PAID_PLANS_BEGIN}.`,
-  },
-  {
-    q: "Who can see my film?",
-    a: "Only you. If you’re in the pilot, everyone in your team workspace can see it too.",
-  },
+  PLAN_FAQ.cost,
+  PLAN_FAQ.verified,
+  PLAN_FAQ.film,
 ];
 
 const LD = [
-  articleLd({ path: PATH, headline: "Tennis analytics, explained", description: DESCRIPTION, dateModified: UPDATED.iso }),
+  articleLd({ path: PATH, headline: "Tennis analytics, explained", description: DESCRIPTION, dateModified: UPDATED }),
   faqPageLd(QA.map((x) => ({ q: x.q, text: x.a }))),
+];
+
+// The rail's sections, in page order.
+const SECTIONS = [
+  { id: "measures", label: "What it measures" },
+  { id: "how", label: "From video to a breakdown" },
+  { id: "who", label: "Who it is for" },
+  { id: "faq", label: "Common questions" },
 ];
 
 export default function Page() {
   return (
-    <PageFrame>
-      <JsonLd data={LD} />
-      <PageHead
-        eyebrow="Guide"
-        title="Tennis analytics, explained."
-        lede="Tennis analytics turns what happens in a match into numbers you can act on: how often your first serve goes in, how your points end, and where you win and lose them. It used to take a team of analysts. Now it takes a video of your match, filmed on your phone or any camera."
-        meta={`Updated ${UPDATED.label}`}
-      />
-
+    <GuideShell
+      id="analytics"
+      sub="Tennis analytics turns what happens in a match into numbers you can act on: how often your first serve goes in, how your points end, and where you win and lose them. It used to take a team of analysts. Now it takes a video of your match, filmed on your phone or any camera."
+      sections={SECTIONS}
+    >
       <section>
         <div className="wrap">
           <aside className="ta-short reveal" aria-label="The short answer">
             {SHORT.map((x) => (
               <div key={x.k}>
-                <span className="eyebrow">{x.k}</span>
+                <span className="ta-label">{x.k}</span>
                 <p>{x.v}</p>
               </div>
             ))}
@@ -133,7 +125,6 @@ export default function Page() {
       <section className="ta-band" id="measures">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">What it measures</span>
             <h2>The numbers that decide a match.</h2>
             <p>Most matches turn on a handful of things. These are the ones worth tracking, what each means, and why it matters.</p>
           </div>
@@ -159,7 +150,7 @@ export default function Page() {
               <div
                 className="ta-crop mb-crop"
                 role="img"
-                aria-label="From a sample match report: how each player's points ended, in winners, aces, unforced errors and double faults."
+                aria-label="From a sample match report: how each player's points ended, in winners, aces, errors and double faults."
               >
                 <div inert>
                   <MatchEndings />
@@ -174,12 +165,10 @@ export default function Page() {
       <section className="ta-band" id="how">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">From video to a breakdown</span>
             <h2>How to get tennis stats from a match video.</h2>
           </div>
           <ol className="ta-steps reveal">
             <li>
-              <span className="n">01</span>
               <h3>Film from behind the baseline</h3>
               <p>
                 Clip your phone or any camera to the back fence, raised up if you can, and record the whole singles
@@ -187,7 +176,6 @@ export default function Page() {
               </p>
             </li>
             <li>
-              <span className="n">02</span>
               <h3>Upload the file</h3>
               <p>
                 Add the video to your Advantage account. The <Link href={EXPORT_GUIDE_HREF}>export guide</Link> shows how
@@ -195,10 +183,9 @@ export default function Page() {
               </p>
             </li>
             <li>
-              <span className="n">03</span>
               <h3>Read your breakdown</h3>
               <p>
-                Within 24 hours you get an email: where you won points, where you lost them, and what to work on, each
+                You get an email when it’s ready: where you won points, where you lost them, and what to work on, each
                 linked to the moment on video.
               </p>
             </li>
@@ -218,37 +205,31 @@ export default function Page() {
       <section className="ta-band" id="who">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">Who it is for</span>
             <h2>For players, and for the coaches who work with them.</h2>
           </div>
           <div className="ta-lanes reveal">
             <div className="ta-lane">
-              <span className="eyebrow">Players</span>
+              <span className="ta-label">Players</span>
               <h3>See your own game in numbers.</h3>
-              <p>Track your serve, your errors and your trends from one match to the next. {INDIVIDUAL_BETA_SHORT}</p>
-              <a className="btn btn-primary btn-lg" href={links.signUp} target="_blank" rel="noopener noreferrer">
-                Join free beta
-              </a>
+              <p>Track your serve, your errors and your trends from one match to the next.{FREE_MATCH_OFFER ? ` ${FREE_MATCH_LINE}` : ""}</p>
+              <FreeMatchLink className="btn btn-primary" placement="tennis-analytics" icon={false} />
             </div>
             <div className="ta-lane">
-              <span className="eyebrow">Coaches and programs</span>
+              <span className="ta-label">Coaches and programs</span>
               <h3>Every dual, every court, one page.</h3>
               <p>
-                College programs join the fall pilot: {PILOT_HOURS} of film {PILOT_HOURS_SCOPE}, free through {beta}. A
-                coach signs up and finds the team. <Link href="/pilot">About the pilot</Link>
+                College plans cover your full roster, from {usd(COLLEGE_PLANS[0].spring.price)} for the spring season.{" "}
+                <Link href="/pricing">See pricing</Link>
               </p>
-              <a className="btn btn-ink btn-lg" href={links.signUp} target="_blank" rel="noopener noreferrer">
-                Find your team
-              </a>
+              <TalkToUsLink className="btn btn-ink" placement="tennis-analytics" />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="ta-band ta-faq-band" id="faq">
+      <section className="ta-band" id="faq">
         <div className="wrap faq">
           <div className="faq-intro sec-head reveal">
-            <span className="eyebrow">FAQ</span>
             <h2>Common questions.</h2>
           </div>
           <div className="faq-list reveal">
@@ -260,6 +241,7 @@ export default function Page() {
           </div>
         </div>
       </section>
-    </PageFrame>
+      <JsonLd data={LD} />
+    </GuideShell>
   );
 }
