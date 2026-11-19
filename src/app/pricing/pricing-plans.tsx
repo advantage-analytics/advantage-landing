@@ -199,9 +199,15 @@ function coachTable(): Table {
 // Built once: they read only module constants.
 const TABLES: Record<Audience, Table> = { college: collegeTable(), individual: coachTable() };
 
+/* On a phone the table shows one plan at a time beside its row labels, picked
+   above it, instead of three columns to swipe through with the labels
+   scrolling away. The picker and the column hiding exist only below 641px
+   (pricing.css); on wider screens every plan shows and the picker is hidden.
+   It opens on the featured plan. */
 function PlanTable({ table, tabId }: { table: Table; tabId: string }) {
   const cols = table.plans.length;
   const tint = (i: number) => (i === table.featured ? "is-featured" : undefined);
+  const [shown, setShown] = useState(table.featured);
   return (
     <div
       className="mock-frame pr-table-wrap"
@@ -209,7 +215,21 @@ function PlanTable({ table, tabId }: { table: Table; tabId: string }) {
       role="tabpanel"
       aria-labelledby={tabId}
       tabIndex={0}
+      data-show={shown}
     >
+      <div className="pr-pick" role="group" aria-label="Plan to show">
+        {table.plans.map((p, i) => (
+          <button
+            key={p.id}
+            type="button"
+            aria-pressed={shown === i}
+            className={shown === i ? "is-on" : undefined}
+            onClick={() => setShown(i)}
+          >
+            {p.name}
+          </button>
+        ))}
+      </div>
       <table className="pr-table">
         <thead>
           <tr>

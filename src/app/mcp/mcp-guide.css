@@ -518,6 +518,14 @@
 .pv-hero .mcp-urlbar code { color: #fff; font: var(--fw-regular) 13px/1.4 var(--font-mono); }
 .pv-hero .mcp-urlbar .mcp-copy { background: #fff; color: #13234c; }
 .pv-hero .mcp-urlbar .mcp-copy:hover { background: #eef2fb; }
+/* A phone: the address on top, centred and breaking only at its path, and the
+   copy button across the bar's full width under it, the size of the site's
+   other hero buttons. */
+@media (max-width: 640px) {
+  .pv-hero .mcp-urlbar { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px; }
+  .pv-hero .mcp-urlbar code { flex: none; text-align: center; overflow-wrap: normal; word-break: keep-all; }
+  .pv-hero .mcp-urlbar .mcp-copy { height: 44px; justify-content: center; font-size: 14px; }
+}
 
 /* What to know before pressing Allow, under the setup steps. */
 .mcp-assure {

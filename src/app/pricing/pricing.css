@@ -64,8 +64,11 @@
 @media (max-width: 1023px) {
   .pr-pay, .pr-included { --cols: 2; }
 }
-/* A phone: a narrower label column and tighter cells, so the first plan and
-   part of the next show at once and the table plainly scrolls sideways. */
+/* The phone plan picker (PlanTable): hidden until the table is one plan wide. */
+.pr-pick { display: none; }
+
+/* A small tablet: a narrower label column and tighter cells; the table
+   scrolls sideways if it must. */
 @media (max-width: 720px) {
   .pr-table { min-width: 640px; font-size: 13px; }
   .pr-table thead td.pr-corner, .pr-table tbody th[scope="row"] { width: 132px; }
@@ -74,4 +77,96 @@
   .pr-fig { font-size: 30px; }
   .pr-save { display: flex; width: fit-content; margin: 6px 0 0; }
   .pr-ctas .btn { padding: 0 14px; }
+}
+
+/* ---- A phone ----
+   The table becomes one plan card, chosen with the picker above it (PlanTable):
+   the plan's name, its price large, the button straight under the price, then
+   what it includes as label-and-value rows. No corner cell, no sideways
+   scroll. The rows keep their order; only the button moves up, after the
+   prices (the rows before the first section heading). */
+@media (max-width: 640px) {
+  .mock-frame.pr-table-wrap { overflow: hidden; }
+  .pr-table, .pr-table thead, .pr-table tbody, .pr-table tr, .pr-table th, .pr-table td { display: block; }
+  .pr-table { min-width: 0; font-size: 14px; }
+  .pr-table-wrap[data-show="0"] tr > :nth-child(n + 3),
+  .pr-table-wrap[data-show="1"] tr > :is(:nth-child(2), :nth-child(n + 4)),
+  .pr-table-wrap[data-show="2"] tr > :is(:nth-child(2), :nth-child(3)),
+  .pr-table thead td.pr-corner { display: none; }
+  .pr-table :is(th, td) { position: static; width: auto; padding: 0; border: 0; background: none; box-shadow: none; }
+  .pr-table .is-featured { background: none; }
+  .pr-table thead th.is-featured { box-shadow: none; }
+
+  /* The plan's head. */
+  .pr-table thead th { padding: 22px 20px 4px; }
+  .pr-name { font-size: 22px; }
+
+  .pr-table tbody { display: flex; flex-direction: column; padding-bottom: 8px; }
+  /* A row: its label and its value in two columns, both reading from the
+     left, so a long value wraps under itself instead of ragged-right. */
+  .pr-table tbody tr { display: grid; grid-template-columns: 40% minmax(0, 1fr); align-items: baseline; column-gap: 16px; margin: 0 20px; padding: 12px 0; border-top: 1px solid var(--hairline); }
+  .pr-table tbody th[scope="row"] { font-size: 14px; }
+  .pr-table tbody td { color: var(--ink); }
+  /* The prices first, then the button, then the rest in their order. */
+  .pr-table tbody tr:not(.pr-sec ~ tr) { order: 0; }
+  .pr-table tbody .pr-ctas { order: 1; }
+  .pr-table tbody :is(.pr-sec, .pr-sec ~ tr:not(.pr-ctas)) { order: 2; }
+  /* The headline price: the figure large on the left, its season under it. */
+  .pr-table tbody tr.is-price { display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 2px; padding: 8px 0 14px; border-top: 0; }
+  .pr-table tbody tr.is-price :is(th, td) { padding: 0; }
+  .pr-table tbody tr.is-price td { text-align: left; }
+  .pr-fig { font-size: 40px; }
+  /* The button, full width, with its small print under it. */
+  .pr-table tbody tr.pr-ctas { display: flex; flex-direction: column-reverse; align-items: stretch; gap: 8px; padding: 4px 0 22px; border-top: 0; }
+  .pr-table tbody tr.pr-ctas td { padding: 0; text-align: center; }
+  .pr-ctas .btn { width: 100%; justify-content: center; }
+  .pr-cta-note { font-size: 12.5px; }
+  /* The yearly saving sits under its price, on the value's right edge. */
+  .pr-table tbody td .pr-save { margin: 6px 0 0; }
+  /* A section name: a full-width label a step above its rows. */
+  .pr-table tbody tr.pr-sec { display: block; padding: 22px 0 6px; }
+  .pr-table tbody tr.pr-sec th { font-size: 13px; }
+
+  /* The plan picker: the card's own tab strip, underlined, so it reads as
+     part of the card and not as a second copy of the page's audience pill. */
+  .pr-pick {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    border-bottom: 1px solid var(--hairline-medium);
+  }
+  .pr-pick button {
+    min-height: 48px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    background: none;
+    font: var(--fw-medium) 14px/1.2 var(--font-sans);
+    color: var(--ink-tertiary);
+    cursor: pointer;
+  }
+  .pr-pick button.is-on { color: var(--ink); border-bottom-color: var(--signal-blue); }
+  .pr-pick button:focus-visible { outline: 2px solid var(--signal-blue); outline-offset: -4px; }
+
+  /* The price within a thumb's reach of the switch: the head, the audience
+     switch and the card sit closer, so the first price shows on the first
+     screen past the masthead. */
+  #plans .proof-head { gap: 10px; }
+  #plans .pr-switch { margin-top: 22px; }
+  .mock-frame.pr-table-wrap { margin-top: 16px; }
+
+  /* How colleges pay and What comes back: compact rows, the number or icon
+     beside its text, instead of tall boxes stacked a screen deep. */
+  .sub-panel.pr-pay, .sub-panel.pr-included { margin-top: 36px; }
+  .sub-panel.pr-pay > *, .sub-panel.pr-included > * {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    column-gap: 12px;
+    padding: 18px 20px;
+  }
+  .pr-pay .n, .pr-inc-icon { grid-row: 1 / span 2; margin: 0; }
+  .pr-pay .n { padding-top: 4px; }
+  .pr-inc-icon { height: 24px; }
+  .sub-panel.pr-pay h3, .sub-panel.pr-included h3 { font-size: 17px; line-height: 1.3; letter-spacing: -0.2px; }
+  .sub-panel.pr-pay p, .sub-panel.pr-included p { margin-top: 4px; font-size: 14px; line-height: 1.55; }
 }
