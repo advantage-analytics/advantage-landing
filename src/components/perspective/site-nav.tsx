@@ -215,22 +215,37 @@ export function SiteNav({ subpage = false }: { subpage?: boolean } = {}) {
     const place = () => {
       const cur = center.querySelector<HTMLElement>("a[aria-current]");
       const from = carriedRef.current;
-      setMark((m) => {
-        if (!cur) return from ? { ...from, on: true, slide: false } : { ...m, on: false, slide: false };
-        const next = { x: cur.offsetLeft, w: cur.offsetWidth };
+      const next = cur ? { x: cur.offsetLeft, w: cur.offsetWidth } : null;
+      // Kept for the next page, outside the state updater (which may run twice).
+      if (next) {
         try {
           sessionStorage.setItem(MARK_KEY, JSON.stringify({ ...next, t: Date.now() }));
         } catch {
           // Not kept for the next page; nothing else depends on it.
         }
+      }
+      setMark((m) => {
+        if (!next) return from ? { ...from, on: true, slide: false } : { ...m, on: false, slide: false };
         return { ...next, on: true, slide: from !== null || m.w > 0 };
       });
       if (cur) carriedRef.current = null;
     };
     place();
-    window.addEventListener("resize", place);
+    // Resize fires many times a second while dragging: measure once a frame.
+    let frame = 0;
+    const onResize = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        place();
+      });
+    };
+    window.addEventListener("resize", onResize);
     document.fonts?.ready.then(place).catch(() => {});
-    return () => window.removeEventListener("resize", place);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+    };
   }, [section, pathname]);
   // Off a link: dimmed in place between sections, gone over the hero.
   const markOpacity = mark.on ? 1 : solid && mark.w > 0 ? 0.3 : 0;

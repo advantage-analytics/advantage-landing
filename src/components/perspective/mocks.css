@@ -16,16 +16,6 @@
    everything under `mb-` is the app's own report styling, in design pixels. */
 .mb-micro { font: 400 11px/1.4 var(--font-sans); color: #888888; white-space: nowrap; }
 
-.mb-score { margin: 0 12px; display: flex; flex-direction: column; gap: 14px; padding: 18px 13px 20px; border-bottom: 1px solid #F3F3F3; }
-.mb-score .hd { display: flex; align-items: baseline; gap: 8px; }
-.mb-score .clock { font: 500 10px var(--font-mono); font-variant-numeric: tabular-nums; color: #AAAAAA; }
-.mb-score .rows { display: flex; flex-direction: column; gap: 11px; }
-.mb-score .row { display: flex; align-items: center; gap: 7px; min-width: 0; }
-.mb-score .nm { font: 500 13px var(--font-sans); color: #0D0D0D; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mb-score .win { color: #3B82F6; flex: none; }
-.mb-score .sets { display: inline-flex; gap: 8px; font: 400 13px var(--font-mono); font-variant-numeric: tabular-nums; color: #0D0D0D; }
-.mb-score .sets b { font-weight: 400; width: 11px; text-align: right; }
-.mb-score .row.is-lost .nm, .mb-score .row.is-lost .sets { color: #525252; }
 
 .mb-insight .bd .lead { font-weight: 500; font-size: 13px; line-height: 1.5; }
 .mb-insight .dh-foot { align-items: center; }

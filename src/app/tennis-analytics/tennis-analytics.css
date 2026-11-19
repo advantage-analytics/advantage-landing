@@ -11,7 +11,7 @@
    rows (three tiles in the column left the third alone on its own line). */
 .ta-short { display: flex; flex-direction: column; gap: 14px; }
 .ta-short > div { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 24px; }
-.ta-short .eyebrow, .ta-lane .eyebrow { padding-top: 2px; font: var(--fw-medium) 13px/1.4 var(--font-sans); letter-spacing: 0; text-transform: none; color: var(--ink-tertiary); }
+.ta-label { padding-top: 2px; font: var(--fw-medium) 13px/1.4 var(--font-sans); color: var(--ink-tertiary); }
 @media (max-width: 640px) { .ta-short > div { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
 .ta-short p { margin: 0; font: var(--fw-regular) 15px/1.55 var(--font-sans); color: var(--ink); text-wrap: pretty; }
 

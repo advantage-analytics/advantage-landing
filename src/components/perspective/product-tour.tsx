@@ -77,6 +77,11 @@ export function TourPlayer({ active = true, cut = STATS_TOUR }: { active?: boole
   const [playing, setPlaying] = useState(false);
   // -1 until the video has played: no line is singled out on a still.
   const [step, setStep] = useState(-1);
+  // A player in a hidden tab (the home page's product switcher) holds back its
+  // still until the tab is first opened: loading="lazy" alone still fetches an
+  // image that is only visibility: hidden.
+  const [seen, setSeen] = useState(active);
+  if (active && !seen) setSeen(true);
 
   useEffect(() => {
     const v = videoRef.current;
@@ -134,18 +139,20 @@ export function TourPlayer({ active = true, cut = STATS_TOUR }: { active?: boole
     <>
       <div className="proof-board reveal">
         <div className="mock-frame tour-frame reveal">
-          <picture>
-            <source media={HD_MEDIA} srcSet={`${base}-poster-2880.jpg`} />
-            <img
-              className="tour-still"
-              src={`${base}-poster.jpg`}
-              alt=""
-              width={1920}
-              height={1200}
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
+          {seen ? (
+            <picture>
+              <source media={HD_MEDIA} srcSet={`${base}-poster-2880.jpg`} />
+              <img
+                className="tour-still"
+                src={`${base}-poster.jpg`}
+                alt=""
+                width={1920}
+                height={1200}
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+          ) : null}
           <video
             ref={videoRef}
             className="tour-video"

@@ -21,7 +21,8 @@ export function GuideShell({
   children,
 }: {
   id: GuideId;
-  title: ReactNode;
+  // Defaults to the guide's title in guides.ts, the one /guides lists.
+  title?: ReactNode;
   sub: ReactNode;
   hero?: ReactNode;
   sections: readonly { id: string; label: string }[];
@@ -40,7 +41,7 @@ export function GuideShell({
               <span aria-current="page">{here.name}</span>
             </nav>
           }
-          title={title}
+          title={title ?? here.title}
           sub={sub}
           actions={hero}
         />

@@ -8,7 +8,6 @@ const APP_URL = (
 // retyped in half a dozen files; a stale address here is invisible until a
 // coach's submission has already failed.
 export const CONTACT_EMAIL = "team@advantage-analytics.com";
-export const SITE_DOMAIN = "advantage-analytics.com";
 
 // The Cal.com event coaches book from /contact, as "user/event". The slug is
 // the event's own on Cal.com (it predates the paid plans); rename it there and

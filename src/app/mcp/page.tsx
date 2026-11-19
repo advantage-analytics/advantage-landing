@@ -48,7 +48,6 @@ export default function Page() {
   return (
     <GuideShell
       id="mcp"
-      title="Connect Advantage to your AI app."
       sub="Ask Claude, ChatGPT, Cursor or any app that supports MCP about your matches. It reads what your account can see and changes only your Ask history, a match’s details and a new upload draft."
       hero={
         <div className="mcp-urlbar">

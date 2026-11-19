@@ -428,12 +428,19 @@ export function RosterTour({ steps, active = true }: { steps: readonly string[];
     let raf = 0;
     let last = 0;
     let clock = 0;
+    let drawn = 0;
     let inView = false;
+    // The clock advances every frame, but the board re-renders at most 30
+    // times a second (as live-dots does): each render redraws the whole
+    // 1440-wide roster, and 30 fps is smooth for a cursor and fades.
     const tick = (now: number) => {
       const dt = last ? Math.min(now - last, 100) / 1000 : 0;
       last = now;
       clock = (clock + dt) % LOOP;
-      setT(clock);
+      if (now - drawn >= 1000 / 30) {
+        drawn = now;
+        setT(clock);
+      }
       raf = requestAnimationFrame(tick);
     };
     const sync = () => {

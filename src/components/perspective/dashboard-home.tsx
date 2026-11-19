@@ -13,7 +13,6 @@ import "./dashboard-home.css";
    of the product, not the product. */
 
 export const DH_W = 1440;
-export const DH_H = 900;
 
 export function Ico({ children, size = 16, sw = 1.5, stroke = "currentColor" }: { children: ReactNode; size?: number; sw?: number; stroke?: string }) {
   return (

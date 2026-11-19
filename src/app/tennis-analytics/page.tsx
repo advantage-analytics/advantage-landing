@@ -106,7 +106,6 @@ export default function Page() {
   return (
     <GuideShell
       id="analytics"
-      title="Tennis analytics, explained."
       sub="Tennis analytics turns what happens in a match into numbers you can act on: how often your first serve goes in, how your points end, and where you win and lose them. It used to take a team of analysts. Now it takes a video of your match, filmed on your phone or any camera."
       sections={SECTIONS}
     >
@@ -115,7 +114,7 @@ export default function Page() {
           <aside className="ta-short reveal" aria-label="The short answer">
             {SHORT.map((x) => (
               <div key={x.k}>
-                <span className="eyebrow">{x.k}</span>
+                <span className="ta-label">{x.k}</span>
                 <p>{x.v}</p>
               </div>
             ))}
@@ -210,13 +209,13 @@ export default function Page() {
           </div>
           <div className="ta-lanes reveal">
             <div className="ta-lane">
-              <span className="eyebrow">Players</span>
+              <span className="ta-label">Players</span>
               <h3>See your own game in numbers.</h3>
               <p>Track your serve, your errors and your trends from one match to the next.{FREE_MATCH_OFFER ? ` ${FREE_MATCH_LINE}` : ""}</p>
               <FreeMatchLink className="btn btn-primary" placement="tennis-analytics" icon={false} />
             </div>
             <div className="ta-lane">
-              <span className="eyebrow">Coaches and programs</span>
+              <span className="ta-label">Coaches and programs</span>
               <h3>Every dual, every court, one page.</h3>
               <p>
                 College plans cover your full roster, from {usd(COLLEGE_PLANS[0].spring.price)} for the spring season.{" "}

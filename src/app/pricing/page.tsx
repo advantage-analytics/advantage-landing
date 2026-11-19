@@ -7,9 +7,7 @@ import { Faq } from "@/components/perspective/faq";
 import { FreeMatchLink } from "@/components/perspective/cta-links";
 import { BookCallButton } from "@/components/perspective/walkthrough-band";
 import { VerifiedCheck } from "@/components/perspective/verified";
-import { JsonLd } from "@/components/json-ld";
 import { pageMetadata } from "@/lib/metadata";
-import { faqPageLd } from "@/lib/structured-data";
 import { PRICING_QA } from "@/lib/plan-faq";
 import {
   COLLEGE_PAYMENT_METHODS,
@@ -31,7 +29,6 @@ const description = `Plans for college programs from ${usd(COLLEGE_PLANS[0].spri
 
 export const metadata = pageMetadata({ title, description, path: "/pricing" });
 
-const FAQ_LD = faqPageLd(PRICING_QA.map((x) => ({ q: x.q, text: x.a })));
 
 /* /pricing. The mesh masthead, then the plans for the chosen audience (college
    programs or players and coaches), how colleges pay, what every paid plan
@@ -130,7 +127,6 @@ const afterBands = (
       className="band alt heads-centered"
       eyebrow="Questions"
       title="Straight answers."
-      ld={false}
     />
   </>
 );
@@ -184,7 +180,6 @@ export default function Page() {
         />
       }
     >
-      <JsonLd data={FAQ_LD} />
       <PricingBody pay={payBand} after={afterBands} closeCollege={closeCollege} closeIndividual={closeIndividual} />
     </PageFrame>
   );

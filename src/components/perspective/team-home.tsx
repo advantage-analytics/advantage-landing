@@ -32,10 +32,6 @@ export const TEAM_RAIL: ReactNode[] = [
   RAIL_TOP[4],
 ];
 
-// The page grows to its content in the app; a fixed board cannot, so it is
-// cut where the usage footer's bottom padding ends (measured at 1440 wide),
-// the way the match report board is.
-export const TH_H = 1170;
 
 const GOOD = "#5DB955";
 const BAD = "#E51837";

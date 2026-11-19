@@ -63,7 +63,6 @@ export default function Page() {
   return (
     <GuideShell
       id="recording"
-      title="Filming a match Advantage can read."
       sub="One camera behind the back fence, raised, held still, recording the whole match. Set it up before the first serve and the file is ready to upload when you walk off court."
       sections={SECTIONS}
     >

@@ -45,8 +45,6 @@
 .guide-main > :first-child,
 .guide-main > :first-child > :first-child,
 .guide-main > :first-child > .wrap > :first-child { margin-top: 0; padding-top: 0; }
-/* Sections land below the fixed nav when the rail jumps to them. */
-.guide-main [id] { scroll-margin-top: 96px; }
 
 /* Tennis analytics' bands, which are full-width elsewhere, sit in the column. */
 .guide-main .ta-band { background: none; border: 0; }

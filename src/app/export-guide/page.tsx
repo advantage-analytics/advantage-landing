@@ -54,7 +54,6 @@ export default function Page() {
   return (
     <GuideShell
       id="export"
-      title="Getting match video into Advantage."
       sub={
         <>
           You&rsquo;ve filmed the match. Get the original file off the device and upload it; the uploader checks it

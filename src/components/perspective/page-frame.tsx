@@ -1,15 +1,14 @@
-"use client";
-
 import type { ReactNode } from "react";
 import { SiteNav } from "./site-nav";
 import { Footer } from "./footer";
-import { useReveal } from "./reveal";
+import { PageEffects } from "./page-effects";
 import { LiveDots } from "./live-dots";
 import "./subpage.css";
 
 /* PageFrame — the standalone-route shell. It reproduces the home page's outer
    structure (.perspective-page → SiteNav → main → Footer) and runs the same
-   reveal-on-scroll observer over the page's `.reveal` elements. About, Contact,
+   reveal-on-scroll observer over the page's `.reveal` elements (PageEffects,
+   the one client piece, so the frame and the pages stay server components). About, Contact,
    and the legal pages all render their content as children.
 
    Pass `hero` for a route that carries its own mesh masthead (PageHero): the
@@ -23,13 +22,13 @@ export function PageFrame({
   children: ReactNode;
   hero?: ReactNode;
 }) {
-  useReveal();
   return (
     <div className="perspective-page">
       <SiteNav subpage={!hero} />
       {hero}
       <main className={hero ? undefined : "subpage-main"}>{children}</main>
       <Footer />
+      <PageEffects />
     </div>
   );
 }

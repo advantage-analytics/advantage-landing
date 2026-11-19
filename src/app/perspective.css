@@ -89,9 +89,7 @@
 }
 .hh :where(a, button):focus-visible,
 .site-nav:not(.is-solid) :where(a, button):focus-visible,
-.access-card :where(a, button):focus-visible,
 .final-band :where(a, button):focus-visible,
-.beta-panel :where(a, button):focus-visible,
 .navy-surface :where(a, button):focus-visible {
   outline-color: #fff;
   outline-offset: 4px;
@@ -261,7 +259,6 @@ section.band.alt + section.band.alt { border-top: none; }
 /* 02: the dashboard's upload stepper (VerticalStep + AnalysisProgressTrack). */
 .how-stepper { padding: 14px 18px 15px; }
 .how-stepper { display: flex; flex-direction: column; justify-content: center; }
-.how-stepper .ttl { display: block; margin-bottom: 12px; font: var(--fw-medium) 13px/1.3 var(--font-sans); color: #0D0D0D; }
 .how-stepper ol { margin: 0; padding: 0; list-style: none; }
 .how-stepper li { display: flex; gap: 12px; }
 .how-stepper .rail { display: flex; flex: none; width: 16px; flex-direction: column; align-items: center; padding-top: 2px; }
@@ -416,141 +413,11 @@ section.band.alt + section.band.alt { border-top: none; }
 .sec-head p { margin: 18px 0 0; color: var(--ink-secondary); font: var(--fw-regular) 16px/1.6 var(--font-sans); max-width: 56ch; }
 
 /* ============ DASHBOARD SHOWCASE ============ */
-.show-head { display:flex; align-items:flex-end; justify-content:space-between; gap: 24px 40px; flex-wrap: wrap; }
 /* The short statement that sits bottom-right of a band header. */
 .band-aside { margin: 0; max-width: 380px; color: var(--ink-secondary);
   font: var(--fw-regular) 16px/1.6 var(--font-sans); text-wrap: pretty; }
 .band-aside a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--ink-label); }
 
-
-/* ============ REQUEST ACCESS ============ */
-.access { background: var(--surface); }
-.access-card { position: relative; overflow:hidden; border-radius: 20px; padding: 64px 56px;
-  background: linear-gradient(135deg, #14224C 0%, #0E1A3E 60%, #0B1228 100%); }
-.access-card .ac-glow { position:absolute; inset:0; z-index:0;
-  background: radial-gradient(90% 140% at 88% 10%, rgba(59,130,246,.55) 0%, rgba(59,130,246,0) 50%),
-              radial-gradient(70% 120% at 100% 100%, rgba(129,140,248,.35) 0%, rgba(129,140,248,0) 55%); }
-/* Dot grid over the glow: the shared rule sits with the final band below. */
-.access-card .ac-grain { z-index:0; }
-.access-inner { position:relative; z-index:1; display:grid; grid-template-columns: 1fr 0.9fr; gap: 48px; align-items:center; }
-.access-inner .eyebrow { color: rgba(255,255,255,0.7); }
-.access-inner h3 { margin: 18px 0 0; color:#fff; font-weight: var(--fw-light); font-size: clamp(28px,3.2vw,40px); letter-spacing:-0.9px; line-height:1.08; }
-.access-inner p { margin: 18px 0 0; color: rgba(255,255,255,0.78); font: var(--fw-regular) 15px/1.6 var(--font-sans); max-width: 42ch; }
-.access-form { background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 28px; backdrop-filter: blur(8px);
-  /* Native select popups render dark instead of flashing white against the band. */
-  color-scheme: dark; }
-.uline { margin-bottom: 22px; }
-.uline label { display:block; font: var(--fw-medium) 10px var(--font-sans); letter-spacing:2px; text-transform:uppercase; color: rgba(255,255,255,0.55); margin-bottom: 10px; }
-/* 16px is deliberate: iOS Safari zooms the whole page when a field smaller
-   than that takes focus, and it is the step .control already uses.
-   The rule sits at 0.38 white — 3.50:1 on the navy, clearing SC 1.4.11's 3:1
-   for a control boundary, where the old 0.22 measured 2.00:1 and vanished in
-   daylight. */
-.uline input, .uline select { width:100%; background:transparent; border:none; border-bottom: 1px solid rgba(255,255,255,0.38);
-  padding: 7px 0; color:#fff; font: var(--fw-regular) 16px/1.4 var(--font-sans); outline:none;
-  transition: border-color 300ms var(--ease-primary), border-bottom-width 300ms var(--ease-primary), padding-bottom 300ms var(--ease-primary); }
-.uline input::placeholder { color: rgba(255,255,255,0.5); }
-/* Chrome autofill would paint an opaque light background over the dark band;
-   keep the fill text white and postpone the background swap indefinitely. */
-.uline input:-webkit-autofill,
-.uline input:-webkit-autofill:hover,
-.uline input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #fff;
-  caret-color: #fff;
-  transition: background-color 9999s ease-out 9999s;
-}
-/* Selects mirror the underlined inputs: chromeless, with a small white chevron
-   standing in for the native arrow, and the placeholder option dimmed like an
-   input placeholder while the select is still on its empty first option. */
-.uline select { appearance:none; -webkit-appearance:none; cursor:pointer; border-radius:0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='rgba(255,255,255,0.55)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat; background-position: right 2px center; padding-right: 20px; }
-.uline select:invalid, .uline select:has(option[value=""]:checked) { color: rgba(255,255,255,0.5); }
-.uline select option { color: var(--ink, #0D0D0D); }
-/* Focus: rule grows 1px -> 2px and turns signal-blue over 300ms, padding
-   compensating so the text holds still — same as the dashboard auth fields. */
-.uline input:focus, .uline select:focus { border-bottom-color: var(--signal-blue); border-bottom-width: 2px; padding-bottom: 6px; }
-.access-form .btn { width:100%; height: 46px; margin-top: 4px; }
-.access-note { margin-top: 16px; font: var(--fw-regular) 11px/1.5 var(--font-sans); color: rgba(255,255,255,0.5); text-align:center; }
-.access-sent { color:#fff; font: var(--fw-regular) 14px/1.6 var(--font-sans); text-align:center; padding: 20px 0; }
-.access-sent .chk { width:42px; height:42px; border-radius:50%; background: var(--win-tint); color: var(--win-green); display:flex; align-items:center; justify-content:center; margin: 0 auto 16px; }
-.access-sent .chk svg { width:20px; height:20px; stroke: currentColor; }
-/* Opens the missing-school form. Scoped to .access-form for specificity:
-   `.access-inner p` above is (0,1,1) and would otherwise hand this line the
-   lede's 15px/0.78/18px-top treatment. */
-.access-form .access-lead { margin: 0 0 20px; font: var(--fw-regular) 13px/1.5 var(--font-sans); color: rgba(255,255,255,0.72); }
-.access-lead strong { font-weight: var(--fw-medium); color: #fff; }
-/* The coach CTA under the lede. */
-.access-inner .access-actions { margin-top: 28px; }
-
-/* The individual lane, as a rule across the foot of the card. Outside
-   .access-inner so it survives the form's sent state — the path stays visible
-   whether or not a program has just submitted. */
-.access-player { position: relative; z-index: 1; display:flex; align-items:center; gap: 14px;
-  margin-top: 44px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,0.16); flex-wrap: wrap; }
-.access-player .ap-q { font: var(--fw-medium) 10px var(--font-mono); letter-spacing: 2px;
-  text-transform: uppercase; color: rgba(255,255,255,0.55); white-space: nowrap; }
-.access-player .ap-t { font: var(--fw-regular) 13px/1.5 var(--font-sans); color: rgba(255,255,255,0.78); }
-.access-player .ap-link { display:inline-flex; align-items:center; gap: 7px; margin-left: auto;
-  font: var(--fw-medium) 13px var(--font-sans); color: #fff; white-space: nowrap;
-  transition: color 160ms var(--ease-primary); }
-.access-player .ap-link:hover { color: #DBEAFE; }
-/* Once the row wraps, margin-left:auto would strand the link on its own line
-   flush right, reading as detached. Pull it back to the left edge. */
-@media (max-width: 620px) { .access-player .ap-link { margin-left: 0; } }
-
-/* ---- Narrow screens: the panel dissolves ----
-   The glass panel exists to hold the form apart from the copy in the two-column
-   split. Once .access-inner stacks there is no second column to hold it apart
-   from, so all it does is nest a card inside a card — and the two paddings are
-   not cheap: measured on a 375px phone, 56px of card plus 28px of panel on each
-   side left a 161px input, 43% of the screen. Below 640px the panel gives up its
-   background, border, radius and blur, and the fields run out to the card's own
-   gutters. The dark colour-scheme is declared on .access-form and deliberately
-   survives: it is what keeps the native select wheel from flashing white against
-   the navy. Losing the backdrop-filter also retires a viewport-width compositing
-   layer on exactly the devices least able to paint one. */
-@media (max-width: 720px) {
-  .access-card { padding: 48px 24px; }
-}
-@media (max-width: 640px) {
-  .access-form {
-    background: none;
-    border: none;
-    border-radius: 0;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    /* The panel's edge is gone, so the card needs some other way to say the
-       reading stops here and the doing starts. A rule, the same one .access-player
-       already draws across the foot of the card — three stacked zones, one
-       separator vocabulary — rather than a gap that leaves a label looking like
-       another line of prose. */
-    padding: 30px 0 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-  }
-}
-@media (max-width: 400px) {
-  .access-card { padding: 40px 20px; border-radius: 16px; }
-}
-
-/* ---- Coarse pointers ----
-   Gated on pointer rather than width, matching the contact form: a 1024px
-   tablet is touch and a 900px window is not, and the fine-pointer rhythm keeps
-   its tighter spacing untouched. Fields go from a measured 33px to 46px, which
-   is the row height the contact form already ships. The label steps up because
-   10px at 2px tracking is a desktop reading size being asked to survive a phone
-   at arm's length with a keyboard covering half the screen. */
-@media (pointer: coarse) {
-  .uline { margin-bottom: 24px; }
-  .uline label { font-size: 11px; letter-spacing: 1.6px; margin-bottom: 8px; }
-  .uline input, .uline select { padding: 12px 0 11px; }
-  .uline input:focus, .uline select:focus { padding-bottom: 10px; }
-  /* Re-stated after the shorthand above, which zeroes the chevron's gutter. */
-  .uline select { padding-right: 26px; }
-  .access-form .btn { height: 50px; font-size: 14px; }
-  .access-note { font-size: 12px; }
-  .access-player .ap-link { padding: 8px 0; }
-}
 
 /* ============ FOOTER ============ */
 .perspective-page footer { background: var(--surface); border-top:1px solid var(--hairline); padding: 56px 0 40px; }
@@ -571,72 +438,11 @@ section.band.alt + section.band.alt { border-top: none; }
 .foot-legal { display:flex; align-items:center; gap: 22px; }
 .foot-legal a { font: var(--fw-regular) 12px var(--font-sans); color: var(--ink-muted); transition: color .18s var(--ease-primary); }
 .foot-legal a:hover { color: var(--ink); }
-.foot-bottom .sv { display:flex; align-items:center; gap:8px; font: var(--fw-regular) 12px var(--font-sans); color: var(--ink-muted); }
-.foot-bottom .sv img { height: 14px; opacity: .75; }
 
 /* ============ LAUNCH BANDS ============
-   Beta terms (.beta-*), FAQ (.faq-*)
-   and the closing navy band (.final-band). The two product mocks carry their
+   FAQ (.faq-*) and the closing navy band (.final-band). The two product mocks carry their
    own stylesheet, components/perspective/mocks.css. */
 
-
-/* Beta terms: two lanes routed by who the visitor is. The band sits between
-   two intro-beside-ledger bands (How it works, FAQ), so it breaks the rhythm
-   on purpose: a full-width band head, then one panel split down the middle.
-   One panel, not two cards, so the lanes read as halves of the same offer
-   rather than tiers to weigh; equal columns, identical structure, the same
-   button in each. The lanes share their rows through subgrid, so the
-   question, sentence, facts and action sit level whatever wraps.
-   The panel is the final band's material (navy, glow, dot grid; the shared
-   rules sit with the final band below), so the two places a visitor picks a
-   lane are one surface, and both lanes wear its white button. */
-/* Headline top-left, aside flush with the panel's right edge, so the two
-   frame the panel's width. The aside's last line sits on the headline's last
-   baseline; set right so its edge is the panel's. Stacks and turns left on
-   phones, where there is no right edge to hold. */
-.beta-head { display: flex; align-items: last baseline; justify-content: space-between; gap: 24px 48px; }
-.beta-head .band-aside { flex: 0 1 340px; text-align: right; }
-/* Break the headline and aside between their sentences, never inside one. */
-.beta-h2-tail { display: inline-block; }
-.beta-panel { position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, auto);
-  margin-top: 56px; border-radius: var(--r-card); color: #fff;
-  background: linear-gradient(135deg, #14224C 0%, #0E1A3E 60%, #0B1228 100%); }
-.beta-lane { position: relative; grid-row: span 5; display: grid; grid-template-rows: subgrid; row-gap: 0; padding: 48px 56px 44px; }
-.beta-lane + .beta-lane { border-left: 1px solid rgba(255,255,255,0.14); }
-.beta-tag { margin: 0 0 18px; font: var(--fw-medium) 10px/1.5 var(--font-sans); letter-spacing: 2.5px;
-  text-transform: uppercase; color: rgba(255,255,255,0.6); }
-.beta-ask { margin: 0; font: var(--fw-regular) 24px/1.2 var(--font-sans); letter-spacing: -0.5px; color: #fff; text-wrap: balance; }
-.beta-line { margin: 12px 0 0; max-width: 44ch; font: var(--fw-regular) 15px/1.6 var(--font-sans);
-  color: rgba(255,255,255,0.78); text-wrap: pretty; }
-.beta-facts { margin: 28px 0 0; padding: 24px 0 0; list-style: none; border-top: 1px solid rgba(255,255,255,0.14);
-  display: flex; flex-direction: column; gap: 12px; }
-.beta-facts li { display: flex; align-items: baseline; gap: 12px; font: var(--fw-regular) 14px/1.45 var(--font-sans);
-  color: rgba(255,255,255,0.78); text-wrap: pretty; }
-/* A short tick, drawn rather than an icon font: the same 1.5px stroke as the
-   FAQ's plus marks. */
-.beta-facts li::before { content: ""; flex: none; width: 9px; height: 5px; translate: 0 -3px;
-  border-left: 1.5px solid rgba(255,255,255,0.6); border-bottom: 1.5px solid rgba(255,255,255,0.6); rotate: -45deg; }
-.beta-cta { align-self: end; margin-top: 36px; display: flex; align-items: center; gap: 16px; }
-.beta-cta .hbtn { flex: none; }
-.beta-cta .hbtn-white { box-shadow: 0 8px 26px rgba(0,0,0,.4); }
-.beta-cta .hbtn-white:hover { background: #F3F3F3; }
-.beta-cta .note { min-width: 0; font: var(--fw-regular) 12.5px/1.4 var(--font-sans); color: rgba(255,255,255,0.7); }
-@media (max-width: 900px) {
-  .beta-head { flex-direction: column; align-items: flex-start; gap: 18px; }
-  .beta-head .band-aside { flex: none; text-align: left; }
-  .beta-panel { grid-template-columns: 1fr; grid-template-rows: none; margin-top: 40px; }
-  .beta-lane { grid-row: auto; display: flex; flex-direction: column; padding: 36px 32px; }
-  .beta-lane + .beta-lane { border-left: none; border-top: 1px solid rgba(255,255,255,0.14); }
-  .beta-cta { align-self: stretch; }
-}
-@media (max-width: 640px) {
-  .beta-h2-tail { display: inline; }
-  .beta-lane { padding: 32px 22px; }
-  .beta-ask { font-size: 21px; }
-  .beta-cta { flex-direction: column; align-items: stretch; gap: 10px; }
-  .beta-cta .hbtn { width: 100%; }
-  .beta-cta .note { text-align: center; }
-}
 
 /* FAQ — heading in the left column, the collapsed questions beside it.
    Only the questions show; each opens in place, and the plus turns into a
@@ -704,7 +510,7 @@ section.band.final-band { position: relative; overflow: hidden; padding: clamp(9
    wears it (.navy-surface, the /about founder band). */
 section.band.final-band, .navy-surface { background: linear-gradient(135deg, #14224C 0%, #0E1A3E 60%, #0B1228 100%); }
 .navy-surface .eyebrow { color: rgba(255,255,255,0.7); }
-.final-band .ac-glow, .beta-panel .ac-glow, .navy-surface .ac-glow { position: absolute; inset: 0;
+.final-band .ac-glow, .navy-surface .ac-glow { position: absolute; inset: 0;
   background: radial-gradient(90% 140% at 88% 10%, rgba(59,130,246,.55) 0%, rgba(59,130,246,0) 50%),
               radial-gradient(70% 120% at 100% 100%, rgba(129,140,248,.35) 0%, rgba(129,140,248,0) 55%); }
 /* The site's dot grid, one setting for every dark surface: whole-pixel dots
@@ -713,10 +519,10 @@ section.band.final-band, .navy-surface { background: linear-gradient(135deg, #14
    surfaces a mask ties the grid to the top-right glow, fullest under the light
    and easing to about a third across the far corner. The hero mesh has no
    single light, so its grid is even. */
-/* Every navy surface and the /pilot mesh hero draw the grid live
+/* Every navy surface and the mesh heroes draw the grid live
    (live-dots.tsx), a canvas under these same classes. The mask below ties the
    live grid to each navy glow. */
-.final-band .ac-grain, .access-card .ac-grain, .beta-panel .ac-grain, .navy-surface .ac-grain {
+.final-band .ac-grain, .navy-surface .ac-grain {
   -webkit-mask-image: radial-gradient(130% 130% at 88% 10%, #000 25%, rgba(0,0,0,.35) 100%);
           mask-image: radial-gradient(130% 130% at 88% 10%, #000 25%, rgba(0,0,0,.35) 100%); }
 /* Two pairs, one break: the date sits tight on the headline, the small print
@@ -767,16 +573,13 @@ section.band.final-band, .navy-surface { background: linear-gradient(135deg, #14
    - Product boards: the screen draws top to bottom, the way a page loads,
      a beat after the head.
    - How it works, FAQ: lists, so their items arrive in order (capped).
-   - Navy (beta panel, /pilot's access card, final band): the page's authored moment. The panel
-     settles, both lanes arrive together (never one before the other: the
-     lanes are not ranked), then the light comes up behind them. The final
-     band's glow blooms the same way, so the navy is one material that lights
-     up wherever it appears. */
+   - Navy (final band): the page's authored moment. The copy settles, then
+     the light comes up behind it. */
 @media (prefers-reduced-motion: no-preference) {
   /* Heads */
-  .perspective-page[data-reveal-armed] :is(.proof-head, .how-head, .beta-head) .band-aside {
+  .perspective-page[data-reveal-armed] :is(.proof-head, .how-head) .band-aside {
     transition: opacity 600ms var(--ease-spring) 120ms, translate 700ms var(--ease-spring) 120ms; }
-  .perspective-page[data-reveal-armed] :is(.proof-head, .how-head, .beta-head).reveal:not(.in) .band-aside { opacity: 0; translate: 0 10px; }
+  .perspective-page[data-reveal-armed] :is(.proof-head, .how-head).reveal:not(.in) .band-aside { opacity: 0; translate: 0 10px; }
 
   /* Product boards: a wipe from the top edge, the frame's shadow included
      once it lands (the negative insets leave room for it). The unclipped
@@ -809,20 +612,12 @@ section.band.final-band, .navy-surface { background: linear-gradient(135deg, #14
   .perspective-page[data-reveal-armed] .faq-row:nth-child(n+6) { --fi: 5; }
   .perspective-page[data-reveal-armed] .faq-list.reveal:not(.in) .faq-row { opacity: 0; translate: 0 8px; }
 
-  /* Navy: settle, lanes together, then the light. */
-  .perspective-page[data-reveal-armed] :is(.beta-panel, .access-card).reveal:not(.in) { transform: translateY(20px) scale(0.985); }
-  .perspective-page[data-reveal-armed] .beta-lane { transition: opacity 600ms var(--ease-spring) 220ms, translate 700ms var(--ease-spring) 220ms; }
-  .perspective-page[data-reveal-armed] .beta-panel.reveal:not(.in) .beta-lane { opacity: 0; translate: 0 10px; }
-  .perspective-page[data-reveal-armed] :is(.beta-panel, .access-card, .final-band) :is(.ac-glow, .ac-grain) { transition: opacity 1400ms var(--ease-primary) 420ms; }
-  .perspective-page[data-reveal-armed] :is(.beta-panel, .access-card).reveal:not(.in) .ac-glow,
+  /* Navy: the copy settles, then the light. */
+  .perspective-page[data-reveal-armed] .final-band :is(.ac-glow, .ac-grain) { transition: opacity 1400ms var(--ease-primary) 420ms; }
   .perspective-page[data-reveal-armed] .final-band:has(.final-inner.reveal:not(.in)) .ac-glow { opacity: 0; }
-  .perspective-page[data-reveal-armed] :is(.beta-panel, .access-card).reveal:not(.in) .ac-grain,
   .perspective-page[data-reveal-armed] .final-band:has(.final-inner.reveal:not(.in)) .ac-grain { opacity: 0; }
 }
 
-@media (max-width: 960px) {
-  .access-inner { grid-template-columns: 1fr; gap: 32px; }
-}
 
 /* ============================================================
    HUMAN HERO — plain copy beside a photo, then the dashboard on a
@@ -1233,24 +1028,8 @@ section.band.final-band, .navy-surface { background: linear-gradient(135deg, #14
 @media (prefers-reduced-motion: reduce) {
   .site-nav, .site-logo, .site-nav-center a, .site-nav-mark, .site-nav-mark.is-sliding, .site-signin, .site-cta,
   .site-nav-toggle, .site-nav-sheet { transition: none; }
-  /* The focus underline grows 1px -> 2px with the padding compensating over
-     300ms. Animated border-width and padding are layout, and on a form that is
-     one of these per field. */
-  .uline input, .uline select { transition: none; }
 }
 
-/* Login-page mesh gradient (verbatim from advantage-dashboard globals.css) */
-.brand-mesh {
-  background:
-    radial-gradient(ellipse 80% 70% at 10% 15%, #60A5FA 0%, transparent 50%),
-    radial-gradient(ellipse 65% 80% at 85% 10%, #38BDF8 0%, transparent 45%),
-    radial-gradient(ellipse 70% 60% at 40% 50%, #7BA4F7 0%, transparent 50%),
-    radial-gradient(ellipse 60% 70% at 80% 70%, #818CF8 0%, transparent 45%),
-    radial-gradient(ellipse 55% 55% at 50% 35%, #93C5FD 0%, transparent 45%),
-    radial-gradient(ellipse 70% 60% at 15% 80%, #4F8EF7 0%, transparent 45%),
-    radial-gradient(ellipse 50% 50% at 70% 45%, #A78BFA 0%, transparent 40%),
-    linear-gradient(135deg, #5B8DEF, #7BA4F7, #818CF8);
-}
 /* The live dot grid (live-dots.tsx): the same 6px grid, drawn per dot so
    waves and the pointer can light it. Over the surface, under its content. */
 .live-dots { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
