@@ -39,7 +39,9 @@
 /* The guide's own name: small, but at a contrast that still reads (#71717a, 4.8:1). */
 .gi-name { margin-top: 2px; font: var(--fw-regular) 13px/1.4 var(--font-sans); color: var(--ink-tertiary); }
 .gi-arrow { color: var(--ink-label); transition: transform 200ms var(--ease-primary), color 200ms var(--ease-primary); }
-.gi-row:hover .gi-arrow { color: var(--signal-blue-deep); transform: translateX(3px); }
+.gi-row:hover .gi-arrow { color: var(--signal-blue-deep); }
+/* The nudge only where there is a pointer to hover; on touch it would stick after a tap. */
+@media (hover: hover) { .gi-row:hover .gi-arrow { transform: translateX(3px); } }
 @media (prefers-reduced-motion: reduce) { .gi-arrow { transition: none; } }
 
 .gi-foot { margin: 0; font: var(--fw-regular) 15px/1.6 var(--font-sans); color: var(--ink-secondary); }

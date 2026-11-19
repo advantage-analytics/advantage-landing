@@ -531,3 +531,8 @@
 .mcp-assure svg { flex: none; margin-top: 1px; color: var(--signal-blue); }
 .mcp-assure strong { font-weight: var(--fw-medium); }
 .mcp-assure a { white-space: nowrap; }
+
+/* Touch: every copy button is a finger-sized target. */
+@media (pointer: coarse) {
+  .mcp-copy { min-height: 44px; }
+}
