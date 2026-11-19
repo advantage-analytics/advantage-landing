@@ -37,7 +37,12 @@ const sections = [
 ];
 
 // The tools that change something come first, so the ones to weigh are seen.
-const toolsInOrder = [...tools].sort((a, b) => Number(b.write) - Number(a.write));
+// (`write` is left off the read tools, and Number(undefined) is NaN, which
+// leaves the sort unordered, so it is read as a boolean.)
+const toolsInOrder = [...tools].sort((a, b) => Number(Boolean(b.write)) - Number(Boolean(a.write)));
+
+// The server URL split at its path, so a phone wraps it at "/api", not mid-name.
+const { origin: urlHost, pathname: urlPath } = new URL(url);
 
 // What to know before pressing Allow, shown under the setup steps; the full
 // list is in Sign-in and privacy.
@@ -51,7 +56,13 @@ export default function Page() {
       sub="Ask Claude, ChatGPT, Cursor or any app that supports MCP about your matches. It reads what your account can see and changes only your Ask history, a match’s details and a new upload draft."
       hero={
         <div className="mcp-urlbar">
-          <code>{url}</code>
+          {/* Where the address may break on a narrow screen: before its path,
+              never inside the host name. */}
+          <code>
+            {urlHost}
+            <wbr />
+            {urlPath}
+          </code>
           <CopyButton value={url} label="Copy server URL" />
         </div>
       }
