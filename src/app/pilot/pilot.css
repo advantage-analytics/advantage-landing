@@ -1,0 +1,14 @@
+/* ============ /pilot (until December 31, 2026) ============
+   The /guides column (guides.css) with the pilot's terms as label-and-answer
+   rows, the way tennis analytics sets its short answer. */
+
+.pl-terms { margin: 0; display: flex; flex-direction: column; gap: 16px; }
+.pl-terms > div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 24px; }
+.pl-terms dt { padding-top: 2px; font: var(--fw-medium) 13px/1.4 var(--font-sans); color: var(--ink-tertiary); }
+.pl-terms dd { margin: 0; font: var(--fw-regular) 16px/1.55 var(--font-sans); color: var(--ink); }
+.pl-terms dd span { display: block; font-size: 14px; color: var(--ink-secondary); text-wrap: pretty; }
+.pl-intro { margin: -4px 0 16px; max-width: 56ch; font: var(--fw-regular) 15px/1.55 var(--font-sans); color: var(--ink-secondary); }
+
+@media (max-width: 640px) {
+  .pl-terms > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}

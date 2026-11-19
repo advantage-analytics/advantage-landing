@@ -1247,7 +1247,9 @@ section.band.final-band, .navy-surface { background: linear-gradient(135deg, #14
 @media (pointer: coarse) {
   .proof-link, .hh-more { min-height: 44px; }
   .ask-ai-chip { min-height: 44px; }
-  .foot-col a { margin-bottom: 0; padding: 8px 0; }
+  .foot-col a { margin-bottom: 0; padding: 11px 0; }
+  /* The logo is the way home: as tall as the bar's tap row. */
+  .site-nav-brand { min-height: 44px; }
   /* The nav links keep their size (the sliding underline is measured from
      them); an invisible area around each one takes the tap instead. */
   .site-nav-center a { position: relative; }

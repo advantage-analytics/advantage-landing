@@ -84,6 +84,20 @@
   .guide-rail { position: static; }
   .guide-more ul { grid-template-columns: minmax(0, 1fr); }
 }
+/* On a phone the rail sits above the guide, so a one-per-line list of six
+   sections pushes the first heading a screen down. Two columns halve it, and
+   the help line under the list already lives at the page's foot. */
+@media (max-width: 640px) {
+  .guide-rail ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 8px; }
+  .guide-rail ol a { padding: 8px 10px; }
+}
+/* Touch: the rail's links, the breadcrumb and "All guides" take a
+   finger-sized tap without changing how they look. */
+@media (pointer: coarse) {
+  .guide-rail ol a { min-height: 44px; align-items: center; }
+  .pv-crumb a, .guide-more-head a { position: relative; }
+  .pv-crumb a::after, .guide-more-head a::after { content: ""; position: absolute; inset: -13px -10px; }
+}
 
 /* The recording guide's iPhone steps sit beside the screenshot they happen
    on (guide.css .eg-pair): in the 760px column the pair needs a tighter gap
