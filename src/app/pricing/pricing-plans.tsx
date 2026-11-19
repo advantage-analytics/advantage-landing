@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
-import { GraduationCap, UserRound } from "lucide-react";
+import { ChevronDown, GraduationCap, UserRound } from "lucide-react";
 import { ProofHead } from "@/components/perspective/band-parts";
 import { BookCallButton } from "@/components/perspective/walkthrough-band";
 import { trackEvent } from "@/lib/analytics";
@@ -30,8 +30,9 @@ import {
    rows (spring and full year for colleges, monthly and yearly for players and
    coaches), and the button at the foot of each column. Every figure is read
    from lib/plans; this file only decides the rows. The middle plan is the
-   featured column. On a narrow screen the table scrolls sideways under a
-   pinned first column.
+   featured column. On a phone the same table is shown as a price list
+   (PlanList): every plan's headline price at once, one plan open with its
+   rows and button.
 
    College columns book the 20-minute walkthrough on Cal.com, carrying the
    plan with the booking; player and coach columns sign up in the dashboard. */
@@ -40,7 +41,8 @@ type Audience = "college" | "individual";
 type Cell = ReactNode | null; // null: "Not included", in the muted ink
 type Row = { label: string; cells: readonly Cell[]; big?: boolean };
 type Section = { title?: string; rows: readonly Row[] };
-type Plan = { id: string; name: string; line: string; cta: ReactNode };
+// `price` is the headline figure, said once more in the phone list's closed row.
+type Plan = { id: string; name: string; line: string; price: { fig: string; per: string }; cta: ReactNode };
 type Table = { plans: readonly Plan[]; sections: readonly Section[]; featured: number; ctaNote: string };
 
 const big = (fig: string, per?: string) => (
@@ -69,6 +71,7 @@ function collegeTable(): Table {
       id: p.id,
       name: p.name,
       line: p.line,
+      price: { fig: usd(p.spring.price), per: "spring" },
       cta: (
         <BookCallButton
           className={ctaClass(i, featured)}
@@ -138,6 +141,7 @@ function coachTable(): Table {
       id: p.id,
       name: p.name,
       line: p.line,
+      price: free(p) ? { fig: "$0", per: "free" } : { fig: usd(p.monthly), per: "a month" },
       cta: (
         <a
           className={ctaClass(i, featured)}
@@ -199,81 +203,131 @@ function coachTable(): Table {
 // Built once: they read only module constants.
 const TABLES: Record<Audience, Table> = { college: collegeTable(), individual: coachTable() };
 
-/* On a phone the table shows one plan at a time beside its row labels, picked
-   above it, instead of three columns to swipe through with the labels
-   scrolling away. The picker and the column hiding exist only below 641px
-   (pricing.css); on wider screens every plan shows and the picker is hidden.
-   It opens on the featured plan. */
 function PlanTable({ table, tabId }: { table: Table; tabId: string }) {
   const cols = table.plans.length;
   const tint = (i: number) => (i === table.featured ? "is-featured" : undefined);
-  const [shown, setShown] = useState(table.featured);
   return (
-    <div
-      className="mock-frame pr-table-wrap"
-      id="pr-plans-panel"
-      role="tabpanel"
-      aria-labelledby={tabId}
-      tabIndex={0}
-      data-show={shown}
-    >
-      <div className="pr-pick" role="group" aria-label="Plan to show">
-        {table.plans.map((p, i) => (
-          <button
-            key={p.id}
-            type="button"
-            aria-pressed={shown === i}
-            className={shown === i ? "is-on" : undefined}
-            onClick={() => setShown(i)}
-          >
-            {p.name}
-          </button>
-        ))}
+    <div className="pr-plans" id="pr-plans-panel" role="tabpanel" aria-labelledby={tabId}>
+      <PlanList table={table} />
+      <div className="mock-frame pr-table-wrap" tabIndex={0}>
+        <table className="pr-table">
+          <thead>
+            <tr>
+              <td className="pr-corner" />
+              {table.plans.map((p, i) => (
+                <th scope="col" className={tint(i)} key={p.id}>
+                  <span className="pr-name">{p.name}</span>
+                  <span className="pr-line">{p.line}</span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {table.sections.map((sec, si) => (
+              <Fragment key={si}>
+                {sec.title ? (
+                  <tr className="pr-sec">
+                    <th scope="rowgroup" colSpan={cols + 1}>
+                      {sec.title}
+                    </th>
+                  </tr>
+                ) : null}
+                {sec.rows.map((r) => (
+                  <tr key={r.label} className={r.big ? "is-price" : undefined}>
+                    <th scope="row">{r.label}</th>
+                    {r.cells.map((c, i) => (
+                      <td className={tint(i)} key={i}>
+                        {c === null ? muted("Not included") : c}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </Fragment>
+            ))}
+            <tr className="pr-ctas">
+              <td className="pr-cta-note">{table.ctaNote}</td>
+              {table.plans.map((p, i) => (
+                <td className={tint(i)} key={p.id}>
+                  {p.cta}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <table className="pr-table">
-        <thead>
-          <tr>
-            <td className="pr-corner" />
-            {table.plans.map((p, i) => (
-              <th scope="col" className={tint(i)} key={p.id}>
+    </div>
+  );
+}
+
+/* "200 hours · about 110 matches" reads as the hours, with the estimate
+   quieter under them, in the phone list. */
+function lead(cell: Cell): ReactNode {
+  if (cell === null) return muted("Not included");
+  if (typeof cell !== "string" || !cell.includes(" · ")) return cell;
+  const [first, ...rest] = cell.split(" · ");
+  return (
+    <>
+      {first}
+      <span className="pr-sub">{rest.join(" · ")}</span>
+    </>
+  );
+}
+
+/* The phone's version of the table (pricing.css shows it below 641px and the
+   table above): a list of the plans with each one's headline price, so all
+   of them read at once, and one plan open at a time with its rows, its
+   button and the button's note. It opens on the featured plan. The headline
+   price row is the closed row's price, so it is not repeated inside. */
+function PlanList({ table }: { table: Table }) {
+  const [open, setOpen] = useState<number | null>(table.featured);
+  return (
+    <div className="mock-frame pr-list">
+      {table.plans.map((p, i) => {
+        const isOpen = open === i;
+        const id = `pr-list-${p.id}`;
+        return (
+          <div className={isOpen ? "pr-item is-open" : "pr-item"} key={p.id}>
+            <button
+              type="button"
+              className="pr-item-head"
+              aria-expanded={isOpen}
+              aria-controls={id}
+              onClick={() => setOpen(isOpen ? null : i)}
+            >
+              <span className="pr-item-name">
                 <span className="pr-name">{p.name}</span>
                 <span className="pr-line">{p.line}</span>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {table.sections.map((sec, si) => (
-            <Fragment key={si}>
-              {sec.title ? (
-                <tr className="pr-sec">
-                  <th scope="rowgroup" colSpan={cols + 1}>
-                    {sec.title}
-                  </th>
-                </tr>
-              ) : null}
-              {sec.rows.map((r) => (
-                <tr key={r.label} className={r.big ? "is-price" : undefined}>
-                  <th scope="row">{r.label}</th>
-                  {r.cells.map((c, i) => (
-                    <td className={tint(i)} key={i}>
-                      {c === null ? muted("Not included") : c}
-                    </td>
-                  ))}
-                </tr>
+              </span>
+              <span className="pr-item-price">
+                <span className="pr-item-fig">{p.price.fig}</span>
+                <span className="pr-per">{p.price.per}</span>
+              </span>
+              <ChevronDown className="pr-item-chev" size={18} strokeWidth={1.8} aria-hidden="true" />
+            </button>
+            <div className="pr-item-body" id={id} hidden={!isOpen}>
+              {table.sections.map((sec, si) => (
+                <Fragment key={si}>
+                  {sec.title ? <p className="pr-item-sec">{sec.title}</p> : null}
+                  <dl className="pr-item-rows">
+                    {sec.rows
+                      .filter((r) => !r.big)
+                      .map((r) => (
+                        <div key={r.label}>
+                          <dt>{r.label}</dt>
+                          <dd>{lead(r.cells[i])}</dd>
+                        </div>
+                      ))}
+                  </dl>
+                </Fragment>
               ))}
-            </Fragment>
-          ))}
-          <tr className="pr-ctas">
-            <td className="pr-cta-note">{table.ctaNote}</td>
-            {table.plans.map((p, i) => (
-              <td className={tint(i)} key={p.id}>
+              <div className="pr-item-cta">
                 {p.cta}
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
+                <span className="pr-cta-note">{table.ctaNote}</span>
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
