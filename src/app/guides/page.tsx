@@ -11,6 +11,7 @@ export const metadata = pageMetadata({
   description:
     "Four short guides: how to film a match, upload it, ask an AI app about your matches, and understand your numbers.",
   path: "/guides",
+  ownCard: true,
 });
 
 /* /guides, task-first. Each guide is named by what the visitor wants to do,

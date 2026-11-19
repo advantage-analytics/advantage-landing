@@ -29,7 +29,7 @@ import "./pricing.css";
 const title = "Pricing: Advantage tennis analytics plans";
 const description = `Plans for college programs from ${usd(COLLEGE_PLANS[0].spring.price)} a spring season, and for players and coaches from ${usd(ENTRY_COACH_PLAN.monthly)} a month. Paid plans include ${VERIFIED}.`;
 
-export const metadata = pageMetadata({ title, description, path: "/pricing", ownCard: true });
+export const metadata = pageMetadata({ title, description, path: "/pricing" });
 
 const FAQ_LD = faqPageLd(PRICING_QA.map((x) => ({ q: x.q, text: x.a })));
 
