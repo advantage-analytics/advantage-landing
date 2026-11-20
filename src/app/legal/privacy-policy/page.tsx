@@ -159,7 +159,7 @@ export default function Page() {
               <p>
                 <strong>AI Service Providers:</strong> Ask answers and match summaries are written with
                 the help of an AI model from a third-party provider. We send it your name and the
-                statistics needed to answer your question or summarise your match.
+                statistics needed to answer your question or summarize your match.
               </p>
               <p>
                 <strong>Teams You Join:</strong> Matches filed to a team are visible to the team&apos;s

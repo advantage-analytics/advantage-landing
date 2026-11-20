@@ -239,7 +239,7 @@ export function ProductShowcase({ centered = false }: { centered?: boolean }) {
               <TourPlayer cut={VIZ_CUT} active={view === "viz"} />
               <p className="tour-note">
                 <strong>Every dot is a shot.</strong> Green for a point you won,
-                red for one you lost, grey for a ball that went out.
+                red for one you lost, gray for a ball that went out.
               </p>
             </Panel>
 

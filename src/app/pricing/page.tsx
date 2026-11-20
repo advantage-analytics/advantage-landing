@@ -15,7 +15,7 @@ import {
   ENTRY_COACH_PLAN,
   FREE_MATCH_LINE,
   FREE_MATCH_OFFER,
-  MAX_INSTALMENTS,
+  MAX_INSTALLMENTS,
   PRICE_LOCK_MONTHS,
   SECOND_TEAM_DISCOUNT_PERCENT,
   VERIFIED,
@@ -43,7 +43,7 @@ const PAY: readonly { t: string; p: string }[] = [
     p: "Book a 20-minute call, or write to us with your teams and season. We send a quote for the plan that fits.",
   },
   { t: "Invoice", p: `We invoice the school. Pay by ${COLLEGE_PAYMENT_METHODS}.` },
-  { t: "Instalments", p: `Pay at once or in up to ${MAX_INSTALMENTS} instalments.` },
+  { t: "Installments", p: `Pay at once or in up to ${MAX_INSTALLMENTS} installments.` },
   {
     t: "Second team",
     p: `A second team at the same school is ${SECOND_TEAM_DISCOUNT_PERCENT}% off. Prices are locked for ${PRICE_LOCK_MONTHS} months.`,

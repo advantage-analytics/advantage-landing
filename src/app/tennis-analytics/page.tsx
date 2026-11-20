@@ -70,7 +70,7 @@ const MEASURES = [
 const QA = [
   {
     q: "What is tennis analytics?",
-    a: "Tennis analytics is the use of match statistics, like first serve percentage, points won on serve and how points ended, to understand why a match was won or lost and what to practise next.",
+    a: "Tennis analytics is the use of match statistics, like first serve percentage, points won on serve and how points ended, to understand why a match was won or lost and what to practice next.",
   },
   {
     q: "Can I get tennis stats from a phone video?",
