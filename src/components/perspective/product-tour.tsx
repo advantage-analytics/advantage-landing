@@ -206,7 +206,7 @@ export function ProductTour() {
         </p>
         <AskAi
           placement="home-tour"
-          prompts={["summarise my last match", "find where I lose second-serve points", "show my first serve over five matches"]}
+          prompts={["summarize my last match", "find where I lose second-serve points", "show my first serve over five matches"]}
         />
       </div>
     </section>

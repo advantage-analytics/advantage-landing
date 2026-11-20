@@ -29,7 +29,7 @@ const HEAD_STYLE = "mixed" as "split" | "centered" | "mixed";
 // On the condensed page: the AI connector third, straight after How it works,
 // with Verified between it and the product band; or fifth, after both.
 const CONNECTOR_THIRD = false as boolean;
-const AI_PROMPTS = ["summarise my last match", "find where I lose second-serve points", "scout our next opponent"];
+const AI_PROMPTS = ["summarize my last match", "find where I lose second-serve points", "scout our next opponent"];
 
 export default function Home() {
   return (

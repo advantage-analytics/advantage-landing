@@ -72,7 +72,7 @@ export default function Page() {
           <p className="eg-prose">
             The court mapping reads the lines, so it needs the court from one
             end, high enough to see over the net. Raise the camera to head
-            height or above, centre it on the court, and fix it there.
+            height or above, center it on the court, and fix it there.
           </p>
           <FramePair />
           <div className="eg-rules">
@@ -84,9 +84,9 @@ export default function Page() {
               </p>
             </div>
             <div className="eg-rule">
-              <h4>Raised and centred</h4>
+              <h4>Raised and centered</h4>
               <p>
-                Head height or above, in line with the centre mark, so both
+                Head height or above, in line with the center mark, so both
                 sidelines are in frame.
               </p>
             </div>
@@ -167,7 +167,7 @@ export default function Page() {
               <ol className="eg-steps eg-steps-2" start={2}>
                 <Step n={2} title="Turn off HDR Video">
                   Further down Record Video. It&rsquo;s on by default, and HDR
-                  colour can&rsquo;t survive the conversion before upload, so the
+                  color can&rsquo;t survive the conversion before upload, so the
                   saved video looks paler and flatter than on your phone. The
                   analysis isn&rsquo;t affected.
                 </Step>
@@ -201,7 +201,7 @@ export default function Page() {
             <p className="eg-prose">
               Open the Camera app, switch to video and tap the settings gear. Set
               the video size or resolution to {VIDEO_MIN_RESOLUTION} (sometimes
-              labelled FHD) at {VIDEO_MIN_FPS} or higher, and turn off HDR video
+              labeled FHD) at {VIDEO_MIN_FPS} or higher, and turn off HDR video
               if your phone offers it. The exact wording varies by phone.
             </p>
           </div>

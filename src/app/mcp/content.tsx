@@ -301,7 +301,7 @@ export const prompts = [
     note: "Reads your statistics",
   },
   {
-    text: "Summarise my last match and the one thing I should work on.",
+    text: "Summarize my last match and the one thing I should work on.",
     note: "Reads one match report",
   },
   {
